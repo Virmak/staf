@@ -1,0 +1,28 @@
+TEST SUITE "User auth"
+IMPORTS
+    Import selenium
+    Import "./relative_file"
+VARS
+    $test = 'tete'
+    $x.y = 'okson'
+    ${var} = 'plpl'
+KEYWORDS
+    Do login ($test, ${tete})
+        Ok boy('test', 123, ['a', 1], $ok, ${test}, {ok: 1})
+        FOR $item IN $list
+        END FOR
+    RETURN {'DICT': Okthankyou($test)}
+
+    TestKeyword($ok)
+    RETURN
+TEST CASES
+    TC1 login page:
+        Do login($te)
+        FOR $i in $list
+            test keyword
+        END FOR
+        okkk
+     END
+    TC2 OK:
+        do nothing
+     END
