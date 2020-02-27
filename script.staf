@@ -1,28 +1,26 @@
-test suite dddd
+test suite "dddd"
 IMPORTS
     Import selenium
     Import "./relative_file"
 VARS
     $test = [1, 2, 3]
-    $x.y = 'okson'
-    ${var} = 'plpl'
+    $x = 'okson'
+    $var = kw call()
 KEYWORDS
-    Do login ($test, ${tete})
-        Ok boy('test', 123, ['a', 1], $ok, ${test}, {ok: 1})
+    Do login ($test, $tete)
+        Ok boy('test', 123, ['a', 1], $ok, $test, {ok: 1})
         FOR $item IN $list
         END FOR
     RETURN {'DICT': Okthankyou($test)}
 
-    TestKeyword($ok)
-    RETURN
 TEST CASES
-    Test cases login page:
+    ttt login page:
         Do login($te)
         FOR $i in $list
             test keyword
         END FOR
         okkk
-     END
+    END
     TC2 OK:
         do nothing
     END
