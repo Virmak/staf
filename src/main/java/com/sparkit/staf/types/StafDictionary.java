@@ -8,10 +8,12 @@ public class StafDictionary extends StafObject {
 
     public StafDictionary() {
         objectMap = new Hashtable<>();
+        this.type = StafTypes.DICTIONARY;
     }
 
     public StafDictionary(Map<String, StafObject> items) {
         this.objectMap = items;
+        this.type = StafTypes.DICTIONARY;
     }
 
     public Map<String, StafObject> getObjectMap() {

@@ -178,25 +178,15 @@ public interface StafListener extends ParseTreeListener {
 	 */
 	void exitKeyword_declaration_arguments(StafParser.Keyword_declaration_argumentsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link StafParser#var_declaration}.
+	 * Enter a parse tree produced by {@link StafParser#assignment}.
 	 * @param ctx the parse tree
 	 */
-	void enterVar_declaration(StafParser.Var_declarationContext ctx);
+	void enterAssignment(StafParser.AssignmentContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link StafParser#var_declaration}.
+	 * Exit a parse tree produced by {@link StafParser#assignment}.
 	 * @param ctx the parse tree
 	 */
-	void exitVar_declaration(StafParser.Var_declarationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link StafParser#assignement}.
-	 * @param ctx the parse tree
-	 */
-	void enterAssignement(StafParser.AssignementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link StafParser#assignement}.
-	 * @param ctx the parse tree
-	 */
-	void exitAssignement(StafParser.AssignementContext ctx);
+	void exitAssignment(StafParser.AssignmentContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link StafParser#for_stat}.
 	 * @param ctx the parse tree
@@ -248,6 +238,16 @@ public interface StafListener extends ParseTreeListener {
 	 */
 	void exitObject(StafParser.ObjectContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link StafParser#variable_reference}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariable_reference(StafParser.Variable_referenceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#variable_reference}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariable_reference(StafParser.Variable_referenceContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link StafParser#primitive}.
 	 * @param ctx the parse tree
 	 */
@@ -277,6 +277,16 @@ public interface StafListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitList_item_access(StafParser.List_item_accessContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link StafParser#dictionary_item_access}.
+	 * @param ctx the parse tree
+	 */
+	void enterDictionary_item_access(StafParser.Dictionary_item_accessContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#dictionary_item_access}.
+	 * @param ctx the parse tree
+	 */
+	void exitDictionary_item_access(StafParser.Dictionary_item_accessContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link StafParser#number}.
 	 * @param ctx the parse tree

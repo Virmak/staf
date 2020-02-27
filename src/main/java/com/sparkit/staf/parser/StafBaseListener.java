@@ -1,5 +1,5 @@
 // Generated from Staf.g4 by ANTLR 4.8
-package com.sparkit.staf.interpreter;
+package com.sparkit.staf.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -220,25 +220,13 @@ public class StafBaseListener implements StafListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVar_declaration(StafParser.Var_declarationContext ctx) { }
+	@Override public void enterAssignment(StafParser.AssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVar_declaration(StafParser.Var_declarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAssignement(StafParser.AssignementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAssignement(StafParser.AssignementContext ctx) { }
+	@Override public void exitAssignment(StafParser.AssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -304,6 +292,18 @@ public class StafBaseListener implements StafListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterVariable_reference(StafParser.Variable_referenceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariable_reference(StafParser.Variable_referenceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPrimitive(StafParser.PrimitiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -335,6 +335,18 @@ public class StafBaseListener implements StafListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitList_item_access(StafParser.List_item_accessContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDictionary_item_access(StafParser.Dictionary_item_accessContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDictionary_item_access(StafParser.Dictionary_item_accessContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -22,7 +22,7 @@ import_obj
     ;
 
 vars_section
-    : VARS var_declaration*
+    : VARS assignment*
     ;
 
 /*** Test cases section ***/
@@ -52,7 +52,7 @@ keyword_body
     ;
 
 statement
-    : assignement
+    : assignment
     | keyword_call
     | for_stat
     ;
@@ -79,14 +79,8 @@ keyword_declaration_arguments
 
 /*** End keywords section ***/
 
-
-var_declaration
-    : variable
-    | assignement
-    ;
-
-assignement
-    : variable WS* '=' WS* object
+assignment
+    : variable_reference WS* '=' WS* (object | NULL)
     ;
 
 for_stat
@@ -106,9 +100,15 @@ dictionaryLiteral
 keyValuePair
     : (IDENTIFIER | string) ':' object
     ;
+
 object
-    : (primitive | variable | list_item_access | dictionaryLiteral | listLiteral| keyword_call)
+    : (primitive | variable_reference | dictionaryLiteral | listLiteral| keyword_call)
     ;
+
+variable_reference
+    : variable | list_item_access | dictionary_item_access
+    ;
+
 primitive
     : string
     | bool
@@ -116,13 +116,16 @@ primitive
     ;
 
 variable
-    : (('${' IDENTIFIER ('.' IDENTIFIER)* '}' | '$' IDENTIFIER ('.' IDENTIFIER)*))
+    : '$' IDENTIFIER
     ;
 
 list_item_access
-    : variable ('[' INT ']')
+    : variable ('[' object ']')
     ;
 
+dictionary_item_access
+    :   variable ('.' IDENTIFIER)+
+    ;
 
 number
     : (INT | FLOAT)
@@ -215,6 +218,9 @@ ENDFOR
     : E N D F O R
     ;
 
+NULL
+    : N U L L
+    ;
 
 IDENTIFIER
     : [A-Za-z0-9]+

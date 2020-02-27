@@ -1,5 +1,5 @@
 // Generated from Staf.g4 by ANTLR 4.8
-package com.sparkit.staf.interpreter;
+package com.sparkit.staf.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -113,17 +113,11 @@ public interface StafVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitKeyword_declaration_arguments(StafParser.Keyword_declaration_argumentsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link StafParser#var_declaration}.
+	 * Visit a parse tree produced by {@link StafParser#assignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVar_declaration(StafParser.Var_declarationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link StafParser#assignement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAssignement(StafParser.AssignementContext ctx);
+	T visitAssignment(StafParser.AssignmentContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link StafParser#for_stat}.
 	 * @param ctx the parse tree
@@ -155,6 +149,12 @@ public interface StafVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitObject(StafParser.ObjectContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link StafParser#variable_reference}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariable_reference(StafParser.Variable_referenceContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link StafParser#primitive}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -172,6 +172,12 @@ public interface StafVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitList_item_access(StafParser.List_item_accessContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link StafParser#dictionary_item_access}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDictionary_item_access(StafParser.Dictionary_item_accessContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link StafParser#number}.
 	 * @param ctx the parse tree

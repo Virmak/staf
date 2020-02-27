@@ -4,34 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StafList extends StafObject {
-    protected List<StafObject> items;
+    protected List<StafObject> value;
 
     public StafList() {
-        items = new ArrayList<>();
+        value = new ArrayList<>();
+        this.type = StafTypes.LIST;
     }
 
     public StafList(List<StafObject> items) {
-        this.items = items;
+        this.value = items;
+        this.type = StafTypes.LIST;
     }
 
-    public List<StafObject> getItems() {
-        return items;
+    public List<StafObject> getList() {
+        return value;
     }
 
-    public void setItems(List<StafObject> items) {
-        this.items = items;
+    public void setList(List<StafObject> object) {
+        this.value = object;
     }
 
     public void addListItem(StafObject item) {
-        items.add(item);
+        value.add(item);
     }
 
     public void setItemAt(int index, StafObject item) {
-        items.set(index, item);
+        value.set(index, item);
     }
 
     public void removeItemAt(int index) {
-        items.remove(index);
+        value.remove(index);
     }
 
 }
