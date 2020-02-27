@@ -59,6 +59,12 @@ public interface StafVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTest_case_declaration(StafParser.Test_case_declarationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link StafParser#test_case_body}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTest_case_body(StafParser.Test_case_bodyContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link StafParser#keywords_section}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -124,6 +130,12 @@ public interface StafVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFor_stat(StafParser.For_statContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link StafParser#for_stat_body}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFor_stat_body(StafParser.For_stat_bodyContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link StafParser#listLiteral}.
 	 * @param ctx the parse tree

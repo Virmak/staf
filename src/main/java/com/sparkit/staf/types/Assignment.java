@@ -1,6 +1,6 @@
 package com.sparkit.staf.types;
 
-public class Assignment extends AbstractStatement {
+public class Assignment implements IStatement {
     protected StafObject object;
     protected StafObject value;
 

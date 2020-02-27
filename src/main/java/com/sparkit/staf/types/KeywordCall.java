@@ -2,7 +2,7 @@ package com.sparkit.staf.types;
 
 import java.util.List;
 
-public class KeywordCall extends StafObject {
+public class KeywordCall extends StafObject implements IStatement{
     protected String keywordName;
     protected List<StafObject> argumentsList;
 

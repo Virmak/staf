@@ -3,16 +3,18 @@ package com.sparkit.staf.visitors;
 import com.sparkit.staf.parser.StafBaseVisitor;
 import com.sparkit.staf.parser.StafParser;
 import com.sparkit.staf.types.ImportStatement;
-import com.sparkit.staf.types.ImportsSection;
 
-public class ImportsSectionVisitor extends StafBaseVisitor<ImportsSection> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ImportsSectionVisitor extends StafBaseVisitor<List<ImportStatement>> {
     @Override
-    public ImportsSection visitImports_section(StafParser.Imports_sectionContext ctx) {
-        ImportsSection importsSection = new ImportsSection();
-        for(StafParser.Import_statContext importStat: ctx.import_stat()) {
+    public List<ImportStatement> visitImports_section(StafParser.Imports_sectionContext ctx) {
+        List<ImportStatement> importStatements = new ArrayList<>();
+        for (StafParser.Import_statContext importStat : ctx.import_stat()) {
             ImportStatement importStatement = new ImportStatement(importStat.import_obj().getText());
-            importsSection.getImportStatementList().add(importStatement);
+            importStatements.add(importStatement);
         }
-        return importsSection;
+        return importStatements;
     }
 }

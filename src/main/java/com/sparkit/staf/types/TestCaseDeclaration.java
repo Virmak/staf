@@ -4,9 +4,9 @@ import java.util.List;
 
 public class TestCaseDeclaration {
     private String name;
-    private List<AbstractStatement> statements;
+    private List<IStatement> statements;
 
-    public TestCaseDeclaration(String name, List<AbstractStatement> statements) {
+    public TestCaseDeclaration(String name, List<IStatement> statements) {
         this.name = name;
         this.statements = statements;
     }
@@ -22,11 +22,11 @@ public class TestCaseDeclaration {
         this.name = name;
     }
 
-    public List<AbstractStatement> getStatements() {
+    public List<IStatement> getStatements() {
         return statements;
     }
 
-    public void setStatements(List<AbstractStatement> statements) {
+    public void setStatements(List<IStatement> statements) {
         this.statements = statements;
     }
 }

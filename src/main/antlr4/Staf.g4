@@ -55,9 +55,7 @@ keyword_body
     ;
 
 statement
-    : assignment
-    | keyword_call
-    | for_stat
+    : (GIVEN | WHEN | THEN)? (assignment | keyword_call | for_stat)
     ;
 
 keyword_call
@@ -88,8 +86,12 @@ assignment
 
 for_stat
     : FOR variable IN object
-      statement*
+      for_stat_body
       END FOR
+    ;
+
+for_stat_body
+    : statement*
     ;
 
 listLiteral
@@ -223,6 +225,16 @@ ENDFOR
 
 NULL
     : N U L L
+    ;
+
+GIVEN
+    : G I V E N
+    ;
+WHEN
+    : W H E N
+    ;
+THEN
+    : T H E N
     ;
 
 IDENTIFIER

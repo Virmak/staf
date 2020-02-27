@@ -5,10 +5,10 @@ import java.util.List;
 public class KeywordDeclaration {
     protected String keywordName;
     protected List<String> argsList;
-    protected List<AbstractStatement> statementList;
+    protected List<IStatement> statementList;
     protected StafObject returnObject;
 
-    public KeywordDeclaration(String keywordName, List<String> argsList, List<AbstractStatement> statementList, StafObject returnObject) {
+    public KeywordDeclaration(String keywordName, List<String> argsList, List<IStatement> statementList, StafObject returnObject) {
         this.keywordName = keywordName;
         this.argsList = argsList;
         this.statementList = statementList;
@@ -26,11 +26,11 @@ public class KeywordDeclaration {
         this.returnObject = returnObject;
     }
 
-    public List<AbstractStatement> getStatementList() {
+    public List<IStatement> getStatementList() {
         return statementList;
     }
 
-    public void setStatementList(List<AbstractStatement> statementList) {
+    public void setStatementList(List<IStatement> statementList) {
         this.statementList = statementList;
     }
 

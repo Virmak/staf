@@ -11,8 +11,10 @@ public class KeywordCallArgumentsVisitor extends StafBaseVisitor<List<StafObject
     @Override
     public List<StafObject> visitKeyword_call_arguments(StafParser.Keyword_call_argumentsContext ctx) {
         List<StafObject> objectList = new ArrayList<>();
-        for (StafParser.ObjectContext objectContext: ctx.object()) {
-            objectList.add(new StafObjectVisitor().visitObject(objectContext));
+        if (ctx.object() != null) {
+            for (StafParser.ObjectContext objectContext: ctx.object()) {
+                objectList.add(new StafObjectVisitor().visitObject(objectContext));
+            }
         }
         return objectList;
     }

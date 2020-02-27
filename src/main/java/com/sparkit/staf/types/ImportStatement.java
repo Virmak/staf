@@ -1,6 +1,6 @@
 package com.sparkit.staf.types;
 
-public class ImportStatement {
+public class ImportStatement implements IStatement {
     private String path;
     private ImportTypes type;
 

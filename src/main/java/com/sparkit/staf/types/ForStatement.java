@@ -2,15 +2,15 @@ package com.sparkit.staf.types;
 
 import java.util.List;
 
-public class ForStatement extends AbstractStatement {
+public class ForStatement implements IStatement {
     private StafVariable var;
     private StafObject iterator;
-    private List<AbstractStatement> statementList;
+    private List<IStatement> statementList;
 
     public ForStatement() {
     }
 
-    public ForStatement(StafVariable var, StafObject iterator, List<AbstractStatement> statementList) {
+    public ForStatement(StafVariable var, StafObject iterator, List<IStatement> statementList) {
         this.var = var;
         this.iterator = iterator;
         this.statementList = statementList;
@@ -32,11 +32,11 @@ public class ForStatement extends AbstractStatement {
         this.iterator = iterator;
     }
 
-    public List<AbstractStatement> getStatementList() {
+    public List<IStatement> getStatementList() {
         return statementList;
     }
 
-    public void setStatementList(List<AbstractStatement> statementList) {
+    public void setStatementList(List<IStatement> statementList) {
         this.statementList = statementList;
     }
 }

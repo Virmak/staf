@@ -6,7 +6,7 @@ import java.util.Map;
 public class StafFile {
     private String suiteName;
     private List<ImportStatement> imports;
-    private Map<String, StafObject> variableDeclarationMap;
+    private Map<String, Assignment> variableDeclarationMap;
     private Map<String, KeywordDeclaration> keywordDeclarationMap;
     private Map<String, TestCaseDeclaration> testCaseDeclarationMap;
 
@@ -15,7 +15,7 @@ public class StafFile {
 
     public StafFile(
             String suiteName, List<ImportStatement> imports,
-            Map<String, StafObject> variableDeclarationMap,
+            Map<String, Assignment> variableDeclarationMap,
             Map<String, KeywordDeclaration> keywordDeclarationMap,
             Map<String, TestCaseDeclaration> testCaseDeclarationMap) {
         this.suiteName = suiteName;
@@ -41,11 +41,11 @@ public class StafFile {
         this.imports = imports;
     }
 
-    public Map<String, StafObject> getVariableDeclarationMap() {
+    public Map<String, Assignment> getVariableDeclarationMap() {
         return variableDeclarationMap;
     }
 
-    public void setVariableDeclarationMap(Map<String, StafObject> variableDeclarationMap) {
+    public void setVariableDeclarationMap(Map<String, Assignment> variableDeclarationMap) {
         this.variableDeclarationMap = variableDeclarationMap;
     }
 
