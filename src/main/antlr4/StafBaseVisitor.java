@@ -73,6 +73,13 @@ public class StafBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements S
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitTest_case_body(StafParser.Test_case_bodyContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitKeywords_section(StafParser.Keywords_sectionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

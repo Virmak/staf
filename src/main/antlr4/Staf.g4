@@ -31,9 +31,12 @@ test_cases_section
     ;
 
 test_case_declaration
-    : keyword_name ':' statement* END
+    : keyword_name ':' test_case_body END
     ;
 
+test_case_body
+    : statement*
+    ;
 /*** End test cases ***/
 
 /*** Keywords section ***/
