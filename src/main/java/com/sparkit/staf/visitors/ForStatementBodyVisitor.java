@@ -2,7 +2,7 @@ package com.sparkit.staf.visitors;
 
 import com.sparkit.staf.parser.StafBaseVisitor;
 import com.sparkit.staf.parser.StafParser;
-import com.sparkit.staf.types.IStatement;
+import com.sparkit.staf.ast.IStatement;
 
 import java.util.ArrayList;
 import java.util.List;

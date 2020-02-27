@@ -2,8 +2,8 @@ package com.sparkit.staf.visitors;
 
 import com.sparkit.staf.parser.StafBaseVisitor;
 import com.sparkit.staf.parser.StafParser;
-import com.sparkit.staf.types.ForStatement;
-import com.sparkit.staf.types.StafVariable;
+import com.sparkit.staf.ast.ForStatement;
+import com.sparkit.staf.ast.StafVariable;
 
 public class ForStatementVisitor extends StafBaseVisitor<ForStatement> {
     @Override

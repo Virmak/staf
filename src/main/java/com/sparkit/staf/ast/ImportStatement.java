@@ -1,4 +1,4 @@
-package com.sparkit.staf.types;
+package com.sparkit.staf.ast;
 
 public class ImportStatement implements IStatement {
     private String path;

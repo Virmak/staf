@@ -1,4 +1,4 @@
-package com.sparkit.staf.types;
+package com.sparkit.staf.ast;
 
 import java.util.ArrayList;
 import java.util.List;

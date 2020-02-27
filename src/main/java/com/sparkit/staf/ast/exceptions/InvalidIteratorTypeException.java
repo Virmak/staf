@@ -1,4 +1,4 @@
-package com.sparkit.staf.types.Exception;
+package com.sparkit.staf.ast.exceptions;
 
 public class InvalidIteratorTypeException extends Exception {
     public InvalidIteratorTypeException() {

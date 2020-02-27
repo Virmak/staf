@@ -2,9 +2,7 @@ package com.sparkit.staf.visitors;
 
 import com.sparkit.staf.parser.StafBaseVisitor;
 import com.sparkit.staf.parser.StafParser;
-import com.sparkit.staf.types.*;
-
-import java.util.Map;
+import com.sparkit.staf.ast.*;
 
 public class StafFileVisitor extends StafBaseVisitor<Object> {
 
@@ -15,14 +13,22 @@ public class StafFileVisitor extends StafBaseVisitor<Object> {
         if (suiteNameCtx != null) {
             stafFile.setSuiteName(suiteNameCtx.string().getText());
         }
-        StafParser.Imports_sectionContext imports = ctx.imports_section();
-        stafFile.setImports(new ImportsSectionVisitor().visitImports_section(ctx.imports_section()));
+        StafParser.Imports_sectionContext importsSection = ctx.imports_section();
+        if (importsSection != null) {
+            stafFile.setImports(new ImportsSectionVisitor().visitImports_section(importsSection));
+        }
         StafParser.Vars_sectionContext varsSection = ctx.vars_section();
-        stafFile.setVariableDeclarationMap(new VariableDeclarationsSectionVisitor().visitVars_section(ctx.vars_section()));
+        if (varsSection != null) {
+            stafFile.setVariableDeclarationMap(new VariableDeclarationsSectionVisitor().visitVars_section(varsSection));
+        }
         StafParser.Keywords_sectionContext keywordsSectionContext = ctx.keywords_section();
-        stafFile.setKeywordDeclarationMap(new KeywordDeclarationsSectionVisitor().visitKeywords_section(keywordsSectionContext));
+        if (keywordsSectionContext != null) {
+            stafFile.setKeywordDeclarationMap(new KeywordDeclarationsSectionVisitor().visitKeywords_section(keywordsSectionContext));
+        }
         StafParser.Test_cases_sectionContext testCasesSectionContext = ctx.test_cases_section();
-        stafFile.setTestCaseDeclarationMap(new TestCaseDeclarationsSectionVisitor().visitTest_cases_section(testCasesSectionContext));
+        if (testCasesSectionContext != null) {
+            stafFile.setTestCaseDeclarationMap(new TestCaseDeclarationsSectionVisitor().visitTest_cases_section(testCasesSectionContext));
+        }
         return stafFile;
     }
 }

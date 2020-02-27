@@ -2,9 +2,9 @@ package com.sparkit.staf.visitors;
 
 import com.sparkit.staf.parser.StafBaseVisitor;
 import com.sparkit.staf.parser.StafParser;
-import com.sparkit.staf.types.KeyValuePair;
-import com.sparkit.staf.types.StafObject;
-import com.sparkit.staf.types.StafTypes;
+import com.sparkit.staf.ast.KeyValuePair;
+import com.sparkit.staf.ast.StafObject;
+import com.sparkit.staf.ast.StafTypes;
 
 import java.util.HashMap;
 import java.util.Map;

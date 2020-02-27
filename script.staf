@@ -22,5 +22,7 @@ TEST CASES
         okkk
     END
     TC2 OK:
-        do nothing
+        Given Login page opened()
+        When User click login()
+        Then Home page opened()
     END

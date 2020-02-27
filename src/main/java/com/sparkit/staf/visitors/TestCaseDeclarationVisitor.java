@@ -2,7 +2,7 @@ package com.sparkit.staf.visitors;
 
 import com.sparkit.staf.parser.StafBaseVisitor;
 import com.sparkit.staf.parser.StafParser;
-import com.sparkit.staf.types.TestCaseDeclaration;
+import com.sparkit.staf.ast.TestCaseDeclaration;
 
 public class TestCaseDeclarationVisitor extends StafBaseVisitor<TestCaseDeclaration> {
     @Override

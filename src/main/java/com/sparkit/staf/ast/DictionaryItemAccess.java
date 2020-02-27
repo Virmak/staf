@@ -1,4 +1,4 @@
-package com.sparkit.staf.types;
+package com.sparkit.staf.ast;
 
 public class DictionaryItemAccess extends StafObject {
     protected StafObject dictVariable;

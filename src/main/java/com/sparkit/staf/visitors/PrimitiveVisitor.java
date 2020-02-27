@@ -2,8 +2,8 @@ package com.sparkit.staf.visitors;
 
 import com.sparkit.staf.parser.StafBaseVisitor;
 import com.sparkit.staf.parser.StafParser;
-import com.sparkit.staf.types.StafObject;
-import com.sparkit.staf.types.StafTypes;
+import com.sparkit.staf.ast.StafObject;
+import com.sparkit.staf.ast.StafTypes;
 
 public class PrimitiveVisitor extends StafBaseVisitor<StafObject> {
 

@@ -1,4 +1,4 @@
-package com.sparkit.staf.types;
+package com.sparkit.staf.ast;
 
 public class ListItemAccess extends StafObject {
     protected StafObject listVariable;
