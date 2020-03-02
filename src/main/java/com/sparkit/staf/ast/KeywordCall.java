@@ -1,5 +1,9 @@
 package com.sparkit.staf.ast;
 
+import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.runtime.interpreter.exceptions.UndefinedKeywordException;
+
 import java.util.List;
 
 public class KeywordCall extends StafObject implements IStatement{
@@ -28,5 +32,14 @@ public class KeywordCall extends StafObject implements IStatement{
 
     public void setArgumentsList(List<StafObject> argumentsList) {
         this.argumentsList = argumentsList;
+    }
+
+    @Override
+    public Object execute(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+        if (keywordLibrariesRepository.isKeywordDeclared(keywordName)) {
+            return keywordLibrariesRepository.invokeKeyword(keywordName, argumentsList.toArray());
+        } else {
+            throw new UndefinedKeywordException(keywordName);
+        }
     }
 }

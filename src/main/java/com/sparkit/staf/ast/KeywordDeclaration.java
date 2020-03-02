@@ -1,5 +1,12 @@
 package com.sparkit.staf.ast;
 
+import com.sparkit.staf.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.runtime.interpreter.exceptions.InvalidArgsNumberKeywordCallException;
+import com.sparkit.staf.runtime.interpreter.exceptions.UndefinedKeywordException;
+import com.sparkit.staf.runtime.interpreter.exceptions.UndefinedVariableException;
+import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
+
+import java.util.Arrays;
 import java.util.List;
 
 public class KeywordDeclaration {
@@ -50,4 +57,34 @@ public class KeywordDeclaration {
         this.argsList = argsList;
     }
 
+    public Object execute(SymbolsTable globalSymTable, KeywordLibrariesRepository keywordLibrariesRepository,
+                          Object[] params) throws Exception {
+        SymbolsTable localSymTable = new SymbolsTable();
+        if (params.length != argsList.size())
+            throw new InvalidArgsNumberKeywordCallException(argsList.size(), params.length, keywordName);
+
+        for (int i = 0; i < params.length; i++) {
+            localSymTable.setSymbolValue(argsList.get(i), params[i]);
+            StafObject stafObject = (StafObject) params[i];
+            if (stafObject.getType() == StafTypes.VAR_REF) {
+                StafObject valObj = (StafObject) globalSymTable.getSymbolValue(stafObject.getValue().toString());
+                if (valObj == null) {
+                    throw new UndefinedVariableException(stafObject.getValue().toString());
+                }
+                localSymTable.setSymbolValue(argsList.get(i), valObj);
+            } else if (stafObject.getType() == StafTypes.KEYWORD_CALL) {
+                KeywordCall keywordCall = (KeywordCall) stafObject.getValue();
+                if (keywordLibrariesRepository.isKeywordDeclared(keywordCall.getKeywordName())) {
+                    localSymTable.setSymbolValue(argsList.get(i),
+                            keywordLibrariesRepository.invokeKeyword(keywordCall.getKeywordName(), keywordCall.getArgumentsList().toArray()));
+                } else {
+                    throw new UndefinedKeywordException(keywordCall.getKeywordName());
+                }
+            }
+        }
+        for (IStatement statement : statementList) {
+            statement.execute(globalSymTable, localSymTable, keywordLibrariesRepository);
+        }
+        return null;
+    }
 }

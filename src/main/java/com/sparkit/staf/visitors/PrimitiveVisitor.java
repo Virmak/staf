@@ -18,7 +18,7 @@ public class PrimitiveVisitor extends StafBaseVisitor<StafObject> {
         } else if (boolContext != null) {
             obj = new StafObject(boolContext.getText().toLowerCase().equals("true"), StafTypes.BOOL);
         } else if (str != null) {
-            obj = new StafObject(str, StafTypes.STRING);
+            obj = new StafObject(str.getText().replaceAll("\"", "").replaceAll("'", ""), StafTypes.STRING);
         }
         return obj;
     }

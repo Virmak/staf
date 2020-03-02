@@ -113,7 +113,7 @@ WHEN
     : W H E N
     ;
 THEN
-    : T H E N
+    : T H E Ns
     ;
 
 IDENTIFIER

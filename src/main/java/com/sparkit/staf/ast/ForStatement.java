@@ -1,5 +1,8 @@
 package com.sparkit.staf.ast;
 
+import com.sparkit.staf.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
+
 import java.util.List;
 
 public class ForStatement implements IStatement {
@@ -38,5 +41,10 @@ public class ForStatement implements IStatement {
 
     public void setStatementList(List<IStatement> statementList) {
         this.statementList = statementList;
+    }
+
+    @Override
+    public Object execute(SymbolsTable globalSymTable, SymbolsTable symTable, KeywordLibrariesRepository libraryKeywordsRepository) throws Exception {
+        throw new Exception("not implemented");
     }
 }

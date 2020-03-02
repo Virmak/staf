@@ -1,28 +1,19 @@
 test suite "dddd"
 IMPORTS
     Import selenium
-    Import "./relative_file"
+    Import logger
 VARS
     $test = [1, 2, 3]
     $x = 'okson'
-    $var = kw call()
+    $var = Input Value("name=username")
 KEYWORDS
-    Do login ($test, $tete)
-        Ok boy('test', 123, ['a', 1], $ok, $test, {ok: 1})
-        FOR $item IN $list
-        END FOR
+    Do login ($test)
+        Log("do login test")
+        Log("second log")
+        Open browser()
     RETURN {'DICT': Okthankyou($test)}
 
 TEST CASES
     ttt login page:
-        Do login($te)
-        FOR $i in $list
-            test keyword
-        END FOR
-        okkk
-    END
-    TC2 OK:
-        Given Login page opened()
-        When User click login()
-        Then Home page opened()
+        Do login($x)
     END

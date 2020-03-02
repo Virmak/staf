@@ -1,0 +1,6 @@
+TEST SUITE "Authentication"
+IMPORTS
+    IMPORT "selenium"
+VARS
+    $username = "demo@spark-it.tn"
+    $password = "00000000"

@@ -1,9 +1,10 @@
 VARS
-    $USERNAME = css:"input[name=username]"
-    $PASSWORD = name:"input[type=password]"
-    $LOGIN_BUTTON = css:"button[type=submit]"
+    $USERNAME                               css:"input[name=username]"
+    $PASSWORD                               name:"input[type=password]"
+    $LOGIN_BUTTON                           css:"button[type=submit]"
 KEYWORDS
-    Login Page Opened()
+    Login Page Opened
+        [Arguments] $etet
         Wait Until Element Is Visible       $USERNAME
         Element Should Be Visible           $USERNAME
         Wait Until Element Is Visible       $PASSWORD

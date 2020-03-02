@@ -1,5 +1,8 @@
 package com.sparkit.staf.ast;
 
+import com.sparkit.staf.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
+
 public class ImportStatement implements IStatement {
     private String path;
     private ImportTypes type;
@@ -39,5 +42,10 @@ public class ImportStatement implements IStatement {
         } else { // builtin library
             type = ImportTypes.BUILT_IN_LIBRARY;
         }
+    }
+
+    @Override
+    public Object execute(SymbolsTable globalSymTable, SymbolsTable symTable, KeywordLibrariesRepository libraryKeywordsRepository) throws Exception {
+        throw new Exception("Not implemented");
     }
 }

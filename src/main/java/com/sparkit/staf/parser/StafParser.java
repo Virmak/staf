@@ -1,4 +1,4 @@
-// Generated from Staf.g4 by ANTLR 4.8
+// Generated from StafLexer.g4 by ANTLR 4.8
 package com.sparkit.staf.parser;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -98,7 +98,7 @@ public class StafParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "Staf.g4"; }
+	public String getGrammarFileName() { return "StafLexer.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
