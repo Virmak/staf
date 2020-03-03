@@ -1,5 +1,6 @@
 test suite 'TEETET'
 IMPORTS
+    Import standard
     Import selenium
     Import logger
 VARS
@@ -9,17 +10,11 @@ VARS
 
 KEYWORDS
     do login($usernameValue, $passwordValue)
-        Open browser($browser)
-        Go to ("http://192.168.1.230:4422/login")
-        Input Text ("name:Email", $usernameValue)
-        Input Text ("name:password", $passwordValue)
-        Click Element ("css:button[type=submit]")
         Log ("Login success")
     END
     
 
 TEST CASES
     test login page:
-        do login($username, $password)
-        
+        Run keyword if ($browser, do login($username, $passowrd))
     END

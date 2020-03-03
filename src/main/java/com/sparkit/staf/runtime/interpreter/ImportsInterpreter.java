@@ -5,7 +5,6 @@ import com.sparkit.staf.ast.ImportTypes;
 import com.sparkit.staf.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.runtime.libs.annotations.StafLibrary;
-import com.sparkit.staf.runtime.libs.exceptions.LibraryNotFoundException;
 import org.reflections.Reflections;
 
 import java.util.HashMap;

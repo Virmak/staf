@@ -1,5 +1,6 @@
 package com.sparkit.staf.runtime.libs;
 
+import com.sparkit.staf.ast.KeywordCall;
 import com.sparkit.staf.ast.StafObject;
 import com.sparkit.staf.runtime.libs.AbstractStafLibrary;
 
@@ -18,8 +19,10 @@ public class KeywordWrapper {
     public Object invoke(Object[] params) throws InvocationTargetException, IllegalAccessException {
         Object[] paramsArray = new Object[params.length];
         for (int i = 0; i < params.length; i++) {
-            if (params[i] instanceof StafObject) {
-                StafObject stafObject = (StafObject)params[i];
+            if (params[i] instanceof KeywordCall) {
+                paramsArray[i] = params[i];
+            } else if (params[i] instanceof StafObject) {
+                StafObject stafObject = (StafObject) params[i];
                 paramsArray[i] = stafObject.getValue();
             }
         }
