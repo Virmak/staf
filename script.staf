@@ -1,20 +1,48 @@
-test suite 'TEETET'
+test suite 'Login test'
 IMPORTS
-    Import standard
     Import selenium
     Import logger
 VARS
-    $browser = 'chrome'
-    $username = "demo@spark-it.fr"
-    $password = "00000000"
+    $browser        = 'chrome'
+    $validUsername       = "demo@spark-it.fr"
+    $validPassword       = "00000000"
 
 KEYWORDS
-    do login($usernameValue, $passwordValue)
-        Log ("Login success")
+    Setup()
+        Open browser                        ($browser)
+    END
+    
+    Do Valid Login($usernameValue, $passwordValue)
+        Go to                               ("http://192.168.1.230:4422/login")
+        Input Text                          ("name:Email", $usernameValue)
+        Input Text                          ("name:password", $passwordValue)
+        Click Element                       ("css:button[type=submit]")
+        Wait Until Element Is Visible       ("tag:app-main")
+        Log ("Valid Login success")
+    END
+
+    Do Invalid Login($usernameValue, $passwordValue)
+        Go to                               ("http://192.168.1.230:4422/login")
+        Input Text                          ("name:Email", $usernameValue)
+        Input Text                          ("name:password", $passwordValue)
+        Click Element                       ("css:button[type=submit]")
+        Wait Until Element Is Visible       ("css:.snotifyToast__body")
+        Log ("Invalid Login success")
+    END
+
+    Do Login($usernameValue, $passwordValue, $expectedElement, $successMsg)
+        Go to                               ("http://192.168.1.230:4422/login")
+        Input Text                          ("name:Email", $usernameValue)
+        Input Text                          ("name:password", $passwordValue)
+        Click Element                       ("css:button[type=submit]")
+        Wait Until Element Is Visible       ($expectedElement)
+        Log ($successMsg)
     END
     
 
 TEST CASES
     test login page:
-        Run keyword if ($browser, do login($username, $passowrd))
+        Setup()
+        Do Login            ($validUsername, $validPassword, "tag:app-main", "Valid login success")
+        Do Login            ($validUsername, "1231321", "css:.snotifyToast__body", "Invalid login success")
     END

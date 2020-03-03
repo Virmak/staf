@@ -8,6 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,7 +19,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
 
     @Keyword(name = "open browser")
     public void openBrowser(String browser) throws UnsupportedBrowserDriverException {
-        System.out.println("opeennnnnn browser");
+        System.out.println("open browser : " + browser);
         if (browser.equals("chrome")) {
             webDriver = new ChromeDriver();
         } else if (browser.equals("firefox"))  {
@@ -51,9 +53,29 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         return webDriver.findElement(elementSelector).getAttribute("value");
     }
 
+    @Keyword(name = "capture page screenshot")
+    public void captureScreenshot(String filename) {
+        System.out.println("taking screenshot -- not implemented");
+    }
+
+    @Keyword(name = "wait until element is visible")
+    public void waitUntilElementIsVisible(String selector, Integer timeout) {
+        By elementSelector = getLocatorFromString(selector);
+        if (timeout != null) {
+            WebDriverWait wait = new WebDriverWait(webDriver, timeout);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(elementSelector));
+        } else {
+            webDriver.findElement(elementSelector);
+        }
+    }
+
     @Keyword(name = "go to")
-    public void gotToUrl(@KeywordArgument String url) {
-        webDriver.get(url);
+    public void gotToUrl(@KeywordArgument String url) throws NoBrowserOpenedException {
+        try {
+            webDriver.get(url);
+        } catch (NullPointerException e) {
+            throw new NoBrowserOpenedException();
+        }
     }
 
     private By getLocatorFromString(String selector) {

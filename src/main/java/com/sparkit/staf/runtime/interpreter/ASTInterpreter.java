@@ -4,6 +4,8 @@ import com.sparkit.staf.ast.IStatement;
 import com.sparkit.staf.ast.StafFile;
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class ASTInterpreter {
     private final ImportsInterpreter importsInterpreter;
     private final StafFile stafFile;
@@ -26,7 +28,9 @@ public class ASTInterpreter {
                 for (IStatement statement : v.getStatements()) {
                     try {
                         statement.execute(symbolsTable, null, keywordLibrariesRepository);
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
+                        System.out.println("Exception raised while running test cases :");
                         e.printStackTrace();
                     }
                 }

@@ -5,6 +5,8 @@ import com.sparkit.staf.ast.StafObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KeywordWrapper {
     private AbstractStafLibrary libInstance;
@@ -15,16 +17,24 @@ public class KeywordWrapper {
         this.method = method;
     }
 
+
     public Object invoke(Object[] params) throws InvocationTargetException, IllegalAccessException {
-        Object[] paramsArray = new Object[params.length];
+        /* refactor this -- calling builtin keyword with actual data instead of  --> make   */
+        List<Object> paramsList = new ArrayList<>();
         for (int i = 0; i < params.length; i++) {
             if (params[i] instanceof KeywordCall) {
-                paramsArray[i] = params[i];
+                paramsList.add(params[i]);
             } else if (params[i] instanceof StafObject) {
                 StafObject stafObject = (StafObject) params[i];
-                paramsArray[i] = stafObject.getValue();
+                paramsList.add(stafObject.getValue());
             }
         }
-        return method.invoke(libInstance, paramsArray);
+        int methodParamsCount = method.getParameterCount();
+        if (paramsList.size() < methodParamsCount) {
+            for (int i = paramsList.size(); i < methodParamsCount; i++) {
+                paramsList.add(null);
+            }
+        }
+        return method.invoke(libInstance, paramsList.toArray());
     }
 }
