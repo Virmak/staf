@@ -1,19 +1,25 @@
-test suite "dddd"
+test suite 'TEETET'
 IMPORTS
     Import selenium
     Import logger
 VARS
-    $test = [1, 2, 3]
-    $x = 'okson'
-    $var = Input Value("name=username")
+    $browser = 'chrome'
+    $username = "demo@spark-it.fr"
+    $password = "00000000"
+
 KEYWORDS
-    Do login ($test)
-        Log("do login test")
-        Log("second log")
-        Open browser()
-    RETURN {'DICT': Okthankyou($test)}
+    do login($usernameValue, $passwordValue)
+        Open browser($browser)
+        Go to ("http://192.168.1.230:4422/login")
+        Input Text ("name:Email", $usernameValue)
+        Input Text ("name:password", $passwordValue)
+        Click Element ("css:button[type=submit]")
+        Log ("Login success")
+    END
+    
 
 TEST CASES
-    ttt login page:
-        Do login($x)
+    test login page:
+        do login($username, $password)
+        
     END

@@ -16,12 +16,13 @@ public class KeywordWrapper {
     }
 
     public Object invoke(Object[] params) throws InvocationTargetException, IllegalAccessException {
+        Object[] paramsArray = new Object[params.length];
         for (int i = 0; i < params.length; i++) {
             if (params[i] instanceof StafObject) {
                 StafObject stafObject = (StafObject)params[i];
-                params[i] = stafObject.getValue();
+                paramsArray[i] = stafObject.getValue();
             }
         }
-        return method.invoke(libInstance, params);
+        return method.invoke(libInstance, paramsArray);
     }
 }

@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class StafParser extends Parser {
+public class StafParserParser extends Parser {
 	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -111,13 +111,13 @@ public class StafParser extends Parser {
 	@Override
 	public ATN getATN() { return _ATN; }
 
-	public StafParser(TokenStream input) {
+	public StafParserParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	public static class Staf_fileContext extends ParserRuleContext {
-		public TerminalNode EOF() { return getToken(StafParser.EOF, 0); }
+		public TerminalNode EOF() { return getToken(StafParserParser.EOF, 0); }
 		public Suite_nameContext suite_name() {
 			return getRuleContext(Suite_nameContext.class,0);
 		}
@@ -139,15 +139,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_staf_file; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterStaf_file(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterStaf_file(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitStaf_file(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitStaf_file(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitStaf_file(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitStaf_file(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -225,7 +225,7 @@ public class StafParser extends Parser {
 	}
 
 	public static class Suite_nameContext extends ParserRuleContext {
-		public TerminalNode TEST_SUITE() { return getToken(StafParser.TEST_SUITE, 0); }
+		public TerminalNode TEST_SUITE() { return getToken(StafParserParser.TEST_SUITE, 0); }
 		public StringContext string() {
 			return getRuleContext(StringContext.class,0);
 		}
@@ -235,15 +235,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_suite_name; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterSuite_name(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterSuite_name(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitSuite_name(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitSuite_name(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitSuite_name(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitSuite_name(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -272,7 +272,7 @@ public class StafParser extends Parser {
 	}
 
 	public static class Imports_sectionContext extends ParserRuleContext {
-		public TerminalNode IMPORTS() { return getToken(StafParser.IMPORTS, 0); }
+		public TerminalNode IMPORTS() { return getToken(StafParserParser.IMPORTS, 0); }
 		public List<Import_statContext> import_stat() {
 			return getRuleContexts(Import_statContext.class);
 		}
@@ -285,15 +285,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_imports_section; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterImports_section(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterImports_section(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitImports_section(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitImports_section(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitImports_section(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitImports_section(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -335,7 +335,7 @@ public class StafParser extends Parser {
 	}
 
 	public static class Import_statContext extends ParserRuleContext {
-		public TerminalNode IMPORT() { return getToken(StafParser.IMPORT, 0); }
+		public TerminalNode IMPORT() { return getToken(StafParserParser.IMPORT, 0); }
 		public Import_objContext import_obj() {
 			return getRuleContext(Import_objContext.class,0);
 		}
@@ -345,15 +345,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_import_stat; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterImport_stat(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterImport_stat(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitImport_stat(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitImport_stat(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitImport_stat(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitImport_stat(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -385,22 +385,22 @@ public class StafParser extends Parser {
 		public StringContext string() {
 			return getRuleContext(StringContext.class,0);
 		}
-		public TerminalNode IDENTIFIER() { return getToken(StafParser.IDENTIFIER, 0); }
+		public TerminalNode IDENTIFIER() { return getToken(StafParserParser.IDENTIFIER, 0); }
 		public Import_objContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_import_obj; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterImport_obj(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterImport_obj(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitImport_obj(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitImport_obj(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitImport_obj(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitImport_obj(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -444,7 +444,7 @@ public class StafParser extends Parser {
 	}
 
 	public static class Vars_sectionContext extends ParserRuleContext {
-		public TerminalNode VARS() { return getToken(StafParser.VARS, 0); }
+		public TerminalNode VARS() { return getToken(StafParserParser.VARS, 0); }
 		public List<AssignmentContext> assignment() {
 			return getRuleContexts(AssignmentContext.class);
 		}
@@ -457,15 +457,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_vars_section; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterVars_section(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterVars_section(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitVars_section(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitVars_section(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitVars_section(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitVars_section(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -507,7 +507,7 @@ public class StafParser extends Parser {
 	}
 
 	public static class Test_cases_sectionContext extends ParserRuleContext {
-		public TerminalNode TEST_CASES() { return getToken(StafParser.TEST_CASES, 0); }
+		public TerminalNode TEST_CASES() { return getToken(StafParserParser.TEST_CASES, 0); }
 		public List<Test_case_declarationContext> test_case_declaration() {
 			return getRuleContexts(Test_case_declarationContext.class);
 		}
@@ -520,15 +520,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_test_cases_section; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterTest_cases_section(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterTest_cases_section(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitTest_cases_section(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitTest_cases_section(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitTest_cases_section(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitTest_cases_section(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -573,26 +573,26 @@ public class StafParser extends Parser {
 		public Keyword_nameContext keyword_name() {
 			return getRuleContext(Keyword_nameContext.class,0);
 		}
-		public TerminalNode COLON() { return getToken(StafParser.COLON, 0); }
+		public TerminalNode COLON() { return getToken(StafParserParser.COLON, 0); }
 		public Test_case_bodyContext test_case_body() {
 			return getRuleContext(Test_case_bodyContext.class,0);
 		}
-		public TerminalNode END() { return getToken(StafParser.END, 0); }
+		public TerminalNode END() { return getToken(StafParserParser.END, 0); }
 		public Test_case_declarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_test_case_declaration; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterTest_case_declaration(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterTest_case_declaration(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitTest_case_declaration(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitTest_case_declaration(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitTest_case_declaration(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitTest_case_declaration(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -637,15 +637,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_test_case_body; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterTest_case_body(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterTest_case_body(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitTest_case_body(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitTest_case_body(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitTest_case_body(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitTest_case_body(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -685,7 +685,7 @@ public class StafParser extends Parser {
 	}
 
 	public static class Keywords_sectionContext extends ParserRuleContext {
-		public TerminalNode KEYWORDS() { return getToken(StafParser.KEYWORDS, 0); }
+		public TerminalNode KEYWORDS() { return getToken(StafParserParser.KEYWORDS, 0); }
 		public List<Keyword_declarationContext> keyword_declaration() {
 			return getRuleContexts(Keyword_declarationContext.class);
 		}
@@ -698,15 +698,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_keywords_section; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterKeywords_section(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterKeywords_section(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitKeywords_section(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitKeywords_section(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitKeywords_section(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitKeywords_section(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -766,15 +766,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_keyword_declaration; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterKeyword_declaration(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterKeyword_declaration(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitKeyword_declaration(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitKeyword_declaration(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitKeyword_declaration(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitKeyword_declaration(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -819,15 +819,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_keyword_body; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterKeyword_body(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterKeyword_body(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitKeyword_body(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitKeyword_body(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitKeyword_body(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitKeyword_body(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -876,24 +876,24 @@ public class StafParser extends Parser {
 		public For_statContext for_stat() {
 			return getRuleContext(For_statContext.class,0);
 		}
-		public TerminalNode GIVEN() { return getToken(StafParser.GIVEN, 0); }
-		public TerminalNode WHEN() { return getToken(StafParser.WHEN, 0); }
-		public TerminalNode THEN() { return getToken(StafParser.THEN, 0); }
+		public TerminalNode GIVEN() { return getToken(StafParserParser.GIVEN, 0); }
+		public TerminalNode WHEN() { return getToken(StafParserParser.WHEN, 0); }
+		public TerminalNode THEN() { return getToken(StafParserParser.THEN, 0); }
 		public StatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_statement; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterStatement(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterStatement(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitStatement(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitStatement(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitStatement(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitStatement(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -973,15 +973,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_keyword_call; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterKeyword_call(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterKeyword_call(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitKeyword_call(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitKeyword_call(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitKeyword_call(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitKeyword_call(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1019,17 +1019,17 @@ public class StafParser extends Parser {
 	}
 
 	public static class Keyword_call_argumentsContext extends ParserRuleContext {
-		public TerminalNode LPARENT() { return getToken(StafParser.LPARENT, 0); }
-		public TerminalNode RPARENT() { return getToken(StafParser.RPARENT, 0); }
+		public TerminalNode LPARENT() { return getToken(StafParserParser.LPARENT, 0); }
+		public TerminalNode RPARENT() { return getToken(StafParserParser.RPARENT, 0); }
 		public List<ObjectContext> object() {
 			return getRuleContexts(ObjectContext.class);
 		}
 		public ObjectContext object(int i) {
 			return getRuleContext(ObjectContext.class,i);
 		}
-		public List<TerminalNode> COMMA() { return getTokens(StafParser.COMMA); }
+		public List<TerminalNode> COMMA() { return getTokens(StafParserParser.COMMA); }
 		public TerminalNode COMMA(int i) {
-			return getToken(StafParser.COMMA, i);
+			return getToken(StafParserParser.COMMA, i);
 		}
 		public Keyword_call_argumentsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1037,15 +1037,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_keyword_call_arguments; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterKeyword_call_arguments(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterKeyword_call_arguments(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitKeyword_call_arguments(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitKeyword_call_arguments(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitKeyword_call_arguments(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitKeyword_call_arguments(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1101,26 +1101,26 @@ public class StafParser extends Parser {
 	}
 
 	public static class Keyword_return_statContext extends ParserRuleContext {
-		public TerminalNode RETURN() { return getToken(StafParser.RETURN, 0); }
+		public TerminalNode RETURN() { return getToken(StafParserParser.RETURN, 0); }
 		public ObjectContext object() {
 			return getRuleContext(ObjectContext.class,0);
 		}
-		public TerminalNode END() { return getToken(StafParser.END, 0); }
+		public TerminalNode NL() { return getToken(StafParserParser.NL, 0); }
 		public Keyword_return_statContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_keyword_return_stat; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterKeyword_return_stat(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterKeyword_return_stat(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitKeyword_return_stat(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitKeyword_return_stat(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitKeyword_return_stat(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitKeyword_return_stat(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1129,29 +1129,37 @@ public class StafParser extends Parser {
 		Keyword_return_statContext _localctx = new Keyword_return_statContext(_ctx, getState());
 		enterRule(_localctx, 30, RULE_keyword_return_stat);
 		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(168);
+			match(RETURN);
 			setState(171);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case RETURN:
-				enterOuterAlt(_localctx, 1);
+			case SINGLE_STRING:
+			case DOUBLE_STRING:
+			case LBRACKET:
+			case LBRACE:
+			case DOLLAR:
+			case TRUE:
+			case FALSE:
+			case INT:
+			case FLOAT:
+			case IDENTIFIER:
 				{
-				{
-				setState(168);
-				match(RETURN);
 				setState(169);
 				object();
 				}
-				}
 				break;
-			case END:
-				enterOuterAlt(_localctx, 2);
+			case NL:
 				{
 				setState(170);
-				match(END);
+				match(NL);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -1166,13 +1174,13 @@ public class StafParser extends Parser {
 	}
 
 	public static class Keyword_nameContext extends ParserRuleContext {
-		public List<TerminalNode> IDENTIFIER() { return getTokens(StafParser.IDENTIFIER); }
+		public List<TerminalNode> IDENTIFIER() { return getTokens(StafParserParser.IDENTIFIER); }
 		public TerminalNode IDENTIFIER(int i) {
-			return getToken(StafParser.IDENTIFIER, i);
+			return getToken(StafParserParser.IDENTIFIER, i);
 		}
-		public List<TerminalNode> SPACE() { return getTokens(StafParser.SPACE); }
+		public List<TerminalNode> SPACE() { return getTokens(StafParserParser.SPACE); }
 		public TerminalNode SPACE(int i) {
-			return getToken(StafParser.SPACE, i);
+			return getToken(StafParserParser.SPACE, i);
 		}
 		public Keyword_nameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1180,15 +1188,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_keyword_name; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterKeyword_name(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterKeyword_name(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitKeyword_name(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitKeyword_name(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitKeyword_name(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitKeyword_name(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1247,33 +1255,33 @@ public class StafParser extends Parser {
 	}
 
 	public static class Keyword_declaration_argumentsContext extends ParserRuleContext {
-		public TerminalNode LPARENT() { return getToken(StafParser.LPARENT, 0); }
+		public TerminalNode LPARENT() { return getToken(StafParserParser.LPARENT, 0); }
 		public List<VariableContext> variable() {
 			return getRuleContexts(VariableContext.class);
 		}
 		public VariableContext variable(int i) {
 			return getRuleContext(VariableContext.class,i);
 		}
-		public List<TerminalNode> COMMA() { return getTokens(StafParser.COMMA); }
+		public List<TerminalNode> COMMA() { return getTokens(StafParserParser.COMMA); }
 		public TerminalNode COMMA(int i) {
-			return getToken(StafParser.COMMA, i);
+			return getToken(StafParserParser.COMMA, i);
 		}
-		public TerminalNode RPARENT() { return getToken(StafParser.RPARENT, 0); }
+		public TerminalNode RPARENT() { return getToken(StafParserParser.RPARENT, 0); }
 		public Keyword_declaration_argumentsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_keyword_declaration_arguments; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterKeyword_declaration_arguments(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterKeyword_declaration_arguments(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitKeyword_declaration_arguments(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitKeyword_declaration_arguments(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitKeyword_declaration_arguments(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitKeyword_declaration_arguments(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1340,26 +1348,26 @@ public class StafParser extends Parser {
 		public Variable_referenceContext variable_reference() {
 			return getRuleContext(Variable_referenceContext.class,0);
 		}
-		public TerminalNode EQUAL() { return getToken(StafParser.EQUAL, 0); }
+		public TerminalNode EQUAL() { return getToken(StafParserParser.EQUAL, 0); }
 		public ObjectContext object() {
 			return getRuleContext(ObjectContext.class,0);
 		}
-		public TerminalNode NULL() { return getToken(StafParser.NULL, 0); }
+		public TerminalNode NULL() { return getToken(StafParserParser.NULL, 0); }
 		public AssignmentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignment; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterAssignment(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterAssignment(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitAssignment(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitAssignment(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitAssignment(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitAssignment(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1415,36 +1423,36 @@ public class StafParser extends Parser {
 	}
 
 	public static class For_statContext extends ParserRuleContext {
-		public List<TerminalNode> FOR() { return getTokens(StafParser.FOR); }
+		public List<TerminalNode> FOR() { return getTokens(StafParserParser.FOR); }
 		public TerminalNode FOR(int i) {
-			return getToken(StafParser.FOR, i);
+			return getToken(StafParserParser.FOR, i);
 		}
 		public VariableContext variable() {
 			return getRuleContext(VariableContext.class,0);
 		}
-		public TerminalNode IN() { return getToken(StafParser.IN, 0); }
+		public TerminalNode IN() { return getToken(StafParserParser.IN, 0); }
 		public ObjectContext object() {
 			return getRuleContext(ObjectContext.class,0);
 		}
 		public For_stat_bodyContext for_stat_body() {
 			return getRuleContext(For_stat_bodyContext.class,0);
 		}
-		public TerminalNode END() { return getToken(StafParser.END, 0); }
+		public TerminalNode END() { return getToken(StafParserParser.END, 0); }
 		public For_statContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_for_stat; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterFor_stat(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterFor_stat(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitFor_stat(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitFor_stat(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitFor_stat(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitFor_stat(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1495,15 +1503,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_for_stat_body; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterFor_stat_body(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterFor_stat_body(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitFor_stat_body(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitFor_stat_body(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitFor_stat_body(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitFor_stat_body(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1543,17 +1551,17 @@ public class StafParser extends Parser {
 	}
 
 	public static class ListLiteralContext extends ParserRuleContext {
-		public TerminalNode LBRACKET() { return getToken(StafParser.LBRACKET, 0); }
-		public TerminalNode RBRACKET() { return getToken(StafParser.RBRACKET, 0); }
+		public TerminalNode LBRACKET() { return getToken(StafParserParser.LBRACKET, 0); }
+		public TerminalNode RBRACKET() { return getToken(StafParserParser.RBRACKET, 0); }
 		public List<ObjectContext> object() {
 			return getRuleContexts(ObjectContext.class);
 		}
 		public ObjectContext object(int i) {
 			return getRuleContext(ObjectContext.class,i);
 		}
-		public List<TerminalNode> COMMA() { return getTokens(StafParser.COMMA); }
+		public List<TerminalNode> COMMA() { return getTokens(StafParserParser.COMMA); }
 		public TerminalNode COMMA(int i) {
-			return getToken(StafParser.COMMA, i);
+			return getToken(StafParserParser.COMMA, i);
 		}
 		public ListLiteralContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1561,15 +1569,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_listLiteral; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterListLiteral(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterListLiteral(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitListLiteral(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitListLiteral(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitListLiteral(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitListLiteral(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1625,17 +1633,17 @@ public class StafParser extends Parser {
 	}
 
 	public static class DictionaryLiteralContext extends ParserRuleContext {
-		public TerminalNode LBRACE() { return getToken(StafParser.LBRACE, 0); }
-		public TerminalNode RBRACE() { return getToken(StafParser.RBRACE, 0); }
+		public TerminalNode LBRACE() { return getToken(StafParserParser.LBRACE, 0); }
+		public TerminalNode RBRACE() { return getToken(StafParserParser.RBRACE, 0); }
 		public List<KeyValuePairContext> keyValuePair() {
 			return getRuleContexts(KeyValuePairContext.class);
 		}
 		public KeyValuePairContext keyValuePair(int i) {
 			return getRuleContext(KeyValuePairContext.class,i);
 		}
-		public List<TerminalNode> COMMA() { return getTokens(StafParser.COMMA); }
+		public List<TerminalNode> COMMA() { return getTokens(StafParserParser.COMMA); }
 		public TerminalNode COMMA(int i) {
-			return getToken(StafParser.COMMA, i);
+			return getToken(StafParserParser.COMMA, i);
 		}
 		public DictionaryLiteralContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1643,15 +1651,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_dictionaryLiteral; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterDictionaryLiteral(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterDictionaryLiteral(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitDictionaryLiteral(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitDictionaryLiteral(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitDictionaryLiteral(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitDictionaryLiteral(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1707,11 +1715,11 @@ public class StafParser extends Parser {
 	}
 
 	public static class KeyValuePairContext extends ParserRuleContext {
-		public TerminalNode COLON() { return getToken(StafParser.COLON, 0); }
+		public TerminalNode COLON() { return getToken(StafParserParser.COLON, 0); }
 		public ObjectContext object() {
 			return getRuleContext(ObjectContext.class,0);
 		}
-		public TerminalNode IDENTIFIER() { return getToken(StafParser.IDENTIFIER, 0); }
+		public TerminalNode IDENTIFIER() { return getToken(StafParserParser.IDENTIFIER, 0); }
 		public StringContext string() {
 			return getRuleContext(StringContext.class,0);
 		}
@@ -1721,15 +1729,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_keyValuePair; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterKeyValuePair(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterKeyValuePair(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitKeyValuePair(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitKeyValuePair(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitKeyValuePair(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitKeyValuePair(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1798,15 +1806,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_object; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterObject(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterObject(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitObject(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitObject(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitObject(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitObject(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1887,15 +1895,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_variable_reference; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterVariable_reference(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterVariable_reference(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitVariable_reference(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitVariable_reference(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitVariable_reference(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitVariable_reference(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1957,15 +1965,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_primitive; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterPrimitive(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterPrimitive(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitPrimitive(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitPrimitive(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitPrimitive(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitPrimitive(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2017,23 +2025,23 @@ public class StafParser extends Parser {
 	}
 
 	public static class VariableContext extends ParserRuleContext {
-		public TerminalNode DOLLAR() { return getToken(StafParser.DOLLAR, 0); }
-		public TerminalNode IDENTIFIER() { return getToken(StafParser.IDENTIFIER, 0); }
+		public TerminalNode DOLLAR() { return getToken(StafParserParser.DOLLAR, 0); }
+		public TerminalNode IDENTIFIER() { return getToken(StafParserParser.IDENTIFIER, 0); }
 		public VariableContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_variable; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterVariable(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterVariable(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitVariable(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitVariable(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitVariable(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitVariable(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2065,26 +2073,26 @@ public class StafParser extends Parser {
 		public VariableContext variable() {
 			return getRuleContext(VariableContext.class,0);
 		}
-		public TerminalNode LBRACKET() { return getToken(StafParser.LBRACKET, 0); }
+		public TerminalNode LBRACKET() { return getToken(StafParserParser.LBRACKET, 0); }
 		public ObjectContext object() {
 			return getRuleContext(ObjectContext.class,0);
 		}
-		public TerminalNode RBRACKET() { return getToken(StafParser.RBRACKET, 0); }
+		public TerminalNode RBRACKET() { return getToken(StafParserParser.RBRACKET, 0); }
 		public List_item_accessContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_list_item_access; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterList_item_access(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterList_item_access(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitList_item_access(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitList_item_access(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitList_item_access(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitList_item_access(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2122,13 +2130,13 @@ public class StafParser extends Parser {
 		public VariableContext variable() {
 			return getRuleContext(VariableContext.class,0);
 		}
-		public List<TerminalNode> DOT() { return getTokens(StafParser.DOT); }
+		public List<TerminalNode> DOT() { return getTokens(StafParserParser.DOT); }
 		public TerminalNode DOT(int i) {
-			return getToken(StafParser.DOT, i);
+			return getToken(StafParserParser.DOT, i);
 		}
-		public List<TerminalNode> IDENTIFIER() { return getTokens(StafParser.IDENTIFIER); }
+		public List<TerminalNode> IDENTIFIER() { return getTokens(StafParserParser.IDENTIFIER); }
 		public TerminalNode IDENTIFIER(int i) {
-			return getToken(StafParser.IDENTIFIER, i);
+			return getToken(StafParserParser.IDENTIFIER, i);
 		}
 		public Dictionary_item_accessContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2136,15 +2144,15 @@ public class StafParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_dictionary_item_access; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterDictionary_item_access(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterDictionary_item_access(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitDictionary_item_access(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitDictionary_item_access(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitDictionary_item_access(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitDictionary_item_access(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2188,23 +2196,23 @@ public class StafParser extends Parser {
 	}
 
 	public static class NumberContext extends ParserRuleContext {
-		public TerminalNode INT() { return getToken(StafParser.INT, 0); }
-		public TerminalNode FLOAT() { return getToken(StafParser.FLOAT, 0); }
+		public TerminalNode INT() { return getToken(StafParserParser.INT, 0); }
+		public TerminalNode FLOAT() { return getToken(StafParserParser.FLOAT, 0); }
 		public NumberContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_number; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterNumber(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterNumber(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitNumber(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitNumber(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitNumber(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitNumber(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2240,23 +2248,23 @@ public class StafParser extends Parser {
 	}
 
 	public static class StringContext extends ParserRuleContext {
-		public TerminalNode SINGLE_STRING() { return getToken(StafParser.SINGLE_STRING, 0); }
-		public TerminalNode DOUBLE_STRING() { return getToken(StafParser.DOUBLE_STRING, 0); }
+		public TerminalNode SINGLE_STRING() { return getToken(StafParserParser.SINGLE_STRING, 0); }
+		public TerminalNode DOUBLE_STRING() { return getToken(StafParserParser.DOUBLE_STRING, 0); }
 		public StringContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_string; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterString(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterString(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitString(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitString(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitString(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitString(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2292,23 +2300,23 @@ public class StafParser extends Parser {
 	}
 
 	public static class BoolContext extends ParserRuleContext {
-		public TerminalNode TRUE() { return getToken(StafParser.TRUE, 0); }
-		public TerminalNode FALSE() { return getToken(StafParser.FALSE, 0); }
+		public TerminalNode TRUE() { return getToken(StafParserParser.TRUE, 0); }
+		public TerminalNode FALSE() { return getToken(StafParserParser.FALSE, 0); }
 		public BoolContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_bool; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterBool(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).enterBool(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitBool(this);
+			if ( listener instanceof StafParserListener ) ((StafParserListener)listener).exitBool(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitBool(this);
+			if ( visitor instanceof StafParserVisitor ) return ((StafParserVisitor<? extends T>)visitor).visitBool(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -2372,7 +2380,7 @@ public class StafParser extends Parser {
 		"\3\2\20\21\2\u012c\2E\3\2\2\2\4U\3\2\2\2\6X\3\2\2\2\b_\3\2\2\2\nd\3\2"+
 		"\2\2\ff\3\2\2\2\16m\3\2\2\2\20t\3\2\2\2\22|\3\2\2\2\24\177\3\2\2\2\26"+
 		"\u0086\3\2\2\2\30\u008e\3\2\2\2\32\u0092\3\2\2\2\34\u0099\3\2\2\2\36\u009d"+
-		"\3\2\2\2 \u00ad\3\2\2\2\"\u00af\3\2\2\2$\u00bc\3\2\2\2&\u00ca\3\2\2\2"+
+		"\3\2\2\2 \u00aa\3\2\2\2\"\u00af\3\2\2\2$\u00bc\3\2\2\2&\u00ca\3\2\2\2"+
 		"(\u00d0\3\2\2\2*\u00db\3\2\2\2,\u00de\3\2\2\2.\u00eb\3\2\2\2\60\u00fa"+
 		"\3\2\2\2\62\u0104\3\2\2\2\64\u0109\3\2\2\2\66\u010e\3\2\2\28\u0110\3\2"+
 		"\2\2:\u0113\3\2\2\2<\u0118\3\2\2\2>\u011f\3\2\2\2@\u0121\3\2\2\2B\u0123"+
@@ -2400,8 +2408,8 @@ public class StafParser extends Parser {
 		"\5\62\32\2\u009f\u00a0\7\6\2\2\u00a0\u00a2\5\62\32\2\u00a1\u009f\3\2\2"+
 		"\2\u00a2\u00a5\3\2\2\2\u00a3\u00a1\3\2\2\2\u00a3\u00a4\3\2\2\2\u00a4\u00a7"+
 		"\3\2\2\2\u00a5\u00a3\3\2\2\2\u00a6\u009e\3\2\2\2\u00a6\u00a7\3\2\2\2\u00a7"+
-		"\u00a8\3\2\2\2\u00a8\u00a9\7\b\2\2\u00a9\37\3\2\2\2\u00aa\u00ab\7 \2\2"+
-		"\u00ab\u00ae\5\62\32\2\u00ac\u00ae\7\37\2\2\u00ad\u00aa\3\2\2\2\u00ad"+
+		"\u00a8\3\2\2\2\u00a8\u00a9\7\b\2\2\u00a9\37\3\2\2\2\u00aa\u00ad\7 \2\2"+
+		"\u00ab\u00ae\5\62\32\2\u00ac\u00ae\7\26\2\2\u00ad\u00ab\3\2\2\2\u00ad"+
 		"\u00ac\3\2\2\2\u00ae!\3\2\2\2\u00af\u00b9\7\'\2\2\u00b0\u00b2\7\25\2\2"+
 		"\u00b1\u00b0\3\2\2\2\u00b2\u00b5\3\2\2\2\u00b3\u00b1\3\2\2\2\u00b3\u00b4"+
 		"\3\2\2\2\u00b4\u00b6\3\2\2\2\u00b5\u00b3\3\2\2\2\u00b6\u00b8\7\'\2\2\u00b7"+

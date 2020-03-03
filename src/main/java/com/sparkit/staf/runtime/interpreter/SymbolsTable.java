@@ -11,7 +11,9 @@ public class SymbolsTable {
 
     public SymbolsTable(Map<String, Assignment> assignmentMap) {
         symbolsMap = new HashMap<>();
-        assignmentMap.forEach((k, v) -> symbolsMap.put(k, v.getValue()));
+        if (assignmentMap != null) {
+            assignmentMap.forEach((k, v) -> symbolsMap.put(k, v.getValue()));
+        }
     }
 
     public SymbolsTable() {

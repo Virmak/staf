@@ -1,4 +1,5 @@
-// Generated from /home/med/IdeaProjects/staf/src/main/antlr4/StafLexer.g4 by ANTLR 4.8
+// Generated from Staf.g4 by ANTLR 4.8
+package com.sparkit.staf.parser;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -9,7 +10,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class StafLexer extends Lexer {
+public class StafParserLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -95,13 +96,13 @@ public class StafLexer extends Lexer {
 	}
 
 
-	public StafLexer(CharStream input) {
+	public StafParserLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "StafLexer.g4"; }
+	public String getGrammarFileName() { return "Staf.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

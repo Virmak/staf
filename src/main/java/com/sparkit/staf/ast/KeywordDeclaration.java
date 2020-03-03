@@ -80,10 +80,15 @@ public class KeywordDeclaration {
                 } else {
                     throw new UndefinedKeywordException(keywordCall.getKeywordName());
                 }
+            } else {
+                localSymTable.setSymbolValue(argsList.get(i), params[i]);
             }
         }
         for (IStatement statement : statementList) {
             statement.execute(globalSymTable, localSymTable, keywordLibrariesRepository);
+        }
+        if (returnObject != null) {
+            throw new Exception("keyword return not implemented");
         }
         return null;
     }

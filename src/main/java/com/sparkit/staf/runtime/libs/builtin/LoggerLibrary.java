@@ -10,7 +10,7 @@ public class LoggerLibrary extends AbstractStafLibrary {
 
     @Keyword(name = "log")
     public void log(@KeywordArgument String data) {
-        System.out.println(data);
+        System.out.println("LOG : " + data);
     }
 
     @Override

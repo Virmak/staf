@@ -21,11 +21,13 @@ public class Main {
         StafFile ast = compileAST();
 
         SymbolsTable globalSymTable = new SymbolsTable(ast.getVariableDeclarationMap());
-        KeywordLibrariesRepository keywordsRepository = new KeywordLibrariesRepository(ast.getKeywordDeclarationMap(), globalSymTable);
+        KeywordLibrariesRepository keywordsRepository = new KeywordLibrariesRepository(ast.getKeywordDeclarationMap(),
+                globalSymTable);
         ImportsInterpreter importsInterpreter = new ImportsInterpreter(ast.getImports(), keywordsRepository);
 
 
-        ASTInterpreter interpreter = new ASTInterpreter(importsInterpreter, ast, globalSymTable, keywordsRepository, System.getProperty("user.dir"));
+        ASTInterpreter interpreter = new ASTInterpreter(importsInterpreter, ast, globalSymTable, keywordsRepository,
+                System.getProperty("user.dir"));
         interpreter.run();
         System.out.println("finished");
     }

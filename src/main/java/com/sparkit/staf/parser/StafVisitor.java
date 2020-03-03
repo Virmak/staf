@@ -1,4 +1,4 @@
-// Generated from StafLexer.g4 by ANTLR 4.8
+// Generated from Staf.g4 by ANTLR 4.8
 package com.sparkit.staf.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
