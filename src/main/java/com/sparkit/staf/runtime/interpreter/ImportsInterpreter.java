@@ -13,10 +13,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class ImportsInterpreter {
-    private List<ImportStatement> importStatements;
-    private final KeywordLibrariesRepository keywordsRepository;
-    private Map<String, AbstractStafLibrary> libraryMap;
     public final String libsPackage = "com.sparkit.staf.runtime.libs.builtin";
+    private final KeywordLibrariesRepository keywordsRepository;
+    private List<ImportStatement> importStatements;
+    private Map<String, AbstractStafLibrary> libraryMap;
 
     public ImportsInterpreter(List<ImportStatement> importStatements, KeywordLibrariesRepository keywordsRepository) {
         this.importStatements = importStatements;
@@ -26,10 +26,10 @@ public class ImportsInterpreter {
 
     public void loadFiles() throws Exception {
         Map<String, Class<? extends AbstractStafLibrary>> librariesClassesMap = getLibrariesClasses();
-        for (ImportStatement statement: importStatements) {
+        for (ImportStatement statement : importStatements) {
             if (statement.getType() == ImportTypes.BUILT_IN_LIBRARY) {
                 String libClassName = statement.getPath().substring(0, 1).toUpperCase()
-                        +  statement.getPath().toLowerCase().substring(1) + "Library";
+                        + statement.getPath().toLowerCase().substring(1) + "Library";
                 keywordsRepository.registerLibrary(librariesClassesMap.get(libClassName));
             } else {
                 throw new Exception("user defined libs not implemented");

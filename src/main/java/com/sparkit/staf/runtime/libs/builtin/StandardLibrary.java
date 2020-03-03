@@ -16,7 +16,7 @@ public class StandardLibrary extends AbstractStafLibrary {
     }
 
     @Keyword(name = "run keyword if")
-    public void runKeywordIf(Object condition, KeywordCall keywordCall) {
+    public void runKeywordIf(Object condition, StafObject keywordCall) {
         System.out.println("run keyword if ----");
     }
 

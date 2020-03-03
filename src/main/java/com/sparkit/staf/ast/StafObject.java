@@ -1,8 +1,5 @@
 package com.sparkit.staf.ast;
 
-import com.sparkit.staf.runtime.interpreter.SymbolsTable;
-import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
-
 public class StafObject {
     protected Object value;
     protected StafTypes type;
