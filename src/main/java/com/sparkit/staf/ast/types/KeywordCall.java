@@ -1,8 +1,7 @@
 package com.sparkit.staf.ast.types;
 
 import com.sparkit.staf.ast.IStatement;
-import com.sparkit.staf.ast.StafTypes;
-import com.sparkit.staf.runtime.interpreter.exceptions.NullStafVariableException;
+
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.runtime.interpreter.exceptions.UndefinedKeywordException;
@@ -43,7 +42,7 @@ public class KeywordCall extends AbstractStafObject implements IStatement {
     }
 
     public Object[] evaluateArgumentsList(SymbolsTable globalSymTable, SymbolsTable localSymTable,
-                                              KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+                                          KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
         Object[] params = new AbstractStafObject[argumentsList.size()];
         int i = 0;
         for (AbstractStafObject arg : argumentsList) {
