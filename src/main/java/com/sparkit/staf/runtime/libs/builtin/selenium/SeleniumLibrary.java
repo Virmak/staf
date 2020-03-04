@@ -4,6 +4,8 @@ import com.sparkit.staf.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.runtime.libs.annotations.KeywordArgument;
 import com.sparkit.staf.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.runtime.libs.annotations.StafLibrary;
+import com.sparkit.staf.runtime.libs.builtin.selenium.exceptions.NoBrowserOpenedException;
+import com.sparkit.staf.runtime.libs.builtin.selenium.exceptions.UnsupportedBrowserDriverException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;

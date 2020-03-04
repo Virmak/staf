@@ -7,39 +7,16 @@ VARS
     $browser        = 'chrome'
     $validUsername       = "demo@spark-it.fr"
     $validPassword       = "00000000"
-
+    $pp                  = $importedVar
 KEYWORDS
-    Setup()
-        Open browser                        ($browser)
-    END
-    
-    Do Valid Login($usernameValue, $passwordValue)
-        Go to                               ("http://192.168.1.230:4422/login")
-        Input Text                          ("name:Email", $usernameValue)
-        Input Text                          ("name:password", $passwordValue)
-        Click Element                       ("css:button[type=submit]")
-        Wait Until Element Is Visible       ("tag:app-main")
-        Log ("Valid Login success")
-    END
-
-    Do Invalid Login($usernameValue, $passwordValue)
-        Go to                               ("http://192.168.1.230:4422/login")
-        Input Text                          ("name:Email", $usernameValue)
-        Input Text                          ("name:password", $passwordValue)
-        Click Element                       ("css:button[type=submit]")
-        Wait Until Element Is Visible       ("css:.snotifyToast__body")
-        Log ("Invalid Login success")
-    END
-
     Do Login($usernameValue, $passwordValue, $expectedElement, $successMsg)
-        Log ($importedVar)
-
+        Log ($pp)
     END
     
 
 TEST CASES
     test login page:
         Do Login            ($validUsername, $validPassword, "tag:app-main", "Valid login success")
-        Set username($validUsername)
+        
         #Do Login            ($validUsername, "1231321", "css:.snotifyToast__body", "Invalid login success")
     END

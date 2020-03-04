@@ -4,28 +4,29 @@ import com.sparkit.staf.ast.IStatement;
 import com.sparkit.staf.ast.StafFile;
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
 
-public class ASTInterpreter {
+public class StafScriptRunner {
     private final ImportsInterpreter importsInterpreter;
     private final StafFile mainStafFile;
     private final KeywordLibrariesRepository keywordLibrariesRepository;
     private String currentDirectory;
-    private SymbolsTable symbolsTable;
+    private SymbolsTable globalSymTable;
 
-    public ASTInterpreter(ImportsInterpreter importsInterpreter, StafFile mainStafFile, SymbolsTable symbolsTable, KeywordLibrariesRepository keywordLibrariesRepository, String currentDirectory) {
+    public StafScriptRunner(ImportsInterpreter importsInterpreter, StafFile mainStafFile, SymbolsTable globalSymTable, KeywordLibrariesRepository keywordLibrariesRepository, String currentDirectory) {
         this.importsInterpreter = importsInterpreter;
         this.mainStafFile = mainStafFile;
         this.keywordLibrariesRepository = keywordLibrariesRepository;
         this.currentDirectory = currentDirectory;
-        this.symbolsTable = symbolsTable;
+        this.globalSymTable = globalSymTable;
     }
 
     public void run() {
         try {
             this.importsInterpreter.loadImports(mainStafFile.getImports());
+            this.globalSymTable.addVariablesMap(mainStafFile.getVariableDeclarationMap(), keywordLibrariesRepository);
             this.mainStafFile.getTestCaseDeclarationMap().forEach((k, v) -> {
                 for (IStatement statement : v.getStatements()) {
                     try {
-                        statement.execute(symbolsTable, null, keywordLibrariesRepository);
+                        statement.execute(globalSymTable, null, keywordLibrariesRepository);
                     }
                     catch (Exception e) {
                         System.out.println("Exception raised while running test cases :");

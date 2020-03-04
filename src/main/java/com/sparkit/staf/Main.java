@@ -21,13 +21,13 @@ public class Main {
         String mainScriptFilePath = System.getProperty("user.dir") + "/script.staf";
         IStafFileReader stafFileReader = new StafFileReader();
         StafFile mainScriptAST = stafFileReader.compile(mainScriptFilePath);
-        SymbolsTable globalSymTable = new SymbolsTable(mainScriptAST.getVariableDeclarationMap());
+        SymbolsTable globalSymTable = new SymbolsTable();
         KeywordLibrariesRepository keywordsRepository = new KeywordLibrariesRepository(mainScriptAST.getKeywordDeclarationMap(),
                 globalSymTable);
         IStafScriptBuilder scriptBuilder = new StafScriptBuilder(stafFileReader, globalSymTable, keywordsRepository);
         ImportsInterpreter importsInterpreter = new ImportsInterpreter(scriptBuilder, keywordsRepository);
 
-        ASTInterpreter interpreter = new ASTInterpreter(importsInterpreter, mainScriptAST, globalSymTable, keywordsRepository,
+        StafScriptRunner interpreter = new StafScriptRunner(importsInterpreter, mainScriptAST, globalSymTable, keywordsRepository,
                 System.getProperty("user.dir"));
         interpreter.run();
         System.out.println("finished");

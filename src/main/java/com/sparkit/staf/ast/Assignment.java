@@ -1,13 +1,15 @@
 package com.sparkit.staf.ast;
 
+import com.sparkit.staf.ast.types.AbstractStafObject;
+import com.sparkit.staf.ast.types.KeywordCall;
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.runtime.interpreter.SymbolsTable;
 
 public class Assignment implements IStatement {
-    protected StafObject object;
-    protected StafObject value;
+    protected AbstractStafObject object;
+    protected AbstractStafObject value;
 
-    public Assignment(StafObject object, StafObject value) {
+    public Assignment(AbstractStafObject object, AbstractStafObject value) {
         this.object = object;
         this.value = value;
     }
@@ -15,32 +17,29 @@ public class Assignment implements IStatement {
     public Assignment() {
     }
 
-    public StafObject getObject() {
+    public AbstractStafObject getObject() {
         return object;
     }
 
-    public void setObject(StafObject object) {
+    public void setObject(AbstractStafObject object) {
         this.object = object;
     }
 
-    public StafObject getValue() {
+    public AbstractStafObject getValue() {
         return value;
     }
 
-    public void setValue(StafObject value) {
+    public void setValue(AbstractStafObject value) {
         this.value = value;
     }
 
 
     @Override
-    public Object execute(SymbolsTable globalSymTable, SymbolsTable symTable, KeywordLibrariesRepository libraryKeywordsRepository) throws Exception {
+    public Object execute(SymbolsTable globalSymTable, SymbolsTable symTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
         if (value.getType() == StafTypes.KEYWORD_CALL) {
             KeywordCall keywordCall = (KeywordCall) value;
-            object.setValue(keywordCall.execute(globalSymTable, symTable, libraryKeywordsRepository));
-        } else {
-            object.setValue(value.getValue());
+            return (keywordCall.execute(globalSymTable, symTable, keywordLibrariesRepository));
         }
-        System.out.println(object.getValue().toString());
-        return null;
+        return (value);
     }
 }

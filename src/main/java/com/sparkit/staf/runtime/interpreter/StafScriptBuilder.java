@@ -34,7 +34,7 @@ public class StafScriptBuilder implements IStafScriptBuilder {
             importsInterpreter.loadImports(imports);
         }
         if (varsMap != null) {
-            globalSymTable.addVariablesMap(varsMap);
+            globalSymTable.addVariablesMap(varsMap, keywordLibrariesRepository);
         }
         if (keywordsMap != null) {
             keywordLibrariesRepository.addUserDefinedKeywords(keywordsMap);

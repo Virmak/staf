@@ -2,12 +2,12 @@ package com.sparkit.staf.visitors;
 
 import com.sparkit.staf.parser.StafBaseVisitor;
 import com.sparkit.staf.parser.StafParser;
-import com.sparkit.staf.ast.StafObject;
+import com.sparkit.staf.ast.types.AbstractStafObject;
 
-public class StafObjectVisitor extends StafBaseVisitor<StafObject> {
+public class StafObjectVisitor extends StafBaseVisitor<AbstractStafObject> {
 
     @Override
-    public StafObject visitObject(StafParser.ObjectContext ctx) {
+    public AbstractStafObject visitObject(StafParser.ObjectContext ctx) {
         StafParser.PrimitiveContext primitiveContext = ctx.primitive();
         if (primitiveContext != null) {
             return new PrimitiveVisitor().visitPrimitive(primitiveContext);

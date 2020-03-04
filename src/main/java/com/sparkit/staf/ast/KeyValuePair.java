@@ -1,13 +1,15 @@
 package com.sparkit.staf.ast;
 
+import com.sparkit.staf.ast.types.AbstractStafObject;
+
 public class KeyValuePair {
     protected String key;
-    protected StafObject value;
+    protected AbstractStafObject value;
 
     public KeyValuePair() {
     }
 
-    public KeyValuePair(String key, StafObject value) {
+    public KeyValuePair(String key, AbstractStafObject value) {
         this.key = key;
         this.value = value;
     }
@@ -20,11 +22,11 @@ public class KeyValuePair {
         this.key = key;
     }
 
-    public StafObject getValue() {
+    public AbstractStafObject getValue() {
         return value;
     }
 
-    public void setValue(StafObject value) {
+    public void setValue(AbstractStafObject value) {
         this.value = value;
     }
 }

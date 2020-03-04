@@ -3,13 +3,13 @@ package com.sparkit.staf.visitors;
 import com.sparkit.staf.parser.StafBaseVisitor;
 import com.sparkit.staf.parser.StafParser;
 import com.sparkit.staf.ast.Assignment;
-import com.sparkit.staf.ast.StafObject;
+import com.sparkit.staf.ast.types.AbstractStafObject;
 
 public class AssignmentVisitor extends StafBaseVisitor<Assignment> {
     @Override
     public Assignment visitAssignment(StafParser.AssignmentContext ctx) {
-        StafObject obj = new VariableReferenceVisitor().visitVariable_reference(ctx.variable_reference());
-        StafObject val = new StafObjectVisitor().visitObject(ctx.object());
+        AbstractStafObject obj = new VariableReferenceVisitor().visitVariable_reference(ctx.variable_reference());
+        AbstractStafObject val = new StafObjectVisitor().visitObject(ctx.object());
         return new Assignment(obj, val);
     }
 }

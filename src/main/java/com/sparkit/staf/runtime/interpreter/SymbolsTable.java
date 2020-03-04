@@ -1,8 +1,9 @@
 package com.sparkit.staf.runtime.interpreter;
 
 import com.sparkit.staf.ast.Assignment;
-import com.sparkit.staf.ast.StafObject;
+import com.sparkit.staf.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.runtime.interpreter.exceptions.VariableAlreadyDefinedException;
+import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,16 +22,17 @@ public class SymbolsTable {
         symbolsMap = new HashMap<>();
     }
 
-    public void addVariablesMap(Map<String, Assignment> assignmentMap) throws VariableAlreadyDefinedException {
+    public void addVariablesMap(Map<String, Assignment> assignmentMap,
+                                KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
         for (Map.Entry<String, Assignment> assignmentEntry : assignmentMap.entrySet()) {
             if (symbolsMap.containsKey(assignmentEntry.getKey())) {
                 throw new VariableAlreadyDefinedException(assignmentEntry.getKey());
             }
-            symbolsMap.put(assignmentEntry.getKey(), assignmentEntry.getValue().getValue());
+            symbolsMap.put(assignmentEntry.getKey(), assignmentEntry.getValue().execute(this, null, keywordLibrariesRepository));
         }
     }
 
-    public Object getSymbolValue(String symbol) {
+    public Object getSymbolValue(String symbol) throws UndefinedVariableException {
         return symbolsMap.get(symbol);
     }
 

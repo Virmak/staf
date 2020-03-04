@@ -1,21 +1,22 @@
 package com.sparkit.staf.ast;
 
+import com.sparkit.staf.ast.types.AbstractStafObject;
+import com.sparkit.staf.ast.types.KeywordCall;
 import com.sparkit.staf.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.runtime.interpreter.exceptions.InvalidArgsNumberKeywordCallException;
 import com.sparkit.staf.runtime.interpreter.exceptions.UndefinedKeywordException;
 import com.sparkit.staf.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class KeywordDeclaration {
     protected String keywordName;
     protected List<String> argsList;
     protected List<IStatement> statementList;
-    protected StafObject returnObject;
+    protected AbstractStafObject returnObject;
 
-    public KeywordDeclaration(String keywordName, List<String> argsList, List<IStatement> statementList, StafObject returnObject) {
+    public KeywordDeclaration(String keywordName, List<String> argsList, List<IStatement> statementList, AbstractStafObject returnObject) {
         this.keywordName = keywordName;
         this.argsList = argsList;
         this.statementList = statementList;
@@ -25,11 +26,11 @@ public class KeywordDeclaration {
     public KeywordDeclaration() {
     }
 
-    public StafObject getReturnObject() {
+    public AbstractStafObject getReturnObject() {
         return returnObject;
     }
 
-    public void setReturnObject(StafObject returnObject) {
+    public void setReturnObject(AbstractStafObject returnObject) {
         this.returnObject = returnObject;
     }
 
@@ -65,9 +66,9 @@ public class KeywordDeclaration {
 
         for (int i = 0; i < params.length; i++) {
             localSymTable.setSymbolValue(argsList.get(i), params[i]);
-            StafObject stafObject = (StafObject) params[i];
+            AbstractStafObject stafObject = (AbstractStafObject) params[i];
             if (stafObject.getType() == StafTypes.VAR_REF) {
-                StafObject valObj = (StafObject) globalSymTable.getSymbolValue(stafObject.getValue().toString());
+                AbstractStafObject valObj = (AbstractStafObject) globalSymTable.getSymbolValue(stafObject.getValue().toString());
                 if (valObj == null) {
                     throw new UndefinedVariableException(stafObject.getValue().toString());
                 }

@@ -32,7 +32,11 @@ public class ImportsInterpreter {
                         + statement.getPath().toLowerCase().substring(1) + "Library";
                 keywordsRepository.registerLibrary(librariesClassesMap.get(libClassName));
             } else {
-                scriptBuilder.load(statement.getPath().replaceAll("\"", ""), this);
+                String filePath = statement.getPath().replaceAll("\"", "");
+                if (!filePath.contains(".staf")) { // add check to .py files
+                    filePath = filePath + ".staf";
+                }
+                scriptBuilder.load(filePath, this);
             }
         }
     }

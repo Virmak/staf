@@ -18,12 +18,11 @@ public class KeywordLibrariesRepository {
     protected Map<String, KeywordWrapper> builtinKeywordMap;
     protected Map<String, AbstractStafLibrary> libsInstancesMap;
 
-    public KeywordLibrariesRepository(Map<String, KeywordDeclaration> userDefinedKeywords, SymbolsTable globalSymTable) throws NoSuchMethodException, KeywordAlreadyRegisteredException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public KeywordLibrariesRepository(Map<String, KeywordDeclaration> userDefinedKeywords, SymbolsTable globalSymTable) {
         this.userDefinedKeywords = userDefinedKeywords;
         this.globalSymTable = globalSymTable;
         builtinKeywordMap = new HashMap<>();
         libsInstancesMap = new HashMap<>();
-
     }
 
     public Map<String, KeywordDeclaration> getUserDefinedKeywords() {

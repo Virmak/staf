@@ -1,7 +1,7 @@
 package com.sparkit.staf.runtime.libs;
 
-import com.sparkit.staf.ast.KeywordCall;
-import com.sparkit.staf.ast.StafObject;
+import com.sparkit.staf.ast.types.KeywordCall;
+import com.sparkit.staf.ast.types.AbstractStafObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,8 +24,8 @@ public class KeywordWrapper {
         for (int i = 0; i < params.length; i++) {
             if (params[i] instanceof KeywordCall) {
                 paramsList.add(params[i]);
-            } else if (params[i] instanceof StafObject) {
-                StafObject stafObject = (StafObject) params[i];
+            } else if (params[i] instanceof AbstractStafObject) {
+                AbstractStafObject stafObject = (AbstractStafObject) params[i];
                 paramsList.add(stafObject.getValue());
             }
         }

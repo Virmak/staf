@@ -1,13 +1,17 @@
-package com.sparkit.staf.ast;
+package com.sparkit.staf.ast.types;
 
-public class StafObject {
+import com.sparkit.staf.ast.StafTypes;
+import com.sparkit.staf.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
+
+public abstract class AbstractStafObject {
     protected Object value;
     protected StafTypes type;
 
-    public StafObject() {
+    public AbstractStafObject() {
     }
 
-    public StafObject(Object value, StafTypes type) {
+    public AbstractStafObject(Object value, StafTypes type) {
         this.value = value;
         this.type = type;
     }
@@ -34,4 +38,6 @@ public class StafObject {
                 || this.type == StafTypes.DOUBLE
                 || this.type == StafTypes.STRING;
     }
+
+    public abstract Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception;
 }
