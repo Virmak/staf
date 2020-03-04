@@ -84,7 +84,7 @@ assignment
     ;
 
 for_stat
-    : FOR variable IN object
+    : FOR variable IN (complex_object | variable_reference)
       for_stat_body
       END FOR
     ;
@@ -106,7 +106,15 @@ keyValuePair
     ;
 
 object
-    : (primitive | variable_reference | dictionaryLiteral | listLiteral| keyword_call)
+    : complex_object | scalar_object | expression
+    ;
+
+complex_object
+    : ( dictionaryLiteral | listLiteral)
+    ;
+
+scalar_object
+    : (primitive | variable_reference | keyword_call)
     ;
 
 variable_reference
@@ -124,11 +132,31 @@ variable
     ;
 
 list_item_access
-    : variable ('[' object ']')
+    : variable ('[' expression ']')
     ;
 
 dictionary_item_access
     :   variable ('.' IDENTIFIER)+
+    ;
+
+expression
+    : (MINUS | NOT) expression
+    | expression mulop expression
+    | expression addop expression
+    | expression binop expression
+    | LPARENT expression RPARENT
+    | scalar_object
+    ;
+
+mulop
+    : MUL | DIV | MOD
+    ;
+addop
+    : PLUS | MINUS
+    ;
+
+binop
+    : AND | OR | EQUAL | LT | GT | LTE | GTE | NE
     ;
 
 number
@@ -164,6 +192,23 @@ EQUAL
 COMMA
     : ','
     ;
+
+
+
+
+PLUS    : '+' ;
+MINUS   : '-' ;
+MUL     : '*' ;
+DIV     : '/' ;
+MOD     : '%' ;
+LT      : '<' ;
+GT      : '>' ;
+LTE     : '<=';
+GTE     : '>=';
+NE      : '!=';
+NOT     : '!';
+AND     : A N D;
+OR      : O R;
 
 LPARENT : '(';
 

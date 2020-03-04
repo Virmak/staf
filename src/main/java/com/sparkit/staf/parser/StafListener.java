@@ -258,6 +258,26 @@ public interface StafListener extends ParseTreeListener {
 	 */
 	void exitObject(StafParser.ObjectContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link StafParser#complex_object}.
+	 * @param ctx the parse tree
+	 */
+	void enterComplex_object(StafParser.Complex_objectContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#complex_object}.
+	 * @param ctx the parse tree
+	 */
+	void exitComplex_object(StafParser.Complex_objectContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link StafParser#scalar_object}.
+	 * @param ctx the parse tree
+	 */
+	void enterScalar_object(StafParser.Scalar_objectContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#scalar_object}.
+	 * @param ctx the parse tree
+	 */
+	void exitScalar_object(StafParser.Scalar_objectContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link StafParser#variable_reference}.
 	 * @param ctx the parse tree
 	 */
@@ -307,6 +327,46 @@ public interface StafListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDictionary_item_access(StafParser.Dictionary_item_accessContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link StafParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpression(StafParser.ExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpression(StafParser.ExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link StafParser#mulop}.
+	 * @param ctx the parse tree
+	 */
+	void enterMulop(StafParser.MulopContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#mulop}.
+	 * @param ctx the parse tree
+	 */
+	void exitMulop(StafParser.MulopContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link StafParser#addop}.
+	 * @param ctx the parse tree
+	 */
+	void enterAddop(StafParser.AddopContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#addop}.
+	 * @param ctx the parse tree
+	 */
+	void exitAddop(StafParser.AddopContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link StafParser#binop}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinop(StafParser.BinopContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#binop}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinop(StafParser.BinopContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link StafParser#number}.
 	 * @param ctx the parse tree

@@ -11,4 +11,5 @@ public enum StafTypes {
     LIST_ITEM_REF,
     DICT_ITEM_REF,
     KEYWORD_CALL,
+    EXPRESSION,
 }

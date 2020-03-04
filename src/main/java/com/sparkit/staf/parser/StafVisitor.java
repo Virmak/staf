@@ -161,6 +161,18 @@ public interface StafVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitObject(StafParser.ObjectContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link StafParser#complex_object}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitComplex_object(StafParser.Complex_objectContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link StafParser#scalar_object}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitScalar_object(StafParser.Scalar_objectContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link StafParser#variable_reference}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -190,6 +202,30 @@ public interface StafVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDictionary_item_access(StafParser.Dictionary_item_accessContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link StafParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpression(StafParser.ExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link StafParser#mulop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMulop(StafParser.MulopContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link StafParser#addop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAddop(StafParser.AddopContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link StafParser#binop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinop(StafParser.BinopContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link StafParser#number}.
 	 * @param ctx the parse tree

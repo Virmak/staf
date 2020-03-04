@@ -8,25 +8,17 @@ public class StafObjectVisitor extends StafBaseVisitor<AbstractStafObject> {
 
     @Override
     public AbstractStafObject visitObject(StafParser.ObjectContext ctx) {
-        StafParser.PrimitiveContext primitiveContext = ctx.primitive();
-        if (primitiveContext != null) {
-            return new PrimitiveVisitor().visitPrimitive(primitiveContext);
+        StafParser.Complex_objectContext complexObjectContext = ctx.complex_object();
+        if (complexObjectContext != null) {
+            return new ComplexObjectVisitor().visitComplex_object(complexObjectContext);
         }
-        StafParser.Variable_referenceContext variableReferenceContext = ctx.variable_reference();
-        if (variableReferenceContext != null) {
-            return new VariableReferenceVisitor().visitVariable_reference(variableReferenceContext);
+        StafParser.Scalar_objectContext scalarObjectContext = ctx.scalar_object();
+        if (scalarObjectContext != null) {
+            return new ScalarObjectVisitor().visitScalar_object(scalarObjectContext);
         }
-        StafParser.ListLiteralContext listLiteralContext = ctx.listLiteral();
-        if (listLiteralContext != null) {
-            return new ListLiteralVisitor().visitListLiteral(listLiteralContext);
-        }
-        StafParser.DictionaryLiteralContext dictionaryLiteralContext = ctx.dictionaryLiteral();
-        if (dictionaryLiteralContext != null) {
-            return new DictionaryLiteralVisitor().visitDictionaryLiteral(dictionaryLiteralContext);
-        }
-        StafParser.Keyword_callContext keywordCallContext = ctx.keyword_call();
-        if (keywordCallContext != null) {
-            return new KeywordCallVisitor().visitKeyword_call(keywordCallContext);
+        StafParser.ExpressionContext expressionContext = ctx.expression();
+        if (expressionContext != null) {
+            return new ExpressionVisitor().visitExpression(expressionContext);
         }
         return super.visitObject(ctx);
     }

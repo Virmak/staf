@@ -4,7 +4,7 @@ IMPORTS
     Import logger
     Import "./test.var.staf"
 VARS
-    $browser        = 'chrome'
+    $browser        = -5
     $validUsername       = "demo@spark-it.fr"
     $validPassword       = "00000000"
     $pp                  = $importedVar
