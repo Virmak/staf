@@ -19,7 +19,7 @@ public class KeywordWrapper {
 
 
     public Object invoke(Object[] params) throws InvocationTargetException, IllegalAccessException {
-        /* refactor this -- calling builtin keyword with actual data instead of  --> make   */
+        /* refactor this -- calling builtin keyword with actual data instead of StafObject --> make   */
         List<Object> paramsList = new ArrayList<>();
         for (int i = 0; i < params.length; i++) {
             if (params[i] instanceof KeywordCall) {

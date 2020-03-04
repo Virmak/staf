@@ -2,6 +2,7 @@ package com.sparkit.staf.runtime.interpreter;
 
 import com.sparkit.staf.ast.Assignment;
 import com.sparkit.staf.ast.StafObject;
+import com.sparkit.staf.runtime.interpreter.exceptions.VariableAlreadyDefinedException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,15 @@ public class SymbolsTable {
 
     public SymbolsTable() {
         symbolsMap = new HashMap<>();
+    }
+
+    public void addVariablesMap(Map<String, Assignment> assignmentMap) throws VariableAlreadyDefinedException {
+        for (Map.Entry<String, Assignment> assignmentEntry : assignmentMap.entrySet()) {
+            if (symbolsMap.containsKey(assignmentEntry.getKey())) {
+                throw new VariableAlreadyDefinedException(assignmentEntry.getKey());
+            }
+            symbolsMap.put(assignmentEntry.getKey(), assignmentEntry.getValue().getValue());
+        }
     }
 
     public Object getSymbolValue(String symbol) {

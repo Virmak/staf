@@ -1,0 +1,7 @@
+VARS
+    $importedVar = "imported var"
+KEYWORDS
+    Set username($username)
+        Log ("Setting username")
+        Log ($username)
+    END

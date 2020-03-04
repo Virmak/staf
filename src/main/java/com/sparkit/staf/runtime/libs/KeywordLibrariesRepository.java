@@ -33,6 +33,9 @@ public class KeywordLibrariesRepository {
     public void registerLibrary(Class<? extends AbstractStafLibrary> libClass) throws KeywordAlreadyRegisteredException,
             InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         AbstractStafLibrary libInstance = LibraryFactory.build(libClass);
+        if (libsInstancesMap.containsKey(libClass.getName())) {
+            return;
+        }
         libsInstancesMap.put(libClass.getName(), libInstance);
         for (Method method : libClass.getMethods()) {
             if (method.isAnnotationPresent(Keyword.class)) {
@@ -47,12 +50,13 @@ public class KeywordLibrariesRepository {
         }
     }
 
-    public KeywordWrapper getBuiltInKeywordByName(String keyword) throws UndefinedBuiltinKeywordException {
-        String normalizedKeywordName = normalizeKeywordName(keyword);
-        if (!builtinKeywordMap.containsKey(normalizedKeywordName) && !userDefinedKeywords.containsKey(keyword)) {
-            throw new UndefinedBuiltinKeywordException();
+    public void addUserDefinedKeywords(Map<String, KeywordDeclaration> keywordDeclarationMap) throws KeywordAlreadyRegisteredException {
+        for (Map.Entry<String, KeywordDeclaration> keywordDeclaration : keywordDeclarationMap.entrySet()) {
+            if (isKeywordDeclared(keywordDeclaration.getKey())) {
+                throw new KeywordAlreadyRegisteredException(keywordDeclaration.getKey());
+            }
+            userDefinedKeywords.put(keywordDeclaration.getKey(), keywordDeclaration.getValue());
         }
-        return builtinKeywordMap.get(normalizedKeywordName);
     }
 
     public Object invokeKeyword(String keyword, Object[] params) throws Exception {

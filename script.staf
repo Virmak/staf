@@ -2,6 +2,7 @@ test suite 'Login test'
 IMPORTS
     Import selenium
     Import logger
+    Import "./test.var.staf"
 VARS
     $browser        = 'chrome'
     $validUsername       = "demo@spark-it.fr"
@@ -31,18 +32,14 @@ KEYWORDS
     END
 
     Do Login($usernameValue, $passwordValue, $expectedElement, $successMsg)
-        Go to                               ("http://192.168.1.230:4422/login")
-        Input Text                          ("name:Email", $usernameValue)
-        Input Text                          ("name:password", $passwordValue)
-        Click Element                       ("css:button[type=submit]")
-        Wait Until Element Is Visible       ($expectedElement)
-        Log ($successMsg)
+        Log ($importedVar)
+
     END
     
 
 TEST CASES
     test login page:
-        Setup()
         Do Login            ($validUsername, $validPassword, "tag:app-main", "Valid login success")
-        Do Login            ($validUsername, "1231321", "css:.snotifyToast__body", "Invalid login success")
+        Set username($validUsername)
+        #Do Login            ($validUsername, "1231321", "css:.snotifyToast__body", "Invalid login success")
     END
