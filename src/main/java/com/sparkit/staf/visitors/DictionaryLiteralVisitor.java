@@ -15,6 +15,7 @@ public class DictionaryLiteralVisitor extends StafBaseVisitor<AbstractStafObject
         Map<String, AbstractStafObject> dict = new HashMap<>();
         for (StafParser.KeyValuePairContext keyValuePairContext: ctx.keyValuePair()) {
             KeyValuePair keyValuePair = new KeyValuePairVisitor().visitKeyValuePair(keyValuePairContext);
+            // check if key already exist and throw an error
             dict.put(keyValuePair.getKey(), keyValuePair.getValue());
         }
         return new StafDictionary(dict);
