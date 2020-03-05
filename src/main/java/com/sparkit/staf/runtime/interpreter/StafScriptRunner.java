@@ -11,7 +11,8 @@ public class StafScriptRunner {
     private String currentDirectory;
     private SymbolsTable globalSymTable;
 
-    public StafScriptRunner(ImportsInterpreter importsInterpreter, StafFile mainStafFile, SymbolsTable globalSymTable, KeywordLibrariesRepository keywordLibrariesRepository, String currentDirectory) {
+    public StafScriptRunner(ImportsInterpreter importsInterpreter, StafFile mainStafFile, SymbolsTable globalSymTable,
+                            KeywordLibrariesRepository keywordLibrariesRepository, String currentDirectory) {
         this.importsInterpreter = importsInterpreter;
         this.mainStafFile = mainStafFile;
         this.keywordLibrariesRepository = keywordLibrariesRepository;
