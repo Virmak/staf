@@ -4,19 +4,18 @@ IMPORTS
     Import logger
     Import "./test.var.staf"
 VARS
-    $browser        = -5
-    $validUsername       = "demo@spark-it.fr"
-    $validPassword       = "00000000"
-    $pp                  = $importedVar
+    $dict = {user: [{internal: 888, ext: [6, 8, 15]}, 2, 3]}
 KEYWORDS
-    Do Login($usernameValue, $passwordValue, $expectedElement, $successMsg)
-        Log ($pp)
+
+    testLogin()
+        LOG ($dict.user[0].ext[2])
     END
     
 
 TEST CASES
     test login page:
-        Do Login            ($validUsername, $validPassword, "tag:app-main", "Valid login success")
+        testLogin()
+        #Do Login            ($validUsername, $validPassword, "tag:app-main", "Valid login success")
         
         #Do Login            ($validUsername, "1231321", "css:.snotifyToast__body", "Invalid login success")
     END

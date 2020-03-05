@@ -118,7 +118,7 @@ scalar_object
     ;
 
 variable_reference
-    : variable | list_item_access | dictionary_item_access
+    : variable (list_item_access | dictionary_item_access)*
     ;
 
 primitive
@@ -132,11 +132,11 @@ variable
     ;
 
 list_item_access
-    : variable ('[' expression ']')
+    : LBRACKET expression RBRACKET
     ;
 
 dictionary_item_access
-    :   variable ('.' IDENTIFIER)+
+    :  DOT IDENTIFIER
     ;
 
 expression

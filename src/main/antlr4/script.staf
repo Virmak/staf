@@ -6,9 +6,10 @@ VARS
     $test = 5 * 6 + 7
     $x = 'okson'
     $var = kw call()
+    $list = [1,2,3]
 KEYWORDS
     Do login ($test, $tete)
-        Ok boy('test', 123, ['a', 1], $ok, $test, {ok: 1})
+        Log($list[1].dictItem[2].test)
         FOR $item IN $list
         END FOR
     RETURN {'DICT': Okthankyou($test)}

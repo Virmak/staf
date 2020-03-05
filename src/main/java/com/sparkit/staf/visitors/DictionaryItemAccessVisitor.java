@@ -10,7 +10,9 @@ public class DictionaryItemAccessVisitor extends StafBaseVisitor<AbstractStafObj
     /* need to support nested items access */
     @Override
     public AbstractStafObject visitDictionary_item_access(StafParser.Dictionary_item_accessContext ctx) {
+        return null;
+        /*
         AbstractStafObject variable = new StafVariable(ctx.variable().getText());
-        return new DictionaryItemAccess(variable, ctx.IDENTIFIER(0).getText());
+        return new DictionaryItemAccess(variable, ctx.IDENTIFIER(0).getText());*/
     }
 }
