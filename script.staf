@@ -4,11 +4,13 @@ IMPORTS
     Import logger
     Import "./test.var.staf"
 VARS
-    $dict = {user: [{internal: 888, ext: [6, 8, 15]}, 2, 3]}
+    $dict = {user: [1, 2, 3]}
 KEYWORDS
 
     testLogin()
-        LOG ($dict.user[0].ext[2])
+        FOR $i in [0, 1, 2]
+            Log($dict.user[$i])
+        END FOR
     END
     
 

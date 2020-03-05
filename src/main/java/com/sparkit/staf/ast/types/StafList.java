@@ -23,7 +23,7 @@ public class StafList extends AbstractStafObject {
 
     @Override
     public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
-        return value;
+        return this;
     }
 
     public List<AbstractStafObject> getList() {

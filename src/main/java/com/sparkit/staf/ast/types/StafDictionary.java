@@ -17,14 +17,14 @@ public class StafDictionary extends AbstractStafObject {
         this.type = StafTypes.DICTIONARY;
     }
 
-    @Override
-    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
-        return objectMap;
-    }
-
     public StafDictionary(Map<String, AbstractStafObject> items) {
         this.objectMap = items;
         this.type = StafTypes.DICTIONARY;
+    }
+
+    @Override
+    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+        return this;
     }
 
     public Map<String, AbstractStafObject> getObjectMap() {

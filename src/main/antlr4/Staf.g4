@@ -84,7 +84,7 @@ assignment
     ;
 
 for_stat
-    : FOR variable IN (complex_object | variable_reference)
+    : FOR variable IN (complex_object | variable_reference | keyword_call)
       for_stat_body
       END FOR
     ;
