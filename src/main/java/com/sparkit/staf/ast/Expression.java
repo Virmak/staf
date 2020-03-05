@@ -1,6 +1,7 @@
 package com.sparkit.staf.ast;
 
-import com.sparkit.staf.ast.types.AbstractStafObject;
+import com.sparkit.staf.ast.types.*;
+import com.sparkit.staf.runtime.ExpressionEvaluator;
 import com.sparkit.staf.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
 
@@ -69,11 +70,54 @@ public class Expression extends AbstractStafObject {
             case "%":
                 this.operation = ExpressionOps.MOD;
                 break;
+            case "==":
+                this.operation = ExpressionOps.EQUAL;
+                break;
+            case "!=":
+                this.operation = ExpressionOps.NE;
+                break;
+            case ">=":
+                this.operation = ExpressionOps.GTE;
+                break;
+            case "<=":
+                this.operation = ExpressionOps.LTE;
+                break;
+            case ">":
+                this.operation = ExpressionOps.GT;
+                break;
+            case "<":
+                this.operation = ExpressionOps.LT;
+                break;
+            case "AND":
+                this.operation = ExpressionOps.AND;
+                break;
+            case "OR":
+                this.operation = ExpressionOps.OR;
+                break;
         }
     }
 
     @Override
     public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
-        throw new Exception("not implemented");
+        if (left instanceof Expression || left instanceof StafVariable) {
+            left = (AbstractStafObject)left.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
+        }
+
+        if (right instanceof Expression) {
+            right = (AbstractStafObject)right.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
+        }
+
+        if (operation == ExpressionOps.EQUAL) {
+            return new StafBoolean( left.getValue().toString().equals(right.getValue().toString()));
+        } else if (operation == ExpressionOps.PLUS) {
+           return ExpressionEvaluator.add(left, right);
+        } else if (operation == ExpressionOps.MINUS) {
+            return ExpressionEvaluator.substract(left, right);
+        } else if (operation == ExpressionOps.MUL) {
+            return ExpressionEvaluator.multiply(left, right);
+        } else if (operation == ExpressionOps.DIV) {
+            return ExpressionEvaluator.div(left, right);
+        }
+        throw new Exception("not implemented operation " + operation);
     }
 }

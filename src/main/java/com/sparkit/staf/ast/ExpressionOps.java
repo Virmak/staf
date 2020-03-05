@@ -6,4 +6,12 @@ public enum  ExpressionOps {
     MUL,
     DIV,
     MOD,
+    EQUAL,
+    GT,
+    LT,
+    GTE,
+    LTE,
+    NE,
+    AND,
+    OR,
 }

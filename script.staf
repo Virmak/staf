@@ -3,7 +3,6 @@ IMPORTS
     Import selenium
     Import logger
     Import std
-    Import "./test.var.staf"
 
 VARS
     $dict = {
@@ -13,15 +12,23 @@ VARS
             3
         ],
         name: "med",
-        user: [5, 6, 7]
+        user: ["test1", "test2", "test3", 4564]
     }
     $bro = 'chrome'
+    $i = 3
 
 KEYWORDS
 
+    customKeyword()
+        Log ("running custom keyword")
+    END
+
     testLogin()
         Log ($bro)
-        Should be equal ($dict.name, "med", "name is different")
+        FOR $i IN $dict.user
+            log($i)
+        END FOR
+        Log ($i + 5)
     END
     
 

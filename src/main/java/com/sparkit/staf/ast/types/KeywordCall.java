@@ -22,7 +22,8 @@ public class KeywordCall extends AbstractStafObject implements IStatement {
 
     @Override
     public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
-        throw new Exception("Not implemented");
+        this.evaluateArgumentsList(globalSymTable, localSymTable, keywordLibrariesRepository);
+        return this;
     }
 
     public String getKeywordName() {

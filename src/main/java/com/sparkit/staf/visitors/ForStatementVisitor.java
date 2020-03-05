@@ -1,15 +1,15 @@
 package com.sparkit.staf.visitors;
 
+import com.sparkit.staf.ast.types.StafVariable;
 import com.sparkit.staf.parser.StafBaseVisitor;
 import com.sparkit.staf.parser.StafParser;
 import com.sparkit.staf.ast.ForStatement;
-import com.sparkit.staf.ast.StafVariable;
 
 public class ForStatementVisitor extends StafBaseVisitor<ForStatement> {
     @Override
     public ForStatement visitFor_stat(StafParser.For_statContext ctx) {
         ForStatement forStatement = new ForStatement();
-        forStatement.setVar(new StafVariable(ctx.variable().getText(), null));
+        forStatement.setVar(new StafVariable(ctx.variable().getText()));
 
         StafParser.Complex_objectContext complexObjectContext = ctx.complex_object();
         StafParser.Variable_referenceContext variableReferenceContext = ctx.variable_reference();

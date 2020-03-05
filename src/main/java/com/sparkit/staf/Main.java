@@ -12,6 +12,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         String mainScriptFilePath = System.getProperty("user.dir") + "/script.staf";
+        System.out.println("Current directory " + System.getProperty("user.dir"));
         IStafFileReader stafFileReader = new StafFileReader();
         StafFile mainScriptAST = stafFileReader.compile(mainScriptFilePath);
         SymbolsTable globalSymTable = new SymbolsTable();

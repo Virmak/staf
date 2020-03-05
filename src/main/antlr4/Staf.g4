@@ -156,7 +156,7 @@ addop
     ;
 
 binop
-    : AND | OR | EQUAL | LT | GT | LTE | GTE | NE
+    : AND | OR | EQUAL EQUAL | LT | GT | LTE | GTE | NE
     ;
 
 number
