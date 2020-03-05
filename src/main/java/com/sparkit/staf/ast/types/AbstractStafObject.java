@@ -40,4 +40,5 @@ public abstract class AbstractStafObject {
     }
 
     public abstract Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception;
+
 }

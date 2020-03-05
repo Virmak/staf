@@ -9,7 +9,7 @@ import com.sparkit.staf.runtime.libs.annotations.StafLibrary;
 public class LoggerLibrary extends AbstractStafLibrary {
 
     @Keyword(name = "log")
-    public void log(@KeywordArgument String data) {
+    public void log(@KeywordArgument Object data) {
         System.out.println("LOG : " + data);
     }
 

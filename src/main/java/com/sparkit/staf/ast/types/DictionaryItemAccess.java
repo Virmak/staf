@@ -16,11 +16,6 @@ public class DictionaryItemAccess extends AbstractStafObject {
     public DictionaryItemAccess() {
     }
 
-    @Override
-    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
-        return null;
-    }
-
     public AbstractStafObject getDictVariable() {
         return dictVariable;
     }
@@ -35,5 +30,11 @@ public class DictionaryItemAccess extends AbstractStafObject {
 
     public void setItemIdentifier(String itemIdentifier) {
         this.itemIdentifier = itemIdentifier;
+    }
+
+    @Override
+    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+        StafDictionary actualDict = (StafDictionary) dictVariable.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
+        return actualDict.getObjectMap().get(itemIdentifier);
     }
 }

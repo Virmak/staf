@@ -24,7 +24,7 @@ vars_section
     : VARS assignment*
     ;
 
-/*** Test cases section ***/
+// Test cases section ***/
 test_cases_section
     : TEST_CASES test_case_declaration*
     ;
@@ -36,9 +36,9 @@ test_case_declaration
 test_case_body
     : statement*
     ;
-/*** End test cases ***/
+// End test cases ***/
 
-/*** Keywords section ***/
+// Keywords section ***/
 keywords_section
     : KEYWORDS keyword_declaration*
     ;
@@ -77,7 +77,7 @@ keyword_declaration_arguments
     : LPARENT variable? (COMMA variable)* RPARENT?
     ;
 
-/*** End keywords section ***/
+// End keywords section ***/
 
 assignment
     : variable_reference EQUAL (object | NULL)
@@ -244,7 +244,7 @@ SPACE
 
 NL: ('\r\n' | '\r' | '\n') -> skip;
 
-/**** RESERVED KEYWORDS ****/
+// RESERVED KEYWORDS
 IN
     :   I N
     ;

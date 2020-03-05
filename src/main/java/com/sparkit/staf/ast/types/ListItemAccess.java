@@ -1,7 +1,6 @@
 package com.sparkit.staf.ast.types;
 
 import com.sparkit.staf.ast.StafTypes;
-import com.sparkit.staf.ast.types.AbstractStafObject;
 import com.sparkit.staf.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
 
@@ -33,6 +32,8 @@ public class ListItemAccess extends AbstractStafObject {
 
     @Override
     public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
-        throw new Exception("not implemented");
+        StafList actualList = (StafList) listVariable.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
+        AbstractStafObject actualIndexObject = (AbstractStafObject) indexObject.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
+        return actualList.getList().get((Integer)actualIndexObject.getValue());
     }
 }
