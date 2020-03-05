@@ -19,12 +19,6 @@ public class StdLibrary extends AbstractStafLibrary {
             }
         }
         System.out.println("Should be equal validated");
-
-    }
-
-    @Keyword(name = "run keyword if")
-    public void runKeywordIf(AbstractStafObject condition, AbstractStafObject keywordCall) {
-        System.out.println("run keyword if ----");
     }
 
     public boolean compareStafObjects(AbstractStafObject object1, AbstractStafObject object2) {

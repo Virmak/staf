@@ -54,7 +54,11 @@ keyword_body
     ;
 
 statement
-    : (GIVEN | WHEN | THEN)? (assignment | keyword_call | for_stat)
+    : (GIVEN | WHEN | THEN)? (assignment | keyword_call | for_stat | run_keyword_if)
+    ;
+
+run_keyword_if
+    : RUN KEYWORD IF LPARENT expression RPARENT keyword_call
     ;
 
 keyword_call
@@ -193,8 +197,9 @@ COMMA
     : ','
     ;
 
-
-
+RUN: R U N;
+KEYWORD: K E Y W O R D;
+IF : I F;
 
 PLUS    : '+' ;
 MINUS   : '-' ;

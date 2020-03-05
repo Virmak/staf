@@ -172,6 +172,18 @@ public class StafBaseListener implements StafListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRun_keyword_if(StafParser.Run_keyword_ifContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRun_keyword_if(StafParser.Run_keyword_ifContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterKeyword_call(StafParser.Keyword_callContext ctx) { }
 	/**
 	 * {@inheritDoc}

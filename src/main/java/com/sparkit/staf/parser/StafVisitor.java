@@ -89,6 +89,12 @@ public interface StafVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatement(StafParser.StatementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link StafParser#run_keyword_if}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRun_keyword_if(StafParser.Run_keyword_ifContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link StafParser#keyword_call}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

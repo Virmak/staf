@@ -21,8 +21,9 @@ public class KeywordCall extends AbstractStafObject implements IStatement {
     }
 
     @Override
-    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
-        this.evaluateArgumentsList(globalSymTable, localSymTable, keywordLibrariesRepository);
+    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable,
+                           KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+        this.execute(globalSymTable, localSymTable, keywordLibrariesRepository);
         return this;
     }
 
