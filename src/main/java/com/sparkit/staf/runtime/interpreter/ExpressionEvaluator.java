@@ -80,9 +80,19 @@ public class ExpressionEvaluator {
         }
     }
 
-    public static AbstractStafObject lessThanOrEqual(AbstractStafObject left, AbstractStafObject right) {
+    public static AbstractStafObject lessThanOrEqual(AbstractStafObject left, AbstractStafObject right) throws InvalidExpressionOperationParams {
+        if (left.getValue() instanceof Double || right.getValue() instanceof Double) {
+            Double l = (Double) left.getValue();
+            Double r = (Double) right.getValue();
+            return new StafBoolean(l <= r);
+        } else if (left.getValue() instanceof String || right.getValue() instanceof String) {
+            throw new InvalidExpressionOperationParams();
+        } else {
+            return new StafBoolean((Integer)left.getValue() <= (Integer)right.getValue());
+        }
     }
 
     public static AbstractStafObject notEqual(AbstractStafObject left, AbstractStafObject right) {
+        return new StafBoolean(left.getValue().toString().equals(right.getValue().toString()));
     }
 }
