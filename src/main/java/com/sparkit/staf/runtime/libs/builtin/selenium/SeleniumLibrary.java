@@ -1,5 +1,6 @@
 package com.sparkit.staf.runtime.libs.builtin.selenium;
 
+import com.sparkit.staf.ast.types.AbstractStafObject;
 import com.sparkit.staf.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.runtime.libs.annotations.KeywordArgument;
 import com.sparkit.staf.runtime.libs.annotations.Keyword;
@@ -20,14 +21,15 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     private WebDriver webDriver;
 
     @Keyword(name = "open browser")
-    public void openBrowser(String browser) throws UnsupportedBrowserDriverException {
-        System.out.println("open browser : " + browser);
-        if (browser.equals("chrome")) {
+    public void openBrowser(AbstractStafObject browser) throws UnsupportedBrowserDriverException {
+        String browserString = browser.getValue().toString();
+        System.out.println("open browser : " + browserString);
+        if (browserString.equals("chrome")) {
             webDriver = new ChromeDriver();
-        } else if (browser.equals("firefox"))  {
+        } else if (browserString.equals("firefox"))  {
             webDriver = new FirefoxDriver();
         } else {
-            throw new UnsupportedBrowserDriverException(browser);
+            throw new UnsupportedBrowserDriverException(browserString);
         }
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
@@ -38,33 +40,33 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     }
 
     @Keyword(name = "input text")
-    public void input(@KeywordArgument String selector, @KeywordArgument String value) {
-        By elementSelector = getLocatorFromString(selector);
-        webDriver.findElement(elementSelector).sendKeys(value);
+    public void input(@KeywordArgument AbstractStafObject selector, @KeywordArgument AbstractStafObject value) {
+        By elementSelector = getLocatorFromString(selector.getValue().toString());
+        webDriver.findElement(elementSelector).sendKeys(value.getValue().toString());
     }
 
     @Keyword(name = "click element")
-    public void clickButton(@KeywordArgument String selector) {
-        By elementSelector = getLocatorFromString(selector);
+    public void clickButton(@KeywordArgument AbstractStafObject selector) {
+        By elementSelector = getLocatorFromString(selector.getValue().toString());
         webDriver.findElement(elementSelector).click();
     }
 
     @Keyword(name = "input value")
-    public String getInputValue(@KeywordArgument String selector) {
-        By elementSelector = getLocatorFromString(selector);
+    public String getInputValue(@KeywordArgument AbstractStafObject selector) {
+        By elementSelector = getLocatorFromString(selector.getValue().toString());
         return webDriver.findElement(elementSelector).getAttribute("value");
     }
 
     @Keyword(name = "capture page screenshot")
-    public void captureScreenshot(String filename) {
+    public void captureScreenshot(AbstractStafObject filename) {
         System.out.println("taking screenshot -- not implemented");
     }
 
     @Keyword(name = "wait until element is visible")
-    public void waitUntilElementIsVisible(String selector, Integer timeout) {
-        By elementSelector = getLocatorFromString(selector);
+    public void waitUntilElementIsVisible(AbstractStafObject selector, AbstractStafObject timeout) {
+        By elementSelector = getLocatorFromString(selector.getValue().toString());
         if (timeout != null) {
-            WebDriverWait wait = new WebDriverWait(webDriver, timeout);
+            WebDriverWait wait = new WebDriverWait(webDriver, (Integer)timeout.getValue());
             wait.until(ExpectedConditions.visibilityOfElementLocated(elementSelector));
         } else {
             webDriver.findElement(elementSelector);
@@ -72,9 +74,9 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     }
 
     @Keyword(name = "go to")
-    public void gotToUrl(@KeywordArgument String url) throws NoBrowserOpenedException {
+    public void gotToUrl(@KeywordArgument AbstractStafObject url) throws NoBrowserOpenedException {
         try {
-            webDriver.get(url);
+            webDriver.get(url.getValue().toString());
         } catch (NullPointerException e) {
             throw new NoBrowserOpenedException();
         }
@@ -104,10 +106,5 @@ public class SeleniumLibrary extends AbstractStafLibrary {
             default:
                 return null;
         }
-    }
-
-    @Override
-    protected Class<? extends AbstractStafLibrary> getClassName() {
-        return SeleniumLibrary.class;
     }
 }

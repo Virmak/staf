@@ -33,7 +33,7 @@ public abstract class AbstractStafLibrary {
     }
 
     public Object callKeyword(String keyword, Object[] params) throws InvocationTargetException, IllegalAccessException {
-        for (Method method: getClassName().getMethods()) {
+        for (Method method : getClassName().getMethods()) {
             Keyword keywordAnnotation = method.getAnnotation(Keyword.class);
             if (keywordAnnotation != null
                     && keywordAnnotation.name().toLowerCase().equals(keyword.toLowerCase())) {
@@ -43,5 +43,7 @@ public abstract class AbstractStafLibrary {
         return null;
     }
 
-    protected abstract Class<? extends AbstractStafLibrary> getClassName();
+    protected Class<? extends AbstractStafLibrary> getClassName() {
+        return getClass();
+    }
 }

@@ -2,15 +2,26 @@ test suite 'Login test'
 IMPORTS
     Import selenium
     Import logger
+    Import std
     Import "./test.var.staf"
+
 VARS
-    $dict = {user: [1, 2, 3]}
+    $dict = {
+        user: [
+            1,
+            2,
+            3
+        ],
+        name: "med",
+        user: [5, 6, 7]
+    }
+    $bro = 'chrome'
+
 KEYWORDS
 
     testLogin()
-        FOR $i in [0, 1, 2]
-            Log($dict.user[$i])
-        END FOR
+        Log ($bro)
+        Should be equal ($dict.name, "med", "name is different")
     END
     
 
