@@ -6,6 +6,7 @@ import com.sparkit.staf.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.runtime.libs.annotations.KeywordArgument;
 import com.sparkit.staf.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.runtime.libs.builtin.selenium.exceptions.ElementShouldBeVisibleNotFoundException;
+import com.sparkit.staf.runtime.libs.builtin.selenium.exceptions.ElementShouldContainException;
 import com.sparkit.staf.runtime.libs.builtin.selenium.exceptions.NoBrowserOpenedException;
 import com.sparkit.staf.runtime.libs.builtin.selenium.exceptions.UnsupportedBrowserDriverException;
 import org.openqa.selenium.By;
@@ -96,6 +97,19 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         List<WebElement> elementList = webDriver.findElements(elementSelector);
         if (elementList.size() == 0) {
             throw new ElementShouldBeVisibleNotFoundException(selector.getValue().toString());
+        }
+    }
+
+    @Keyword(name = "Element should contain")
+    public void elementShouldContain(AbstractStafObject selector, AbstractStafObject expected, AbstractStafObject message) throws ElementShouldContainException {
+        By elementSelector = By.xpath("//*[contains(text(),'" + expected.getValue() + "')]");
+        List<WebElement> elementList = webDriver.findElements(elementSelector);
+        if (elementList.size() == 0) {
+            if (message != null) {
+                throw new ElementShouldContainException(message.getValue().toString());
+            } else {
+                throw new ElementShouldContainException("Could not find element that contains '" + expected + "'");
+            }
         }
     }
 
