@@ -55,7 +55,7 @@ public class StafParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, null, null, "'='", "','", null, null, null, "'+'", "'-'", "'*'", 
-			"'/'", "'%'", "'<'", "'>'", "'<='", "'>='", "'!='", "'!'", null, null, 
+			"'/'", "'%'", "'<'", "'>'", "'<='", "'>='", "'!='", "'!'", "'&'", null, 
 			"'('", "')'", "'['", "']'", "'{'", "'}'", "'.'", "':'", "'$'"
 		};
 	}

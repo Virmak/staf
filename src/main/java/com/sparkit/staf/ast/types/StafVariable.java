@@ -10,7 +10,7 @@ public class StafVariable extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         Object obj = null;
         if (localSymTable != null) {
             obj = localSymTable.getSymbolValue(value.toString());

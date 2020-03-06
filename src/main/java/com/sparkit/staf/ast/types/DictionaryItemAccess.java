@@ -33,7 +33,7 @@ public class DictionaryItemAccess extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         StafDictionary actualDict = (StafDictionary) dictVariable.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
         return actualDict.getObjectMap().get(itemIdentifier);
     }

@@ -39,6 +39,6 @@ public abstract class AbstractStafObject {
                 || this.type == StafTypes.STRING;
     }
 
-    public abstract Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception;
+    public abstract Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable;
 
 }

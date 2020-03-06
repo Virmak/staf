@@ -31,7 +31,7 @@ public class ListItemAccess extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         StafList actualList = (StafList) listVariable.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
         AbstractStafObject actualIndexObject = (AbstractStafObject) indexObject.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
         return actualList.getList().get((Integer)actualIndexObject.getValue());

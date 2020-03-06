@@ -47,7 +47,7 @@ public class ForStatement implements IStatement {
     }
 
     @Override
-    public Object execute(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+    public Object execute(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         AbstractStafObject tmp = null;  // used to save variable with the same name as the loop variable if it currently
                                         // exist in localSymTable so we can retrieve it later after for statement execution
         if (localSymTable == null) {

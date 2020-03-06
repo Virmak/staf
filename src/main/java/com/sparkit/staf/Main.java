@@ -12,6 +12,8 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         String mainScriptFilePath = System.getProperty("user.dir")  + "/" + args[0];
+        String testDirectory = mainScriptFilePath.substring(0, mainScriptFilePath.lastIndexOf("/")) + "/";
+
         System.out.println("Current directory " + System.getProperty("user.dir"));
         System.out.println("Running main script : " + mainScriptFilePath);
         IStafFileReader stafFileReader = new StafFileReader();
@@ -20,10 +22,10 @@ public class Main {
         KeywordLibrariesRepository keywordsRepository = new KeywordLibrariesRepository(mainScriptAST.getKeywordDeclarationMap(),
                 globalSymTable);
         IStafScriptBuilder scriptBuilder = new StafScriptBuilder(stafFileReader, globalSymTable, keywordsRepository);
-        ImportsInterpreter importsInterpreter = new ImportsInterpreter(scriptBuilder, keywordsRepository);
+        ImportsInterpreter importsInterpreter = new ImportsInterpreter(scriptBuilder, keywordsRepository, testDirectory);
 
         StafScriptRunner interpreter = new StafScriptRunner(importsInterpreter, mainScriptAST, globalSymTable, keywordsRepository,
-                System.getProperty("user.dir"));
+                testDirectory);
         interpreter.run();
         System.out.println("finished");
     }

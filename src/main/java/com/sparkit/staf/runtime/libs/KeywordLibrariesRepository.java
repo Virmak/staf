@@ -50,6 +50,9 @@ public class KeywordLibrariesRepository {
     }
 
     public void addUserDefinedKeywords(Map<String, KeywordDeclaration> keywordDeclarationMap) throws KeywordAlreadyRegisteredException {
+        if (userDefinedKeywords == null) {
+            userDefinedKeywords = new HashMap<>();
+        }
         for (Map.Entry<String, KeywordDeclaration> keywordDeclaration : keywordDeclarationMap.entrySet()) {
             if (isKeywordDeclared(keywordDeclaration.getKey())) {
                 throw new KeywordAlreadyRegisteredException(keywordDeclaration.getKey());
@@ -58,7 +61,7 @@ public class KeywordLibrariesRepository {
         }
     }
 
-    public Object invokeKeyword(String keyword, Object[] params) throws Exception {
+    public Object invokeKeyword(String keyword, Object[] params) throws Throwable {
         String normalizedKeywordName = normalizeKeywordName(keyword);
         if (builtinKeywordMap.containsKey(keyword)) {
             return builtinKeywordMap.get(normalizedKeywordName).invoke(params);
@@ -70,7 +73,7 @@ public class KeywordLibrariesRepository {
     }
 
     public boolean isKeywordDeclared(String keyword) {
-        return builtinKeywordMap.containsKey(keyword) || userDefinedKeywords.containsKey(keyword);
+        return builtinKeywordMap.containsKey(keyword) || (userDefinedKeywords != null && userDefinedKeywords.containsKey(keyword));
     }
 
     public String normalizeKeywordName(String keyword) {

@@ -17,14 +17,16 @@ public class ImportsInterpreter {
     public final String libsPackage = "com.sparkit.staf.runtime.libs.builtin";
     private final IStafScriptBuilder scriptBuilder;
     private final KeywordLibrariesRepository keywordsRepository;
+    private final String testsDirectory;
 
-    public ImportsInterpreter(IStafScriptBuilder scriptBuilder, KeywordLibrariesRepository keywordsRepository) {
+    public ImportsInterpreter(IStafScriptBuilder scriptBuilder, KeywordLibrariesRepository keywordsRepository, String testDirectory) {
         this.scriptBuilder = scriptBuilder;
         this.keywordsRepository = keywordsRepository;
+        this.testsDirectory = testDirectory;
     }
 
     /* Load imports */
-    public void loadImports(List<ImportStatement> importStatements) throws Exception {
+    public void loadImports(List<ImportStatement> importStatements, String testsDirectory) throws Throwable {
         Map<String, Class<? extends AbstractStafLibrary>> librariesClassesMap = getBuiltinLibrariesClasses();
         for (ImportStatement statement : importStatements) {
             if (statement.getType() == ImportTypes.BUILT_IN_LIBRARY) {
@@ -32,10 +34,8 @@ public class ImportsInterpreter {
                         + statement.getPath().toLowerCase().substring(1) + "Library";
                 keywordsRepository.registerLibrary(librariesClassesMap.get(libClassName));
             } else {
-                String filePath = statement.getPath().replaceAll("\"", "");
-                if (!filePath.contains(".staf")) { // add check to .py files
-                    filePath = filePath + ".staf";
-                }
+                String filePath = testsDirectory + "/" + statement.getPath().replaceAll("\"", "");
+
                 scriptBuilder.load(filePath, this);
             }
         }
@@ -50,5 +50,9 @@ public class ImportsInterpreter {
             classMap.put(libClass.getSimpleName(), (Class<? extends AbstractStafLibrary>) libClass);
         }
         return classMap;
+    }
+
+    public String getTestsDirectory() {
+        return testsDirectory;
     }
 }

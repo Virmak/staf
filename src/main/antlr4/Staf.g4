@@ -212,7 +212,7 @@ LTE     : '<=';
 GTE     : '>=';
 NE      : '!=';
 NOT     : '!';
-AND     : A N D;
+AND     : '&';
 OR      : O R;
 
 LPARENT : '(';

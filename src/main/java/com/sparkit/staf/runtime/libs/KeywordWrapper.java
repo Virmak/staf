@@ -15,7 +15,7 @@ public class KeywordWrapper {
     }
 
 
-    public Object invoke(Object[] params) throws InvocationTargetException, IllegalAccessException {
+    public Object invoke(Object[] params) throws Throwable {
         List<Object> paramsList = Arrays.asList(params);
         Object[] methodParams = new Object[method.getParameterCount()]; // match the number of params in the method
         for (int i = 0; i < method.getParameterCount(); i++) {
@@ -23,6 +23,14 @@ public class KeywordWrapper {
                 methodParams[i] = params[i];
             } else break;
         }
-        return method.invoke(libInstance, methodParams);
+        try {
+            return method.invoke(libInstance, methodParams);
+        }  catch (InvocationTargetException ex) {
+            System.err.println("An InvocationTargetException was caught!");
+            Throwable cause = ex.getCause();
+            System.out.format("Invocation of %s failed because of: %s%n",
+                    method.getName(), cause.getMessage());
+            throw ex.getCause();
+        }
     }
 }

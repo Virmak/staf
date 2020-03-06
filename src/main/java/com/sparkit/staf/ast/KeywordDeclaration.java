@@ -59,7 +59,7 @@ public class KeywordDeclaration {
     }
 
     public Object execute(SymbolsTable globalSymTable, KeywordLibrariesRepository keywordLibrariesRepository,
-                          Object[] params) throws Exception {
+                          Object[] params) throws Throwable {
         SymbolsTable localSymTable = new SymbolsTable();
         if (params.length != argsList.size())
             throw new InvalidArgsNumberKeywordCallException(argsList.size(), params.length, keywordName);

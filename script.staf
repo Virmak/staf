@@ -1,41 +1,14 @@
-test suite 'Login test'
+TEST SUITE "Authentication"
 IMPORTS
-    Import selenium
-    Import logger
-    Import std
-
-VARS
-    $dict = {
-        user: [
-            1,
-            2,
-            3
-        ],
-        name: "med",
-        user: ["test1", "test2", "test3", 4564]
-    }
-    $bro = 'chrome'
-    $i = 3
-
+    IMPORT logger
 KEYWORDS
-
-    customKeyword()
-        Log ("running custom keyword")
+    test()
+        LOG             ("hello world")
+        save log("test.log")
     END
-
-    testLogin()
-        Log ($bro)
-        FOR $i IN $dict.user
-            log($i)
-        END FOR
-        Log ($i + 5)
-    END
-    
 
 TEST CASES
-    test login page:
-        testLogin()
-        #Do Login            ($validUsername, $validPassword, "tag:app-main", "Valid login success")
-        
-        #Do Login            ($validUsername, "1231321", "css:.snotifyToast__body", "Invalid login success")
+    login:
+        test()
+
     END

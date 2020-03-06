@@ -5,5 +5,5 @@ import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
 
 public interface IStatement {
     Object execute(SymbolsTable globalSymTable, SymbolsTable localSymTable,
-                   KeywordLibrariesRepository keywordLibrariesRepository) throws Exception;
+                   KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable;
 }

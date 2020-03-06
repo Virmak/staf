@@ -35,7 +35,7 @@ public class RunKeywordIf implements IStatement {
     }
 
     @Override
-    public Object execute(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+    public Object execute(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         StafBoolean conditionResult = (StafBoolean) condition.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
         if ((Boolean) conditionResult.getValue()) {
             keywordCall.execute(globalSymTable, localSymTable, keywordLibrariesRepository);

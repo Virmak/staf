@@ -22,7 +22,7 @@ public class KeywordCall extends AbstractStafObject implements IStatement {
 
     @Override
     public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable,
-                           KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+                           KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         this.execute(globalSymTable, localSymTable, keywordLibrariesRepository);
         return this;
     }
@@ -44,7 +44,7 @@ public class KeywordCall extends AbstractStafObject implements IStatement {
     }
 
     public Object[] evaluateArgumentsList(SymbolsTable globalSymTable, SymbolsTable localSymTable,
-                                          KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+                                          KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         Object[] params = new AbstractStafObject[argumentsList.size()];
         int i = 0;
         for (AbstractStafObject arg : argumentsList) {
@@ -55,7 +55,7 @@ public class KeywordCall extends AbstractStafObject implements IStatement {
 
     @Override
     public Object execute(SymbolsTable globalSymTable, SymbolsTable localSymTable,
-                          KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+                          KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         if (keywordLibrariesRepository.isKeywordDeclared(keywordName)) {
             Object[] params = evaluateArgumentsList(globalSymTable,
                     localSymTable, keywordLibrariesRepository);

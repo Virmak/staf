@@ -23,7 +23,7 @@ public class SymbolsTable {
     }
 
     public void addVariablesMap(Map<String, Assignment> assignmentMap,
-                                KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+                                KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         for (Map.Entry<String, Assignment> assignmentEntry : assignmentMap.entrySet()) {
             if (symbolsMap.containsKey(assignmentEntry.getKey())) {
                 throw new VariableAlreadyDefinedException(assignmentEntry.getKey());

@@ -35,7 +35,7 @@ public class Assignment implements IStatement {
 
 
     @Override
-    public Object execute(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+    public Object execute(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         if (value.getType() == StafTypes.KEYWORD_CALL) {
             KeywordCall keywordCall = (KeywordCall) value;
             return (keywordCall.execute(globalSymTable, localSymTable, keywordLibrariesRepository));
