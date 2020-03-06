@@ -11,8 +11,9 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String mainScriptFilePath = System.getProperty("user.dir") + "/script.staf";
+        String mainScriptFilePath = System.getProperty("user.dir")  + "/" + args[0];
         System.out.println("Current directory " + System.getProperty("user.dir"));
+        System.out.println("Running main script : " + mainScriptFilePath);
         IStafFileReader stafFileReader = new StafFileReader();
         StafFile mainScriptAST = stafFileReader.compile(mainScriptFilePath);
         SymbolsTable globalSymTable = new SymbolsTable();
