@@ -8,6 +8,9 @@ import com.sparkit.staf.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.runtime.loader.IStafScriptBuilder;
 import org.reflections.Reflections;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +37,10 @@ public class ImportsInterpreter {
                         + statement.getPath().toLowerCase().substring(1) + "Library";
                 keywordsRepository.registerLibrary(librariesClassesMap.get(libClassName));
             } else {
-                String filePath = testsDirectory + "/" + statement.getPath().replaceAll("\"", "");
-
-                scriptBuilder.load(filePath, this);
+                File directory = new File(testsDirectory);
+                File b = new File(directory, statement.getPath().replaceAll("\"", ""));
+                String absolute = b.getCanonicalPath(); // may throw IOException
+                scriptBuilder.load(absolute, this);
             }
         }
     }

@@ -24,9 +24,9 @@ public class StafScriptRunner {
                             KeywordLibrariesRepository keywordLibrariesRepository, String currentDirectory) {
         this.importsInterpreter = importsInterpreter;
         this.mainStafFile = mainStafFile;
+        this.globalSymTable = globalSymTable;
         this.keywordLibrariesRepository = keywordLibrariesRepository;
         this.currentDirectory = currentDirectory;
-        this.globalSymTable = globalSymTable;
     }
 
     public void run() {

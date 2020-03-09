@@ -1,0 +1,13 @@
+TEST SUITE "Module Achats"
+IMPORTS
+    IMPORT logger
+
+KEYWORDS
+    testTest()
+        LOG         ("testing achats")
+    END
+
+TEST CASES
+    first:
+        testTest()
+    END
