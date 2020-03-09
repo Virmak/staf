@@ -14,9 +14,13 @@ import java.util.Iterator;
 import java.util.List;
 
 public class StafConfig implements IStafConfig {
-    private JSONParser parser = new JSONParser();
+    private JSONParser parser;
     private String testDirectory;
     private List<String> testSuites = new ArrayList<>();
+
+    public StafConfig(JSONParser parser) {
+        this.parser = parser;
+    }
 
     public void readConfig(String configFilePath) throws ConfigFileNotFoundException {
 

@@ -1,7 +1,9 @@
 TEST SUITE "Module Achats"
 IMPORTS
     IMPORT logger
-
+    IMPORT json
+VARS
+    $dict = LOAD JSON("test.json")
 KEYWORDS
     testTest()
         LOG         ("testing achats")

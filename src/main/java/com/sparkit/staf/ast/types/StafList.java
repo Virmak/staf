@@ -4,9 +4,12 @@ import com.sparkit.staf.ast.StafTypes;
 import com.sparkit.staf.ast.types.AbstractStafObject;
 import com.sparkit.staf.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class StafList extends AbstractStafObject {
     protected List<AbstractStafObject> value;
@@ -46,4 +49,11 @@ public class StafList extends AbstractStafObject {
         value.remove(index);
     }
 
+    public static StafList fromJSONArray(JSONArray array) {
+        List<AbstractStafObject> list = new ArrayList<>();
+        for (Object item : array) {
+            list.add(AbstractStafObject.fromObject(item));
+        }
+        return new StafList(list);
+    }
 }

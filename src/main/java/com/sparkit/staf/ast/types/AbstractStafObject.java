@@ -3,6 +3,10 @@ package com.sparkit.staf.ast.types;
 import com.sparkit.staf.ast.StafTypes;
 import com.sparkit.staf.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.util.Map;
 
 public abstract class AbstractStafObject {
     protected Object value;
@@ -41,4 +45,20 @@ public abstract class AbstractStafObject {
 
     public abstract Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable;
 
+    public static AbstractStafObject fromObject(Object obj) {
+        if (obj instanceof JSONObject) {
+            return StafDictionary.fromJsonMap((Map<String, Object>)obj);
+        } else if (obj instanceof JSONArray) {
+            return StafList.fromJSONArray((JSONArray)obj);
+        } else if (obj instanceof String) {
+            return new StafString((String)obj);
+        } else if (obj instanceof Long) {
+            return new StafInteger(Integer.parseInt(obj.toString()));
+        } else if (obj instanceof Double) {
+            return new StafDouble(Double.parseDouble(obj.toString()));
+        } else if (obj instanceof Boolean) {
+            return new StafBoolean((Boolean)obj);
+        }
+        return null;
+    }
 }

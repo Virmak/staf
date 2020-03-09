@@ -1,7 +1,6 @@
 {
   "testDirectory": "test_suites",
   "test_suites": [
-    "purchase",
-    "authentication"
+    "purchase"
   ]
 }

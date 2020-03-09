@@ -5,7 +5,10 @@ import com.sparkit.staf.ast.StafTypes;
 import com.sparkit.staf.ast.types.AbstractStafObject;
 import com.sparkit.staf.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -41,5 +44,13 @@ public class StafDictionary extends AbstractStafObject {
 
     public void removeItemAt(String key) {
         objectMap.remove(key);
+    }
+
+    public static StafDictionary fromJsonMap(Map<String, Object> map) {
+        Map<String, AbstractStafObject> dictMap = new HashMap<>();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            dictMap.put(entry.getKey(), AbstractStafObject.fromObject(entry.getValue()));
+        }
+        return new StafDictionary(dictMap);
     }
 }

@@ -2,7 +2,9 @@ package com.sparkit.staf.runtime.libs;
 
 import com.sparkit.staf.ast.KeywordDeclaration;
 import com.sparkit.staf.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.runtime.interpreter.TestSuite;
 import com.sparkit.staf.runtime.libs.annotations.Keyword;
+import com.sparkit.staf.runtime.libs.dependencies.DependencyContainer;
 import com.sparkit.staf.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
 
@@ -17,12 +19,14 @@ public class KeywordLibrariesRepository {
     protected Map<String, KeywordDeclaration> userDefinedKeywords;
     protected Map<String, KeywordWrapper> builtinKeywordMap;
     protected Map<String, AbstractStafLibrary> libsInstancesMap;
+    protected DependencyContainer dependencyContainer;
 
-    public KeywordLibrariesRepository(Map<String, KeywordDeclaration> userDefinedKeywords, SymbolsTable globalSymTable) {
+    public KeywordLibrariesRepository(Map<String, KeywordDeclaration> userDefinedKeywords, SymbolsTable globalSymTable, DependencyContainer dependencyContainer) {
         this.userDefinedKeywords = userDefinedKeywords;
         this.globalSymTable = globalSymTable;
         builtinKeywordMap = new HashMap<>();
         libsInstancesMap = new HashMap<>();
+        this.dependencyContainer = dependencyContainer;
     }
 
     public Map<String, KeywordDeclaration> getUserDefinedKeywords() {
@@ -31,7 +35,9 @@ public class KeywordLibrariesRepository {
 
     public void registerLibrary(Class<? extends AbstractStafLibrary> libClass) throws KeywordAlreadyRegisteredException,
             InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        AbstractStafLibrary libInstance = LibraryFactory.build(libClass);
+
+
+        AbstractStafLibrary libInstance = LibraryFactory.build(libClass, dependencyContainer);
         if (libsInstancesMap.containsKey(libClass.getName())) {
             return;
         }

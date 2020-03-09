@@ -8,7 +8,6 @@ import com.sparkit.staf.ast.TestCaseDeclaration;
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.Map;
 
 public class StafScriptRunner {
@@ -48,6 +47,7 @@ public class StafScriptRunner {
             }
 
         } catch (Throwable e) {
+            LOG.error(e.getClass());
             LOG.error(e.getMessage());
             System.out.println("Fatal error script execution stopped");
             System.exit(1);

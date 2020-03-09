@@ -1,6 +1,7 @@
 package com.sparkit.staf.runtime.libs;
 
 import com.sparkit.staf.runtime.libs.annotations.Keyword;
+import com.sparkit.staf.runtime.libs.dependencies.DependencyContainer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,11 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractStafLibrary {
+    protected final DependencyContainer container;
     protected String libraryName;
     protected LibType type;
     protected Map<String, Method> keywordMethodsMap;
 
-    public AbstractStafLibrary() {
+    public AbstractStafLibrary(DependencyContainer container) {
+        this.container = container;
         keywordMethodsMap = new HashMap<>();
     }
 

@@ -2,11 +2,9 @@ package com.sparkit.staf.runtime.loader;
 
 import com.sparkit.staf.Main;
 import com.sparkit.staf.ast.StafFile;
-import com.sparkit.staf.runtime.interpreter.ImportsInterpreter;
-import com.sparkit.staf.runtime.interpreter.StafScriptBuilder;
-import com.sparkit.staf.runtime.interpreter.StafScriptRunner;
-import com.sparkit.staf.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.runtime.interpreter.*;
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.runtime.libs.dependencies.DependencyContainer;
 import com.sparkit.staf.runtime.loader.exceptions.TestSuiteMainScriptNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,10 +15,12 @@ public class TestLoader {
     private static final Logger logger = LogManager.getLogger(Main.class);
     private final IStafConfig config;
     private final IStafFileReader stafFileReader;
+    private final DependencyContainer dependencyContainer;
 
-    public TestLoader(IStafConfig config, IStafFileReader stafFileReader) {
+    public TestLoader(IStafConfig config, IStafFileReader stafFileReader, DependencyContainer dependencyContainer) {
         this.config = config;
         this.stafFileReader = stafFileReader;
+        this.dependencyContainer = dependencyContainer;
     }
 
     public void runTests() {
@@ -36,6 +36,8 @@ public class TestLoader {
 
     public void runTestScript(String mainFilePath, String testSuitePath, String testDirectory) throws TestSuiteMainScriptNotFoundException {
         logger.info("Running test suite : " + testSuitePath);
+        TestSuite testSuite = new TestSuite(testSuitePath, testDirectory);
+        dependencyContainer.register(testSuite);
         String fullPath = testDirectory + "/" + mainFilePath;
         StafFile scriptAST;
         try {
@@ -45,7 +47,7 @@ public class TestLoader {
         }
         SymbolsTable globalSymTable = new SymbolsTable();
         KeywordLibrariesRepository keywordsRepository = new KeywordLibrariesRepository(scriptAST.getKeywordDeclarationMap(),
-                globalSymTable);
+                globalSymTable, dependencyContainer);
         IStafScriptBuilder scriptBuilder = new StafScriptBuilder(stafFileReader, globalSymTable, keywordsRepository);
         ImportsInterpreter importsInterpreter = new ImportsInterpreter(scriptBuilder, keywordsRepository, fullPath);
 
