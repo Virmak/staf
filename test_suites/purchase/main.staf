@@ -3,10 +3,12 @@ IMPORTS
     IMPORT logger
     IMPORT json
 VARS
-    $dict = LOAD JSON("test.json")
+    $dict = READ JSON("test.json")
+    $oo = {hello: "world", arr: [1, 2, 3], test: 564654}
 KEYWORDS
     testTest()
-        LOG         ("testing achats")
+        LOG         ($dict.test)
+        WRITE JSON  ($oo, "new.json")
     END
 
 TEST CASES

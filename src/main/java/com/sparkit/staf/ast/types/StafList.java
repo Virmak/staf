@@ -33,6 +33,14 @@ public class StafList extends AbstractStafObject {
         return value;
     }
 
+    public List<Object> getEvaluatedList() {
+        List<Object> objectList = new ArrayList<>();
+        for (AbstractStafObject object : value) {
+            objectList.add(object.getValue());
+        }
+        return objectList;
+    }
+
     public void setList(List<AbstractStafObject> object) {
         this.value = object;
     }
@@ -47,6 +55,14 @@ public class StafList extends AbstractStafObject {
 
     public void removeItemAt(int index) {
         value.remove(index);
+    }
+
+    public JSONArray toJSON() {
+        JSONArray array = new JSONArray();
+        for (AbstractStafObject stafObject : value) {
+            array.add((stafObject).toJSON());
+        }
+        return array;
     }
 
     public static StafList fromJSONArray(JSONArray array) {

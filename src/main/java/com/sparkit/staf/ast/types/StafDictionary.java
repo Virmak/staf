@@ -34,6 +34,14 @@ public class StafDictionary extends AbstractStafObject {
         return objectMap;
     }
 
+    public Map<String, Object> getEvaluatedObjectMap() {
+        Map<String, Object> map = new HashMap<>();
+        for (Map.Entry<String, AbstractStafObject> entry : objectMap.entrySet()) {
+            map.put(entry.getKey(), entry.getValue().getValue());
+        }
+        return map;
+    }
+
     public void setObjectMap(Map<String, AbstractStafObject> objectMap) {
         this.objectMap = objectMap;
     }
@@ -46,7 +54,15 @@ public class StafDictionary extends AbstractStafObject {
         objectMap.remove(key);
     }
 
-    public static StafDictionary fromJsonMap(Map<String, Object> map) {
+    public JSONObject toJSON() {
+        JSONObject jsonObject = new JSONObject();
+        for (Map.Entry<String, AbstractStafObject> entry : objectMap.entrySet()) {
+            jsonObject.put(entry.getKey(), entry.getValue().toJSON());
+        }
+        return jsonObject;
+    }
+
+    public static StafDictionary fromMap(Map<String, Object> map) {
         Map<String, AbstractStafObject> dictMap = new HashMap<>();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             dictMap.put(entry.getKey(), AbstractStafObject.fromObject(entry.getValue()));

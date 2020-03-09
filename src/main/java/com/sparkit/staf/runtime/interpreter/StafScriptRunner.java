@@ -61,8 +61,8 @@ public class StafScriptRunner {
                 statement.execute(globalSymTable, null, keywordLibrariesRepository);
             } catch (Throwable e) {
                 LOG.error("IN TEST CASE : " + testCaseDeclaration.getName() + " | " + e.getMessage());
-
                 System.out.println("Fatal error script execution stopped");
+                e.printStackTrace();
                 System.exit(1);
             }
         }

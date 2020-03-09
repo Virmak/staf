@@ -45,9 +45,13 @@ public abstract class AbstractStafObject {
 
     public abstract Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable;
 
+    public Object toJSON() {
+        return value;
+    }
+
     public static AbstractStafObject fromObject(Object obj) {
         if (obj instanceof JSONObject) {
-            return StafDictionary.fromJsonMap((Map<String, Object>)obj);
+            return StafDictionary.fromMap((Map<String, Object>)obj);
         } else if (obj instanceof JSONArray) {
             return StafList.fromJSONArray((JSONArray)obj);
         } else if (obj instanceof String) {
