@@ -1,8 +1,6 @@
 package com.sparkit.staf.runtime.libs.builtin;
 
 import com.sparkit.staf.ast.types.AbstractStafObject;
-import com.sparkit.staf.ast.types.StafDictionary;
-import com.sparkit.staf.ast.types.StafList;
 import com.sparkit.staf.runtime.interpreter.TestSuite;
 import com.sparkit.staf.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.runtime.libs.annotations.Keyword;
@@ -10,14 +8,11 @@ import com.sparkit.staf.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.runtime.libs.dependencies.DependencyContainer;
 import com.sparkit.staf.runtime.libs.dependencies.exceptions.DependencyTypeNotFoundException;
 import com.sparkit.staf.runtime.libs.exceptions.JSONFileNotFoundException;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
-import java.util.Map;
 
 @StafLibrary(name = "json", builtin = true)
 public class JsonLibrary extends AbstractStafLibrary {

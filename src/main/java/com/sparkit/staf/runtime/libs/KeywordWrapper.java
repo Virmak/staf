@@ -1,11 +1,16 @@
 package com.sparkit.staf.runtime.libs;
 
+import com.sparkit.staf.Main;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
 public class KeywordWrapper {
+    private static final Logger LOG = LogManager.getLogger(Main.class);
     private AbstractStafLibrary libInstance;
     private Method method;
 
@@ -28,8 +33,8 @@ public class KeywordWrapper {
         }  catch (InvocationTargetException ex) {
             System.err.println("An InvocationTargetException was caught!");
             Throwable cause = ex.getCause();
-            System.out.format("Invocation of %s failed because of: %s%n",
-                    method.getName(), cause.getMessage());
+            LOG.error(String.format("Invocation of %s failed because of: %s%n",
+                    method.getName(), cause.getMessage()));
             throw ex.getCause();
         }
     }

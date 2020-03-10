@@ -16,17 +16,27 @@ import java.util.List;
 public class StafConfig implements IStafConfig {
     private JSONParser parser;
     private String testDirectory;
+    private String logDirectory;
     private List<String> testSuites = new ArrayList<>();
 
     public StafConfig(JSONParser parser) {
         this.parser = parser;
     }
 
+    public String getLogDirectory() {
+        return logDirectory;
+    }
+
+    public void setLogDirectory(String logDirectory) {
+        this.logDirectory = logDirectory;
+    }
+
     public void readConfig(String configFilePath) throws ConfigFileNotFoundException {
 
         try (Reader reader = new FileReader(configFilePath)) {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
-            testDirectory= (String) jsonObject.get("testDirectory");
+            testDirectory = (String) jsonObject.get("testDirectory");
+            logDirectory = (String) jsonObject.get("logDirectory");
             JSONArray msg = (JSONArray) jsonObject.get("test_suites");
             Iterator<String> iterator = msg.iterator();
             iterator.forEachRemaining(testSuites::add);

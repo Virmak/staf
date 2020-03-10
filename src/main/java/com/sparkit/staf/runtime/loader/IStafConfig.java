@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface IStafConfig {
     public String getTestDirectory();
+    public String getLogDirectory();
     public List<String> testSuites();
     public void readConfig(String configFilePath) throws ConfigFileNotFoundException;
 }

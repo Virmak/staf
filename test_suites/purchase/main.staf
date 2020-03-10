@@ -1,14 +1,25 @@
 TEST SUITE "Module Achats"
 IMPORTS
     IMPORT logger
-    IMPORT json
+    IMPORT ws
 VARS
-    $dict = READ JSON("test.json")
-    $oo = {hello: "world", arr: [1, 2, 3], test: 564654}
+
 KEYWORDS
     testTest()
-        LOG         ($dict.test)
-        WRITE JSON  ($oo, "new.json")
+        get(
+            "https://jsonplaceholder.typicode.com/todos/1",
+            "userId",
+            "equalTo",
+            1,
+            200
+        )
+        post(
+            "https://jsonplaceholder.typicode.com/posts",
+            { title: "foo", body: "bar", userId: 1 },
+            "title",
+            "equalTo", "foo",
+            201
+        )
     END
 
 TEST CASES

@@ -7,6 +7,7 @@ import com.sparkit.staf.runtime.loader.IStafFileReader;
 import com.sparkit.staf.runtime.loader.StafConfig;
 import com.sparkit.staf.runtime.loader.TestLoader;
 import com.sparkit.staf.runtime.loader.exceptions.ConfigFileNotFoundException;
+import org.apache.logging.log4j.LogManager;
 import org.json.simple.parser.JSONParser;
 
 public class Main {
@@ -20,6 +21,14 @@ public class Main {
         }
         IStafConfig stafConfig = new StafConfig(parser);
         stafConfig.readConfig(configFile);
+        if (stafConfig.getLogDirectory() != null) {
+            System.setProperty("logFilename", stafConfig.getLogDirectory());
+        } else {
+            System.setProperty("logFilename", "logs/app.log");
+        }
+        org.apache.logging.log4j.core.LoggerContext ctx =
+                (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);
+        ctx.reconfigure();
         IStafFileReader stafFileReader = new StafFileReader();
         TestLoader loader = new TestLoader(stafConfig, stafFileReader, container);
         loader.runTests();

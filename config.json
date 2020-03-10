@@ -1,6 +1,7 @@
 {
   "testDirectory": "test_suites",
+  "logDirectory": "logs/app.log",
   "test_suites": [
-    "authentication"
+    "purchase"
   ]
 }
