@@ -54,10 +54,17 @@ To write the tests you need to define a specific structure.
 - Create a ***steps*** folder
 - Write a ***\*.steps*** file to define keywords that uses **.page** variables and keywords to replicate user actions
 
-## Builtin keywords libraries
+## Built-in keywords libraries
 **STAF** framework uses libraries as a way to extend the framework capabilities in an easy way. The framework comes with a number of built-in libraries:
 
 ### Selenium Library
+
+Usage : 
+```
+IMPORT selenium
+```
+Keywords
+
 | Keyword       | Arguments | Description |
 |---------------|-----------|-------------|
 |Open browser   | `browser`: ***string***|Open browser|
@@ -74,6 +81,12 @@ To write the tests you need to define a specific structure.
 
 ## Logger library
 
+Usage : 
+```
+IMPORT logger
+```
+Keywords
+
 | Keyword       | Arguments | Description |
 |---------------|-----------|-------------|
 |Log            | `data`: ***string*** | Log to debug channel |
@@ -83,12 +96,24 @@ To write the tests you need to define a specific structure.
 
 ## JSON library
 
+Usage : 
+```
+IMPORT json
+```
+Keywords
+
 | Keyword       | Arguments | Description |
 |---------------|-----------|-------------|
 |Read JSON      | `filePath`: ***string*** | Read a JSON file into a dictionary variable|
 |Write JSON     | `object`: ***dictionary &#124; list***, `filePath`: ***string***| Write dictionary or list to a json file
 
 ## Web service library
+
+Usage : 
+```
+IMPORT ws
+```
+Keywords
 
 | Keyword       | Arguments | Description |
 |---------------|-----------|-------------|
@@ -105,7 +130,7 @@ A *.staf* file have 4 sections :
 4. **TEST CASES**: Test cases declaration
 
 
-*All sections are optional, a **.staf** file can contain one or more section from above*
+> All sections are optional, a **.staf** file can contain one or more section from above
 
 ### 1. IMPORTS Section
 
@@ -130,11 +155,26 @@ $element = "value"
 
 ### 3. KEYWORDS Section
 
-In this section, we will write user-defined keywords. A keyword is just like a function in programming languages, it may have arguments and a return value. Example :
+In this section, we will write user-defined keywords. A keyword is just like a function in programming languages, it may have arguments and a return value. A keyword is defined as follow :
+The keyword name can have spaces, then we define arguments inside the parenthesis. The body of the keyword may contain any type of statement, `Assignment`, `Keyword Call`, `For Loop`, `Run keyword if` statement. If the keyword has a return value, we use `RETURN $val`. If the keyword does not return anything we write `END` to close the keyword declaration
+ 
+Example :
 ```
-User Keyword Name($arg1, $arg2)
+User Defined Keyword Name($arg1, $arg2)
     STATEMENTS*
 END
+```
+
+### 4. TEST CASES
+
+Test cases are very similar to keywords, because both of their bodies have statements like `Assignment`, `Keyword Call`, `For Loop`... The only difference between them is that test cases don't have arguments nor return value. To write a test case just give it a name followed by `:` char. Example: `Test case name:`, then the body statements then use the `END` keyword
+
+Example : 
+```
+Test case name:
+    STATEMENTS*
+END
+
 ```
 
 ## Contributing
