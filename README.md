@@ -174,7 +174,34 @@ Example :
 Test case name:
     STATEMENTS*
 END
+```
 
+## STAF Data types
+
+The STAF language defines primitive types and data structures. 
+
+### Primitive data types
+
+- **String**: to define a string literal you can use `"` or `'` Example : `"string literal"`
+- **Integer**: to define an integer literal. Example: `132`
+- **Double**: to define a double literal. Example: `2.50`
+- **Boolean**: can have `true` or `false`
+
+### Data structure
+
+- **Dictionary**: to write a dictionary literal use: `{ item: "value", "item2": 987 }`
+- **List**: to write a list literal use: `[1, 2, "3"]` 
+> List can have different items types
+
+### FOR .. IN loop
+
+The for-in loop is used to loop through a list items.
+
+Example:
+```
+FOR $i IN $list
+    STATEMENT*
+END
 ```
 
 ## Contributing
