@@ -1,5 +1,6 @@
-package com.sparkit.staf.runtime.loader;
+package com.sparkit.staf.runtime.config;
 
+import com.sparkit.staf.runtime.loader.IStafConfig;
 import com.sparkit.staf.runtime.loader.exceptions.ConfigFileNotFoundException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
