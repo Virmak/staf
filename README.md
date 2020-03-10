@@ -60,19 +60,37 @@ To write the tests you need to define a specific structure.
 ### Selenium Library
 | Keyword       | Arguments | Description |
 |---------------|-----------|-------------|
-|Open browser   | browser: ***string***|Open browser|
+|Open browser   | `browser`: ***string***|Open browser|
 |Close browser  |     | Close browser |
-|Go to          | url: ***string***   | Open page with ***url***
-|Input text     | selector: ***string*** | Set input text |
-|Click element  | selector: ***string*** | Click specified element|
-|Input value    | selector: ***string*** | Get input value attribute|
-| Capture page screenshot | filename: ***string***| Take screenshot|
-|Wait until element is visible | selector: ***string*** [timeout: ***int*** = 10 seconds] | This will make selenium wait for ***timeout*** seconds (default 10) until the element is visible|
-|Wait until element is enabled | selector: ***string*** [timeout: ***int*** = 10 seconds] | This will make selenium wait for ***timeout*** seconds (default 10) until the element is enabled|
-|Element should be visible| selector: ***string***|Element should be visible or an exception is raised|
-|Element should contain|expected: ***string*** [message: ***string***]| Element should contain expected text or an error with ***message*** is raised|
+|Go to          | `url`: ***string***   | Open page with ***url***
+|Input text     | `selector`: ***string*** | Set input text |
+|Click element  | `selector`: ***string*** | Click specified element|
+|Input value    | `selector`: ***string*** | Get input value attribute|
+| Capture page screenshot | `filename`: ***string***| Take screenshot|
+|Wait until element is visible | `selector`: ***string*** [`timeout`: ***int*** = 10 seconds] | This will make selenium wait for ***timeout*** seconds (default 10) until the element is visible|
+|Wait until element is enabled | `selector`: ***string*** [`timeout`: ***int*** = 10 seconds] | This will make selenium wait for ***timeout*** seconds (default 10) until the element is enabled|
+|Element should be visible| `selector`: ***string***|Element should be visible or an exception is raised|
+|Element should contain|`expected`: ***string*** [`message`: ***string***]| Element should contain expected text or an error with custom ***message*** is raised|
 
+## Logger library
+| Keyword       | Arguments | Description |
+|---------------|-----------|-------------|
+|Log            | `data`: ***string*** | Log to debug channel |
+|Log info       | `data`: ***string*** | Log to info channel |
+|Log warn       | `data`: ***string*** | Log to warn channel |
+|Log error      | `data`: ***string*** | Log to error channel |
 
+## JSON library
+| Keyword       | Arguments | Description |
+|---------------|-----------|-------------|
+|Read JSON      | `filePath`: ***string*** | Read a JSON file into a dictionary variable|
+|Write JSON     | `object`: ***dictionary &#124; list***, `filePath`: ***string***| Write dictionary or list to a json file
+
+## Web service library
+| Keyword       | Arguments | Description |
+|---------------|-----------|-------------|
+|Get            | `url`: ***string***, `jsonPath`: ***string***, `condition`: ***string***, `expected`: ***object***, `expectedStatusCode`: ***int*** | Make a http GET request and verify if condition with expected value and status code are valid|
+|Post           | `url`: ***string***, `postDataDict`: ***dictionary***, `jsonPath`: ***string***, `condition`: ***string***, `expected`: ***object***, `expectedStatusCode`: ***int*** | Make a http POST request with a json payload if specified, and verify if condition with expected value and status code are valid|
 
 
 ## Contributing
