@@ -73,6 +73,7 @@ To write the tests you need to define a specific structure.
 |Element should contain|`expected`: ***string*** [`message`: ***string***]| Element should contain expected text or an error with custom ***message*** is raised|
 
 ## Logger library
+
 | Keyword       | Arguments | Description |
 |---------------|-----------|-------------|
 |Log            | `data`: ***string*** | Log to debug channel |
@@ -81,17 +82,60 @@ To write the tests you need to define a specific structure.
 |Log error      | `data`: ***string*** | Log to error channel |
 
 ## JSON library
+
 | Keyword       | Arguments | Description |
 |---------------|-----------|-------------|
 |Read JSON      | `filePath`: ***string*** | Read a JSON file into a dictionary variable|
 |Write JSON     | `object`: ***dictionary &#124; list***, `filePath`: ***string***| Write dictionary or list to a json file
 
 ## Web service library
+
 | Keyword       | Arguments | Description |
 |---------------|-----------|-------------|
 |Get            | `url`: ***string***, `jsonPath`: ***string***, `condition`: ***string***, `expected`: ***object***, `expectedStatusCode`: ***int*** | Make a http GET request and verify if condition with expected value and status code are valid|
 |Post           | `url`: ***string***, `postDataDict`: ***dictionary***, `jsonPath`: ***string***, `condition`: ***string***, `expected`: ***object***, `expectedStatusCode`: ***int*** | Make a http POST request with a json payload if specified, and verify if condition with expected value and status code are valid|
 
+## The STAF language
+STAF is a domain-specific language to write tests in an easy language similar to writing English. 
+### Sections
+A *.staf* file have 4 sections : 
+1. **IMPORTS**: In this section, you can import libraries and **.staf** files
+2. **VARS**: Variables declaration section
+3. **KEYWORDS**: Keywords declaration
+4. **TEST CASES**: Test cases declaration
+
+
+*All sections are optional, a **.staf** file can contain one or more section from above*
+
+### 1. IMPORTS Section
+
+In this section, we define imported .staf files and libraries. 
+
+To import a staf file use 
+```
+IMPORT "./relative_path.staf"
+```
+
+To import a built-in library use
+```
+IMPORT selenium
+```
+
+### 2. VARS Section
+
+In this section, we declare variables. A staf variable must begin with a '$' sign, followed by alphanumeric characters. A variable declaration is just an assignment. Example :
+```
+$element = "value"
+```
+
+### 3. KEYWORDS Section
+
+In this section, we will write user-defined keywords. A keyword is just like a function in programming languages, it may have arguments and a return value. Example :
+```
+User Keyword Name($arg1, $arg2)
+    STATEMENTS*
+END
+```
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
