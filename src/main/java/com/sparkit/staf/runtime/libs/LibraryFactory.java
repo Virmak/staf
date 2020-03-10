@@ -1,25 +1,18 @@
 package com.sparkit.staf.runtime.libs;
 
-import com.sparkit.staf.runtime.libs.annotations.LibDependency;
 import com.sparkit.staf.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.runtime.libs.dependencies.DependencyContainer;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class LibraryFactory {
-    public static AbstractStafLibrary build(Class<? extends AbstractStafLibrary> libraryClass, DependencyContainer deps)
+    public static AbstractStafLibrary build(Class<? extends AbstractStafLibrary> libraryClass, DependencyContainer container)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
         StafLibrary libraryClassAnnotation = libraryClass.getAnnotation(StafLibrary.class);
 
 
-        AbstractStafLibrary libraryInstance = (AbstractStafLibrary) libraryClass.getConstructors()[0].newInstance(deps);
+        AbstractStafLibrary libraryInstance = (AbstractStafLibrary) libraryClass.getConstructors()[0].newInstance(container);
         libraryInstance.setLibraryName(libraryClassAnnotation.name());
         if (libraryClassAnnotation.builtin()) {
             libraryInstance.setType(LibType.BUILT_IN);
