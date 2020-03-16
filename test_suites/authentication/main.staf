@@ -20,14 +20,14 @@ TEST CASES
     Login with valid credentials:
           Log ("starting tests")
           Given Login page opened ()
-          WHEN Input username and password    ($VALID_USERNAME, $VALID_PASSWORD)
+          WHEN Input username and password      ($VALID_USERNAME, $VALID_PASSWORD)
           THEN Home page Opened ()
           Log("test valid login passed")
       END
 
     Login with invalid credentials:
         Given Login page opened ()
-        WHEN Input username and password    ($VALID_USERNAME, $INVALID_PASSWORD)
+        WHEN Input username and password        ($VALID_USERNAME, $INVALID_PASSWORD)
         THEN Error message displayed ()
         Log("test invalid login passed")
     END

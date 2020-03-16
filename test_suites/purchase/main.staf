@@ -8,7 +8,7 @@ KEYWORDS
     testTest()
         get(
             "https://jsonplaceholder.typicode.com/todos/1",
-            "user",
+            "userId",
             "equalTo",
             1,
             200
@@ -25,4 +25,8 @@ KEYWORDS
 TEST CASES
     first:
         testTest()
+    END
+
+    second:
+        Log     ("executing the second test")
     END
