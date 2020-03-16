@@ -54,7 +54,7 @@ keyword_body
     ;
 
 statement
-    : (GIVEN | WHEN | THEN)? (assignment | keyword_call | for_stat | run_keyword_if)
+    : (GIVEN | WHEN | THEN | AND)? (assignment | keyword_call | for_stat | run_keyword_if)
     ;
 
 run_keyword_if
@@ -160,7 +160,7 @@ addop
     ;
 
 binop
-    : AND | OR | EQUAL EQUAL | LT | GT | LTE | GTE | NE
+    : AND_OP | OR | EQUAL EQUAL | LT | GT | LTE | GTE | NE
     ;
 
 number
@@ -212,7 +212,7 @@ LTE     : '<=';
 GTE     : '>=';
 NE      : '!=';
 NOT     : '!';
-AND     : '&';
+AND_OP  : '&';
 OR      : O R;
 
 LPARENT : '(';
@@ -311,7 +311,9 @@ WHEN
 THEN
     : T H E N
     ;
-
+AND
+    : A N D
+    ;
 IDENTIFIER
     : [A-Za-z0-9_]+
     ;
