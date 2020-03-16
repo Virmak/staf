@@ -49,6 +49,7 @@ public class StafScriptRunner {
         } catch (Throwable e) {
             LOG.error(e.getClass());
             LOG.error(e.getMessage());
+            e.printStackTrace();
             System.out.println("Fatal error script execution stopped");
             System.exit(1);
         }

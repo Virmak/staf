@@ -28,8 +28,8 @@ public class StafScriptBuilder implements IStafScriptBuilder {
 
     @Override
     public void load(String filePath, ImportsInterpreter importsInterpreter) throws Throwable {
-        String fileName = filePath.substring(filePath.lastIndexOf("/"));
-        if (loadedFilesList.contains(fileName)) {
+        String currentDirectory = filePath.substring(0, filePath.lastIndexOf("/"));
+        if (loadedFilesList.contains(filePath)) {
             return;
         }
         System.out.println("Parsing : " + filePath);
@@ -38,7 +38,7 @@ public class StafScriptBuilder implements IStafScriptBuilder {
         Map<String, Assignment> varsMap = stafFileAST.getVariableDeclarationMap();
         Map<String, KeywordDeclaration> keywordsMap = stafFileAST.getKeywordDeclarationMap();
         if (imports != null) {
-            importsInterpreter.loadImports(imports, importsInterpreter.getTestsDirectory());
+            importsInterpreter.loadImports(imports, currentDirectory);
         }
         if (varsMap != null) {
             globalSymTable.addVariablesMap(varsMap, keywordLibrariesRepository);
@@ -46,6 +46,6 @@ public class StafScriptBuilder implements IStafScriptBuilder {
         if (keywordsMap != null) {
             keywordLibrariesRepository.addUserDefinedKeywords(keywordsMap);
         }
-        loadedFilesList.add(fileName);
+        loadedFilesList.add(filePath);
     }
 }

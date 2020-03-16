@@ -34,7 +34,7 @@ test_case_declaration
     ;
 
 test_case_body
-    : statement*
+    : ((GIVEN | WHEN | THEN | 'AND')? statement)*
     ;
 // End test cases ***/
 
@@ -54,7 +54,7 @@ keyword_body
     ;
 
 statement
-    : (GIVEN | WHEN | THEN | AND)? (assignment | keyword_call | for_stat | run_keyword_if)
+    : (assignment | keyword_call | for_stat | run_keyword_if)
     ;
 
 run_keyword_if
@@ -62,7 +62,7 @@ run_keyword_if
     ;
 
 keyword_call
-    : keyword_name keyword_call_arguments?
+    : keyword_name keyword_call_arguments
     ;
 
 keyword_call_arguments
@@ -74,11 +74,11 @@ keyword_return_stat
     ;
 
 keyword_name
-    : IDENTIFIER (SPACE* IDENTIFIER)*
+    : IDENTIFIER (IDENTIFIER)*
     ;
 
 keyword_declaration_arguments
-    : LPARENT variable? (COMMA variable)* RPARENT?
+    : LPARENT (variable (COMMA variable)*)? RPARENT
     ;
 
 // End keywords section ***/
@@ -88,7 +88,7 @@ assignment
     ;
 
 for_stat
-    : FOR variable IN (complex_object | variable_reference | keyword_call)
+    : FOR variable ':' (complex_object | variable_reference | keyword_call)
       for_stat_body
       END FOR
     ;
@@ -250,9 +250,6 @@ SPACE
 NL: ('\r\n' | '\r' | '\n') -> skip;
 
 // RESERVED KEYWORDS
-IN
-    :   I N
-    ;
 
 TEST_SUITE
     : T E S T SPACE* S U I T E SPACE*
@@ -311,9 +308,7 @@ WHEN
 THEN
     : T H E N
     ;
-AND
-    : A N D
-    ;
+
 IDENTIFIER
     : [A-Za-z0-9_]+
     ;

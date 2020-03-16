@@ -29,7 +29,7 @@ public class ImportsInterpreter {
     }
 
     /* Load imports */
-    public void loadImports(List<ImportStatement> importStatements, String testsDirectory) throws Throwable {
+    public void loadImports(List<ImportStatement> importStatements, String currentDirectory) throws Throwable {
         Map<String, Class<? extends AbstractStafLibrary>> librariesClassesMap = getBuiltinLibrariesClasses();
         for (ImportStatement statement : importStatements) {
             if (statement.getType() == ImportTypes.BUILT_IN_LIBRARY) {
@@ -37,8 +37,8 @@ public class ImportsInterpreter {
                         + statement.getPath().toLowerCase().substring(1) + "Library";
                 keywordsRepository.registerLibrary(librariesClassesMap.get(libClassName));
             } else {
-                File directory = new File(testsDirectory);
-                File b = new File(directory, statement.getPath().replaceAll("\"", ""));
+                File directory = new File(currentDirectory);
+                File b = new File(directory, statement.getPath().replaceAll("[\"']", ""));
                 String absolute = b.getCanonicalPath(); // may throw IOException
                 scriptBuilder.load(absolute, this);
             }

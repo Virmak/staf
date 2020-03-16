@@ -49,7 +49,7 @@ public class TestLoader {
         KeywordLibrariesRepository keywordsRepository = new KeywordLibrariesRepository(scriptAST.getKeywordDeclarationMap(),
                 globalSymTable, dependencyContainer);
         IStafScriptBuilder scriptBuilder = new StafScriptBuilder(stafFileReader, globalSymTable, keywordsRepository);
-        ImportsInterpreter importsInterpreter = new ImportsInterpreter(scriptBuilder, keywordsRepository, fullPath);
+        ImportsInterpreter importsInterpreter = new ImportsInterpreter(scriptBuilder, keywordsRepository, testDirectory);
 
         StafScriptRunner interpreter = new StafScriptRunner(importsInterpreter, scriptAST, globalSymTable, keywordsRepository,
                 testDirectory + "/" + testSuitePath);
