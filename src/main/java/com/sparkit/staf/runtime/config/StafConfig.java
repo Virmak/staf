@@ -38,7 +38,7 @@ public class StafConfig implements IStafConfig {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             testDirectory = (String) jsonObject.get("testDirectory");
             logDirectory = (String) jsonObject.get("logDirectory");
-            JSONArray msg = (JSONArray) jsonObject.get("test_suites");
+            JSONArray msg = (JSONArray) jsonObject.get("testSuites");
             Iterator<String> iterator = msg.iterator();
             iterator.forEachRemaining(testSuites::add);
         } catch (IOException | ParseException e) {
