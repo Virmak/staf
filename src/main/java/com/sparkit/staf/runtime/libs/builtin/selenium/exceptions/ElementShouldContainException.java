@@ -1,6 +1,8 @@
 package com.sparkit.staf.runtime.libs.builtin.selenium.exceptions;
 
-public class ElementShouldContainException extends Exception {
+import com.sparkit.staf.runtime.libs.exceptions.AbstractStafLibraryException;
+
+public class ElementShouldContainException extends AbstractStafLibraryException {
     public ElementShouldContainException(String message) {
         super(message);
     }
