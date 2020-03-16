@@ -212,13 +212,13 @@ The STAF language defines primitive types and data structures.
 - **List**: to write a list literal use: `[1, 2, "3"]` 
 > The same list can have different items types  
   
-### FOR .. IN loop  
+### FOR loop  
   
 The for-in loop is used to loop through a list items.  
   
 Example:  
 ```  
-FOR $i IN $list  
+FOR $i : $list  
     STATEMENT*  
 END  
 ```  
