@@ -20,6 +20,7 @@ public class StafConfig implements IStafConfig {
     private String projectDescription;
     private String testDirectory;
     private String logDirectory;
+    private String reportingDirectory;
     private List<String> testSuites = new ArrayList<>();
 
     public StafConfig(JSONParser parser) {
@@ -42,6 +43,7 @@ public class StafConfig implements IStafConfig {
             projectDescription = (String) jsonObject.get("projectDescription");
             testDirectory = (String) jsonObject.get("testDirectory");
             logDirectory = (String) jsonObject.get("logDirectory");
+            reportingDirectory = (String) jsonObject.get("reportingDirectory");
             JSONArray msg = (JSONArray) jsonObject.get("testSuites");
             Iterator<String> iterator = msg.iterator();
             iterator.forEachRemaining(testSuites::add);
@@ -58,6 +60,11 @@ public class StafConfig implements IStafConfig {
     @Override
     public String getProjectDescription() {
         return projectDescription;
+    }
+
+    @Override
+    public String getReportingDirectory() {
+        return reportingDirectory;
     }
 
     @Override
