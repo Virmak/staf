@@ -2,31 +2,20 @@ TEST SUITE "Module Achats"
 IMPORTS
     IMPORT logger
     IMPORT ws
+    IMPORT '../authentication/steps/login.steps'
 VARS
-
+    $username = 'demo@spark-it.fr'
+    $password = '00000000'
+    $loginUrl = 'http://192.168.1.230:4422/login'
 KEYWORDS
-    testTest()
-        get(
-            "https://jsonplaceholder.typicode.com/todos/1",
-            "userId",
-            "equalTo",
-            1,
-            200
-        )
-        post(
-            "https://jsonplaceholder.typicode.com/posts",
-            { title: "foo", body: "bar", userId: 1 },
-            "title",
-            "equalTo", "foo",
-            201
-        )
+    User Logged in()
+        Open browser                    ('chrome')
+        Go to                           ($loginUrl)
+        Input username and password     ($username, $password)
     END
 
 TEST CASES
     first:
-        testTest()
-    END
+        GIVEN   User Logged in()
 
-    second:
-        Log     ("executing the second test")
     END

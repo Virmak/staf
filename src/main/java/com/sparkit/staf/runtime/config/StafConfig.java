@@ -16,6 +16,8 @@ import java.util.List;
 
 public class StafConfig implements IStafConfig {
     private JSONParser parser;
+    private String projectName;
+    private String projectDescription;
     private String testDirectory;
     private String logDirectory;
     private List<String> testSuites = new ArrayList<>();
@@ -36,6 +38,8 @@ public class StafConfig implements IStafConfig {
 
         try (Reader reader = new FileReader(configFilePath)) {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            projectName = (String) jsonObject.get("projectName");
+            projectDescription = (String) jsonObject.get("projectDescription");
             testDirectory = (String) jsonObject.get("testDirectory");
             logDirectory = (String) jsonObject.get("logDirectory");
             JSONArray msg = (JSONArray) jsonObject.get("testSuites");
@@ -44,6 +48,16 @@ public class StafConfig implements IStafConfig {
         } catch (IOException | ParseException e) {
             throw new ConfigFileNotFoundException();
         }
+    }
+
+    @Override
+    public String getProjectName() {
+        return projectName;
+    }
+
+    @Override
+    public String getProjectDescription() {
+        return projectDescription;
     }
 
     @Override

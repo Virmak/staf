@@ -23,7 +23,7 @@ TEST CASES
           WHEN Input username and password      ($VALID_USERNAME, $VALID_PASSWORD)
           THEN Home page Opened ()
           Log("test valid login passed")
-      END
+    END
 
     Login with invalid credentials:
         Given Login page opened ()
