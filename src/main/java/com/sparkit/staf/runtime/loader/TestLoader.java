@@ -6,16 +6,19 @@ import com.sparkit.staf.runtime.interpreter.*;
 import com.sparkit.staf.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.runtime.libs.dependencies.DependencyContainer;
 import com.sparkit.staf.runtime.loader.exceptions.TestSuiteMainScriptNotFoundException;
+import com.sparkit.staf.runtime.reports.TestCaseReport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.List;
 
 public class TestLoader {
     private static final Logger logger = LogManager.getLogger(Main.class);
     private final IStafConfig config;
     private final IStafFileReader stafFileReader;
     private final DependencyContainer dependencyContainer;
+    private List<TestCaseReport> reports;
 
     public TestLoader(IStafConfig config, IStafFileReader stafFileReader, DependencyContainer dependencyContainer) {
         this.config = config;
@@ -23,7 +26,7 @@ public class TestLoader {
         this.dependencyContainer = dependencyContainer;
     }
 
-    public void runTests() {
+    public List<TestCaseReport> runTests() {
         String testDirectory = config.getTestDirectory();
         for (String testSuite : config.testSuites()) {
             try {
@@ -32,6 +35,8 @@ public class TestLoader {
                 e.printStackTrace();
             }
         }
+
+        return reports;
     }
 
     public void runTestScript(String mainFilePath, String testSuitePath, String testDirectory) throws TestSuiteMainScriptNotFoundException {
@@ -51,8 +56,12 @@ public class TestLoader {
         IStafScriptBuilder scriptBuilder = new StafScriptBuilder(stafFileReader, globalSymTable, keywordsRepository);
         ImportsInterpreter importsInterpreter = new ImportsInterpreter(scriptBuilder, keywordsRepository, testDirectory);
 
-        StafScriptRunner interpreter = new StafScriptRunner(importsInterpreter, scriptAST, globalSymTable, keywordsRepository,
-                testDirectory + "/" + testSuitePath);
-        interpreter.run();
+        StafScriptInterpreter interpreter = new StafScriptInterpreter(importsInterpreter, scriptAST, globalSymTable, keywordsRepository,
+                testDirectory + "/" + testSuitePath, testSuite.getTestSuiteName());
+        reports = interpreter.run();
+    }
+
+    public List<TestCaseReport> getReports() {
+        return reports;
     }
 }

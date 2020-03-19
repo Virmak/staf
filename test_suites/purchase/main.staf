@@ -1,21 +1,22 @@
 TEST SUITE "Module Achats"
 IMPORTS
+    IMPORT selenium
     IMPORT logger
     IMPORT ws
-    IMPORT '../authentication/steps/login.steps'
 VARS
-    $username = 'demo@spark-it.fr'
-    $password = '00000000'
-    $loginUrl = 'http://192.168.1.230:4422/login'
+    $url = 'https://google.com'
 KEYWORDS
-    User Logged in()
+    Open google page()
         Open browser                    ('chrome')
-        Go to                           ($loginUrl)
-        Input username and password     ($username, $password)
+        Go to                           ($url)
+        Input Text                      ('name:q', 'test automation')
     END
 
 TEST CASES
     first:
-        GIVEN   User Logged in()
+        GIVEN   Open google page()
+    END
 
+    second test:
+        Close browser()
     END
