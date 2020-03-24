@@ -1,10 +1,15 @@
 package com.sparkit.staf.core.ast;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class TestCaseDeclaration {
     private String name;
     private List<IStatement> statements;
+    private int order;
+    private static int instanceCount;
 
     public TestCaseDeclaration(String name, List<IStatement> statements) {
         this.name = name;
@@ -12,21 +17,5 @@ public class TestCaseDeclaration {
     }
 
     public TestCaseDeclaration() {
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<IStatement> getStatements() {
-        return statements;
-    }
-
-    public void setStatements(List<IStatement> statements) {
-        this.statements = statements;
     }
 }

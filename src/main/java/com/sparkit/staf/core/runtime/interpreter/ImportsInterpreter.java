@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class ImportsInterpreter {
-    public final String libsPackage = "com.sparkit.staf.runtime.libs.builtin";
+    public final String libsPackage = "com.sparkit.staf.core.runtime.libs.builtin";
     private final IStafScriptBuilder scriptBuilder;
     private final KeywordLibrariesRepository keywordsRepository;
     private final String testsDirectory;
