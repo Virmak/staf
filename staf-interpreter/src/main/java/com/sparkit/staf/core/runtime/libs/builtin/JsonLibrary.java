@@ -3,12 +3,7 @@ package com.sparkit.staf.core.runtime.libs.builtin;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
-<<<<<<< HEAD:staf-interpreter/src/main/java/com/sparkit/staf/core/core/runtime/libs/builtin/JsonLibrary.java
-import com.sparkit.staf.core.runtime.libs.dependencies.DependencyContainer;
-import com.sparkit.staf.core.runtime.libs.dependencies.exceptions.DependencyTypeNotFoundException;
-=======
 import com.sparkit.staf.core.runtime.loader.TestContainer;
->>>>>>> 7a82d8117d101f54165fa8a08889696c97e79217:staf-interpreter/src/main/java/com/sparkit/staf/core/runtime/libs/builtin/JsonLibrary.java
 import com.sparkit.staf.core.runtime.libs.exceptions.JSONFileNotFoundException;
 import com.sparkit.staf.core.runtime.interpreter.TestSuite;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;

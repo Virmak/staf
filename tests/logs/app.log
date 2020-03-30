@@ -125,3 +125,19 @@ Session ID: 057739897140fa80ef99920cc689c42f
 2020-03-30 23:00:41.256 [http-nio-8080-exec-2] DEBUG com.sparkit.staf.core.Main - starting tests
 2020-03-30 23:01:29.982 [http-nio-8080-exec-2] DEBUG com.sparkit.staf.core.Main - test valid login passed
 2020-03-30 23:01:29.982 [http-nio-8080-exec-2] INFO  com.sparkit.staf.core.Main - Finished executing test case : Loginwithvalidcredentials
+2020-03-30 23:05:03.428 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 23:05:05.218 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-30 23:05:06.386 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Finished executing test case : SETUP
+2020-03-30 23:05:06.387 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-30 23:05:55.166 [http-nio-8080-exec-1] DEBUG com.sparkit.staf.core.Main - test invalid login passed
+2020-03-30 23:05:55.166 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Finished executing test case : Loginwithinvalidcredentials
+2020-03-30 23:05:55.166 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-30 23:05:55.688 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Finished executing test case : SETUP
+2020-03-30 23:05:55.688 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-30 23:05:55.688 [http-nio-8080-exec-1] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-30 23:06:21.354 [http-nio-8080-exec-1] DEBUG com.sparkit.staf.core.Main - test valid login passed
+2020-03-30 23:06:21.354 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Finished executing test case : Loginwithvalidcredentials
+2020-03-30 23:06:21.354 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-30 23:06:35.006 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-30 23:06:35.007 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.NullPointerException
+2020-03-30 23:06:35.007 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - null

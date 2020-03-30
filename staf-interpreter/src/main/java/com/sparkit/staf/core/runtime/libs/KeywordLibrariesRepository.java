@@ -3,11 +3,7 @@ package com.sparkit.staf.core.runtime.libs;
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
-<<<<<<< HEAD:staf-interpreter/src/main/java/com/sparkit/staf/core/core/runtime/libs/KeywordLibrariesRepository.java
-import com.sparkit.staf.core.runtime.libs.dependencies.DependencyContainer;
-=======
 import com.sparkit.staf.core.runtime.loader.TestContainer;
->>>>>>> 7a82d8117d101f54165fa8a08889696c97e79217:staf-interpreter/src/main/java/com/sparkit/staf/core/runtime/libs/KeywordLibrariesRepository.java
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
 

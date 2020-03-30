@@ -1,19 +1,15 @@
 package com.sparkit.staf.core.runtime.libs.builtin.selenium;
 
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.ElementShouldBeVisibleNotFoundException;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.ElementShouldContainException;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.NoBrowserOpenedException;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.UnsupportedBrowserDriverException;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.KeywordArgument;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
-<<<<<<< HEAD:staf-interpreter/src/main/java/com/sparkit/staf/core/core/runtime/libs/builtin/selenium/SeleniumLibrary.java
-import com.sparkit.staf.core.runtime.libs.dependencies.DependencyContainer;
-=======
+import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.ElementShouldBeVisibleNotFoundException;
+import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.ElementShouldContainException;
+import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.NoBrowserOpenedException;
+import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.UnsupportedBrowserDriverException;
 import com.sparkit.staf.core.runtime.loader.TestContainer;
->>>>>>> 7a82d8117d101f54165fa8a08889696c97e79217:staf-interpreter/src/main/java/com/sparkit/staf/core/runtime/libs/builtin/selenium/SeleniumLibrary.java
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -74,9 +70,9 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     @Keyword(name = "capture screenshot")
     public void captureScreenshot(AbstractStafObject filename) throws IOException {
         System.out.println("taking screenshot -- not implemented");
-        TakesScreenshot scrShot =((TakesScreenshot)webDriver);
-        File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
-        File DestFile=new File(System.getProperty("user.dir") + filename.getValue());
+        TakesScreenshot scrShot = ((TakesScreenshot) webDriver);
+        File SrcFile = scrShot.getScreenshotAs(OutputType.FILE);
+        File DestFile = new File(System.getProperty("user.dir") + filename.getValue());
         FileUtils.copyFile(SrcFile, DestFile);
     }
 

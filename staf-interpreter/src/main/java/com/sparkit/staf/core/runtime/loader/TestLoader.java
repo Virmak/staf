@@ -3,16 +3,9 @@ package com.sparkit.staf.core.runtime.loader;
 import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.runtime.interpreter.*;
-<<<<<<< HEAD:staf-interpreter/src/main/java/com/sparkit/staf/core/core/runtime/loader/TestLoader.java
-import com.sparkit.staf.core.runtime.libs.dependencies.DependencyContainer;
 import com.sparkit.staf.core.runtime.loader.exceptions.TestSuiteMainScriptNotFoundException;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
-=======
-import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
-import com.sparkit.staf.core.runtime.loader.exceptions.TestSuiteMainScriptNotFoundException;
-import com.sparkit.staf.core.runtime.reports.TestCaseReport;
->>>>>>> 7a82d8117d101f54165fa8a08889696c97e79217:staf-interpreter/src/main/java/com/sparkit/staf/core/runtime/loader/TestLoader.java
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
