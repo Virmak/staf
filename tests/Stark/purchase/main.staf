@@ -1,0 +1,22 @@
+TEST SUITE "Module Achats"
+IMPORTS
+    IMPORT selenium
+    IMPORT logger
+    IMPORT ws
+VARS
+    $url = 'https://google.com'
+KEYWORDS
+    Open google page()
+        Open browser                    ('chrome')
+        Go to                           ($url)
+        Input Text                      ('name:q', 'test automation')
+    END
+
+TEST CASES
+    first:
+        GIVEN   Open google page()
+    END
+
+    second test:
+        Close browser()
+    END

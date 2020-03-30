@@ -1,10 +1,10 @@
 {
   "project": "STARK ERP",
   "description": "Test and validation of the STARK ERP",
-  "testDirectory": "test_suites",
-  "logDirectory": "test_suites/logs/app.log",
-  "reportingDirectory": "reports",
+  "testDirectory": "tests",
+  "logDir": "logs/app-$date.log",
+  "reportsDir": "reports",
   "testSuites": [
-    "purchase"
+    "authentication"
   ]
 }

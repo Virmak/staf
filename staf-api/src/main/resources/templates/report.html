@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STAF Report</title>
+    <link rel="stylesheet" href="clr-ui.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="alert alert-app-level">
+            ...
+        </div>
+        <header class="header header-6">
+            ...
+        </header>
+        <nav class="subnav">
+            
+        </nav>
+        <div class="content-container">
+            <div class="content-area"><h1>Test execution report</h1>
+                <table class="project">
+                    <thead>
+                    <tr>
+                        <td colspan="2">Project Overview</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="project-name">
+                        <td>Project Name</td>
+                        <td th:text="${projectName}"></td>
+                    </tr>
+                    <tr class="project-description">
+                        <td>Project description</td>
+                        <td th:text="${projectDescription}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <nav class="sidenav">
+                ...
+            </nav>
+        </div>
+    </div>
+</body>
+</html>

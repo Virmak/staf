@@ -1,0 +1,11 @@
+TEST SUITE "Authentication"
+
+IMPORTS
+    import  "../pages/login.page"
+
+KEYWORDS
+    Input username and password ($username, $password)
+        Input username          ($username)
+        Input password          ($password)
+        Click login button      ()
+    END
