@@ -24,8 +24,8 @@ public class StafTestFacade {
     @Autowired
     private IStafFileReader stafFileReader;
 
-    public Map<String, List<TestCaseReport>> runTests(String configFile) throws ConfigFileNotFoundException {
-        stafConfig.readConfigFile(configFile);
+    public Map<String, List<TestCaseReport>> runTests(String projectDir, String configFile) throws ConfigFileNotFoundException {
+        stafConfig.readConfigFile(projectDir, configFile);
         System.setProperty("logFilename", stafConfig.getLogDirectory());
         org.apache.logging.log4j.core.LoggerContext ctx =
                 (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);

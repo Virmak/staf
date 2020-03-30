@@ -6,7 +6,7 @@ public class TestConfig {
     private String testDirectory;
     private List<String> testSuites;
 
-    public TestConfig(JsonStafConfig stafConfig) {
+    public TestConfig(JsonStafProjectConfig stafConfig) {
 
     }
 }

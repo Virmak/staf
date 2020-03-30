@@ -9,9 +9,11 @@ import com.sparkit.staf.core.runtime.reports.TestCaseReport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,9 +22,11 @@ public class TestLoader {
     private static final Logger logger = LogManager.getLogger(Main.class);
     private final IStafConfig config;
     private final IStafFileReader stafFileReader;
-    private Map<String, List<TestCaseReport>> reports;
+    private Map<String, List<TestCaseReport>> reports = new HashMap<>();
     @Autowired
     private TestContainer testContainer;
+    @Value("${testDirectory}")
+    String testDirectory;
 
     public TestLoader(IStafConfig config, IStafFileReader stafFileReader) {
         this.config = config;
@@ -34,7 +38,6 @@ public class TestLoader {
     }
 
     public Map<String, List<TestCaseReport>> runTests() {
-        String testDirectory = config.getTestDirectory();
         for (String testSuite : config.testSuites()) {
             try {
                 runTestScript(testSuite + "/main.staf", testSuite, testDirectory);
@@ -49,7 +52,7 @@ public class TestLoader {
         logger.info("Running test suite : " + testSuitePath);
         TestSuite testSuite = new TestSuite(testSuitePath, testDirectory);
         testContainer.setTestSuite(testSuite);
-        String fullPath = testDirectory + "/" + mainFilePath;
+        String fullPath = testDirectory + "/" + config.getProjectDir() + "/" + mainFilePath;
         StafFile scriptAST;
         try {
             scriptAST = stafFileReader.compile(fullPath);
@@ -63,7 +66,7 @@ public class TestLoader {
         ImportsInterpreter importsInterpreter = new ImportsInterpreter(scriptBuilder, keywordsRepository, testDirectory);
 
         StafScriptInterpreter interpreter = new StafScriptInterpreter(importsInterpreter, scriptAST, globalSymTable, keywordsRepository,
-                testDirectory + "/" + testSuitePath, testSuite.getTestSuiteName());
+                testDirectory + "/" + config.getProjectDir() + "/" + testSuitePath, testSuite.getTestSuiteName());
         reports.put(testSuite.getTestSuiteName(), interpreter.run());
     }
 

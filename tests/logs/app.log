@@ -1,0 +1,127 @@
+2020-03-30 22:45:54.446 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 22:45:55.421 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-30 22:46:19.279 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 22:47:03.376 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-30 22:47:03.382 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 22:47:03.386 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-30 22:47:15.316 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 22:47:23.986 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-30 22:51:37.662 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 22:51:47.742 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-30 22:52:04.137 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 22:52:18.465 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-30 22:52:18.465 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.nio.file.NoSuchFileException
+2020-03-30 22:52:18.465 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - /home/med/IdeaProjects/staf/tests/authentication/pages/login.page
+2020-03-30 22:53:27.984 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 22:55:03.534 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-30 22:55:03.535 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.nio.file.NoSuchFileException
+2020-03-30 22:55:03.535 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - /home/med/IdeaProjects/staf/tests/authentication/pages/login.page
+2020-03-30 22:55:06.551 [http-nio-8080-exec-2] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 22:55:06.577 [http-nio-8080-exec-2] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-30 22:55:06.578 [http-nio-8080-exec-2] ERROR com.sparkit.staf.core.Main - class java.nio.file.NoSuchFileException
+2020-03-30 22:55:06.578 [http-nio-8080-exec-2] ERROR com.sparkit.staf.core.Main - /home/med/IdeaProjects/staf/tests/authentication/pages/login.page
+2020-03-30 22:55:12.470 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 22:56:21.230 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-30 22:56:21.231 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - class java.nio.file.NoSuchFileException
+2020-03-30 22:56:21.231 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - /home/med/IdeaProjects/staf/tests/authentication/pages/login.page
+2020-03-30 22:56:34.765 [http-nio-8080-exec-4] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 22:56:48.223 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-30 22:56:48.223 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - class java.nio.file.NoSuchFileException
+2020-03-30 22:56:48.223 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - /home/med/IdeaProjects/staf/tests/authentication/pages/login.page
+2020-03-30 22:57:15.392 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 22:57:15.627 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-30 22:57:16.780 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Finished executing test case : SETUP
+2020-03-30 22:57:16.780 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-30 22:57:56.705 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of waitUntilElementIsVisible failed because of: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=80.0.3987.149)
+Build info: version: '3.141.59', revision: 'e82be7d358', time: '2018-11-14T08:17:03'
+System info: host: 'virmak-arch', ip: '192.168.1.228', os.name: 'Linux', os.arch: 'amd64', os.version: '5.5.13-arch1-1', java.version: '11.0.6'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 80.0.3987.149, chrome: {chromedriverVersion: 80.0.3987.149 (5f4eb224680e..., userDataDir: /tmp/.org.chromium.Chromium...}, goog:chromeOptions: {debuggerAddress: localhost:44001}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: LINUX, platformName: LINUX, proxy: Proxy(), setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}
+Session ID: 7a178b25d08649ad2efdc8a7d860596f
+*** Element info: {Using=name, value=Email}
+
+2020-03-30 22:57:56.705 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=80.0.3987.149)
+Build info: version: '3.141.59', revision: 'e82be7d358', time: '2018-11-14T08:17:03'
+System info: host: 'virmak-arch', ip: '192.168.1.228', os.name: 'Linux', os.arch: 'amd64', os.version: '5.5.13-arch1-1', java.version: '11.0.6'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 80.0.3987.149, chrome: {chromedriverVersion: 80.0.3987.149 (5f4eb224680e..., userDataDir: /tmp/.org.chromium.Chromium...}, goog:chromeOptions: {debuggerAddress: localhost:44001}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: LINUX, platformName: LINUX, proxy: Proxy(), setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}
+Session ID: 7a178b25d08649ad2efdc8a7d860596f
+*** Element info: {Using=name, value=Email}
+2020-03-30 22:57:56.709 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-30 22:57:57.212 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Finished executing test case : SETUP
+2020-03-30 22:57:57.212 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-30 22:57:57.212 [http-nio-8080-exec-1] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-30 22:57:58.275 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of waitUntilElementIsVisible failed because of: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=80.0.3987.149)
+Build info: version: '3.141.59', revision: 'e82be7d358', time: '2018-11-14T08:17:03'
+System info: host: 'virmak-arch', ip: '192.168.1.228', os.name: 'Linux', os.arch: 'amd64', os.version: '5.5.13-arch1-1', java.version: '11.0.6'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 80.0.3987.149, chrome: {chromedriverVersion: 80.0.3987.149 (5f4eb224680e..., userDataDir: /tmp/.org.chromium.Chromium...}, goog:chromeOptions: {debuggerAddress: localhost:43853}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: LINUX, platformName: LINUX, proxy: Proxy(), setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}
+Session ID: dbeda859b6dd83fc1fe65aa1623f2991
+*** Element info: {Using=name, value=Email}
+
+2020-03-30 22:57:58.275 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=80.0.3987.149)
+Build info: version: '3.141.59', revision: 'e82be7d358', time: '2018-11-14T08:17:03'
+System info: host: 'virmak-arch', ip: '192.168.1.228', os.name: 'Linux', os.arch: 'amd64', os.version: '5.5.13-arch1-1', java.version: '11.0.6'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 80.0.3987.149, chrome: {chromedriverVersion: 80.0.3987.149 (5f4eb224680e..., userDataDir: /tmp/.org.chromium.Chromium...}, goog:chromeOptions: {debuggerAddress: localhost:43853}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: LINUX, platformName: LINUX, proxy: Proxy(), setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}
+Session ID: dbeda859b6dd83fc1fe65aa1623f2991
+*** Element info: {Using=name, value=Email}
+2020-03-30 22:58:24.939 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 22:58:24.992 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-30 22:58:25.562 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Finished executing test case : SETUP
+2020-03-30 22:58:25.562 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-30 22:58:40.405 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Invocation of clickButton failed because of: element click intercepted: Element <button _ngcontent-c2="" class="login100-form-btn" type="submit">...</button> is not clickable at point (311, 626). Other element would receive the click: <app-spinner _ngcontent-c0="" style="
+padding-top: 20%;
+position: fixed;
+width: 100%;
+height: 100%;
+background: #00000052;   
+ pointer-events: visible;
+z-index: 999999999999999999999999999999999999999999999999999999999999999;" _nghost-c1="">...</app-spinner>
+  (Session info: chrome=80.0.3987.149)
+Build info: version: '3.141.59', revision: 'e82be7d358', time: '2018-11-14T08:17:03'
+System info: host: 'virmak-arch', ip: '192.168.1.228', os.name: 'Linux', os.arch: 'amd64', os.version: '5.5.13-arch1-1', java.version: '11.0.6'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 80.0.3987.149, chrome: {chromedriverVersion: 80.0.3987.149 (5f4eb224680e..., userDataDir: /tmp/.org.chromium.Chromium...}, goog:chromeOptions: {debuggerAddress: localhost:41667}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: LINUX, platformName: LINUX, proxy: Proxy(), setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}
+Session ID: 057739897140fa80ef99920cc689c42f
+
+2020-03-30 22:58:40.407 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | element click intercepted: Element <button _ngcontent-c2="" class="login100-form-btn" type="submit">...</button> is not clickable at point (311, 626). Other element would receive the click: <app-spinner _ngcontent-c0="" style="
+padding-top: 20%;
+position: fixed;
+width: 100%;
+height: 100%;
+background: #00000052;   
+ pointer-events: visible;
+z-index: 999999999999999999999999999999999999999999999999999999999999999;" _nghost-c1="">...</app-spinner>
+  (Session info: chrome=80.0.3987.149)
+Build info: version: '3.141.59', revision: 'e82be7d358', time: '2018-11-14T08:17:03'
+System info: host: 'virmak-arch', ip: '192.168.1.228', os.name: 'Linux', os.arch: 'amd64', os.version: '5.5.13-arch1-1', java.version: '11.0.6'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 80.0.3987.149, chrome: {chromedriverVersion: 80.0.3987.149 (5f4eb224680e..., userDataDir: /tmp/.org.chromium.Chromium...}, goog:chromeOptions: {debuggerAddress: localhost:41667}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: LINUX, platformName: LINUX, proxy: Proxy(), setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}
+Session ID: 057739897140fa80ef99920cc689c42f
+2020-03-30 22:58:40.415 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-30 22:58:41.052 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Finished executing test case : SETUP
+2020-03-30 22:58:41.052 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-30 22:58:41.053 [http-nio-8080-exec-3] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-30 22:58:59.835 [http-nio-8080-exec-3] DEBUG com.sparkit.staf.core.Main - test valid login passed
+2020-03-30 22:58:59.835 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Finished executing test case : Loginwithvalidcredentials
+2020-03-30 22:59:47.572 [http-nio-8080-exec-2] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-30 23:00:03.449 [http-nio-8080-exec-2] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-30 23:00:04.024 [http-nio-8080-exec-2] INFO  com.sparkit.staf.core.Main - Finished executing test case : SETUP
+2020-03-30 23:00:06.183 [http-nio-8080-exec-2] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-30 23:00:40.641 [http-nio-8080-exec-2] DEBUG com.sparkit.staf.core.Main - test invalid login passed
+2020-03-30 23:00:40.641 [http-nio-8080-exec-2] INFO  com.sparkit.staf.core.Main - Finished executing test case : Loginwithinvalidcredentials
+2020-03-30 23:00:40.641 [http-nio-8080-exec-2] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-30 23:00:41.256 [http-nio-8080-exec-2] INFO  com.sparkit.staf.core.Main - Finished executing test case : SETUP
+2020-03-30 23:00:41.256 [http-nio-8080-exec-2] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-30 23:00:41.256 [http-nio-8080-exec-2] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-30 23:01:29.982 [http-nio-8080-exec-2] DEBUG com.sparkit.staf.core.Main - test valid login passed
+2020-03-30 23:01:29.982 [http-nio-8080-exec-2] INFO  com.sparkit.staf.core.Main - Finished executing test case : Loginwithvalidcredentials

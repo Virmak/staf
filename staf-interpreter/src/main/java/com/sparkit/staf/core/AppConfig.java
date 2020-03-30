@@ -1,6 +1,6 @@
 package com.sparkit.staf.core;
 
-import com.sparkit.staf.core.runtime.config.JsonStafConfig;
+import com.sparkit.staf.core.runtime.config.JsonStafProjectConfig;
 import com.sparkit.staf.core.runtime.interpreter.StafFileReader;
 import com.sparkit.staf.core.runtime.loader.IStafConfig;
 import com.sparkit.staf.core.runtime.loader.IStafFileReader;
@@ -20,7 +20,7 @@ public class AppConfig {
 
     @Bean
     public IStafConfig stafConfig() {
-        return new JsonStafConfig();
+        return new JsonStafProjectConfig();
     }
 
     @Bean

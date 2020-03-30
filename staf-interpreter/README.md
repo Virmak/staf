@@ -10,12 +10,12 @@
 Before building the project you need to have JDK and maven installed  
   
 ### Installation  
+
+Note : This project is a module of a parent project thus cannot be built alone without modifying the pom.xml
+
+TODO : Add pom.xml and main class with app context to use spring ioc to build the project alone
   
 Clone git repo and use maven to install dependencies.  
-  
-```bash  
-git clone https://github.com/virmak/staf  
-```  
   
 Install maven dependencies  
 ```bash  
