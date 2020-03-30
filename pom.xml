@@ -131,7 +131,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.sparkit.staf.core.Main</mainClass>
+                            <mainClass>com.sparkit.staf.api.StafWebApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -7,7 +7,7 @@
 		<groupId>com.sparkit</groupId>
 		<artifactId>staf-framework</artifactId>
 		<version>1.0-SNAPSHOT</version>
-
+		<relativePath/>
 	</parent>
 	<artifactId>staf-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -59,12 +59,6 @@
 			<groupId>de.flapdoodle.embed</groupId>
 			<artifactId>de.flapdoodle.embed.mongo</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sparkit</groupId>
-			<artifactId>staf</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<scope>compile</scope>
 		</dependency>
 
 	</dependencies>
