@@ -141,3 +141,542 @@ Session ID: 057739897140fa80ef99920cc689c42f
 2020-03-30 23:06:35.006 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
 2020-03-30 23:06:35.007 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.NullPointerException
 2020-03-30 23:06:35.007 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - null
+2020-03-31 00:21:51.260 [SpringContextShutdownHook] DEBUG org.hibernate.service.internal.AbstractServiceRegistryImpl - Implicitly destroying ServiceRegistry on de-registration of all child ServiceRegistries
+2020-03-31 00:21:51.260 [SpringContextShutdownHook] DEBUG org.hibernate.boot.registry.internal.BootstrapServiceRegistryImpl - Implicitly destroying Boot-strap registry on de-registration of all child ServiceRegistries
+2020-03-31 00:21:51.263 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 00:46:23.482 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 00:50:33.102 [SpringContextShutdownHook] DEBUG org.hibernate.service.internal.AbstractServiceRegistryImpl - Implicitly destroying ServiceRegistry on de-registration of all child ServiceRegistries
+2020-03-31 00:50:33.103 [SpringContextShutdownHook] DEBUG org.hibernate.boot.registry.internal.BootstrapServiceRegistryImpl - Implicitly destroying Boot-strap registry on de-registration of all child ServiceRegistries
+2020-03-31 00:50:33.111 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 01:08:12.712 [SpringContextShutdownHook] DEBUG org.hibernate.service.internal.AbstractServiceRegistryImpl - Implicitly destroying ServiceRegistry on de-registration of all child ServiceRegistries
+2020-03-31 01:08:12.713 [SpringContextShutdownHook] DEBUG org.hibernate.boot.registry.internal.BootstrapServiceRegistryImpl - Implicitly destroying Boot-strap registry on de-registration of all child ServiceRegistries
+2020-03-31 01:08:12.714 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 01:38:50.408 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 01:55:11.881 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 01:55:12.006 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 01:55:12.006 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 01:55:12.006 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 01:55:12.008 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 01:55:12.021 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 01:55:12.021 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 01:55:12.021 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 01:56:39.133 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 01:56:46.084 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 01:56:46.084 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 01:56:46.084 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 01:56:46.086 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 01:56:51.749 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 01:56:51.750 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 01:56:51.750 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 01:57:05.737 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 01:57:22.882 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 01:57:23.296 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 01:57:27.478 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:04:07.596 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 02:04:07.622 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:04:07.623 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:04:07.623 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:04:07.625 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 02:04:48.335 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 02:04:48.462 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:04:48.463 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:04:48.463 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:04:48.464 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 02:04:48.477 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:04:48.477 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:04:48.477 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:06:26.819 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 02:06:26.950 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:06:26.951 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:06:26.951 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:06:26.952 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 02:06:26.963 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:06:26.963 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:06:26.963 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:12:29.981 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 02:12:30.099 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:12:30.099 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:12:30.099 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:12:30.101 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 02:12:30.112 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:12:30.112 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:12:30.112 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:16:02.900 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 02:16:03.070 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:16:03.070 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:16:03.070 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:16:03.071 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 02:16:03.078 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:16:03.078 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:16:03.078 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:16:45.916 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 02:16:45.924 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:16:45.924 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:16:45.924 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:16:45.925 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 02:16:45.928 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:16:45.928 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:16:45.928 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:16:45.929 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 02:16:45.936 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:16:45.936 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:16:45.936 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:16:45.937 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 02:16:45.940 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:16:45.941 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:16:45.941 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:17:08.805 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 02:17:08.812 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:17:08.813 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:17:08.813 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:17:08.813 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 02:17:08.817 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:17:08.817 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:17:08.817 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:17:08.818 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 02:17:08.821 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:17:08.821 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:17:08.821 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:17:08.822 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 02:17:08.824 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:17:08.824 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:17:08.824 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:17:08.825 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 02:17:08.829 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:17:08.830 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:17:08.830 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:17:08.830 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 02:17:08.834 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:17:08.834 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:17:08.834 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:18:07.701 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 02:18:34.671 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:18:34.672 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:18:34.672 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:18:47.916 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 02:18:56.827 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:18:56.828 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:18:56.828 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:19:00.865 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 02:19:24.850 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:19:24.851 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:19:24.852 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 02:19:24.862 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 02:20:48.946 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 02:20:48.952 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 02:20:48.957 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 13:55:36.228 [http-nio-8080-exec-2] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 13:55:40.242 [http-nio-8080-exec-2] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 13:55:40.242 [http-nio-8080-exec-2] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 13:55:40.242 [http-nio-8080-exec-2] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 13:55:40.244 [http-nio-8080-exec-2] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 13:55:44.824 [http-nio-8080-exec-2] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 13:55:44.825 [http-nio-8080-exec-2] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 13:55:44.825 [http-nio-8080-exec-2] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 14:05:53.205 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:05:55.692 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:05:55.692 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 14:05:55.693 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 14:05:55.694 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 14:06:09.079 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:06:09.079 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalStateException
+2020-03-31 14:06:09.080 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - zip file closed
+2020-03-31 14:07:03.379 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:08:15.303 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:08:15.770 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:08:15.770 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalArgumentException
+2020-03-31 14:08:15.770 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - wrong number of arguments
+2020-03-31 14:08:15.772 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 14:08:15.956 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:08:15.956 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalArgumentException
+2020-03-31 14:08:15.956 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - wrong number of arguments
+2020-03-31 14:08:23.497 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:08:23.639 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:08:23.639 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalArgumentException
+2020-03-31 14:08:23.639 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - wrong number of arguments
+2020-03-31 14:08:23.642 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 14:08:23.723 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:08:23.723 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalArgumentException
+2020-03-31 14:08:23.723 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - wrong number of arguments
+2020-03-31 14:08:23.725 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:08:23.872 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:08:23.872 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalArgumentException
+2020-03-31 14:08:23.872 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - wrong number of arguments
+2020-03-31 14:08:23.873 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 14:08:23.962 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:08:23.962 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalArgumentException
+2020-03-31 14:08:23.962 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - wrong number of arguments
+2020-03-31 14:09:01.467 [http-nio-8080-exec-4] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:09:01.684 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:09:01.685 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalArgumentException
+2020-03-31 14:09:01.685 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - wrong number of arguments
+2020-03-31 14:09:01.686 [http-nio-8080-exec-4] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 14:09:01.802 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:09:01.803 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalArgumentException
+2020-03-31 14:09:01.803 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - wrong number of arguments
+2020-03-31 14:09:01.803 [http-nio-8080-exec-4] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:09:02.044 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:09:02.044 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalArgumentException
+2020-03-31 14:09:02.044 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - wrong number of arguments
+2020-03-31 14:09:02.046 [http-nio-8080-exec-4] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 14:09:02.180 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:09:02.180 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalArgumentException
+2020-03-31 14:09:02.180 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - wrong number of arguments
+2020-03-31 14:09:02.181 [http-nio-8080-exec-4] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:09:02.381 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:09:02.381 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalArgumentException
+2020-03-31 14:09:02.382 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - wrong number of arguments
+2020-03-31 14:09:02.382 [http-nio-8080-exec-4] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 14:09:02.440 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:09:02.440 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - class java.lang.IllegalArgumentException
+2020-03-31 14:09:02.440 [http-nio-8080-exec-4] ERROR com.sparkit.staf.core.Main - wrong number of arguments
+2020-03-31 14:10:06.008 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:12:16.183 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:12:36.186 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:12:36.237 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:12:36.238 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:12:36.240 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:12:36.240 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:12:36.240 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:12:36.242 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:12:36.243 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:12:36.243 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:12:36.245 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:12:36.245 [http-nio-8080-exec-1] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:12:36.245 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:12:36.245 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:12:36.247 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 14:12:41.164 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Script execution stopped
+2020-03-31 14:12:41.164 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - class java.lang.NullPointerException
+2020-03-31 14:12:41.165 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - null
+2020-03-31 14:13:42.197 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:14:19.114 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:14:19.123 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:14:19.127 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:15:15.644 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:15:15.645 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:15:15.645 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:15:15.648 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:15:15.651 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:15:15.651 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:15:15.663 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:15:15.663 [http-nio-8080-exec-3] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:15:15.664 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:15:15.664 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:15:15.667 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
+2020-03-31 14:15:27.205 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:15:29.510 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:16:25.328 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:16:52.931 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:16:52.967 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:16:52.967 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:16:52.967 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:21:48.004 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:21:51.247 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:21:51.864 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:21:51.864 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:22:02.267 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:23:09.865 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:23:14.997 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:24:48.036 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:26:27.067 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:26:34.501 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:26:38.322 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:27:00.450 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:27:05.515 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:27:06.011 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:27:06.012 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:27:06.574 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:27:07.031 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:27:07.031 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:27:07.432 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:27:07.710 [http-nio-8080-exec-1] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:27:08.109 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:27:08.109 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:27:24.855 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:27:25.898 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:27:36.329 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:27:40.520 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:27:44.774 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:27:45.340 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:27:45.341 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:27:45.793 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:27:48.392 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:27:48.392 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:27:48.394 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:27:48.395 [http-nio-8080-exec-3] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:27:48.395 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:27:48.395 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:27:48.398 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:27:48.745 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:27:48.745 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:27:48.746 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:27:48.747 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:27:48.747 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:27:48.747 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:27:48.748 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:27:48.748 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:27:48.748 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:27:48.749 [http-nio-8080-exec-3] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:27:48.749 [http-nio-8080-exec-3] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:27:48.749 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:27:48.750 [http-nio-8080-exec-3] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:27:53.711 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:27:54.423 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:27:58.827 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:07.311 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:07.349 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:28:07.350 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:07.350 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:28:07.352 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:07.353 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:07.353 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:07.355 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:28:07.355 [http-nio-8080-exec-5] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:28:07.355 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:07.355 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:28:07.357 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:28:07.561 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:07.562 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:07.562 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:07.563 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:28:07.563 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:07.563 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:28:07.565 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:07.566 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:07.566 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:07.568 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:28:07.568 [http-nio-8080-exec-5] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:28:07.568 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:07.568 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:28:07.569 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:28:07.755 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:07.756 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:07.756 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:07.757 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:28:07.757 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:07.757 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:28:07.758 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:07.758 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:07.758 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:07.759 [http-nio-8080-exec-5] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:28:07.759 [http-nio-8080-exec-5] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:28:07.759 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:07.759 [http-nio-8080-exec-5] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:28:09.511 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:28:09.769 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:09.770 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:09.771 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:09.772 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:28:09.772 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:09.772 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:28:09.773 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:09.774 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:09.775 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:09.775 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:28:09.776 [http-nio-8080-exec-7] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:28:09.776 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:09.776 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:28:09.777 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:28:09.991 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:09.992 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:09.992 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:09.993 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:28:09.993 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:09.993 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:28:09.994 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:09.998 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:09.999 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:10.002 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:28:10.002 [http-nio-8080-exec-7] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:28:10.003 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:10.003 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:28:10.004 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:28:10.177 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:10.178 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:10.178 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:10.180 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:28:10.181 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:10.181 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:28:10.182 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:10.182 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:10.182 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:10.183 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:28:10.183 [http-nio-8080-exec-7] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:28:10.184 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:10.184 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:28:10.185 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:28:10.426 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:10.427 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:10.427 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:10.428 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:28:10.429 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:10.429 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:28:10.431 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:10.432 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:10.432 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:28:10.436 [http-nio-8080-exec-7] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:28:10.436 [http-nio-8080-exec-7] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:28:10.436 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:28:10.436 [http-nio-8080-exec-7] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:28:18.013 [http-nio-8080-exec-9] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:28:18.717 [http-nio-8080-exec-9] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:28:24.648 [http-nio-8080-exec-9] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:28:24.650 [http-nio-8080-exec-9] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:30:29.763 [http-nio-8080-exec-9] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:30:29.775 [http-nio-8080-exec-9] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:30:29.775 [http-nio-8080-exec-9] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:30:29.778 [http-nio-8080-exec-9] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:30:29.780 [http-nio-8080-exec-9] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:30:29.781 [http-nio-8080-exec-9] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:30:29.785 [http-nio-8080-exec-9] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:30:29.785 [http-nio-8080-exec-9] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:30:29.786 [http-nio-8080-exec-9] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:30:29.786 [http-nio-8080-exec-9] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:30:29.789 [http-nio-8080-exec-9] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:30:46.597 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:30:48.067 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:30:51.431 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:30:51.431 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:33:36.575 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:33:36.580 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:33:36.581 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:33:36.591 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:33:36.594 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:33:36.594 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:33:36.602 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:33:36.603 [http-nio-8080-exec-1] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:33:36.604 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:33:36.604 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:34:11.452 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:34:12.782 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:34:15.019 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:34:15.019 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:34:15.969 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:36:28.445 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:36:28.446 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:36:28.457 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:36:28.459 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+
+2020-03-31 14:36:28.459 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'void com.google.common.base.Preconditions.checkState(boolean, java.lang.String, java.lang.Object, java.lang.Object, java.lang.Object)'
+2020-03-31 14:36:28.463 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:36:28.463 [http-nio-8080-exec-1] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:36:28.463 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:36:28.463 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:44:45.137 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:44:46.460 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:44:50.624 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'com.google.common.util.concurrent.SimpleTimeLimiter com.google.common.util.concurrent.SimpleTimeLimiter.create(java.util.concurrent.ExecutorService)'
+
+2020-03-31 14:44:50.624 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'com.google.common.util.concurrent.SimpleTimeLimiter com.google.common.util.concurrent.SimpleTimeLimiter.create(java.util.concurrent.ExecutorService)'
+2020-03-31 14:45:07.904 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:45:07.910 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:45:07.911 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:45:07.928 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:45:07.936 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'com.google.common.util.concurrent.SimpleTimeLimiter com.google.common.util.concurrent.SimpleTimeLimiter.create(java.util.concurrent.ExecutorService)'
+
+2020-03-31 14:45:07.936 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'com.google.common.util.concurrent.SimpleTimeLimiter com.google.common.util.concurrent.SimpleTimeLimiter.create(java.util.concurrent.ExecutorService)'
+2020-03-31 14:45:07.948 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:45:07.948 [http-nio-8080-exec-1] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:45:07.948 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:45:07.948 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:45:47.927 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:45:49.204 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:45:50.921 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'com.google.common.util.concurrent.SimpleTimeLimiter com.google.common.util.concurrent.SimpleTimeLimiter.create(java.util.concurrent.ExecutorService)'
+
+2020-03-31 14:45:50.921 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'com.google.common.util.concurrent.SimpleTimeLimiter com.google.common.util.concurrent.SimpleTimeLimiter.create(java.util.concurrent.ExecutorService)'
+2020-03-31 14:46:41.665 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:46:41.672 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:46:41.672 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | null
+2020-03-31 14:46:41.697 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:46:41.701 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of openBrowser failed because of: 'com.google.common.util.concurrent.SimpleTimeLimiter com.google.common.util.concurrent.SimpleTimeLimiter.create(java.util.concurrent.ExecutorService)'
+
+2020-03-31 14:46:41.701 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : SETUP | 'com.google.common.util.concurrent.SimpleTimeLimiter com.google.common.util.concurrent.SimpleTimeLimiter.create(java.util.concurrent.ExecutorService)'
+2020-03-31 14:46:41.704 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithvalidcredentials
+2020-03-31 14:46:41.704 [http-nio-8080-exec-1] DEBUG com.sparkit.staf.core.Main - starting tests
+2020-03-31 14:46:41.704 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: null
+
+2020-03-31 14:46:41.704 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithvalidcredentials | null
+2020-03-31 14:47:24.233 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
+2020-03-31 14:47:25.241 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:47:28.844 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Finished executing test case : SETUP
+2020-03-31 14:47:31.734 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : Loginwithinvalidcredentials
+2020-03-31 14:47:37.827 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Invocation of gotToUrl failed because of: java.net.ConnectException: Failed to connect to localhost/0:0:0:0:0:0:0:1:25452
+Build info: version: '3.141.59', revision: 'e82be7d358', time: '2018-11-14T08:17:03'
+System info: host: 'virmak-arch', ip: '192.168.1.228', os.name: 'Linux', os.arch: 'amd64', os.version: '5.5.13-arch1-1', java.version: '11.0.6'
+Driver info: driver.version: RemoteWebDriver
+
+2020-03-31 14:47:37.828 [http-nio-8080-exec-1] ERROR com.sparkit.staf.core.Main - Executing statement failed at [authentication] : Loginwithinvalidcredentials | java.net.ConnectException: Failed to connect to localhost/0:0:0:0:0:0:0:1:25452
+Build info: version: '3.141.59', revision: 'e82be7d358', time: '2018-11-14T08:17:03'
+System info: host: 'virmak-arch', ip: '192.168.1.228', os.name: 'Linux', os.arch: 'amd64', os.version: '5.5.13-arch1-1', java.version: '11.0.6'
+Driver info: driver.version: RemoteWebDriver
+2020-03-31 14:47:37.834 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Executing test case : SETUP
+2020-03-31 14:47:37.856 [SpringContextShutdownHook] DEBUG org.hibernate.internal.SessionFactoryImpl - HHH000031: Closing
+2020-03-31 14:47:37.856 [SpringContextShutdownHook] DEBUG org.hibernate.type.spi.TypeConfiguration$Scope - Un-scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration$Scope@3b0e5cc1] from SessionFactory [org.hibernate.internal.SessionFactoryImpl@1ea96ff2]
+2020-03-31 14:47:37.858 [SpringContextShutdownHook] DEBUG org.hibernate.service.internal.AbstractServiceRegistryImpl - Implicitly destroying ServiceRegistry on de-registration of all child ServiceRegistries
+2020-03-31 14:47:37.858 [SpringContextShutdownHook] DEBUG org.hibernate.boot.registry.internal.BootstrapServiceRegistryImpl - Implicitly destroying Boot-strap registry on de-registration of all child ServiceRegistries

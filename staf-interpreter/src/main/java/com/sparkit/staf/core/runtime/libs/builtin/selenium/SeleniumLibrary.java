@@ -9,7 +9,6 @@ import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.ElementSho
 import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.ElementShouldContainException;
 import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.NoBrowserOpenedException;
 import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.UnsupportedBrowserDriverException;
-import com.sparkit.staf.core.runtime.loader.TestContainer;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -25,10 +24,6 @@ import java.util.concurrent.TimeUnit;
 @StafLibrary(name = "selenium", builtin = true)
 public class SeleniumLibrary extends AbstractStafLibrary {
     private WebDriver webDriver;
-
-    public SeleniumLibrary(TestContainer container) {
-        super(container);
-    }
 
     @Keyword(name = "open browser")
     public void openBrowser(AbstractStafObject browser) throws UnsupportedBrowserDriverException {

@@ -19,10 +19,6 @@ public class JsonLibrary extends AbstractStafLibrary {
     @Autowired
     private JSONParser parser;
 
-    public JsonLibrary(TestContainer container) {
-        super(container);
-    }
-
     @Keyword(name = "read json")
     public AbstractStafObject loadJsonFile(AbstractStafObject filePath) throws JSONFileNotFoundException {
         TestSuite testSuite = container.getTestSuite();

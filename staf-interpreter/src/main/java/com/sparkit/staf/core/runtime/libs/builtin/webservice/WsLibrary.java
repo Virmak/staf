@@ -7,7 +7,6 @@ import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.core.runtime.libs.builtin.webservice.exceptions.WebServiceTestFailedException;
-import com.sparkit.staf.core.runtime.loader.TestContainer;
 import io.restassured.http.ContentType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,10 +20,6 @@ import static org.hamcrest.Matchers.equalTo;
 public class WsLibrary extends AbstractStafLibrary {
 
     private static final Logger LOG = LogManager.getLogger(Main.class);
-
-    public WsLibrary(TestContainer container) {
-        super(container);
-    }
 
     @Keyword(name = "get")
     public void getRequest(AbstractStafObject path, AbstractStafObject jsonPath, AbstractStafObject condition,

@@ -2,17 +2,18 @@ package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.ast.ImportStatement;
 import com.sparkit.staf.core.ast.ImportTypes;
-import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.core.runtime.loader.IStafScriptBuilder;
-import org.reflections.Reflections;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfoList;
+import io.github.classgraph.ScanResult;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class ImportsInterpreter {
     public final String libsPackage = "com.sparkit.staf.core.runtime.libs.builtin";
@@ -45,13 +46,17 @@ public class ImportsInterpreter {
 
     /* Search for builtin library classes using reflections */
     private Map<String, Class<? extends AbstractStafLibrary>> getBuiltinLibrariesClasses() {
-        Reflections ref = new Reflections(libsPackage);
-        Set<Class<?>> librariesClasses = ref.getTypesAnnotatedWith(StafLibrary.class);
-        Map<String, Class<? extends AbstractStafLibrary>> classMap = new HashMap<>();
-        for (Class<?> libClass : librariesClasses) {
-            classMap.put(libClass.getSimpleName(), (Class<? extends AbstractStafLibrary>) libClass);
+        try (ScanResult result = new ClassGraph().enableClassInfo().enableAnnotationInfo()
+                .whitelistPackages(libsPackage).scan()) {
+
+            ClassInfoList classInfos = result.getClassesWithAnnotation(StafLibrary.class.getName());
+            List<Class<?>> librariesClasses = classInfos.loadClasses();
+            Map<String, Class<? extends AbstractStafLibrary>> classMap = new HashMap<>();
+            for (Class<?> libClass : librariesClasses) {
+                classMap.put(libClass.getSimpleName(), (Class<? extends AbstractStafLibrary>) libClass);
+            }
+            return classMap;
         }
-        return classMap;
     }
 
     public String getTestsDirectory() {
