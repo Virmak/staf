@@ -1,4 +1,0 @@
-2020-03-30 22:40:33.033 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
-2020-03-30 22:40:34.140 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
-2020-03-30 22:41:06.469 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : authentication
-2020-03-30 22:43:13.673 [http-nio-8080-exec-1] INFO  com.sparkit.staf.core.Main - Running test suite : purchase
