@@ -22,13 +22,7 @@ public class ProjectService {
         if (files != null) {
             Arrays.stream(files).forEach(f -> projects.add(f.getName()));
         } else {
-            projectsDir = new File(projectsDirPath);
-            files = projectsDir.listFiles();
-            if (files != null) {
-                Arrays.stream(files).forEach(f -> projects.add(f.getName()));
-            } else {
-                throw new TestDirectoryNotFound(projectsDirPath);
-            }
+            throw new TestDirectoryNotFound(projectsDirPath);
         }
         return projects;
     }
