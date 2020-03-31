@@ -1,6 +1,7 @@
 package com.sparkit.staf.api.controllers;
 
-import com.sparkit.staf.api.ProjectNotFoundException;
+import com.sparkit.staf.api.exception.ProjectNotFoundException;
+import com.sparkit.staf.api.exception.TestDirectoryNotFound;
 import com.sparkit.staf.api.service.ProjectService;
 import com.sparkit.staf.core.StafTestFacade;
 import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
@@ -24,7 +25,8 @@ public class TestController {
     String testDir;
 
     @PostMapping("/runTest")
-    public Map<String, List<TestCaseReport>> runTest(@RequestBody Map<String, Object> payload) throws ConfigFileNotFoundException, ProjectNotFoundException {
+    public Map<String, List<TestCaseReport>> runTest(@RequestBody Map<String, Object> payload)
+            throws ConfigFileNotFoundException, ProjectNotFoundException, TestDirectoryNotFound {
         String project = payload.get("project").toString();
         for (String projectName : projectService.getProjects()) {
             if (project.equals(projectName)) {

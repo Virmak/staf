@@ -9,6 +9,9 @@ import org.springframework.context.annotation.ComponentScan;
 public class StafWebApplication {
 
 	public static void main(String[] args) {
+		if (args.length > 0) {
+			System.setProperty("testDirectory", args[0]);
+		}
 		SpringApplication.run(StafWebApplication.class, args);
 	}
 
