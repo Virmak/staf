@@ -29,8 +29,8 @@ mvn clean install
 ```bash  
 java -jar staf-api/target/staf-api-0.0.1-SNAPSHOT.jar tests
 ```  
-Replace the argument `tests` with the directory containing test projects  
-By default this repo contains `tests` with 2 projects
+Replace the argument `tests` to change the default directory containing test projects  
+By default this repo contains `tests` directory with 2 projects
 
 To test the API make a POST request to :
 ```
