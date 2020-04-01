@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+.ngx-contextmenu a {
+    color: black;
+    text-decoration: none;
+}
+
+.ngx-contextmenu li {
+
+    padding: 0 20px;
+}
+
+.ngx-contextmenu li:hover {
+    background-color: #eee;
+}
+
+.ngx-contextmenu .divider {
+    border-top: 1px solid #eee;
+    margin: 10px 0;
+}

@@ -11,9 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.nio.file.Files;
+import java.util.*;
 
 @Service
 public class ProjectService {
@@ -38,6 +37,30 @@ public class ProjectService {
 
     public ProjectConfig createProject(CreateProjectRequest createProjectRequest) throws IOException, ProjectNameAlreadyExist {
         return projectBuilder.build(createProjectRequest);
+    }
+
+    public Map<String, Object> listDirectory(File dir, String testDir) throws IOException {
+        File[] content = dir.listFiles();
+
+        List<Map<String, String>> files = new LinkedList<>();
+        List<Map<String, Object>> folders = new LinkedList<>();
+
+        for (File f : content) {
+            if (f.isDirectory()) {
+                Map<String, Object> subList = listDirectory(f, testDir);
+                folders.add(subList);
+            } else {
+                Map<String, String> file = new HashMap<>();
+                file.put(f.toString().replace(testDir, "$projectRoot"), new String(Files.readAllBytes(f.toPath())));
+                files.add(file);
+            }
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("folders", folders);
+        result.put("files", files);
+        result.put("name", dir.toString().replace(testDir, "$projectRoot"));
+        return result;
     }
 
     public static String normalizeProjectName(String name) {

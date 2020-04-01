@@ -1,0 +1,40 @@
+<h3>Create project</h3>
+<form clrForm>
+    <clr-input-container>
+        <label>Name</label>
+        <input clrInput type="text" (change)="projectNameChanged($event)" [(ngModel)]="project.name" name="projectName" />
+    </clr-input-container>
+    <clr-input-container>
+        <label>Description</label>
+        <input clrInput type="text" [(ngModel)]="project.description" name="projectDescription" />
+    </clr-input-container>
+
+
+    <clr-input-container>
+        <label>Project location</label>
+        <input clrInput type="text" [(ngModel)]="project.location" name="projectLocation" />
+    </clr-input-container>
+
+    <clr-input-container>
+        <label>Logs directory</label>
+        <input clrInput type="text" [(ngModel)]="project.logDir" name="projectLogsDirectory" />
+    </clr-input-container>
+
+    <clr-input-container>
+        <label>Reporting directory</label>
+        <input clrInput type="text" [(ngModel)]="project.reportsDir" name="projectReportingDirectory" />
+    </clr-input-container>
+
+    <clr-select-container>
+        <label>Project type</label>
+        <select clrSelect name="options" [(ngModel)]="project.type">
+            <option value="UITest">UI testing</option>
+            <option value="APITest">API testing</option>
+            <option value="Custom">Custom</option>
+        </select>
+    </clr-select-container>
+    
+    <button class="btn btn-primary right-0" type="submit" (click)="createProject()">Create</button>
+
+    
+</form>

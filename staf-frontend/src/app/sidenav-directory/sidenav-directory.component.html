@@ -1,0 +1,41 @@
+<clr-tree-node *ngFor="let item of dir?.content | keyvalue">
+    <button class="clr-treenode-link" [contextMenu]="basicMenu" [contextMenuSubject]="item" (click)="openFile(item.value, item.key)">
+      <clr-icon [attr.shape]="item.value.type"></clr-icon>
+      {{item.value.name}}
+    </button>
+
+    <clr-tree-node *ngFor="let i of item.value.content | keyvalue">
+              <button class="clr-treenode-link" [contextMenu]="basicMenu" [contextMenuSubject]="i" (click)="openFile(i.value, i.key)">
+                  <clr-icon [attr.shape]="i.value.type"></clr-icon>
+                  {{i.value.name}}
+              </button>
+    
+              <app-sidenav-directory  *ngIf="i.value.type == 'folder'" [dir]="i.value" [project]="project" [testSuite]="testSuite" [parent]="i.value" ></app-sidenav-directory>
+      </clr-tree-node>
+  </clr-tree-node>
+
+
+<context-menu>
+  <ng-template contextMenuItem (execute)="createNewFileSystemItem('Hi, ' + $event.item.name)">
+    New
+  </ng-template>
+  <ng-template contextMenuItem divider="true"></ng-template>
+
+  <ng-template contextMenuItem (execute)="openFile($event.item.value, $event.item.key)">
+    Open
+  </ng-template>
+  <ng-template contextMenuItem divider="true"></ng-template>
+
+  <ng-template contextMenuItem (execute)="createNewFileSystemItem('Hi, ' + $event.item.name)">
+    Delete
+  </ng-template>
+  <ng-template contextMenuItem (execute)="createNewFileSystemItem('Hi, ' + $event.item.name)">
+    Copy
+  </ng-template>
+  <ng-template contextMenuItem (execute)="createNewFileSystemItem('Hi, ' + $event.item.name)">
+    Paste
+  </ng-template>
+
+
+</context-menu>
+

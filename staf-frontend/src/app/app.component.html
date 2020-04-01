@@ -1,0 +1,26 @@
+<div class="main-container">
+
+	<div *ngIf="serverError" class="alert alert-danger alert-app-level">
+  <div class="alert-items">
+				<div class="alert-item static">
+					<div class="alert-icon-wrapper">
+						<clr-icon class="alert-icon" shape="exclamation-triangle"></clr-icon>
+					</div>
+					<span class="alert-text">Cannot connect to server</span>
+				</div>
+			</div>
+    <button type="button" class="close" aria-label="Close">
+        <clr-icon aria-hidden="true" shape="close"></clr-icon>
+    </button>
+	</div>
+	<app-header></app-header>
+	<nav class="subnav"></nav>
+	<div class="content-container">
+		<div class="content-area">
+			<router-outlet></router-outlet>
+		</div>
+		<nav class="sidenav">
+			<app-sidenav [projects]="projects"></app-sidenav>
+		</nav>
+	</div>
+</div>

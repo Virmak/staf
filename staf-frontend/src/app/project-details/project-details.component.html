@@ -1,0 +1,21 @@
+
+<clr-tabs>
+    <clr-tab>
+        <button clrTabLink id="link1">Project Overview</button>
+        <clr-tab-content id="content1" *clrIfActive>
+            <app-project-overview *ngIf="project" [project]="project"></app-project-overview>
+        </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+        <button clrTabLink>Run tests</button>
+        <clr-tab-content *clrIfActive>
+        running tests
+        </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+        <button clrTabLink>Reports</button>
+        <clr-tab-content *clrIfActive>
+        reporting tests
+        </clr-tab-content>
+    </clr-tab>
+</clr-tabs>

@@ -1,0 +1,66 @@
+<clr-tree>
+	<clr-tree-node>
+
+
+		<clr-icon shape="folder"></clr-icon>
+		Projects
+		<clr-tree-node>
+
+			<a [routerLink]="['/createProject']">
+				<clr-icon shape="plus"></clr-icon>
+				New
+			</a>
+		</clr-tree-node>
+		<clr-tree-node *ngFor="let project of projects" [(clrExpanded)]="project.expanded">
+			<span (click)="openProject(project.id)">
+				<clr-icon shape="file-settings" class="is-solid"></clr-icon>
+				{{project.name}}
+			</span>
+			<clr-tree-node>
+				<a [routerLink]="" (click)="openCreateTestSuiteModal(project)">
+					<clr-icon shape="plus"></clr-icon>
+					New test suite
+				</a>
+			</clr-tree-node>
+			<clr-tree-node *ngFor="let testSuite of project.testSuites">
+				<button class="clr-treenode-link" [class.active]="testSuite.active">
+					<clr-icon shape="host-group"></clr-icon>
+
+
+					{{testSuite.name}}
+				</button>
+
+
+				<app-sidenav-directory [dir]="testSuite.content"  [testSuite]="testSuite" [parent]="testSuite" [project]="project" ngProjectAs='clr-tree-node'></app-sidenav-directory>
+
+			</clr-tree-node>
+		</clr-tree-node>
+
+	</clr-tree-node>
+</clr-tree>
+
+<clr-modal [(clrModalOpen)]="createTestSuiteModal">
+    <h3 class="modal-title">Create test suite</h3>
+    <div class="modal-body">
+	<form clrForm>
+    <clr-input-container>
+        <label>Test suite name</label>
+        <input clrInput type="text" [(ngModel)]="testSuite.name" name="example" required />
+    </clr-input-container>
+
+	<clr-select-container>
+	<label>Test suite structure</label>
+	<select clrSelect name="options" [(ngModel)]="testSuite.type">
+		<option value="UITest">UI testing</option>
+		<option value="APITest">API testing</option>
+		<option value="Empty">Empty</option>
+	</select>
+	</clr-select-container>
+</form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="createTestSuiteModal = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="createTestSuite()">Ok</button>
+    </div>
+</clr-modal>

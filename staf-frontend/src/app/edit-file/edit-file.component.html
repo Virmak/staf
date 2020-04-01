@@ -1,0 +1,24 @@
+<h3>Edit file</h3>
+<br>
+
+<div class="flex-line">
+    <div class="filePath">{{file?.name}}</div>
+
+    <div>
+    
+    <button [disabled]="!fileChanged" (click)="saveFile()">Save</button>
+    </div>
+</div>
+
+<app-ace-editor [file]="file" (onQuit)="showSaveDialog($event)" (contentChanged)="fileContentChanged($event)"></app-ace-editor>
+
+<clr-modal [(clrModalOpen)]="saveModal">
+    <h3 class="modal-title">Save file</h3>
+    <div class="modal-body">
+        <p>Do you want to save changes you made?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="resetFileContent()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="openFile()">Ok</button>
+    </div>
+</clr-modal>
