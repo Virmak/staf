@@ -50,7 +50,7 @@ public class JsonStafProjectConfig implements IStafConfig {
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             projectName = (String) jsonObject.get("project");
             projectDescription = (String) jsonObject.get("description");
-            logDirectory = testDirectory + "/" + jsonObject.get("logDir");
+            logDirectory = testDirectory + "/" + projectDir + "/" + jsonObject.get("logDir");
             if (logDirectory.contains("$date")) {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 logDirectory = logDirectory.replace("$date", dateFormat.format(new Date()));

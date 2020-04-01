@@ -20,6 +20,7 @@
     <modules>
         <module>staf-interpreter</module>
         <module>staf-api</module>
+        <module>staf-editor</module>
     </modules>
     <dependencies>
 

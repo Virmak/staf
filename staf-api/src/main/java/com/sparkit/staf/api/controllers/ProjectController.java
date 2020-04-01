@@ -1,9 +1,14 @@
 package com.sparkit.staf.api.controllers;
 
+import com.sparkit.staf.api.application.exception.ProjectNameAlreadyExist;
+import com.sparkit.staf.api.models.ProjectConfig;
+import com.sparkit.staf.api.models.request.CreateProjectRequest;
+import com.sparkit.staf.api.service.ProjectService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,10 +20,30 @@ import java.util.Map;
 
 @RestController
 public class ProjectController {
+    @Autowired
+    private ProjectService projectService;
 
+    @Autowired
+    private ModelMapper mapper;
 
     @Value("${testDirectory}")
     String testDir;
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/projects")
+    public ResponseEntity<Map<String, Object>> createProject(@RequestBody CreateProjectRequest createProjectRequest) throws IOException {
+        try {
+            ProjectConfig config = projectService.createProject(createProjectRequest);
+        } catch (IOException | ProjectNameAlreadyExist e) {
+            Map<String, Object> res = new HashMap<>();
+            res.put("error", "Project name already exists");
+            return ResponseEntity.ok(res);
+        }
+        File projectDir = new File(testDir, ProjectService.normalizeProjectName(createProjectRequest.getName()));
+        String currentDir = System.getProperty("user.dir");
+        String absoluteTestDir = currentDir + "/" + testDir;
+        return ResponseEntity.ok(listDirectory(projectDir, absoluteTestDir));
+    }
 
     @CrossOrigin(origins = "*")
     @GetMapping("/projects")

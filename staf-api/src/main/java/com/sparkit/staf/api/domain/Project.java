@@ -14,8 +14,9 @@ public class Project {
     private String name;
     private String description;
     private String rootPath;
-    private String logsDirectory;
-    private String reportsDirectory;
+    private String logDir;
+    private String reportsDir;
+    private ProjectType type;
     @OneToMany
     private List<TestSuite> testSuites;
 }

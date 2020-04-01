@@ -27,8 +27,8 @@ public class TestController {
     @PostMapping("/runTest")
     public Map<String, List<TestCaseReport>> runTest(@RequestBody Map<String, Object> payload)
             throws ConfigFileNotFoundException, ProjectNotFoundException, TestDirectoryNotFound {
-        String project = payload.get("project").toString();
-        for (String projectName : projectService.getProjects()) {
+        String project = payload.get("project").toString().replaceAll("\\s+", "-").toLowerCase(); // normalize project name
+        for (String projectName : projectService.readProjects()) {
             if (project.equals(projectName)) {
                 return testFacade.runTests(projectName,testDir + "/" + project + "/" + "config.json");
             }

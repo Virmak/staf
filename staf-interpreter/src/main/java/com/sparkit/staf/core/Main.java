@@ -9,6 +9,7 @@ public class Main {
         if (args.length > 0) {
             configFile = args[0];
         }
+        System.out.println("STAF INTERPRETER STARTED ...");
         //StafTestFacade.runTests(configFile);
     }
 }
