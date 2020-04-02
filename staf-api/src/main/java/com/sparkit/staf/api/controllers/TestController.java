@@ -7,6 +7,7 @@ import com.sparkit.staf.api.service.ProjectService;
 import com.sparkit.staf.core.StafTestFacade;
 import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
+import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,7 +30,7 @@ public class TestController {
 
     @CrossOrigin("*")
     @PostMapping("/runTest")
-    public Map<String, List<TestCaseReport>> runTest(@RequestBody RunTestRequest runTestRequest)
+    public List<TestSuiteReport> runTest(@RequestBody RunTestRequest runTestRequest)
             throws ConfigFileNotFoundException, ProjectNotFoundException, TestDirectoryNotFound {
         String project = runTestRequest.getProject().replaceAll("\\s+", "-").toLowerCase(); // normalize project name
         for (String projectName : projectService.readProjects()) {

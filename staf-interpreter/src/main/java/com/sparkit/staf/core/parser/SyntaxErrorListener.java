@@ -4,6 +4,7 @@ package com.sparkit.staf.core.parser;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.misc.Utils;
 
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class SyntaxErrorListener extends BaseErrorListener {
                             String msg, RecognitionException e)
     {
         syntaxErrors.add(new SyntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e));
+        throw new ParseCancellationException("line " + line + ":" + charPositionInLine + " " + msg);
+
     }
 
     @Override
