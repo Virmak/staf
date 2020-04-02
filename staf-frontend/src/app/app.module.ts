@@ -20,6 +20,7 @@ import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { ViewDirectoryComponent } from './view-directory/view-directory.component';
 import { ToastrModule } from 'ngx-toastr';
+import { RunTestComponent } from './run-test/run-test.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ToastrModule } from 'ngx-toastr';
     ProjectOverviewComponent,
     SidenavDirectoryComponent,
     AceEditorComponent,
-    ViewDirectoryComponent
+    ViewDirectoryComponent,
+    RunTestComponent
   ],
   imports: [
     BrowserModule,
