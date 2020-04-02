@@ -9,6 +9,8 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./run-test.component.css']
 })
 export class RunTestComponent implements OnInit {
+  runBtnDisabled = true;
+
   _testSuites = [];
   private _project: IStafProject;
   
@@ -19,7 +21,11 @@ export class RunTestComponent implements OnInit {
 
   @Input('project')
   public set project(value: IStafProject) {
-    this._testSuites = value.testSuites.filter(testSuite => testSuite.name != 'logs');
+    this._testSuites = value.testSuites.filter(testSuite => testSuite.name != 'logs')
+      .map((ts: any) => {
+        ts.checked = false;
+        return ts;
+      });
     this._project = value;
   }
 
@@ -29,16 +35,30 @@ export class RunTestComponent implements OnInit {
   }
 
   runSelectedTests() {
-
-  }
-
-  runAllTests() {
-    this.testService.runTest(this._project.name)
+    this.testService.runTest({
+      project: this._project.name,
+      testSuites: this._testSuites.filter(ts => ts.checked).map(ts => ts.name),
+    })
     .subscribe(console.log);
   }
 
-  testSuiteCheck(e) {
-    console.log(e.target.checked)
+  runAllTests() {
+    this.testService.runTest({
+      project: this._project.name,
+      testSuites: this._testSuites.map(ts => ts.name),
+    })
+    .subscribe(console.log);
+  }
+
+  testSuiteCheck(e, testSuite) {
+    testSuite.checked = e.target.checked;
+    this.runBtnDisabled = true;
+    for (let i = 0 ; i < this._testSuites.length; i++) {
+      if (this._testSuites[i].checked) {
+        this.runBtnDisabled = false;
+        break;
+      }
+    }
   }
 
 

@@ -1,3 +1,4 @@
+import { RunTestRequest } from './interfaces/run-test-request';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -10,8 +11,8 @@ export class TestService {
 
   constructor(private http: HttpClient) { }
 
-  runTest(projectName) {
-    return this.http.post(baseUrl + '/runTest', { project: projectName});
+  runTest(runTest: RunTestRequest) {
+    return this.http.post(baseUrl + '/runTest', runTest);
   }
 
 }

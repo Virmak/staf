@@ -37,8 +37,11 @@ public class TestLoader {
         this.testContainer = testContainer;
     }
 
-    public Map<String, List<TestCaseReport>> runTests() {
+    public Map<String, List<TestCaseReport>> runTests(List<String> testSuites) {
         for (String testSuite : config.testSuites()) {
+            if (!testSuites.contains(testSuite)) {
+                continue;
+            }
             try {
                 runTestScript(testSuite + "/main.staf", testSuite, testDirectory);
             } catch (TestSuiteMainScriptNotFoundException e) {

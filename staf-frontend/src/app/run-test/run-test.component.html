@@ -1,12 +1,12 @@
 <br>
 <div class="btn-group btn-primary">
-    <button [disabled]="true" class="btn"><clr-icon shape="play" class="is-solid"></clr-icon> Run</button>
+    <button (click)="runSelectedTests()" [disabled]="runBtnDisabled" class="btn"><clr-icon shape="play" class="is-solid"></clr-icon> Run</button>
     <button (click)="runAllTests()" class="btn"><clr-icon shape="fast-forward" class="is-solid"></clr-icon> Run All</button>
 </div>
 
 <clr-checkbox-container>
   <clr-checkbox-wrapper *ngFor="let testSuite of _testSuites">
-    <input type="checkbox" clrCheckbox (change)="testSuiteCheck($event)" value="option1" name="options" />
+    <input type="checkbox" clrCheckbox (change)="testSuiteCheck($event, testSuite)" [value]="testSuite.name" [checked]="testSuite.checked" />
     <label>{{testSuite.name | titlecase}}</label>
   </clr-checkbox-wrapper>
 </clr-checkbox-container>
