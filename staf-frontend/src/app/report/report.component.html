@@ -1,26 +1,34 @@
 <table class="table">
 
-    <thead>
-        <tr>
-            <th>Test case</th>
-            <th>Started</th>
-            <th>Ended</th>
-            <th>Result</th>
-        </tr>
-    </thead>
-    <ng-container *ngFor="let testSuite of reports">
-    <thead>
-        <tr>
-            <th colspan="4">{{testSuite.name}}</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let tc of testSuite.testCases">
-            <td>{{tc.testCase | titlecase}}</td>
-            <td>{{tc.startTime}}</td>
-            <td>{{tc.endTime}}</td>
-            <td>{{tc.result}}</td>
-        </tr>
-    </tbody>
-    </ng-container>
+	<thead>
+		<tr>
+			<th>Test case</th>
+			<th>Started</th>
+			<th>Ended</th>
+			<th>Result</th>
+		</tr>
+	</thead>
+	<ng-container *ngFor="let testSuite of reports">
+		<thead>
+			<tr>
+				<th colspan="4">{{testSuite.testSuite | titlecase}}</th>
+			</tr>
+		</thead>
+		<tbody>
+            <ng-template #testSuiteError>
+                <tr>
+                    <td colspan="4" class="Failed">{{testSuite.message}}</td>
+                </tr>
+            </ng-template>
+
+			<ng-container *ngIf="testSuite.result == 'Ok'; else testSuiteError">
+				<tr *ngFor="let tc of testSuite.testCases" [ngClass]="tc.result">
+					<td>{{tc.testCase | titlecase}}</td>
+					<td>{{tc.startTime}}</td>
+					<td>{{tc.endTime}}</td>
+					<td>{{tc.result}}</td>
+				</tr>
+			</ng-container>
+		</tbody>
+	</ng-container>
 </table>

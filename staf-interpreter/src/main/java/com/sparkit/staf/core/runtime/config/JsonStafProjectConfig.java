@@ -15,10 +15,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class JsonStafProjectConfig implements IStafConfig {
     @Autowired
@@ -28,7 +26,7 @@ public class JsonStafProjectConfig implements IStafConfig {
     private String projectDir;
     private String logDirectory;
     private String reportingDirectory;
-    private List<String> testSuites = new ArrayList<>();
+    private Set<String> testSuites = new HashSet<>();
     @Value("${testDirectory}")
     String testDirectory;
 
@@ -58,8 +56,7 @@ public class JsonStafProjectConfig implements IStafConfig {
 
             reportingDirectory = (String) jsonObject.get("reportsDir");
             JSONArray msg = (JSONArray) jsonObject.get("testSuites");
-            Iterator<String> iterator = msg.iterator();
-            iterator.forEachRemaining(testSuites::add);
+            testSuites.addAll(msg);
         } catch (IOException | ParseException e) {
             throw new ConfigFileNotFoundException();
         }
@@ -87,6 +84,6 @@ public class JsonStafProjectConfig implements IStafConfig {
 
     @Override
     public List<String> testSuites() {
-        return testSuites;
+        return new ArrayList<>(testSuites);
     }
 }

@@ -1,3 +1,4 @@
+import { TestSuiteReport } from './../types/test-suite-report';
 import { ITestSuite } from './itest-suite';
 export interface IStafProject {
     id: number;
@@ -8,7 +9,7 @@ export interface IStafProject {
     reportsDir: string;
     testSuites: ITestSuite[];
     type: ProjectType;
-    reports?: any[];
+    reports?: TestSuiteReport[];
 }
 
 export enum ProjectType {

@@ -1,3 +1,4 @@
+import { TestSuiteReport, TestSuiteResult } from './../types/test-suite-report';
 import { ToastrService } from 'ngx-toastr';
 import { IStafProject } from './../interfaces/istaf-project';
 import { TestService } from './../test.service';
@@ -15,11 +16,11 @@ export class RunTestComponent implements OnInit {
 
   _testSuites = [];
   private _project: IStafProject;
-  
-  public get project() : IStafProject {
-    return  this._project;
+
+  public get project(): IStafProject {
+    return this._project;
   }
-  
+
 
   @Input('project')
   public set project(value: IStafProject) {
@@ -44,7 +45,7 @@ export class RunTestComponent implements OnInit {
       project: this._project.name,
       testSuites: this._testSuites.filter(ts => ts.checked).map(ts => ts.name),
     })
-    .subscribe(this.testComplete.bind(this), this.testFailed.bind(this));
+      .subscribe(this.testComplete.bind(this), this.testFailed.bind(this));
     this.toastr.info(this._project.name + ' Tests are running', 'Test');
   }
 
@@ -54,14 +55,14 @@ export class RunTestComponent implements OnInit {
       project: this._project.name,
       testSuites: this._testSuites.map(ts => ts.name),
     })
-    .subscribe(this.testComplete.bind(this), this.testFailed.bind(this));
+      .subscribe(this.testComplete.bind(this), this.testFailed.bind(this));
     this.toastr.info(this._project.name + ' Tests are running', 'Test');
   }
 
   testSuiteCheck(e, testSuite) {
     testSuite.checked = e.target.checked;
     this.runBtnDisabled = true;
-    for (let i = 0 ; i < this._testSuites.length; i++) {
+    for (let i = 0; i < this._testSuites.length; i++) {
       if (this._testSuites[i].checked) {
         this.runBtnDisabled = false;
         break;
@@ -69,18 +70,23 @@ export class RunTestComponent implements OnInit {
     }
   }
 
-  testComplete(reports) {
-    const testSuiteNames = Object.keys(reports);
-    this.project.reports = testSuiteNames.map(ts => {
-      return {
-        name: ts,
-        testCases: reports[ts],
+  testComplete(reports: TestSuiteReport[]) {
+    let hasErrors = false;
+
+    this.project.reports = reports.map(report => {
+      if (report.result == TestSuiteResult.Error) {
+        hasErrors = true;
       }
+      return report;
     });
 
     this.testCompleted.emit(this.project.reports);
     this.progress = false;
-    this.toastr.success('Tests execution finished', 'Success');
+    if (hasErrors) {
+      this.toastr.warning("Some test suites encountered errors please refer to logs to learn more about the problem", "Error")
+    } else {
+      this.toastr.success('Tests execution finished', 'Success');
+    }
   }
   testFailed() {
     this.progress = false;

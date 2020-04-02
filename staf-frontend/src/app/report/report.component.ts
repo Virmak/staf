@@ -1,3 +1,4 @@
+import { TestSuiteReport } from './../types/test-suite-report';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -7,7 +8,12 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ReportComponent implements OnInit {
 
-  @Input() reports = [];
+  resColors = {
+    'Passed': 'green',
+    'Failed': 'red',
+  };
+
+  @Input() reports: TestSuiteReport[] = [];
 
   constructor() { }
 
