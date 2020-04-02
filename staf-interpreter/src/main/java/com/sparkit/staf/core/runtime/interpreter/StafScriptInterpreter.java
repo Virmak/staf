@@ -49,7 +49,7 @@ public class StafScriptInterpreter {
             testCaseResult(setup);
 
             for (Map.Entry<String, TestCaseDeclaration> testCase : this.mainStafFile.getTestCaseDeclarationMap().entrySet()) {
-                if (testCase.getKey().equals("setup") || testCase.getKey().equals("teardown")) {
+                if (testCase.getKey().toLowerCase().equals("setup") || testCase.getKey().toLowerCase().equals("teardown")) {
                     continue;
                 }
                 testCaseResult(testCase.getValue());

@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { IStafProject } from './../interfaces/istaf-project';
 import { TestService } from './../test.service';
 import { ITestSuite } from './../interfaces/itest-suite';
@@ -10,6 +11,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class RunTestComponent implements OnInit {
   runBtnDisabled = true;
+  progress = false;
 
   _testSuites = [];
   private _project: IStafProject;
@@ -29,25 +31,29 @@ export class RunTestComponent implements OnInit {
     this._project = value;
   }
 
-  constructor(private testService: TestService) { }
+  constructor(private testService: TestService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
   }
 
   runSelectedTests() {
+    this.progress = true;
     this.testService.runTest({
       project: this._project.name,
       testSuites: this._testSuites.filter(ts => ts.checked).map(ts => ts.name),
     })
-    .subscribe(console.log);
+    .subscribe(this.testComplete.bind(this), this.testFailed.bind(this));
+    this.toastr.info(this._project.name + ' Tests are running', 'Test');
   }
 
   runAllTests() {
+    this.progress = true;
     this.testService.runTest({
       project: this._project.name,
       testSuites: this._testSuites.map(ts => ts.name),
     })
-    .subscribe(console.log);
+    .subscribe(this.testComplete.bind(this), this.testFailed.bind(this));
+    this.toastr.info(this._project.name + ' Tests are running', 'Test');
   }
 
   testSuiteCheck(e, testSuite) {
@@ -61,5 +67,12 @@ export class RunTestComponent implements OnInit {
     }
   }
 
-
+  testComplete(reports) {
+    this.progress = false;
+    this.toastr.success('Tests execution finished', 'Success');
+  }
+  testFailed() {
+    this.progress = false;
+    this.toastr.error('Tests execution failed', 'Error');
+  }
 }
