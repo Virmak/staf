@@ -19,53 +19,63 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
 @StafLibrary(name = "selenium", builtin = true)
 public class SeleniumLibrary extends AbstractStafLibrary {
-    private WebDriver webDriver;
+    private Stack<WebDriver> webDrivers = new Stack<>();
 
     @Keyword(name = "open browser")
     public void openBrowser(AbstractStafObject browser) throws UnsupportedBrowserDriverException {
         String browserString = browser.getValue().toString();
         System.out.println("open browser : " + browserString);
         if (browserString.equals("chrome")) {
-            webDriver = new ChromeDriver();
+            webDrivers.push(new ChromeDriver());
         } else if (browserString.equals("firefox")) {
-            webDriver = new FirefoxDriver();
+            webDrivers.push(new FirefoxDriver());
         } else {
             throw new UnsupportedBrowserDriverException(browserString);
         }
-        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        webDrivers.peek().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @Keyword(name = "close browser")
     public void closeBrowser() {
-        webDriver.close();
+        try {
+            webDrivers.peek().close();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Keyword(name = "close browsers")
+    public void closeBrowsers() {
+        for (WebDriver webDriver : webDrivers) {
+            webDriver.close();
+        }
     }
 
     @Keyword(name = "input text")
     public void input(@KeywordArgument AbstractStafObject selector, @KeywordArgument AbstractStafObject value) {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
-        webDriver.findElement(elementSelector).sendKeys(value.getValue().toString());
+        webDrivers.peek().findElement(elementSelector).sendKeys(value.getValue().toString());
     }
 
     @Keyword(name = "click element")
     public void clickButton(@KeywordArgument AbstractStafObject selector) {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
-        webDriver.findElement(elementSelector).click();
+        webDrivers.peek().findElement(elementSelector).click();
     }
 
     @Keyword(name = "input value")
     public String getInputValue(@KeywordArgument AbstractStafObject selector) {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
-        return webDriver.findElement(elementSelector).getAttribute("value");
+        return webDrivers.peek().findElement(elementSelector).getAttribute("value");
     }
 
     @Keyword(name = "capture screenshot")
     public void captureScreenshot(AbstractStafObject filename) throws IOException {
         System.out.println("taking screenshot -- not implemented");
-        TakesScreenshot scrShot = ((TakesScreenshot) webDriver);
+        TakesScreenshot scrShot = ((TakesScreenshot) webDrivers.peek());
         File SrcFile = scrShot.getScreenshotAs(OutputType.FILE);
         File DestFile = new File(System.getProperty("user.dir") + filename.getValue());
         FileUtils.copyFile(SrcFile, DestFile);
@@ -75,10 +85,10 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     public void waitUntilElementIsVisible(AbstractStafObject selector, AbstractStafObject timeout) throws ElementShouldBeVisibleNotFoundException {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         if (timeout != null) {
-            WebDriverWait wait = new WebDriverWait(webDriver, (Integer) timeout.getValue());
+            WebDriverWait wait = new WebDriverWait(webDrivers.peek(), (Integer) timeout.getValue());
             wait.until(ExpectedConditions.visibilityOfElementLocated(elementSelector));
         } else {
-            List<WebElement> elements = webDriver.findElements(elementSelector);
+            List<WebElement> elements = webDrivers.peek().findElements(elementSelector);
             if (elements.size() == 0) {
                 throw new ElementShouldBeVisibleNotFoundException(selector.getValue().toString());
             }
@@ -89,17 +99,17 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     public void waitUntilElementIsEnabled(AbstractStafObject selector, AbstractStafObject timeout) {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         if (timeout != null) {
-            WebDriverWait wait = new WebDriverWait(webDriver, (Integer) timeout.getValue());
+            WebDriverWait wait = new WebDriverWait(webDrivers.peek(), (Integer) timeout.getValue());
             wait.until(ExpectedConditions.elementToBeClickable(elementSelector));
         } else {
-            webDriver.findElement(elementSelector);
+            webDrivers.peek().findElement(elementSelector);
         }
     }
 
     @Keyword(name = "Element should be visible")
     public void elementShouldBeVisible(AbstractStafObject selector) throws ElementShouldBeVisibleNotFoundException {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
-        List<WebElement> elementList = webDriver.findElements(elementSelector);
+        List<WebElement> elementList = webDrivers.peek().findElements(elementSelector);
         if (elementList.size() == 0) {
             throw new ElementShouldBeVisibleNotFoundException(selector.getValue().toString());
         }
@@ -108,7 +118,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     @Keyword(name = "Element should contain")
     public void elementShouldContain(AbstractStafObject selector, AbstractStafObject expected, AbstractStafObject message) throws ElementShouldContainException {
         By elementSelector = By.xpath("//*[contains(text(),'" + expected.getValue() + "')]");
-        List<WebElement> elementList = webDriver.findElements(elementSelector);
+        List<WebElement> elementList = webDrivers.peek().findElements(elementSelector);
         if (elementList.size() == 0) {
             if (message != null) {
                 throw new ElementShouldContainException(message.getValue().toString());
@@ -121,7 +131,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     @Keyword(name = "go to")
     public void gotToUrl(@KeywordArgument AbstractStafObject url) throws NoBrowserOpenedException {
         try {
-            webDriver.get(url.getValue().toString());
+            webDrivers.peek().get(url.getValue().toString());
         } catch (NullPointerException e) {
             throw new NoBrowserOpenedException();
         }
