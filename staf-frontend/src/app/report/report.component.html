@@ -1,0 +1,26 @@
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>Test case</th>
+            <th>Started</th>
+            <th>Ended</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+    <ng-container *ngFor="let testSuite of reports">
+    <thead>
+        <tr>
+            <th colspan="4">{{testSuite.name}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let tc of testSuite.testCases">
+            <td>{{tc.testCase | titlecase}}</td>
+            <td>{{tc.startTime}}</td>
+            <td>{{tc.endTime}}</td>
+            <td>{{tc.result}}</td>
+        </tr>
+    </tbody>
+    </ng-container>
+</table>

@@ -8,6 +8,7 @@ export interface IStafProject {
     reportsDir: string;
     testSuites: ITestSuite[];
     type: ProjectType;
+    reports?: any[];
 }
 
 export enum ProjectType {

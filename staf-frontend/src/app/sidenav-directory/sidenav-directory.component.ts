@@ -31,7 +31,7 @@ export class SidenavDirectoryComponent implements OnInit {
 
   openFile(item, key) {
     if (item.type == FileType.Directory) {
-      this.router.navigate(['directory', this.project.getNormalizedProjectName(), item.name, key]);
+      this.router.navigate(['directory', this.project.getNormalizedProjectName(), item.name]);
     } else {
       this.fileEditorService.setFile(item);
       this.router.navigate(['editFile', this.project.getNormalizedProjectName(), item.name, key]);

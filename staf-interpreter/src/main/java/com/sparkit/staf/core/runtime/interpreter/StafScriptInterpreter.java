@@ -38,21 +38,23 @@ public class StafScriptInterpreter {
     }
 
     public List<TestCaseReport> run() {
-        TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get("SETUP");
-        TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get("TEARDOWN");
+        TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get("setup");
+        TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get("teardown");
         try {
             Map<String, Assignment> varsAssignments = mainStafFile.getVariableDeclarationMap();
             this.importsInterpreter.loadImports(mainStafFile.getImports(), currentDirectory);
             if (varsAssignments != null) {
                 this.globalSymTable.addVariablesMap(varsAssignments, keywordLibrariesRepository);
             }
-            testCaseResult(setup);
+            if (setup != null) {
+                testCaseResult("SETUP", setup);
+            }
 
             for (Map.Entry<String, TestCaseDeclaration> testCase : this.mainStafFile.getTestCaseDeclarationMap().entrySet()) {
                 if (testCase.getKey().toLowerCase().equals("setup") || testCase.getKey().toLowerCase().equals("teardown")) {
                     continue;
                 }
-                testCaseResult(testCase.getValue());
+                testCaseResult(testCase.getKey(), testCase.getValue());
             }
         } catch (Throwable e) {
             LOG.error("Script execution stopped");
@@ -61,16 +63,16 @@ public class StafScriptInterpreter {
             e.printStackTrace();
         } finally {
             if (tearDown != null) {
-                testCaseResult(tearDown);
+                testCaseResult("TEARDOWN", tearDown);
             }
         }
         return reports;
     }
 
-    public void testCaseResult(TestCaseDeclaration testCase) {
+    public void testCaseResult(String origName, TestCaseDeclaration testCase) {
         TestCaseReport testCaseReport = new TestCaseReport();
         testCaseReport.setTestSuite(testSuite);
-        testCaseReport.setTestCase(testCase.getName());
+        testCaseReport.setTestCase(origName);
         testCaseReport.setStartTime(new Date());
         try {
             executeTestCase(testCase);

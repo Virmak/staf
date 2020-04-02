@@ -5,18 +5,29 @@ IMPORTS
     IMPORT ws
 VARS
     $url = 'https://google.com'
+    $searchInput = 'name:q';
 KEYWORDS
     Open google page()
-        Open browser                    ('chrome')
         Go to                           ($url)
-        Input Text                      ('name:q', 'test automation')
+        Wait until element is visible   ($searchInput)
+        Element should be visible       ($searchInput)
+        Input Text                      ($searchInput, 'test automation')
+
     END
 
 TEST CASES
+    SETUP:
+        Open browser                    ('chrome')
+    END
+
+    SETTING THINS UP:
+        LOG ("set ok")
+    END
+
     first:
         GIVEN   Open google page()
     END
 
-    second test:
+    TEARDOWN:
         Close browser()
     END

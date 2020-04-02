@@ -14,7 +14,7 @@ public class TestCaseDeclarationsSectionVisitor extends StafBaseVisitor<Map<Stri
         Map<String, TestCaseDeclaration> testCaseDeclarationMap = new HashMap<>();
         for (StafParser.Test_case_declarationContext testCaseDeclarationContext : ctx.test_case_declaration()) {
             TestCaseDeclaration testCaseDeclaration = new TestCaseDeclarationVisitor().visitTest_case_declaration(testCaseDeclarationContext);
-            testCaseDeclarationMap.put(testCaseDeclaration.getName(), testCaseDeclaration);
+            testCaseDeclarationMap.put(testCaseDeclaration.getName().toLowerCase(), testCaseDeclaration);
         }
         return testCaseDeclarationMap;
     }

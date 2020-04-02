@@ -2,7 +2,7 @@ import { ToastrService } from 'ngx-toastr';
 import { IStafProject } from './../interfaces/istaf-project';
 import { TestService } from './../test.service';
 import { ITestSuite } from './../interfaces/itest-suite';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-run-test',
@@ -30,6 +30,8 @@ export class RunTestComponent implements OnInit {
       });
     this._project = value;
   }
+
+  @Output() testCompleted = new EventEmitter();
 
   constructor(private testService: TestService, private toastr: ToastrService) { }
 
@@ -68,6 +70,15 @@ export class RunTestComponent implements OnInit {
   }
 
   testComplete(reports) {
+    const testSuiteNames = Object.keys(reports);
+    this.project.reports = testSuiteNames.map(ts => {
+      return {
+        name: ts,
+        testCases: reports[ts],
+      }
+    });
+
+    this.testCompleted.emit(this.project.reports);
     this.progress = false;
     this.toastr.success('Tests execution finished', 'Success');
   }

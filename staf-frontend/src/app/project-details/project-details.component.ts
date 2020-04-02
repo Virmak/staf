@@ -11,6 +11,7 @@ export class ProjectDetailsComponent implements OnInit {
   projects = [];
   project;
   projectId;
+  reportTabActive = false;
   
   constructor(private route: ActivatedRoute, private projectService: ProjectService) { }
 
@@ -27,4 +28,7 @@ export class ProjectDetailsComponent implements OnInit {
     });
   }
 
+  onTestCompleted(reports) {
+    this.reportTabActive = true;
+  }
 }

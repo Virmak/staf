@@ -21,6 +21,7 @@ import { AceEditorModule } from 'ng2-ace-editor';
 import { ViewDirectoryComponent } from './view-directory/view-directory.component';
 import { ToastrModule } from 'ngx-toastr';
 import { RunTestComponent } from './run-test/run-test.component';
+import { ReportComponent } from './report/report.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { RunTestComponent } from './run-test/run-test.component';
     SidenavDirectoryComponent,
     AceEditorComponent,
     ViewDirectoryComponent,
-    RunTestComponent
+    RunTestComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,10 @@
+{
+  "id" : 0,
+  "project" : "Google UI Test",
+  "description" : "",
+  "rootPath" : null,
+  "logDir" : "logs",
+  "reportsDir" : "reports",
+  "type" : "UITest",
+  "testSuites" : [ ]
+}

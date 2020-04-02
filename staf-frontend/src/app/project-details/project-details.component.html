@@ -9,13 +9,13 @@
     <clr-tab>
         <button clrTabLink>Run tests</button>
         <clr-tab-content *clrIfActive>
-        <app-run-test [project]="project"></app-run-test>
+        <app-run-test [project]="project" (testCompleted)="onTestCompleted($event)"></app-run-test>
         </clr-tab-content>
     </clr-tab>
     <clr-tab>
         <button clrTabLink>Reports</button>
-        <clr-tab-content *clrIfActive>
-        reporting tests
+        <clr-tab-content *clrIfActive="reportTabActive">
+            <app-report [reports]="project.reports"></app-report>
         </clr-tab-content>
     </clr-tab>
 </clr-tabs>

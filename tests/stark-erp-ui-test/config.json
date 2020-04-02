@@ -5,6 +5,7 @@
   "reportsDir": "reports",
   "type": "UITest",
   "testSuites": [
-    "authentication"
+    "authentication",
+    "purchase"
   ]
 }
