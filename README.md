@@ -35,7 +35,7 @@ Replace the argument `tests` to change the default directory containing test pro
 
 Now the frontend app is included in this repo and it's built with the project, you can access the editor to test the framework from :
 ```
-    http://127.0.0.1:8080/
+http://127.0.0.1:8080/
 ```
 
 To test the API make a POST request to :
@@ -102,6 +102,7 @@ Keywords
 |---------------|-----------|-------------|  
 |Open browser   | `browser`: ***string***|Open browser|  
 |Close browser  |     | Close browser |  
+|Close browsers  |     | Close all browser |  
 |Go to          | `url`: ***string*** | Open page with ***url***  
 |Input text     | `selector`: ***string*** | Set input text |  
 |Click element  | `selector`: ***string*** | Click specified element|  
