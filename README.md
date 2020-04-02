@@ -1,8 +1,9 @@
 # Stark test automation framework (STAF)
   
-**STAF** is a test automation framework that makes it easy to write tests in a Domain Specific Language written in JAVA. This project contains 2 modules:
+**STAF** is a test automation framework that makes it easy to write tests in a Domain Specific Language written in JAVA. This project contains 3 modules:
 The first module is a library used to interpret and execute STAF scripts.
 The second module is a web API written in spring boot used as a backend for an editor written in angular.
+The third module is an Angular app used to manage tests from a GUI
 
 ## Getting started  
   
@@ -29,8 +30,13 @@ mvn clean install
 ```bash  
 java -jar staf-api/target/staf-api-0.0.1-SNAPSHOT.jar tests
 ```  
+By default this repo contains `tests` directory
 Replace the argument `tests` to change the default directory containing test projects  
-By default this repo contains `tests` directory with 2 projects
+
+Now the frontend app is included in this repo and it's built with the project, you can access the editor to test the framework from :
+```
+    http://127.0.0.1:8080/
+```
 
 To test the API make a POST request to :
 ```
