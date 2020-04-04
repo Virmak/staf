@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -37,14 +38,15 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         } else {
             throw new UnsupportedBrowserDriverException(browserString);
         }
-        webDrivers.peek().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        webDrivers.peek().manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
     @Keyword(name = "close browser")
     public void closeBrowser() {
         try {
             webDrivers.peek().close();
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException ignored) {
+        }
     }
 
     @Keyword(name = "close browsers")
@@ -74,15 +76,15 @@ public class SeleniumLibrary extends AbstractStafLibrary {
 
     @Keyword(name = "capture screenshot")
     public void captureScreenshot(AbstractStafObject filename) throws IOException {
-        System.out.println("taking screenshot -- not implemented");
-        TakesScreenshot scrShot = ((TakesScreenshot) webDrivers.peek());
-        File SrcFile = scrShot.getScreenshotAs(OutputType.FILE);
-        File DestFile = new File(System.getProperty("user.dir") + filename.getValue());
+        WebDriver augmentedDriver = new Augmenter().augment(webDrivers.peek());
+        File SrcFile = ((TakesScreenshot) augmentedDriver).getScreenshotAs(OutputType.FILE);
+        File DestFile = new File(System.getProperty("user.dir") + "/" + filename.getValue());
         FileUtils.copyFile(SrcFile, DestFile);
     }
 
     @Keyword(name = "wait until element is visible")
-    public void waitUntilElementIsVisible(AbstractStafObject selector, AbstractStafObject timeout) throws ElementShouldBeVisibleNotFoundException {
+    public void waitUntilElementIsVisible(AbstractStafObject selector, AbstractStafObject timeout)
+            throws ElementShouldBeVisibleNotFoundException {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         if (timeout != null) {
             WebDriverWait wait = new WebDriverWait(webDrivers.peek(), (Integer) timeout.getValue());
@@ -115,8 +117,9 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         }
     }
 
-    @Keyword(name = "Element should contain")
-    public void elementShouldContain(AbstractStafObject selector, AbstractStafObject expected, AbstractStafObject message) throws ElementShouldContainException {
+    @Keyword(name = "Element should contain", doc = "Verifies that element 'locator' contains text expected.")
+    public void elementShouldContain(AbstractStafObject selector, AbstractStafObject expected, AbstractStafObject message)
+            throws ElementShouldContainException {
         By elementSelector = By.xpath("//*[contains(text(),'" + expected.getValue() + "')]");
         List<WebElement> elementList = webDrivers.peek().findElements(elementSelector);
         if (elementList.size() == 0) {

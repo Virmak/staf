@@ -1,27 +1,29 @@
-package com.sparkit.staf.core.runtime.interpreter;
+package com.sparkit.staf.core.runtime.loader;
 
 import com.sparkit.staf.core.ast.Assignment;
 import com.sparkit.staf.core.ast.ImportStatement;
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.ast.StafFile;
+import com.sparkit.staf.core.runtime.interpreter.ImportsInterpreter;
+import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
-import com.sparkit.staf.core.runtime.loader.IStafFileReader;
-import com.sparkit.staf.core.runtime.loader.IStafScriptBuilder;
+import com.sparkit.staf.core.runtime.loader.IStafCompiler;
+import com.sparkit.staf.core.runtime.loader.IStafScriptLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class StafScriptBuilder implements IStafScriptBuilder {
+public class StafScriptLoader implements IStafScriptLoader {
 
-    private final IStafFileReader stafFileReader;
+    private final IStafCompiler stafCompiler;
     private final SymbolsTable globalSymTable;
     private final KeywordLibrariesRepository keywordLibrariesRepository;
     private final List<String> loadedFilesList = new ArrayList<>();
 
-    public StafScriptBuilder(IStafFileReader stafFileReader, SymbolsTable globalSymTable,
-                             KeywordLibrariesRepository keywordLibrariesRepository) {
-        this.stafFileReader = stafFileReader;
+    public StafScriptLoader(IStafCompiler stafCompiler, SymbolsTable globalSymTable,
+                            KeywordLibrariesRepository keywordLibrariesRepository) {
+        this.stafCompiler = stafCompiler;
         this.globalSymTable = globalSymTable;
         this.keywordLibrariesRepository = keywordLibrariesRepository;
     }
@@ -33,7 +35,7 @@ public class StafScriptBuilder implements IStafScriptBuilder {
             return;
         }
         System.out.println("Parsing : " + filePath);
-        StafFile stafFileAST = stafFileReader.compile(filePath);
+        StafFile stafFileAST = stafCompiler.compile(filePath);
         List<ImportStatement> imports = stafFileAST.getImports();
         Map<String, Assignment> varsMap = stafFileAST.getVariableDeclarationMap();
         Map<String, KeywordDeclaration> keywordsMap = stafFileAST.getKeywordDeclarationMap();

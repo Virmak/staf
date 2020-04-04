@@ -2,7 +2,7 @@ package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.parser.*;
-import com.sparkit.staf.core.runtime.loader.IStafFileReader;
+import com.sparkit.staf.core.runtime.loader.IStafCompiler;
 import com.sparkit.staf.core.visitors.StafFileVisitor;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 import java.io.IOException;
 
-public class StafFileReader implements IStafFileReader {
+public class StafFileCompiler implements IStafCompiler {
     @Override
     public StafFile compile(String filePath) throws IOException, SyntaxErrorException {
         CharStream stafCharStream = CharStreams.fromFileName(filePath);
@@ -34,6 +34,8 @@ public class StafFileReader implements IStafFileReader {
         if (listener.getSyntaxErrors().size() > 0) {
             System.exit(0);
         }
-        return (StafFile) new StafFileVisitor().visitStaf_file(parseTree);
+        StafFile stafFile = (StafFile) new StafFileVisitor().visitStaf_file(parseTree);
+        stafFile.setFilePath(filePath);
+        return stafFile;
     }
 }

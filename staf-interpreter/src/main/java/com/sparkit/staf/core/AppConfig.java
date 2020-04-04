@@ -1,11 +1,11 @@
 package com.sparkit.staf.core;
 
 import com.sparkit.staf.core.runtime.config.JsonStafProjectConfig;
-import com.sparkit.staf.core.runtime.interpreter.StafFileReader;
+import com.sparkit.staf.core.runtime.interpreter.StafFileCompiler;
+import com.sparkit.staf.core.runtime.loader.IStafCompiler;
 import com.sparkit.staf.core.runtime.loader.IStafConfig;
-import com.sparkit.staf.core.runtime.loader.IStafFileReader;
 import com.sparkit.staf.core.runtime.loader.TestContainer;
-import com.sparkit.staf.core.runtime.loader.TestLoader;
+import com.sparkit.staf.core.runtime.loader.TestRunner;
 import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.Beta;
 import org.springframework.context.annotation.Bean;
@@ -24,13 +24,13 @@ public class AppConfig {
     }
 
     @Bean
-    public IStafFileReader stafFileReader() {
-        return new StafFileReader();
+    public IStafCompiler stafFileReader() {
+        return new StafFileCompiler();
     }
 
     @Beta
-    TestLoader testLoader() {
-        return new TestLoader(stafConfig(), stafFileReader());
+    TestRunner testLoader() {
+        return new TestRunner();
     }
 
     @Bean

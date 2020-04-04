@@ -5,39 +5,55 @@ import com.sparkit.staf.core.ast.Assignment;
 import com.sparkit.staf.core.ast.IStatement;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.ast.TestCaseDeclaration;
-import com.sparkit.staf.core.runtime.interpreter.exceptions.StatementExecutionFailedException;
-import com.sparkit.staf.core.runtime.reports.TestCaseReport;
+import com.sparkit.staf.core.ast.types.KeywordCall;
+import com.sparkit.staf.core.ast.types.StafString;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.SeleniumLibException;
+import com.sparkit.staf.core.runtime.loader.IStafConfig;
+import com.sparkit.staf.core.runtime.reports.StatementReport;
+import com.sparkit.staf.core.runtime.reports.TestCaseReport;
 import com.sparkit.staf.core.runtime.reports.TestCaseResult;
+import com.sparkit.staf.core.runtime.reports.TestResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.NoSuchElementException;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class StafScriptInterpreter {
+public class StafScriptInterpreter implements IStafScriptInterpreter {
     private static final Logger LOG = LogManager.getLogger(Main.class);
-    private final ImportsInterpreter importsInterpreter;
+    private final IImportsInterpreter importsInterpreter;
     private final StafFile mainStafFile;
     private final KeywordLibrariesRepository keywordLibrariesRepository;
+    private final String filePath;
     private final String testSuite;
     private String currentDirectory;
     private SymbolsTable globalSymTable;
-    private List<TestCaseReport> reports = new ArrayList<>();
+    private IStafConfig config;
 
-    public StafScriptInterpreter(ImportsInterpreter importsInterpreter, StafFile mainStafFile, SymbolsTable globalSymTable,
-                                 KeywordLibrariesRepository keywordLibrariesRepository, String currentDirectory, String testSuite) {
+    @Value("#{systemProperties['testDirectory']}")
+    private String testDirectory;
+
+    public StafScriptInterpreter(IImportsInterpreter importsInterpreter, IStafConfig config, StafFile mainStafFile,
+                                 SymbolsTable globalSymTable, KeywordLibrariesRepository keywordLibrariesRepository,
+                                 String currentDirectory, String filePath, String testSuite) {
         this.importsInterpreter = importsInterpreter;
+        this.config = config;
         this.mainStafFile = mainStafFile;
         this.globalSymTable = globalSymTable;
         this.keywordLibrariesRepository = keywordLibrariesRepository;
         this.currentDirectory = currentDirectory;
+        this.filePath = filePath;
         this.testSuite = testSuite;
+        this.testDirectory = System.getProperty("testDirectory");
     }
 
     public List<TestCaseReport> run() {
+        List<TestCaseReport> reports = new ArrayList<>();
         TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get("setup");
         TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get("teardown");
         try {
@@ -47,14 +63,14 @@ public class StafScriptInterpreter {
                 this.globalSymTable.addVariablesMap(varsAssignments, keywordLibrariesRepository);
             }
             if (setup != null) {
-                testCaseResult("SETUP", setup);
+                reports.add(executeTestCase("SETUP", setup));
             }
 
             for (Map.Entry<String, TestCaseDeclaration> testCase : this.mainStafFile.getTestCaseDeclarationMap().entrySet()) {
                 if (testCase.getKey().toLowerCase().equals("setup") || testCase.getKey().toLowerCase().equals("teardown")) {
                     continue;
                 }
-                testCaseResult(testCase.getKey(), testCase.getValue());
+                reports.add(executeTestCase(testCase.getKey(), testCase.getValue()));
             }
         } catch (Throwable e) {
             LOG.error("Script execution stopped");
@@ -63,44 +79,58 @@ public class StafScriptInterpreter {
             e.printStackTrace();
         } finally {
             if (tearDown != null) {
-                testCaseResult("TEARDOWN", tearDown);
+                reports.add(executeTestCase("TEARDOWN", tearDown));
             }
         }
         return reports;
     }
 
-    public void testCaseResult(String origName, TestCaseDeclaration testCase) {
+    public TestCaseReport executeTestCase(String testCaseName, TestCaseDeclaration testCaseDeclaration) {
         TestCaseReport testCaseReport = new TestCaseReport();
         testCaseReport.setTestSuite(testSuite);
-        testCaseReport.setTestCase(origName);
+        testCaseReport.setTestCase(testCaseName);
         testCaseReport.setStartTime(new Date());
-        try {
-            executeTestCase(testCase);
-            testCaseReport.setResult(TestCaseResult.Passed);
-            testCaseReport.setEndTime(new Date());
-        } catch (StatementExecutionFailedException e) {
-            testCaseReport.setResult(TestCaseResult.Failed);
-            testCaseReport.setEndTime(new Date());
-            e.printStackTrace();
-        } finally {
-            reports.add(testCaseReport);
-        }
-    }
-
-    public void executeTestCase(TestCaseDeclaration testCaseDeclaration) throws StatementExecutionFailedException {
+        testCaseReport.setStatementReports(new ArrayList<>());
+        String lastErrorMessage = null;
         LOG.info("Executing test case : " + testCaseDeclaration.getName());
         for (IStatement statement : testCaseDeclaration.getStatements()) {
+            StatementReport report = new StatementReport();
             try {
                 statement.execute(globalSymTable, null, keywordLibrariesRepository);
+                report.setStatement(statement);
+                report.setResult(TestResult.Pass);
+            } catch (SeleniumLibException | NoSuchElementException e) {
+                report.setResult(TestResult.Fail);
+                report.setErrorMessage(e.getMessage() + " at  : " + filePath + ":" + ((KeywordCall) statement).getLineNumber());
+                // Take screenshot
+                try {
+                    StafString path = new StafString(
+                            testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/results/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
+
+                    keywordLibrariesRepository.invokeKeyword("capture screenshot", new Object[]{path});
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+
             } catch (Throwable e) {
-                LOG.error("Executing statement failed at [" + testSuite + "] : "  + testCaseDeclaration.getName()
+                report.setResult(TestResult.Fail);
+                report.setErrorMessage(e.getMessage());
+                LOG.error("Executing statement failed at [" + testSuite + "] : " + testCaseDeclaration.getName()
                         + " | " + e.getMessage());
                 e.printStackTrace();
-                throw new StatementExecutionFailedException();
+                lastErrorMessage = e.getMessage();
             } finally {
+                report.setEnd(new Date());
+                testCaseReport.getStatementReports().add(report);
             }
         }
+
+        testCaseReport.setResult(TestCaseResult.Failed);
+        testCaseReport.setEndTime(new Date());
+        testCaseReport.setErrorMessage(lastErrorMessage);
+
         LOG.info("Finished executing test case : " + testCaseDeclaration.getName());
+        return testCaseReport;
     }
 
 }

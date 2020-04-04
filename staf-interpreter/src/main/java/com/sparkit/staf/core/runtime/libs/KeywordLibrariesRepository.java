@@ -3,9 +3,9 @@ package com.sparkit.staf.core.runtime.libs;
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
-import com.sparkit.staf.core.runtime.loader.TestContainer;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
+import com.sparkit.staf.core.runtime.loader.TestContainer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,7 +20,8 @@ public class KeywordLibrariesRepository {
     protected Map<String, AbstractStafLibrary> libsInstancesMap;
     protected TestContainer dependencyContainer;
 
-    public KeywordLibrariesRepository(Map<String, KeywordDeclaration> userDefinedKeywords, SymbolsTable globalSymTable, TestContainer dependencyContainer) {
+    public KeywordLibrariesRepository(Map<String, KeywordDeclaration> userDefinedKeywords,
+                                      SymbolsTable globalSymTable, TestContainer dependencyContainer) {
         this.userDefinedKeywords = userDefinedKeywords;
         this.globalSymTable = globalSymTable;
         builtinKeywordMap = new HashMap<>();
@@ -32,9 +33,9 @@ public class KeywordLibrariesRepository {
         return userDefinedKeywords;
     }
 
-    public void registerLibrary(Class<? extends AbstractStafLibrary> libClass) throws KeywordAlreadyRegisteredException,
-            InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-
+    public void registerLibrary(Class<? extends AbstractStafLibrary> libClass)
+            throws KeywordAlreadyRegisteredException, InvocationTargetException,
+            NoSuchMethodException, InstantiationException, IllegalAccessException {
 
         AbstractStafLibrary libInstance = LibraryFactory.build(libClass, dependencyContainer);
         if (libsInstancesMap.containsKey(libClass.getName())) {
@@ -54,7 +55,8 @@ public class KeywordLibrariesRepository {
         }
     }
 
-    public void addUserDefinedKeywords(Map<String, KeywordDeclaration> keywordDeclarationMap) throws KeywordAlreadyRegisteredException {
+    public void addUserDefinedKeywords(Map<String, KeywordDeclaration> keywordDeclarationMap)
+            throws KeywordAlreadyRegisteredException {
         if (userDefinedKeywords == null) {
             userDefinedKeywords = new HashMap<>();
         }
@@ -68,7 +70,7 @@ public class KeywordLibrariesRepository {
 
     public Object invokeKeyword(String keyword, Object[] params) throws Throwable {
         String normalizedKeywordName = normalizeKeywordName(keyword);
-        if (builtinKeywordMap.containsKey(keyword)) {
+        if (builtinKeywordMap.containsKey(normalizedKeywordName)) {
             return builtinKeywordMap.get(normalizedKeywordName).invoke(params);
         } else if (userDefinedKeywords.containsKey(keyword)) {
             return userDefinedKeywords.get(keyword).execute(globalSymTable, this, params);

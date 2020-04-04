@@ -6,7 +6,6 @@ import com.sparkit.staf.api.models.request.RunTestRequest;
 import com.sparkit.staf.api.service.ProjectService;
 import com.sparkit.staf.core.StafTestFacade;
 import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
-import com.sparkit.staf.core.runtime.reports.TestCaseReport;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,18 +14,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class TestController {
+    @Value("${testDirectory}")
+    String testDir;
     @Autowired
     private StafTestFacade testFacade;
     @Autowired
     private ProjectService projectService;
-    @Value("${testDirectory}")
-    String testDir;
 
     @CrossOrigin("*")
     @PostMapping("/runTest")
@@ -35,7 +32,7 @@ public class TestController {
         String project = runTestRequest.getProject().replaceAll("\\s+", "-").toLowerCase(); // normalize project name
         for (String projectName : projectService.readProjects()) {
             if (project.equals(projectName)) {
-                return testFacade.runTests(projectName,testDir + "/" + project + "/" + "config.json", runTestRequest.getTestSuites());
+                return testFacade.runProject(testDir, projectName, testDir + "/" + project + "/" + "config.json", runTestRequest.getTestSuites());
             }
         }
         throw new ProjectNotFoundException();

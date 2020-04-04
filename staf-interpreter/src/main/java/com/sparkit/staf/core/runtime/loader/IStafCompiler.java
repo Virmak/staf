@@ -5,6 +5,6 @@ import com.sparkit.staf.core.parser.SyntaxErrorException;
 
 import java.io.IOException;
 
-public interface IStafFileReader {
+public interface IStafCompiler {
     public StafFile compile(String filePath) throws IOException, SyntaxErrorException;
 }

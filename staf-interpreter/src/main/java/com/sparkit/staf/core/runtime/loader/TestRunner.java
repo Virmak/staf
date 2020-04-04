@@ -3,8 +3,10 @@ package com.sparkit.staf.core.runtime.loader;
 import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.parser.SyntaxErrorException;
-import com.sparkit.staf.core.runtime.interpreter.*;
-import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.core.runtime.factory.IKeywordLibrariesRepositoryFactory;
+import com.sparkit.staf.core.runtime.factory.IStafScriptInterpreterFactory;
+import com.sparkit.staf.core.runtime.interpreter.IStafScriptInterpreter;
+import com.sparkit.staf.core.runtime.interpreter.TestSuite;
 import com.sparkit.staf.core.runtime.loader.exceptions.TestSuiteMainScriptNotFoundException;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
@@ -17,25 +19,23 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
-public class TestLoader {
+public class TestRunner {
     private static final Logger logger = LogManager.getLogger(Main.class);
-    private final IStafConfig config;
-    private final IStafFileReader stafFileReader;
-    @Value("${testDirectory}")
-    String testDirectory;
-    private Map<String, List<TestCaseReport>> reports = new HashMap<>();
+    @Autowired
+    private IStafConfig config;
+    @Autowired
+    private IStafCompiler stafCompiler;
     @Autowired
     private TestContainer testContainer;
-
-    public TestLoader(IStafConfig config, IStafFileReader stafFileReader) {
-        this.config = config;
-        this.stafFileReader = stafFileReader;
-    }
+    @Autowired
+    private IKeywordLibrariesRepositoryFactory keywordsRepositoryFactory;
+    @Autowired
+    private IStafScriptInterpreterFactory scriptInterpreterFactory;
+    @Value("${testDirectory}")
+    private String testDirectory;
 
     public List<TestSuiteReport> runTests(List<String> testSuites) {
         List<TestSuiteReport> testSuiteReports = new ArrayList<>();
@@ -69,22 +69,13 @@ public class TestLoader {
         String fullPath = testDirectory + "/" + config.getProjectDir() + "/" + mainFilePath;
         StafFile scriptAST;
         try {
-            scriptAST = stafFileReader.compile(fullPath);
+            scriptAST = stafCompiler.compile(fullPath);
         } catch (IOException e) {
             throw new TestSuiteMainScriptNotFoundException(testSuitePath);
         }
-        SymbolsTable globalSymTable = new SymbolsTable();
-        KeywordLibrariesRepository keywordsRepository = new KeywordLibrariesRepository(scriptAST.getKeywordDeclarationMap(),
-                globalSymTable, testContainer);
-        IStafScriptBuilder scriptBuilder = new StafScriptBuilder(stafFileReader, globalSymTable, keywordsRepository);
-        ImportsInterpreter importsInterpreter = new ImportsInterpreter(scriptBuilder, keywordsRepository, testDirectory);
-
-        StafScriptInterpreter interpreter = new StafScriptInterpreter(importsInterpreter, scriptAST, globalSymTable, keywordsRepository,
-                testDirectory + "/" + config.getProjectDir() + "/" + testSuitePath, testSuite.getTestSuiteName());
+        IStafScriptInterpreter interpreter = scriptInterpreterFactory.getScriptInterpreter(
+                scriptAST, fullPath, testDirectory + "/" + config.getProjectDir() + "/" + testSuitePath,
+                testSuite.getTestSuiteName(), testDirectory);
         return interpreter.run();
-    }
-
-    public Map<String, List<TestCaseReport>> getReports() {
-        return reports;
     }
 }

@@ -1,8 +1,8 @@
 package com.sparkit.staf.core;
 
+import com.sparkit.staf.core.runtime.loader.IStafCompiler;
 import com.sparkit.staf.core.runtime.loader.IStafConfig;
-import com.sparkit.staf.core.runtime.loader.IStafFileReader;
-import com.sparkit.staf.core.runtime.loader.TestLoader;
+import com.sparkit.staf.core.runtime.loader.TestRunner;
 import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
 import org.apache.logging.log4j.LogManager;
@@ -19,13 +19,14 @@ public class StafTestFacade {
     @Autowired
     private IStafConfig stafConfig;
     @Autowired
-    private TestLoader loader;
+    private TestRunner loader;
     @Autowired
-    private IStafFileReader stafFileReader;
+    private IStafCompiler stafFileReader;
 
-    public List<TestSuiteReport> runTests(String projectDir, String configFile, List<String> testSuites) throws ConfigFileNotFoundException {
+    public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, List<String> testSuites) throws ConfigFileNotFoundException {
         stafConfig.readConfigFile(projectDir, configFile);
-        System.setProperty("logFilename", stafConfig.getLogDirectory());
+        System.setProperty("logFilename", stafConfig.getLogDirectory() + "/test.log");
+        System.setProperty("testDirectory", testDir);
         org.apache.logging.log4j.core.LoggerContext ctx =
                 (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);
         ctx.reconfigure();

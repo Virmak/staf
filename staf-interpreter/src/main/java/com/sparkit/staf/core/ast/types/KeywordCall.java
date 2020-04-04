@@ -1,7 +1,6 @@
 package com.sparkit.staf.core.ast.types;
 
 import com.sparkit.staf.core.ast.IStatement;
-
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedKeywordException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
@@ -11,6 +10,7 @@ import java.util.List;
 public class KeywordCall extends AbstractStafObject implements IStatement {
     protected String keywordName;
     protected List<AbstractStafObject> argumentsList;
+    protected int lineNumber;
 
     public KeywordCall(String keywordName, List<AbstractStafObject> argumentsList) {
         this.keywordName = keywordName;
@@ -18,6 +18,14 @@ public class KeywordCall extends AbstractStafObject implements IStatement {
     }
 
     public KeywordCall() {
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
     }
 
     @Override

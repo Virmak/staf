@@ -5,7 +5,7 @@ import com.sparkit.staf.core.ast.ImportTypes;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
-import com.sparkit.staf.core.runtime.loader.IStafScriptBuilder;
+import com.sparkit.staf.core.runtime.loader.IStafScriptLoader;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
@@ -15,13 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ImportsInterpreter {
+public class ImportsInterpreter implements IImportsInterpreter {
     public final String libsPackage = "com.sparkit.staf.core.runtime.libs.builtin";
-    private final IStafScriptBuilder scriptBuilder;
+    private final IStafScriptLoader scriptBuilder;
     private final KeywordLibrariesRepository keywordsRepository;
     private final String testsDirectory;
 
-    public ImportsInterpreter(IStafScriptBuilder scriptBuilder, KeywordLibrariesRepository keywordsRepository, String testDirectory) {
+    public ImportsInterpreter(IStafScriptLoader scriptBuilder, KeywordLibrariesRepository keywordsRepository, String testDirectory) {
         this.scriptBuilder = scriptBuilder;
         this.keywordsRepository = keywordsRepository;
         this.testsDirectory = testDirectory;
