@@ -7,9 +7,11 @@ import com.sparkit.staf.core.ast.types.StafInteger;
 import com.sparkit.staf.core.parser.StafBaseVisitor;
 import com.sparkit.staf.core.parser.StafParser;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ExpressionVisitor extends StafBaseVisitor<AbstractStafObject> {
-
+    @Autowired
+    private ScalarObjectVisitor scalarObjectVisitor;
 
     @Override
     public AbstractStafObject visitExpression(StafParser.ExpressionContext ctx) {
@@ -54,7 +56,7 @@ public class ExpressionVisitor extends StafBaseVisitor<AbstractStafObject> {
         }
         StafParser.Scalar_objectContext scalarObjectContext = ctx.scalar_object();
         if (scalarObjectContext != null) {
-            return new ScalarObjectVisitor().visitScalar_object(ctx.scalar_object());
+            return scalarObjectVisitor.visitScalar_object(ctx.scalar_object());
         }
         return super.visitExpression(ctx);
     }

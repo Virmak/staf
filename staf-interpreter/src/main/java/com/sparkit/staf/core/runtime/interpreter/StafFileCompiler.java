@@ -8,10 +8,13 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
 public class StafFileCompiler implements IStafCompiler {
+    @Autowired
+    private StafFileVisitor stafFileVisitor;
     @Override
     public StafFile compile(String filePath) throws IOException, SyntaxErrorException {
         CharStream stafCharStream = CharStreams.fromFileName(filePath);
@@ -34,7 +37,7 @@ public class StafFileCompiler implements IStafCompiler {
         if (listener.getSyntaxErrors().size() > 0) {
             System.exit(0);
         }
-        StafFile stafFile = (StafFile) new StafFileVisitor().visitStaf_file(parseTree);
+        StafFile stafFile = (StafFile) stafFileVisitor.visitStaf_file(parseTree);
         stafFile.setFilePath(filePath);
         return stafFile;
     }

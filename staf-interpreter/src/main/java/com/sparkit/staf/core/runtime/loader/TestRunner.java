@@ -9,8 +9,8 @@ import com.sparkit.staf.core.runtime.interpreter.IStafScriptInterpreter;
 import com.sparkit.staf.core.runtime.interpreter.TestSuite;
 import com.sparkit.staf.core.runtime.loader.exceptions.TestSuiteMainScriptNotFoundException;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
+import com.sparkit.staf.core.runtime.reports.TestResult;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
-import com.sparkit.staf.core.runtime.reports.TestSuiteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +47,13 @@ public class TestRunner {
             testSuiteReport.setTestSuite(testSuite);
             try {
                 testSuiteReport.setTestCaseReports(runTestScript(testSuite + "/main.staf", testSuite, testDirectory));
-                testSuiteReport.setResult(TestSuiteResult.Ok);
+                testSuiteReport.setResult(TestResult.Pass);
             } catch (TestSuiteMainScriptNotFoundException e) {
                 e.printStackTrace();
-                testSuiteReport.setResult(TestSuiteResult.Error);
+                testSuiteReport.setResult(TestResult.Fail);
                 testSuiteReport.setMessage("Test suite main.staf script not found");
             } catch (SyntaxErrorException e) {
-                testSuiteReport.setResult(TestSuiteResult.Error);
+                testSuiteReport.setResult(TestResult.Fail);
                 testSuiteReport.setMessage(e.getMessage());
             }
             testSuiteReports.add(testSuiteReport);

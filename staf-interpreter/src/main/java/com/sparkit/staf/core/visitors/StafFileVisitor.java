@@ -3,8 +3,17 @@ package com.sparkit.staf.core.visitors;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.parser.StafBaseVisitor;
 import com.sparkit.staf.core.parser.StafParser;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class StafFileVisitor extends StafBaseVisitor<Object> {
+    @Autowired
+    private ImportsSectionVisitor importsSectionVisitor;
+    @Autowired
+    private VariableDeclarationsSectionVisitor variableDeclarationsSectionVisitor;
+    @Autowired
+    private KeywordDeclarationsSectionVisitor keywordDeclarationsSectionVisitor;
+    @Autowired
+    private TestCaseDeclarationsSectionVisitor testCaseDeclarationsSectionVisitor;
 
     @Override
     public Object visitStaf_file(StafParser.Staf_fileContext ctx) {
@@ -15,19 +24,19 @@ public class StafFileVisitor extends StafBaseVisitor<Object> {
         }
         StafParser.Imports_sectionContext importsSection = ctx.imports_section();
         if (importsSection != null) {
-            stafFile.setImports(new ImportsSectionVisitor().visitImports_section(importsSection));
+            stafFile.setImports(importsSectionVisitor.visitImports_section(importsSection));
         }
         StafParser.Vars_sectionContext varsSection = ctx.vars_section();
         if (varsSection != null) {
-            stafFile.setVariableDeclarationMap(new VariableDeclarationsSectionVisitor().visitVars_section(varsSection));
+            stafFile.setVariableDeclarationMap(variableDeclarationsSectionVisitor.visitVars_section(varsSection));
         }
         StafParser.Keywords_sectionContext keywordsSectionContext = ctx.keywords_section();
         if (keywordsSectionContext != null) {
-            stafFile.setKeywordDeclarationMap(new KeywordDeclarationsSectionVisitor().visitKeywords_section(keywordsSectionContext));
+            stafFile.setKeywordDeclarationMap(keywordDeclarationsSectionVisitor.visitKeywords_section(keywordsSectionContext));
         }
         StafParser.Test_cases_sectionContext testCasesSectionContext = ctx.test_cases_section();
         if (testCasesSectionContext != null) {
-            stafFile.setTestCaseDeclarationMap(new TestCaseDeclarationsSectionVisitor().visitTest_cases_section(testCasesSectionContext));
+            stafFile.setTestCaseDeclarationMap(testCaseDeclarationsSectionVisitor.visitTest_cases_section(testCasesSectionContext));
         }
         return stafFile;
     }

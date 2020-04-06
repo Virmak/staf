@@ -12,7 +12,6 @@ import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.SeleniumLi
 import com.sparkit.staf.core.runtime.loader.IStafConfig;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
-import com.sparkit.staf.core.runtime.reports.TestCaseResult;
 import com.sparkit.staf.core.runtime.reports.TestResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -90,24 +89,26 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         testCaseReport.setTestSuite(testSuite);
         testCaseReport.setTestCase(testCaseName);
         testCaseReport.setStartTime(new Date());
+        testCaseReport.setResult(TestResult.Pass);
         testCaseReport.setStatementReports(new ArrayList<>());
         String lastErrorMessage = null;
         LOG.info("Executing test case : " + testCaseDeclaration.getName());
         for (IStatement statement : testCaseDeclaration.getStatements()) {
             StatementReport report = new StatementReport();
+            report.setStatement(statement);
             try {
                 statement.execute(globalSymTable, null, keywordLibrariesRepository);
-                report.setStatement(statement);
                 report.setResult(TestResult.Pass);
             } catch (SeleniumLibException | NoSuchElementException e) {
+                testCaseReport.setResult(TestResult.Fail);
                 report.setResult(TestResult.Fail);
                 report.setErrorMessage(e.getMessage() + " at  : " + filePath + ":" + ((KeywordCall) statement).getLineNumber());
                 // Take screenshot
-                try {
-                    StafString path = new StafString(
-                            testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/results/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
+                StafString screenShotPath = new StafString(
+                        testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/results/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
 
-                    keywordLibrariesRepository.invokeKeyword("capture screenshot", new Object[]{path});
+                try {
+                    keywordLibrariesRepository.invokeKeyword("capture screenshot", new Object[]{screenShotPath});
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
                 }
@@ -119,13 +120,13 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
                         + " | " + e.getMessage());
                 e.printStackTrace();
                 lastErrorMessage = e.getMessage();
+                testCaseReport.setResult(TestResult.Fail);
             } finally {
                 report.setEnd(new Date());
                 testCaseReport.getStatementReports().add(report);
             }
         }
 
-        testCaseReport.setResult(TestCaseResult.Failed);
         testCaseReport.setEndTime(new Date());
         testCaseReport.setErrorMessage(lastErrorMessage);
 

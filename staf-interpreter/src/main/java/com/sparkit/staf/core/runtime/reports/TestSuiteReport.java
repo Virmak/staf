@@ -8,6 +8,6 @@ import java.util.List;
 public class TestSuiteReport {
     private String testSuite;
     private String message;
-    private TestSuiteResult result;
+    private TestResult result;
     private List<TestCaseReport> testCaseReports;
 }

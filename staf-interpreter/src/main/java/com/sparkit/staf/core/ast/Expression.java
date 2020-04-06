@@ -7,6 +7,8 @@ import com.sparkit.staf.core.runtime.interpreter.ExpressionEvaluator;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 
+import javax.naming.OperationNotSupportedException;
+
 public class Expression extends AbstractStafObject {
     protected AbstractStafObject left;
     protected AbstractStafObject right;
@@ -133,6 +135,6 @@ public class Expression extends AbstractStafObject {
         }else if (operation == ExpressionOps.NE) {
             return ExpressionEvaluator.notEqual(l, r);
         }
-        throw new Exception("not implemented operation " + operation);
+        throw new OperationNotSupportedException();
     }
 }

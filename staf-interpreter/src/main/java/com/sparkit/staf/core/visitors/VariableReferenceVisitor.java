@@ -6,8 +6,11 @@ import com.sparkit.staf.core.ast.types.StafVariable;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.parser.StafBaseVisitor;
 import com.sparkit.staf.core.parser.StafParser;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class VariableReferenceVisitor extends StafBaseVisitor<AbstractStafObject> {
+    @Autowired
+    private ExpressionVisitor expressionVisitor;
     @Override
     public AbstractStafObject visitVariable_reference(StafParser.Variable_referenceContext ctx) {
         StafParser.VariableContext variableContext = ctx.variable();
@@ -23,7 +26,7 @@ public class VariableReferenceVisitor extends StafBaseVisitor<AbstractStafObject
                 parentVarRefObject = new DictionaryItemAccess(parentVarRefObject, dictionaryItemAccessContext.IDENTIFIER().getText());
             }
             if (listItemAccessContext != null) {
-                AbstractStafObject listIndexExpr = new ExpressionVisitor().visitExpression(listItemAccessContext.expression());
+                AbstractStafObject listIndexExpr = expressionVisitor.visitExpression(listItemAccessContext.expression());
                 parentVarRefObject = new ListItemAccess(parentVarRefObject, listIndexExpr);
             }
             i++;

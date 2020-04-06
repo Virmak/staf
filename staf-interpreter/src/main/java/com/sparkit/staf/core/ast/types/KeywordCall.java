@@ -11,6 +11,7 @@ public class KeywordCall extends AbstractStafObject implements IStatement {
     protected String keywordName;
     protected List<AbstractStafObject> argumentsList;
     protected int lineNumber;
+    protected String file;
 
     public KeywordCall(String keywordName, List<AbstractStafObject> argumentsList) {
         this.keywordName = keywordName;
@@ -18,6 +19,14 @@ public class KeywordCall extends AbstractStafObject implements IStatement {
     }
 
     public KeywordCall() {
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 
     public int getLineNumber() {

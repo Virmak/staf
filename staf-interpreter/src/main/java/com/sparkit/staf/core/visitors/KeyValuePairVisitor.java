@@ -1,10 +1,14 @@
 package com.sparkit.staf.core.visitors;
 
+import com.sparkit.staf.core.ast.KeyValuePair;
 import com.sparkit.staf.core.parser.StafBaseVisitor;
 import com.sparkit.staf.core.parser.StafParser;
-import com.sparkit.staf.core.ast.KeyValuePair;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class KeyValuePairVisitor extends StafBaseVisitor<KeyValuePair> {
+    @Autowired
+    private StafObjectVisitor stafObjectVisitor;
+
     @Override
     public KeyValuePair visitKeyValuePair(StafParser.KeyValuePairContext ctx) {
         KeyValuePair keyValuePair = new KeyValuePair();
@@ -15,7 +19,7 @@ public class KeyValuePairVisitor extends StafBaseVisitor<KeyValuePair> {
         } else {
             keyValuePair.setKey(ctx.IDENTIFIER().getText());
         }
-        keyValuePair.setValue(new StafObjectVisitor().visitObject(ctx.object()));
+        keyValuePair.setValue(stafObjectVisitor.visitObject(ctx.object()));
         return keyValuePair;
     }
 }
