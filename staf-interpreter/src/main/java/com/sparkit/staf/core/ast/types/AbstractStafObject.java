@@ -65,4 +65,9 @@ public abstract class AbstractStafObject {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }

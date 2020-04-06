@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.ast.types;
 
 import com.sparkit.staf.core.ast.IStatement;
+import com.sparkit.staf.core.ast.StafTypes;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedKeywordException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
@@ -16,6 +17,7 @@ public class KeywordCall extends AbstractStafObject implements IStatement {
     public KeywordCall(String keywordName, List<AbstractStafObject> argumentsList) {
         this.keywordName = keywordName;
         this.argumentsList = argumentsList;
+        this.type = StafTypes.KEYWORD_CALL;
     }
 
     public KeywordCall() {
@@ -80,5 +82,12 @@ public class KeywordCall extends AbstractStafObject implements IStatement {
         } else {
             throw new UndefinedKeywordException(keywordName);
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder args = new StringBuilder();
+        argumentsList.forEach(o -> args.append(o.toString()).append(", "));
+        return "Keyword call : " + keywordName + " [" + args.substring(0, args.length() - 2) + "] at " + getFile() + "  at line " + lineNumber ;
     }
 }

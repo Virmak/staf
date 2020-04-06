@@ -42,4 +42,10 @@ public class Assignment implements IStatement {
         }
         return (value);
     }
+
+
+    @Override
+    public String toString() {
+        return "Assignment : " + object + " = " + value;
+    }
 }

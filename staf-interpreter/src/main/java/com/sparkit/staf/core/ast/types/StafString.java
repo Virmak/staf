@@ -13,4 +13,9 @@ public class StafString extends AbstractStafObject {
     public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "\"" + value + "\"";
+    }
 }

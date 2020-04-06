@@ -5,17 +5,15 @@ import com.sparkit.staf.core.ast.Assignment;
 import com.sparkit.staf.core.ast.IStatement;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.ast.TestCaseDeclaration;
-import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.ast.types.StafString;
+import com.sparkit.staf.core.runtime.interpreter.exceptions.StafRuntimeException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.SeleniumLibException;
 import com.sparkit.staf.core.runtime.loader.IStafConfig;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
 import com.sparkit.staf.core.runtime.reports.TestResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
@@ -96,13 +94,14 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         for (IStatement statement : testCaseDeclaration.getStatements()) {
             StatementReport report = new StatementReport();
             report.setStatement(statement);
+            report.setStart(new Date());
             try {
                 statement.execute(globalSymTable, null, keywordLibrariesRepository);
                 report.setResult(TestResult.Pass);
-            } catch (SeleniumLibException | NoSuchElementException e) {
+            } catch (StafRuntimeException e) {
                 testCaseReport.setResult(TestResult.Fail);
                 report.setResult(TestResult.Fail);
-                report.setErrorMessage(e.getMessage() + " at  : " + filePath + ":" + ((KeywordCall) statement).getLineNumber());
+                report.setErrorMessage(e.getStatement() + "\n" + e.getMessage());
                 // Take screenshot
                 StafString screenShotPath = new StafString(
                         testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/results/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");

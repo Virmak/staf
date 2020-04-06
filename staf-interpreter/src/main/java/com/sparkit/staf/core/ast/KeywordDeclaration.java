@@ -1,20 +1,26 @@
 package com.sparkit.staf.core.ast;
 
+import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.InvalidArgsNumberKeywordCallException;
+import com.sparkit.staf.core.runtime.interpreter.exceptions.StafRuntimeException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedKeywordException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class KeywordDeclaration {
+    private static final Logger LOG = LogManager.getLogger(Main.class);
     protected String keywordName;
     protected List<String> argsList;
     protected List<IStatement> statementList;
     protected AbstractStafObject returnObject;
+    protected String file;
 
     public KeywordDeclaration(String keywordName, List<String> argsList, List<IStatement> statementList, AbstractStafObject returnObject) {
         this.keywordName = keywordName;
@@ -24,6 +30,14 @@ public class KeywordDeclaration {
     }
 
     public KeywordDeclaration() {
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 
     public AbstractStafObject getReturnObject() {
@@ -86,7 +100,12 @@ public class KeywordDeclaration {
             }
         }
         for (IStatement statement : statementList) {
-            statement.execute(globalSymTable, localSymTable, keywordLibrariesRepository);
+            try {
+                statement.execute(globalSymTable, localSymTable, keywordLibrariesRepository);
+            } catch (Exception e) {
+                LOG.error("At " + statement);
+                throw new StafRuntimeException(e, keywordName, statement);
+            }
         }
         if (returnObject != null) {
             throw new Exception("keyword return not implemented");

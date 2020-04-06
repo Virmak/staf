@@ -14,6 +14,15 @@ public class StafFileVisitor extends StafBaseVisitor<Object> {
     private KeywordDeclarationsSectionVisitor keywordDeclarationsSectionVisitor;
     @Autowired
     private TestCaseDeclarationsSectionVisitor testCaseDeclarationsSectionVisitor;
+    private String filePath;
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 
     @Override
     public Object visitStaf_file(StafParser.Staf_fileContext ctx) {
