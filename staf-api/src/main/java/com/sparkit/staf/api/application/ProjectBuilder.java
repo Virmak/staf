@@ -51,21 +51,25 @@ public class ProjectBuilder implements IProjectBuilder {
         writer.writeValue(new File(projectDir, "config.json"), config);
     }
 
-    private void createUITestSuite(String testSuiteName, ProjectConfig config, File projectDir) {
+    private void createUITestSuite(String testSuiteName, ProjectConfig config, File projectDir) throws IOException {
         File testSuiteDir = new File(projectDir, testSuiteName);
         testSuiteDir.mkdir();
         File pagesDir = new File(testSuiteDir, "pages");
         File stepsDir = new File(testSuiteDir, "steps");
+        File mainFile = new File(testSuiteDir, "main.staf");
+        mainFile.createNewFile();
         pagesDir.mkdir();
         stepsDir.mkdir();
         config.getTestSuites().add(testSuiteName);
     }
 
-    private void createAPITestSuite(String testSuiteName, ProjectConfig config, File projectDir) { // Create structure for API Testing project
+    private void createAPITestSuite(String testSuiteName, ProjectConfig config, File projectDir) throws IOException { // Create structure for API Testing project
         File testSuiteDir = new File(projectDir, testSuiteName);
         testSuiteDir.mkdir();
         File requestsDir = new File(testSuiteDir, "requests");
         requestsDir.mkdir();
+        File mainFile = new File(testSuiteDir, "main.staf");
+        mainFile.createNewFile();
         config.getTestSuites().add(testSuiteName);
     }
 

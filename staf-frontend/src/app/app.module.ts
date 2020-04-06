@@ -22,6 +22,9 @@ import { ViewDirectoryComponent } from './view-directory/view-directory.componen
 import { ToastrModule } from 'ngx-toastr';
 import { RunTestComponent } from './run-test/run-test.component';
 import { ReportComponent } from './report/report.component';
+import { DirStackBlockComponent } from './dir-stack-block/dir-stack-block.component';
+import { ImageViewerComponent } from './image-viewer/image-viewer.component';
+import { SafeHtmlPipe } from './safe-html.pipe';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,10 @@ import { ReportComponent } from './report/report.component';
     AceEditorComponent,
     ViewDirectoryComponent,
     RunTestComponent,
-    ReportComponent
+    ReportComponent,
+    DirStackBlockComponent,
+    ImageViewerComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,

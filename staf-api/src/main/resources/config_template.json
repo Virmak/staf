@@ -1,7 +1,7 @@
 {
   "project": "PROJECT_NAME",
   "description": "PROJECT_DESCRIPTION",
-  "logDir": "logs/app.log",
+  "logDir": "logs",
   "reportsDir": "reports",
   "type": "Custom",
   "testSuites": [

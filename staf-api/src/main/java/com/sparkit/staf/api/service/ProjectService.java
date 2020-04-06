@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Service
@@ -21,6 +24,10 @@ public class ProjectService {
 
     @Value("${testDirectory}")
     private String projectsDirPath;
+
+    public static String normalizeProjectName(String name) {
+        return name.toLowerCase().replaceAll("\\s+", "-");
+    }
 
     public List<String> readProjects() throws TestDirectoryNotFound {
         File currentDir = new File(System.getProperty("user.dir"));
@@ -51,7 +58,7 @@ public class ProjectService {
                 folders.add(subList);
             } else {
                 Map<String, String> file = new HashMap<>();
-                file.put(f.toString().replace(testDir, "$projectRoot"), new String(Files.readAllBytes(f.toPath())));
+                file.put(f.toString().replace(testDir, "$projectRoot"), readFileContent(f));
                 files.add(file);
             }
         }
@@ -63,7 +70,55 @@ public class ProjectService {
         return result;
     }
 
-    public static String normalizeProjectName(String name) {
-        return name.toLowerCase().replaceAll("\\s+", "-");
+    private String readFileContent(File f) {
+        String fileExtension = getFileExtension(f);
+        switch (fileExtension) {
+            case "png":
+            case "jpg":
+            case "jpeg":
+                return readImageBase64(f);
+            case "staf":
+            case "page":
+            case "step":
+            case "steps":
+            case "txt":
+            case "json":
+            case "log":
+                return readTextFile(f);
+            default:
+                return "Error : Unsupported file format!";
+        }
+    }
+
+    private String readImageBase64(File f) {
+        String encodedFile = null;
+        FileInputStream fileInputStreamReader = null;
+        try {
+            fileInputStreamReader = new FileInputStream(f);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return "Error reading file";
+        }
+        byte[] bytes = new byte[(int) f.length()];
+        try {
+            fileInputStreamReader.read(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error reading file";
+        }
+        encodedFile = Base64.getEncoder().encodeToString(bytes);
+        return encodedFile;
+    }
+
+    private String readTextFile(File f) {
+        try {
+            return new String(Files.readAllBytes(Paths.get(f.getPath())));
+        } catch (IOException e) {
+            return "Error reading file";
+        }
+    }
+
+    private String getFileExtension(File f) {
+        return f.getName().substring(f.getName().lastIndexOf(".") + 1);
     }
 }

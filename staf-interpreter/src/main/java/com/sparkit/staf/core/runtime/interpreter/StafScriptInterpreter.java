@@ -104,7 +104,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
                 report.setErrorMessage(e.getStatement() + "\n" + e.getMessage());
                 // Take screenshot
                 StafString screenShotPath = new StafString(
-                        testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/results/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
+                        testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/" + config.getReportingDirectory() + "/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
 
                 try {
                     keywordLibrariesRepository.invokeKeyword("capture screenshot", new Object[]{screenShotPath});

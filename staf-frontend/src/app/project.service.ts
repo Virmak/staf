@@ -22,6 +22,8 @@ export class ProjectService {
   
   private projects: StafProject[] = [];
 
+  currentDir;
+
   constructor(
     private sequence: SequenceService,
     private http: HttpClient,

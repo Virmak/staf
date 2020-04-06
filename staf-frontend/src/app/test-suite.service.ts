@@ -89,6 +89,7 @@ export class TestSuiteService {
         type: FileType.File,
         content: file[filePath],
         path: filePath,
+        extension: fileName.substr(1+ fileName.lastIndexOf(".")),
       })
       
     });

@@ -1,3 +1,4 @@
+import { ImageViewerComponent } from './image-viewer/image-viewer.component';
 import { ViewDirectoryComponent } from './view-directory/view-directory.component';
 import { EditFileComponent } from './edit-file/edit-file.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
@@ -12,7 +13,9 @@ const routes: Routes = [
   {path: 'createProject', component: CreateProjectComponent},
   {path: 'projectDetails/:id', component: ProjectDetailsComponent},
   {path: 'editFile/:project/:filePath/:fullPath', component: EditFileComponent},
+  {path: 'viewImage/:project/:filePath/:fullPath', component: ImageViewerComponent},
   {path: 'directory/:project/:path', component: ViewDirectoryComponent}
+  
 ];
 
 @NgModule({

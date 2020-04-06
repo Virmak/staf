@@ -22,7 +22,7 @@
             </ng-template>
 
 			<ng-container *ngIf="testSuite.result == 'Ok'; else testSuiteError">
-				<tr *ngFor="let tc of testSuite.testCases" [ngClass]="tc.result">
+				<tr *ngFor="let tc of testSuite.testCaseReports" [ngClass]="tc.result">
 					<td>{{tc.testCase | titlecase}}</td>
 					<td>{{tc.startTime}}</td>
 					<td>{{tc.endTime}}</td>

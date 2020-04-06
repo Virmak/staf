@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { IDirectory } from './../interfaces/idirectory';
+import { ProjectService } from './../project.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-directory',
@@ -8,11 +10,20 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ViewDirectoryComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) { }
+  @Input() directory: IDirectory;
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private projectService: ProjectService) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe( paramMap => {
-      console.log(paramMap);
+      console.log(this.projectService.currentDir);
+      this.directory = this.projectService.currentDir;
+      if (this.directory == null) {
+        this.router.navigate(['/']);
+      }
     })
   }
 

@@ -1,3 +1,4 @@
+import { ProjectService } from './../project.service';
 import { FileType } from './../interfaces/ifile';
 import { FileEditorService } from './../file-editor.service';
 import { StafProject } from '../types/staf-project';
@@ -20,7 +21,10 @@ export class SidenavDirectoryComponent implements OnInit {
   @Input() testSuite: ITestSuite;
   @ViewChild(ContextMenuComponent) public basicMenu: ContextMenuComponent;
 
-  constructor(private router: Router, private fileEditorService: FileEditorService) { }
+  constructor(
+    private router: Router,
+    private fileEditorService: FileEditorService,
+    private projectService: ProjectService) { }
 
   ngOnInit(): void {
   }
@@ -31,11 +35,28 @@ export class SidenavDirectoryComponent implements OnInit {
 
   openFile(item, key) {
     if (item.type == FileType.Directory) {
+      this.projectService.currentDir = item;
       this.router.navigate(['directory', this.project.getNormalizedProjectName(), item.name]);
-    } else {
+    } else if (this.isTextFile(item)) {
       this.fileEditorService.setFile(item);
       this.router.navigate(['editFile', this.project.getNormalizedProjectName(), item.name, key]);
+    } else if (this.isImageFile(item)) {
+      this.fileEditorService.setFile(item);
+      this.router.navigate(['viewImage', this.project.getNormalizedProjectName(), item.name, key]);
     }
   }
 
+  isTextFile(file) {
+    return file.extension == 'txt' 
+      || file.extension == "staf"
+      || file.extension == "page"
+      || file.extension == "steps"
+      || file.extension == "step"
+  }
+
+  isImageFile(item) {
+    return item.extension == "png"
+      || item.extension == "jpg"
+      || item.extension == "jpeg"
+  }
 }
