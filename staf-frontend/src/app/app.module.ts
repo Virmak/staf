@@ -1,3 +1,4 @@
+import { LogModule } from './log/log.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -43,7 +44,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
     ReportComponent,
     DirStackBlockComponent,
     ImageViewerComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +56,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
     AceEditorModule,
     HttpClientModule,
     ToastrModule.forRoot(),
+    LogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

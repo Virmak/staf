@@ -1,0 +1,43 @@
+<div class="container">
+<div class="flex space-between test-suite-res-header">
+
+   <div class="flex">
+    <div class="expand-toggle" (click)="toggleExpand()">{{testSuite?.expanded}}</div>
+    <div>
+        <span class="badge badge-info">SUITE</span>
+        {{ testSuite?.testSuite}}
+    </div>
+
+   </div>
+    <div>{{testSuite?.elapsed}}</div>
+
+</div>
+
+<table>
+    <tbody>
+        <tr>
+            <th>Name</th>
+            <td>{{testSuite?.testSuite}}</td>
+        </tr>
+        <tr>
+            <th>Source</th>
+            <td>{{testSuite?.source}}</td>
+        </tr>
+        <tr>
+            <th>Start / End / Elapsed</th>
+            <td>
+                {{testSuite?.start | date:'yyyy-MM-dd hh:mm:ss'}} /
+                {{testSuite?.end | date:'yyyy-MM-dd hh:mm:ss'}} /
+                {{testSuite?.elapsed}}
+
+
+            </td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>{{testSuite?.testSuite}}</td>
+        </tr>
+    </tbody>
+</table>
+
+</div>

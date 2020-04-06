@@ -18,4 +18,10 @@
             <app-report [reports]="project.reports"></app-report>
         </clr-tab-content>
     </clr-tab>
+    <clr-tab>
+        <button clrTabLink>Logs</button>
+        <clr-tab-content *clrIfActive="reportTabActive">
+            <app-view-log [reports]="reports"></app-view-log>
+        </clr-tab-content>
+    </clr-tab>
 </clr-tabs>
