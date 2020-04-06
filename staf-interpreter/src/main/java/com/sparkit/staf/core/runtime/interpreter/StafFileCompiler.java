@@ -34,9 +34,7 @@ public class StafFileCompiler implements IStafCompiler {
         for (SyntaxError syntaxError : listener.getSyntaxErrors()) {
             System.out.println(syntaxError.getMessage());
         }
-        if (listener.getSyntaxErrors().size() > 0) {
-            System.exit(0);
-        }
+        stafFileVisitor.setFilePath(filePath);
         StafFile stafFile = (StafFile) stafFileVisitor.visitStaf_file(parseTree);
         stafFile.setFilePath(filePath);
         return stafFile;
