@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -44,7 +45,9 @@ public class TestRunner {
                 continue;
             }
             TestSuiteReport testSuiteReport = new TestSuiteReport();
+            testSuiteReport.setStart(new Date());
             testSuiteReport.setTestSuite(testSuite);
+            testSuiteReport.setSource(testSuite + "/main.staf");
             try {
                 testSuiteReport.setTestCaseReports(runTestScript(testSuite + "/main.staf", testSuite, testDirectory));
                 testSuiteReport.setResult(TestResult.Pass);
@@ -56,6 +59,7 @@ public class TestRunner {
                 testSuiteReport.setResult(TestResult.Fail);
                 testSuiteReport.setMessage(e.getMessage());
             }
+            testSuiteReport.setEnd(new Date());
             testSuiteReports.add(testSuiteReport);
         }
         return testSuiteReports;

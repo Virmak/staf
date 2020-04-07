@@ -31,13 +31,14 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
     private String currentDirectory;
     private SymbolsTable globalSymTable;
     private IStafConfig config;
+    private StatementBlockExecutor statementBlockExecutor;
 
     @Value("#{systemProperties['testDirectory']}")
     private String testDirectory;
 
     public StafScriptInterpreter(IImportsInterpreter importsInterpreter, IStafConfig config, StafFile mainStafFile,
                                  SymbolsTable globalSymTable, KeywordLibrariesRepository keywordLibrariesRepository,
-                                 String currentDirectory, String filePath, String testSuite) {
+                                 String currentDirectory, String filePath, String testSuite, StatementBlockExecutor statementBlockExecutor) {
         this.importsInterpreter = importsInterpreter;
         this.config = config;
         this.mainStafFile = mainStafFile;
@@ -46,6 +47,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         this.currentDirectory = currentDirectory;
         this.filePath = filePath;
         this.testSuite = testSuite;
+        this.statementBlockExecutor = statementBlockExecutor;
         this.testDirectory = System.getProperty("testDirectory");
     }
 
@@ -86,22 +88,45 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         TestCaseReport testCaseReport = new TestCaseReport();
         testCaseReport.setTestSuite(testSuite);
         testCaseReport.setTestCase(testCaseName);
-        testCaseReport.setStartTime(new Date());
+        testCaseReport.setStart(new Date());
         testCaseReport.setResult(TestResult.Pass);
         testCaseReport.setStatementReports(new ArrayList<>());
         String lastErrorMessage = null;
         LOG.info("Executing test case : " + testCaseDeclaration.getName());
+        OnStatementFailed statementFailed = (statementReport) -> {
+            StafString screenShotPath = new StafString(
+                    testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/" + config.getReportingDirectory() + "/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
+            try {
+                keywordLibrariesRepository.invokeKeyword("capture screenshot", new Object[]{screenShotPath});
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+            statementReport.setScreenShot(screenShotPath.getValue().toString());
+        };
+        try {
+            List<StatementReport> statementReports =
+                    statementBlockExecutor.execute(testCaseDeclaration.getStatements(), statementFailed, globalSymTable, keywordLibrariesRepository);
+            testCaseReport.setStatementReports(statementReports);
+        } catch (Throwable e) {
+            testCaseReport.setResult(TestResult.Fail);
+            lastErrorMessage = e.getMessage();
+            LOG.error("Executing statement failed at [" + testSuite + "] : "
+                    + testCaseDeclaration.getName()
+                    + " | " + e.getMessage());
+            e.printStackTrace();
+        }
+        /*
         for (IStatement statement : testCaseDeclaration.getStatements()) {
-            StatementReport report = new StatementReport();
-            report.setStatement(statement);
-            report.setStart(new Date());
+            StatementReport statementReport = new StatementReport();
+            statementReport.setStatement(statement);
+            statementReport.setStart(new Date());
             try {
                 statement.execute(globalSymTable, null, keywordLibrariesRepository);
-                report.setResult(TestResult.Pass);
+                statementReport.setResult(TestResult.Pass);
             } catch (StafRuntimeException e) {
                 testCaseReport.setResult(TestResult.Fail);
-                report.setResult(TestResult.Fail);
-                report.setErrorMessage(e.getStatement() + "\n" + e.getMessage());
+                statementReport.setResult(TestResult.Fail);
+                statementReport.setErrorMessage(e.getStatement() + "\n" + e.getMessage());
                 // Take screenshot
                 StafString screenShotPath = new StafString(
                         testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/" + config.getReportingDirectory() + "/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
@@ -111,22 +136,22 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
                 }
-
+                lastErrorMessage = e.getStatement().toString();
             } catch (Throwable e) {
-                report.setResult(TestResult.Fail);
-                report.setErrorMessage(e.getMessage());
+                statementReport.setResult(TestResult.Fail);
+                statementReport.setErrorMessage(e.getMessage());
                 LOG.error("Executing statement failed at [" + testSuite + "] : " + testCaseDeclaration.getName()
                         + " | " + e.getMessage());
                 e.printStackTrace();
                 lastErrorMessage = e.getMessage();
                 testCaseReport.setResult(TestResult.Fail);
             } finally {
-                report.setEnd(new Date());
-                testCaseReport.getStatementReports().add(report);
+                statementReport.setEnd(new Date());
+                testCaseReport.getStatementReports().add(statementReport);
             }
         }
-
-        testCaseReport.setEndTime(new Date());
+*/
+        testCaseReport.setEnd(new Date());
         testCaseReport.setErrorMessage(lastErrorMessage);
 
         LOG.info("Finished executing test case : " + testCaseDeclaration.getName());

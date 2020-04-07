@@ -12,6 +12,6 @@ public class TestCaseReport {
     private String errorMessage;
     private TestResult result;
     private List<StatementReport> statementReports;
-    private Date startTime;
-    private Date endTime;
+    private Date start;
+    private Date end;
 }

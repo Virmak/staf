@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.runtime.factory;
 
 import com.sparkit.staf.core.ast.KeywordDeclaration;
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.loader.TestContainer;
@@ -15,7 +16,7 @@ public class KeywordLibrariesRepositoryFactory implements IKeywordLibrariesRepos
     private TestContainer testContainer;
 
     @Override
-    public KeywordLibrariesRepository getKeywordLibrariesRepository(SymbolsTable globalSymTable, Map<String, KeywordDeclaration> keywordDeclarationMap) {
-        return new KeywordLibrariesRepository(keywordDeclarationMap, globalSymTable, testContainer);
+    public KeywordLibrariesRepository getKeywordLibrariesRepository(StatementBlockExecutor statementBlockExecutor, SymbolsTable globalSymTable, Map<String, KeywordDeclaration> keywordDeclarationMap) {
+        return new KeywordLibrariesRepository(keywordDeclarationMap, globalSymTable, statementBlockExecutor, testContainer);
     }
 }

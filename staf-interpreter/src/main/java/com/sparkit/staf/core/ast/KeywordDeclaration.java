@@ -3,12 +3,14 @@ package com.sparkit.staf.core.ast;
 import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.InvalidArgsNumberKeywordCallException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.StafRuntimeException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedKeywordException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.core.runtime.reports.StatementReport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -72,8 +74,8 @@ public class KeywordDeclaration {
         this.argsList = argsList;
     }
 
-    public Object execute(SymbolsTable globalSymTable, KeywordLibrariesRepository keywordLibrariesRepository,
-                          Object[] params) throws Throwable {
+    public List<StatementReport> execute(StatementBlockExecutor statementBlockExecutor, SymbolsTable globalSymTable, KeywordLibrariesRepository keywordLibrariesRepository,
+                                         Object[] params) throws Throwable {
         SymbolsTable localSymTable = new SymbolsTable();
         if (params.length != argsList.size())
             throw new InvalidArgsNumberKeywordCallException(argsList.size(), params.length, keywordName);
@@ -99,7 +101,8 @@ public class KeywordDeclaration {
                 localSymTable.setSymbolValue(argsList.get(i), params[i]);
             }
         }
-        for (IStatement statement : statementList) {
+        return statementBlockExecutor.execute(statementList, null, globalSymTable, localSymTable, keywordLibrariesRepository);
+        /*for (IStatement statement : statementList) {
             try {
                 statement.execute(globalSymTable, localSymTable, keywordLibrariesRepository);
             } catch (Exception e) {
@@ -110,6 +113,6 @@ public class KeywordDeclaration {
         if (returnObject != null) {
             throw new Exception("keyword return not implemented");
         }
-        return null;
+        return null;*/
     }
 }

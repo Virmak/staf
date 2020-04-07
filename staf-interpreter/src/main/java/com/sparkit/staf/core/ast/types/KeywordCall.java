@@ -88,6 +88,6 @@ public class KeywordCall extends AbstractStafObject implements IStatement {
     public String toString() {
         StringBuilder args = new StringBuilder();
         argumentsList.forEach(o -> args.append(o.toString()).append(", "));
-        return "Keyword call : " + keywordName + " [" + args.substring(0, args.length() - 2) + "] at " + getFile() + "  at line " + lineNumber ;
+        return keywordName + " [" + args.substring(0, args.length() - 2) + "] at " + getFile() + "  at line " + lineNumber ;
     }
 }

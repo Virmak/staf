@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.runtime.libs;
 
 import com.sparkit.staf.core.ast.KeywordDeclaration;
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 public class KeywordLibrariesRepository {
     private final SymbolsTable globalSymTable;
+    private final StatementBlockExecutor statementBlockExecutor;
     /* Map keyword to library method */
     protected Map<String, KeywordDeclaration> userDefinedKeywords;
     protected Map<String, KeywordWrapper> builtinKeywordMap;
@@ -21,12 +23,15 @@ public class KeywordLibrariesRepository {
     protected TestContainer dependencyContainer;
 
     public KeywordLibrariesRepository(Map<String, KeywordDeclaration> userDefinedKeywords,
-                                      SymbolsTable globalSymTable, TestContainer dependencyContainer) {
+                                      SymbolsTable globalSymTable,
+                                      StatementBlockExecutor statementBlockExecutor,
+                                      TestContainer dependencyContainer) {
         this.userDefinedKeywords = userDefinedKeywords;
         this.globalSymTable = globalSymTable;
+        this.statementBlockExecutor = statementBlockExecutor;
+        this.dependencyContainer = dependencyContainer;
         builtinKeywordMap = new HashMap<>();
         libsInstancesMap = new HashMap<>();
-        this.dependencyContainer = dependencyContainer;
     }
 
     public Map<String, KeywordDeclaration> getUserDefinedKeywords() {
@@ -73,7 +78,7 @@ public class KeywordLibrariesRepository {
         if (builtinKeywordMap.containsKey(normalizedKeywordName)) {
             return builtinKeywordMap.get(normalizedKeywordName).invoke(params);
         } else if (userDefinedKeywords.containsKey(keyword)) {
-            return userDefinedKeywords.get(keyword).execute(globalSymTable, this, params);
+            return userDefinedKeywords.get(keyword).execute(statementBlockExecutor, globalSymTable, this, params);
         } else {
             throw new UndefinedBuiltinKeywordException();
         }
