@@ -107,6 +107,12 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
             List<StatementReport> statementReports =
                     statementBlockExecutor.execute(testCaseDeclaration.getStatements(), statementFailed, globalSymTable, keywordLibrariesRepository);
             testCaseReport.setStatementReports(statementReports);
+            for (StatementReport statementReport : statementReports) {
+                if (statementReport.getResult() == TestResult.Fail) {
+                    testCaseReport.setResult(TestResult.Fail);
+                    break;
+                }
+            }
         } catch (Throwable e) {
             testCaseReport.setResult(TestResult.Fail);
             lastErrorMessage = e.getMessage();
@@ -115,42 +121,6 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
                     + " | " + e.getMessage());
             e.printStackTrace();
         }
-        /*
-        for (IStatement statement : testCaseDeclaration.getStatements()) {
-            StatementReport statementReport = new StatementReport();
-            statementReport.setStatement(statement);
-            statementReport.setStart(new Date());
-            try {
-                statement.execute(globalSymTable, null, keywordLibrariesRepository);
-                statementReport.setResult(TestResult.Pass);
-            } catch (StafRuntimeException e) {
-                testCaseReport.setResult(TestResult.Fail);
-                statementReport.setResult(TestResult.Fail);
-                statementReport.setErrorMessage(e.getStatement() + "\n" + e.getMessage());
-                // Take screenshot
-                StafString screenShotPath = new StafString(
-                        testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/" + config.getReportingDirectory() + "/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
-
-                try {
-                    keywordLibrariesRepository.invokeKeyword("capture screenshot", new Object[]{screenShotPath});
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-                lastErrorMessage = e.getStatement().toString();
-            } catch (Throwable e) {
-                statementReport.setResult(TestResult.Fail);
-                statementReport.setErrorMessage(e.getMessage());
-                LOG.error("Executing statement failed at [" + testSuite + "] : " + testCaseDeclaration.getName()
-                        + " | " + e.getMessage());
-                e.printStackTrace();
-                lastErrorMessage = e.getMessage();
-                testCaseReport.setResult(TestResult.Fail);
-            } finally {
-                statementReport.setEnd(new Date());
-                testCaseReport.getStatementReports().add(statementReport);
-            }
-        }
-*/
         testCaseReport.setEnd(new Date());
         testCaseReport.setErrorMessage(lastErrorMessage);
 

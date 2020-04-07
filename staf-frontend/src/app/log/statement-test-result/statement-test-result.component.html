@@ -31,6 +31,10 @@
 						{{statement?.elapsed}}
 					</td>
 				</tr>
+                <tr *ngIf="statement.errorMessage">
+                    <th>Message</th>
+                    <td>{{ statement.errorMessage }}</td>
+                </tr>
 			</tbody>
 		</table>
 

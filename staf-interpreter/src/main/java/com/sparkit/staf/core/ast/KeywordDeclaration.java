@@ -102,17 +102,5 @@ public class KeywordDeclaration {
             }
         }
         return statementBlockExecutor.execute(statementList, null, globalSymTable, localSymTable, keywordLibrariesRepository);
-        /*for (IStatement statement : statementList) {
-            try {
-                statement.execute(globalSymTable, localSymTable, keywordLibrariesRepository);
-            } catch (Exception e) {
-                LOG.error("At " + statement);
-                throw new StafRuntimeException(e, keywordName, statement);
-            }
-        }
-        if (returnObject != null) {
-            throw new Exception("keyword return not implemented");
-        }
-        return null;*/
     }
 }

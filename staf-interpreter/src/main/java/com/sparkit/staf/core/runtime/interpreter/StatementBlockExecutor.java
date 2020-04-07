@@ -2,6 +2,7 @@ package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.IStatement;
+import com.sparkit.staf.core.runtime.interpreter.exceptions.InvalidArgsNumberKeywordCallException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.StafRuntimeException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
@@ -35,7 +36,12 @@ public class StatementBlockExecutor {
                     statementReport.setChildren((List)children);
                 }
                 statementReport.setResult(TestResult.Pass);
-            } catch (StafRuntimeException e) {
+            }
+            catch (InvalidArgsNumberKeywordCallException e) {
+                statementReport.setResult(TestResult.Fail);
+                statementReport.setErrorMessage(e.getMessage());
+            }
+            catch (StafRuntimeException e) {
                 statementReport.setResult(TestResult.Fail);
                 statementReport.setErrorMessage(e.getStatement() + "\n" + e.getMessage());
                 statementFailed.execute(statementReport);
