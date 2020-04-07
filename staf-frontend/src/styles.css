@@ -17,3 +17,47 @@
     border-top: 1px solid #eee;
     margin: 10px 0;
 }
+
+
+.flex {
+    display: flex;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+
+.report-expand-toggle {
+    padding: 5px;
+    height: 20px;
+    width: 20px;
+    line-height: 8px;
+    font-weight: bolder;
+    color: #484848;
+    text-align: center;
+    border-radius: 2px;
+    border: 1px solid #595959;
+    margin-right: 10px;
+    margin-top: 2px;
+}
+
+.report-content {
+    padding-left: 20px;
+}
+.test-res-header {
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.test-res-header:hover {
+    background-color: #eee;
+}
+
+.test-res-header .name {
+    font-weight: bold;
+}
+
+.test-res-header .badge {
+    padding: 5px;
+}

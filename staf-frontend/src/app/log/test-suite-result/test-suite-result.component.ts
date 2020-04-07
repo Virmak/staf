@@ -9,9 +9,11 @@ export class TestSuiteResultComponent implements OnInit {
   _testSuite;
   @Input() set testSuite (value) {
     this._testSuite = value;
-    this._testSuite.elapsed = this.getTimeString((new Date(value.end)).getTime()
+    this._testSuite.elapsed = TestSuiteResultComponent.getTimeString((new Date(value.end)).getTime()
       - (new Date(value.start)).getTime());
     this._testSuite.expanded = '+';
+    this._testSuite.badge = this._testSuite.result == 'Pass' ? 'badge-success' : 'badge-danger';
+
   };
 
   get testSuite() {
@@ -23,7 +25,7 @@ export class TestSuiteResultComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getTimeString(milliseconds) {
+  static getTimeString(milliseconds) {
     const date = new Date(0);
     date.setMilliseconds(milliseconds);
     return date.toISOString().substr(11, 8);
