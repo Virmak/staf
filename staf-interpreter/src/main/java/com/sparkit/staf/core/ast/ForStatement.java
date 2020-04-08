@@ -3,16 +3,21 @@ package com.sparkit.staf.core.ast;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.StafList;
 import com.sparkit.staf.core.ast.types.StafVariable;
+import com.sparkit.staf.core.runtime.interpreter.IStatementBlock;
+import com.sparkit.staf.core.runtime.interpreter.IStafIterable;
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.core.runtime.reports.StatementReport;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ForStatement implements IStatement {
+public class ForStatement implements IStatement, IStatementBlock, IStafIterable {
     private StafVariable var;
     private AbstractStafObject iterator;
     private List<IStatement> statementList;
-
+    private List<StatementReport> statementReports;
     public ForStatement() {
     }
 
@@ -47,29 +52,24 @@ public class ForStatement implements IStatement {
     }
 
     @Override
-    public Object execute(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        AbstractStafObject tmp = null;  // used to save variable with the same name as the loop variable if it currently
-                                        // exist in localSymTable so we can retrieve it later after for statement execution
-        if (localSymTable == null) {
-            localSymTable = new SymbolsTable();
-        } else {
-            tmp = (AbstractStafObject) localSymTable.getSymbolValue(var.getValue().toString());
-        }
-        AbstractStafObject actualIterator = (AbstractStafObject) iterator.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
-        if (actualIterator instanceof StafList) {
-            for (AbstractStafObject item : ((StafList)actualIterator).getList()) {
-                for (IStatement statement : statementList) {
-                    localSymTable.setSymbolValue(var.getValue().toString(), item);
-                    statement.execute(globalSymTable, localSymTable, keywordLibrariesRepository);
-                }
-            }
-        }
-
-        if (tmp != null) { // if variable with same name exist put it in symTable
-            localSymTable.setSymbolValue(var.getValue().toString(), tmp);
-        } else { // remove it from localSymTable
-            localSymTable.getSymbolsMap().remove(var.getValue().toString());
-        }
+    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+        statementReports = new ArrayList<>();
+        statementReports.add(blockExecutor.executeIterable(this, globalSymTable, localSymTable, keywordLibrariesRepository));
         return null;
+    }
+
+    @Override
+    public List<IStatement> getStatements() {
+        return statementList;
+    }
+
+    @Override
+    public List<StatementReport> getStatementReports() {
+        return statementReports;
+    }
+
+    @Override
+    public void setStatementReports(List<StatementReport> reports) {
+        this.statementReports = reports;
     }
 }

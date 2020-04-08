@@ -4,6 +4,7 @@ import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.StafBoolean;
 import com.sparkit.staf.core.ast.types.StafVariable;
 import com.sparkit.staf.core.runtime.interpreter.ExpressionEvaluator;
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 
@@ -102,16 +103,16 @@ public class Expression extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+    public Object evaluate(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         AbstractStafObject l = left;
         AbstractStafObject r = right;
 
         if (left instanceof Expression || left instanceof StafVariable) {
-            l = (AbstractStafObject)left.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
+            l = (AbstractStafObject)left.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
         }
 
         if (right instanceof Expression || right instanceof StafVariable) {
-            r = (AbstractStafObject)right.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
+            r = (AbstractStafObject)right.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
         }
 
         if (operation == ExpressionOps.EQUAL) {

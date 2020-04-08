@@ -3,6 +3,7 @@ package com.sparkit.staf.core.ast;
 import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
+import com.sparkit.staf.core.runtime.interpreter.IStatementBlock;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.InvalidArgsNumberKeywordCallException;
@@ -14,15 +15,17 @@ import com.sparkit.staf.core.runtime.reports.StatementReport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class KeywordDeclaration {
+public class KeywordDeclaration implements IStatementBlock {
     private static final Logger LOG = LogManager.getLogger(Main.class);
     protected String keywordName;
     protected List<String> argsList;
     protected List<IStatement> statementList;
     protected AbstractStafObject returnObject;
     protected String file;
+    protected List<StatementReport> reports;
 
     public KeywordDeclaration(String keywordName, List<String> argsList, List<IStatement> statementList, AbstractStafObject returnObject) {
         this.keywordName = keywordName;
@@ -74,9 +77,10 @@ public class KeywordDeclaration {
         this.argsList = argsList;
     }
 
-    public List<StatementReport> execute(StatementBlockExecutor statementBlockExecutor, SymbolsTable globalSymTable, KeywordLibrariesRepository keywordLibrariesRepository,
+    public Object execute(StatementBlockExecutor statementBlockExecutor, SymbolsTable globalSymTable, KeywordLibrariesRepository keywordLibrariesRepository,
                                          Object[] params) throws Throwable {
-        SymbolsTable localSymTable = new SymbolsTable();
+        reports = new ArrayList<>();
+        SymbolsTable localSymTable = new SymbolsTable(statementBlockExecutor);
         if (params.length != argsList.size())
             throw new InvalidArgsNumberKeywordCallException(argsList.size(), params.length, keywordName);
 
@@ -101,6 +105,23 @@ public class KeywordDeclaration {
                 localSymTable.setSymbolValue(argsList.get(i), params[i]);
             }
         }
-        return statementBlockExecutor.execute(statementList, null, globalSymTable, localSymTable, keywordLibrariesRepository);
+        reports = statementBlockExecutor.execute(this, null, globalSymTable, localSymTable, keywordLibrariesRepository);
+        statementBlockExecutor.getCallStack().pop().setStatementReports(reports);
+        return null;
+    }
+
+    @Override
+    public List<IStatement> getStatements() {
+        return statementList;
+    }
+
+    @Override
+    public List<StatementReport> getStatementReports() {
+        return reports;
+    }
+
+    @Override
+    public void setStatementReports(List<StatementReport> reports) {
+        this.reports = reports;
     }
 }

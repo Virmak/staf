@@ -21,7 +21,7 @@ public class StafScriptInterpreterFactory implements IStafScriptInterpreterFacto
     @Override
     public IStafScriptInterpreter getScriptInterpreter(StafFile scriptAST,  String filePath, String currentDirectory,
                                                        String testSuiteName, String testDirectory) {
-        SymbolsTable globalSymTable = new SymbolsTable();
+        SymbolsTable globalSymTable = new SymbolsTable(statementBlockExecutor);
         KeywordLibrariesRepository keywordsRepository =
                 keywordsRepositoryFactory.getKeywordLibrariesRepository(statementBlockExecutor, globalSymTable, scriptAST.getKeywordDeclarationMap());
         IImportsInterpreter importsInterpreter =

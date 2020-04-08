@@ -2,11 +2,11 @@ package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.Assignment;
-import com.sparkit.staf.core.ast.IStatement;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.ast.TestCaseDeclaration;
+import com.sparkit.staf.core.ast.types.AbstractStafObject;
+import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.ast.types.StafString;
-import com.sparkit.staf.core.runtime.interpreter.exceptions.StafRuntimeException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.loader.IStafConfig;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
@@ -16,10 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class StafScriptInterpreter implements IStafScriptInterpreter {
     private static final Logger LOG = LogManager.getLogger(Main.class);
@@ -97,21 +94,21 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
             StafString screenShotPath = new StafString(
                     testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/" + config.getReportingDirectory() + "/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
             try {
-                keywordLibrariesRepository.invokeKeyword("capture screenshot", new Object[]{screenShotPath});
+                KeywordCall captureScreenshotKeyword = new KeywordCall("capturescreenshot",
+                        Arrays.asList( new AbstractStafObject[]{screenShotPath}));
+                captureScreenshotKeyword.execute(statementBlockExecutor, globalSymTable, null, keywordLibrariesRepository);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
             statementReport.setScreenShot(screenShotPath.getValue().toString());
         };
+        statementBlockExecutor.setStatementFailed(statementFailed);
         try {
-            List<StatementReport> statementReports =
-                    statementBlockExecutor.execute(testCaseDeclaration.getStatements(), statementFailed, globalSymTable, keywordLibrariesRepository);
-            testCaseReport.setStatementReports(statementReports);
-            for (StatementReport statementReport : statementReports) {
-                if (statementReport.getResult() == TestResult.Fail) {
-                    testCaseReport.setResult(TestResult.Fail);
-                    break;
-                }
+            testCaseReport.setStatementReports(
+                    statementBlockExecutor.execute(testCaseDeclaration, statementFailed, globalSymTable,
+                            null, keywordLibrariesRepository));
+            if (!testCasePass(testCaseReport)) {
+                testCaseReport.setResult(TestResult.Fail);
             }
         } catch (Throwable e) {
             testCaseReport.setResult(TestResult.Fail);
@@ -126,6 +123,15 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
 
         LOG.info("Finished executing test case : " + testCaseDeclaration.getName());
         return testCaseReport;
+    }
+
+    private boolean testCasePass(TestCaseReport testCaseReport) {
+        for (StatementReport statementReport : testCaseReport.getStatementReports()) {
+            if (statementReport.getResult() == TestResult.Fail) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

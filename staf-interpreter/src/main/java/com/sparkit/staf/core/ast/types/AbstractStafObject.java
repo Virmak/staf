@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.ast.types;
 
 import com.sparkit.staf.core.ast.StafTypes;
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import org.json.simple.JSONArray;
@@ -43,7 +44,7 @@ public abstract class AbstractStafObject {
                 || this.type == StafTypes.STRING;
     }
 
-    public abstract Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable;
+    public abstract Object evaluate(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable;
 
     public Object toJSON() {
         return value;

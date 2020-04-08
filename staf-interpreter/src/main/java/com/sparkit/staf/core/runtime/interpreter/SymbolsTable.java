@@ -9,16 +9,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SymbolsTable {
+    private StatementBlockExecutor statementBlockExecutor;
     private Map<String, Object> symbolsMap;
+    private StatementBlockExecutor blockExecutor;
 
-    public SymbolsTable(Map<String, Assignment> assignmentMap) {
+    public SymbolsTable(StatementBlockExecutor statementBlockExecutor, Map<String, Assignment> assignmentMap) {
+        this.statementBlockExecutor = statementBlockExecutor;
         symbolsMap = new HashMap<>();
         if (assignmentMap != null) {
             assignmentMap.forEach((k, v) -> symbolsMap.put(k, v.getValue()));
         }
     }
 
-    public SymbolsTable() {
+    public SymbolsTable(StatementBlockExecutor statementBlockExecutor) {
+        this.statementBlockExecutor = statementBlockExecutor;
         symbolsMap = new HashMap<>();
     }
 
@@ -28,7 +32,8 @@ public class SymbolsTable {
             if (symbolsMap.containsKey(assignmentEntry.getKey())) {
                 throw new VariableAlreadyDefinedException(assignmentEntry.getKey());
             }
-            symbolsMap.put(assignmentEntry.getKey(), assignmentEntry.getValue().execute(this, null, keywordLibrariesRepository));
+            symbolsMap.put(assignmentEntry.getKey(), assignmentEntry.getValue().execute(blockExecutor,
+                    this, null, keywordLibrariesRepository));
         }
     }
 

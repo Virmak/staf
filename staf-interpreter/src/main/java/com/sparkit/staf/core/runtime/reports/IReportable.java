@@ -6,5 +6,7 @@ import java.util.List;
     Used to get  reports of an IStatement that contains other statements
  */
 public interface IReportable {
-    List<StatementReport> reports();
+    StatementReport getReport();
+
+    void setStatementReport(StatementReport report);
 }

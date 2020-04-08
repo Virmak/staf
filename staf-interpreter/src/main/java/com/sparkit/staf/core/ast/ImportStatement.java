@@ -1,5 +1,6 @@
 package com.sparkit.staf.core.ast;
 
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 
@@ -45,7 +46,7 @@ public class ImportStatement implements IStatement {
     }
 
     @Override
-    public Object execute(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
         throw new Exception("Not implemented");
     }
 }

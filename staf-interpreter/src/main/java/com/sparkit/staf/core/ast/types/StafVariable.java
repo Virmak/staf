@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.ast.types;
 
 import com.sparkit.staf.core.ast.StafTypes;
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 
@@ -10,7 +11,7 @@ public class StafVariable extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+    public Object evaluate(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         Object obj = null;
         if (localSymTable != null) {
             obj = localSymTable.getSymbolValue(value.toString());
@@ -20,7 +21,7 @@ public class StafVariable extends AbstractStafObject {
         }
         if (obj instanceof StafVariable) {
             AbstractStafObject stafObject = (AbstractStafObject)obj;
-            return stafObject.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
+            return stafObject.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
         }
         return obj;
     }

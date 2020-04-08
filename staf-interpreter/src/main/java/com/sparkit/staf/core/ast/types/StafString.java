@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.ast.types;
 
 import com.sparkit.staf.core.ast.StafTypes;
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 
@@ -10,7 +11,8 @@ public class StafString extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
+    public Object evaluate(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable,
+                           SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) {
         return this;
     }
 

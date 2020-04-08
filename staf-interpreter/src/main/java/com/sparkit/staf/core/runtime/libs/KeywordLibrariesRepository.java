@@ -76,6 +76,7 @@ public class KeywordLibrariesRepository {
     public Object invokeKeyword(String keyword, Object[] params) throws Throwable {
         String normalizedKeywordName = normalizeKeywordName(keyword);
         if (builtinKeywordMap.containsKey(normalizedKeywordName)) {
+            statementBlockExecutor.getCallStack().pop();
             return builtinKeywordMap.get(normalizedKeywordName).invoke(params);
         } else if (userDefinedKeywords.containsKey(keyword)) {
             return userDefinedKeywords.get(keyword).execute(statementBlockExecutor, globalSymTable, this, params);

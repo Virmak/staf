@@ -3,6 +3,7 @@ package com.sparkit.staf.core.ast;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.ast.types.StafBoolean;
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 
@@ -35,10 +36,10 @@ public class RunKeywordIf implements IStatement {
     }
 
     @Override
-    public Object execute(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        StafBoolean conditionResult = (StafBoolean) condition.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
+    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+        StafBoolean conditionResult = (StafBoolean) condition.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
         if ((Boolean) conditionResult.getValue()) {
-            keywordCall.execute(globalSymTable, localSymTable, keywordLibrariesRepository);
+            keywordCall.execute(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
         }
         return null;
     }
