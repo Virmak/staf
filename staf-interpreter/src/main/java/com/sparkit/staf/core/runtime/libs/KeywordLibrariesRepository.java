@@ -7,29 +7,33 @@ import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
 import com.sparkit.staf.core.runtime.loader.TestContainer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
+@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class KeywordLibrariesRepository {
-    private final SymbolsTable globalSymTable;
-    private final StatementBlockExecutor statementBlockExecutor;
+    @Autowired
+    private SymbolsTable globalSymTable;
+    @Autowired
+    private StatementBlockExecutor statementBlockExecutor;
+    @Autowired
+    private TestContainer dependencyContainer;
     /* Map keyword to library method */
-    protected Map<String, KeywordDeclaration> userDefinedKeywords;
-    protected Map<String, KeywordWrapper> builtinKeywordMap;
-    protected Map<String, AbstractStafLibrary> libsInstancesMap;
-    protected TestContainer dependencyContainer;
+    private Map<String, KeywordDeclaration> userDefinedKeywords;
+    private Map<String, KeywordWrapper> builtinKeywordMap;
+    private Map<String, AbstractStafLibrary> libsInstancesMap;
 
-    public KeywordLibrariesRepository(Map<String, KeywordDeclaration> userDefinedKeywords,
-                                      SymbolsTable globalSymTable,
-                                      StatementBlockExecutor statementBlockExecutor,
-                                      TestContainer dependencyContainer) {
-        this.userDefinedKeywords = userDefinedKeywords;
-        this.globalSymTable = globalSymTable;
-        this.statementBlockExecutor = statementBlockExecutor;
-        this.dependencyContainer = dependencyContainer;
+    public KeywordLibrariesRepository() {
+        userDefinedKeywords = new HashMap<>();
         builtinKeywordMap = new HashMap<>();
         libsInstancesMap = new HashMap<>();
     }
@@ -76,8 +80,9 @@ public class KeywordLibrariesRepository {
     public Object invokeKeyword(String keyword, Object[] params) throws Throwable {
         String normalizedKeywordName = normalizeKeywordName(keyword);
         if (builtinKeywordMap.containsKey(normalizedKeywordName)) {
+            Object ret = builtinKeywordMap.get(normalizedKeywordName).invoke(params);
             statementBlockExecutor.getCallStack().pop();
-            return builtinKeywordMap.get(normalizedKeywordName).invoke(params);
+            return ret;
         } else if (userDefinedKeywords.containsKey(keyword)) {
             return userDefinedKeywords.get(keyword).execute(statementBlockExecutor, globalSymTable, this, params);
         } else {

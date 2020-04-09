@@ -44,6 +44,7 @@ public class StatementBlockExecutor {
                 if (this.statementFailed != null) {
                     this.statementFailed.execute(statementReport);
                 }
+                e.printStackTrace();
             } finally {
                 statementReport.setEnd(new Date());
             }

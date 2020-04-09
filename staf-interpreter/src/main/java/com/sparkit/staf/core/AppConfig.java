@@ -9,6 +9,7 @@ import com.sparkit.staf.core.runtime.loader.TestContainer;
 import com.sparkit.staf.core.runtime.loader.TestRunner;
 import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.Beta;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

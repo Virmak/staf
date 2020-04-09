@@ -2,6 +2,7 @@ package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.Assignment;
+import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.ast.TestCaseDeclaration;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
@@ -14,59 +15,56 @@ import com.sparkit.staf.core.runtime.reports.TestCaseReport;
 import com.sparkit.staf.core.runtime.reports.TestResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@Component
 public class StafScriptInterpreter implements IStafScriptInterpreter {
     private static final Logger LOG = LogManager.getLogger(Main.class);
-    private final IImportsInterpreter importsInterpreter;
-    private final StafFile mainStafFile;
-    private final KeywordLibrariesRepository keywordLibrariesRepository;
-    private final String filePath;
-    private final String testSuite;
-    private String currentDirectory;
+    @Autowired
+    private IImportsInterpreter importsInterpreter;
+    @Autowired
+    private KeywordLibrariesRepository keywordLibrariesRepository;
+    @Autowired
     private SymbolsTable globalSymTable;
+    @Autowired
     private IStafConfig config;
+    @Autowired
     private StatementBlockExecutor statementBlockExecutor;
 
     @Value("#{systemProperties['testDirectory']}")
     private String testDirectory;
 
-    public StafScriptInterpreter(IImportsInterpreter importsInterpreter, IStafConfig config, StafFile mainStafFile,
-                                 SymbolsTable globalSymTable, KeywordLibrariesRepository keywordLibrariesRepository,
-                                 String currentDirectory, String filePath, String testSuite, StatementBlockExecutor statementBlockExecutor) {
-        this.importsInterpreter = importsInterpreter;
-        this.config = config;
-        this.mainStafFile = mainStafFile;
-        this.globalSymTable = globalSymTable;
-        this.keywordLibrariesRepository = keywordLibrariesRepository;
-        this.currentDirectory = currentDirectory;
-        this.filePath = filePath;
-        this.testSuite = testSuite;
-        this.statementBlockExecutor = statementBlockExecutor;
+    public StafScriptInterpreter() {
         this.testDirectory = System.getProperty("testDirectory");
     }
 
-    public List<TestCaseReport> run() {
+    public List<TestCaseReport> run(String currentDirectory, String testSuite, StafFile mainStafFile) {
         List<TestCaseReport> reports = new ArrayList<>();
         TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get("setup");
         TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get("teardown");
         try {
             Map<String, Assignment> varsAssignments = mainStafFile.getVariableDeclarationMap();
-            this.importsInterpreter.loadImports(mainStafFile.getImports(), currentDirectory);
+            Map<String, KeywordDeclaration> keywordsMap = mainStafFile.getKeywordDeclarationMap();
+            this.importsInterpreter.loadImports(mainStafFile.getImports(), currentDirectory, testDirectory);
             if (varsAssignments != null) {
                 this.globalSymTable.addVariablesMap(varsAssignments, keywordLibrariesRepository);
             }
+            if (keywordsMap != null) {
+                keywordLibrariesRepository.addUserDefinedKeywords(keywordsMap);
+            }
             if (setup != null) {
-                reports.add(executeTestCase("SETUP", setup));
+                reports.add(executeTestCase(testSuite, "SETUP", setup));
             }
 
-            for (Map.Entry<String, TestCaseDeclaration> testCase : this.mainStafFile.getTestCaseDeclarationMap().entrySet()) {
+            for (Map.Entry<String, TestCaseDeclaration> testCase : mainStafFile.getTestCaseDeclarationMap().entrySet()) {
                 if (testCase.getKey().toLowerCase().equals("setup") || testCase.getKey().toLowerCase().equals("teardown")) {
                     continue;
                 }
-                reports.add(executeTestCase(testCase.getKey(), testCase.getValue()));
+                reports.add(executeTestCase(testSuite, testCase.getKey(), testCase.getValue()));
             }
         } catch (Throwable e) {
             LOG.error("Script execution stopped");
@@ -75,13 +73,13 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
             e.printStackTrace();
         } finally {
             if (tearDown != null) {
-                reports.add(executeTestCase("TEARDOWN", tearDown));
+                reports.add(executeTestCase(testSuite, "TEARDOWN", tearDown));
             }
         }
         return reports;
     }
 
-    public TestCaseReport executeTestCase(String testCaseName, TestCaseDeclaration testCaseDeclaration) {
+    public TestCaseReport executeTestCase(String testSuite, String testCaseName, TestCaseDeclaration testCaseDeclaration) {
         TestCaseReport testCaseReport = new TestCaseReport();
         testCaseReport.setTestSuite(testSuite);
         testCaseReport.setTestCase(testCaseName);
@@ -95,7 +93,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
                     testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/" + config.getReportingDirectory() + "/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
             try {
                 KeywordCall captureScreenshotKeyword = new KeywordCall("capturescreenshot",
-                        Arrays.asList( new AbstractStafObject[]{screenShotPath}));
+                        Arrays.asList(new AbstractStafObject[]{screenShotPath}));
                 captureScreenshotKeyword.execute(statementBlockExecutor, globalSymTable, null, keywordLibrariesRepository);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();

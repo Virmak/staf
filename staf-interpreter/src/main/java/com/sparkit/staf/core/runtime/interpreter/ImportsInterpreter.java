@@ -9,26 +9,25 @@ import com.sparkit.staf.core.runtime.loader.IStafScriptLoader;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class ImportsInterpreter implements IImportsInterpreter {
     public final String libsPackage = "com.sparkit.staf.core.runtime.libs.builtin";
-    private final IStafScriptLoader scriptBuilder;
-    private final KeywordLibrariesRepository keywordsRepository;
-    private final String testsDirectory;
+    @Autowired
+    private IStafScriptLoader scriptBuilder;
+    @Autowired
+    private KeywordLibrariesRepository keywordsRepository;
 
-    public ImportsInterpreter(IStafScriptLoader scriptBuilder, KeywordLibrariesRepository keywordsRepository, String testDirectory) {
-        this.scriptBuilder = scriptBuilder;
-        this.keywordsRepository = keywordsRepository;
-        this.testsDirectory = testDirectory;
-    }
 
     /* Load imports */
-    public void loadImports(List<ImportStatement> importStatements, String currentDirectory) throws Throwable {
+    public void loadImports(List<ImportStatement> importStatements, String currentDirectory, String testDirectory) throws Throwable {
         Map<String, Class<? extends AbstractStafLibrary>> librariesClassesMap = getBuiltinLibrariesClasses();
         for (ImportStatement statement : importStatements) {
             if (statement.getType() == ImportTypes.BUILT_IN_LIBRARY) {
@@ -39,7 +38,7 @@ public class ImportsInterpreter implements IImportsInterpreter {
                 File directory = new File(currentDirectory);
                 File b = new File(directory, statement.getPath().replaceAll("[\"']", ""));
                 String absolute = b.getCanonicalPath(); // may throw IOException
-                scriptBuilder.load(absolute, this);
+                scriptBuilder.load(absolute);
             }
         }
     }
@@ -57,9 +56,5 @@ public class ImportsInterpreter implements IImportsInterpreter {
             }
             return classMap;
         }
-    }
-
-    public String getTestsDirectory() {
-        return testsDirectory;
     }
 }

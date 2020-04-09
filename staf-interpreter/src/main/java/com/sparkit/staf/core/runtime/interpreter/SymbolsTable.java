@@ -4,26 +4,29 @@ import com.sparkit.staf.core.ast.Assignment;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.VariableAlreadyDefinedException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component("globalSymTable")
+@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SymbolsTable {
-    private StatementBlockExecutor statementBlockExecutor;
     private Map<String, Object> symbolsMap;
+    @Autowired
     private StatementBlockExecutor blockExecutor;
 
-    public SymbolsTable(StatementBlockExecutor statementBlockExecutor, Map<String, Assignment> assignmentMap) {
-        this.statementBlockExecutor = statementBlockExecutor;
+    public SymbolsTable() {
         symbolsMap = new HashMap<>();
-        if (assignmentMap != null) {
-            assignmentMap.forEach((k, v) -> symbolsMap.put(k, v.getValue()));
-        }
     }
 
-    public SymbolsTable(StatementBlockExecutor statementBlockExecutor) {
-        this.statementBlockExecutor = statementBlockExecutor;
+    public SymbolsTable(StatementBlockExecutor blockExecutor) {
         symbolsMap = new HashMap<>();
+        this.blockExecutor = blockExecutor;
     }
 
     public void addVariablesMap(Map<String, Assignment> assignmentMap,

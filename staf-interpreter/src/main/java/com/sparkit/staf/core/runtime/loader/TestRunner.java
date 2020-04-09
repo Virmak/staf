@@ -3,8 +3,6 @@ package com.sparkit.staf.core.runtime.loader;
 import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.parser.SyntaxErrorException;
-import com.sparkit.staf.core.runtime.factory.IKeywordLibrariesRepositoryFactory;
-import com.sparkit.staf.core.runtime.factory.IStafScriptInterpreterFactory;
 import com.sparkit.staf.core.runtime.interpreter.IStafScriptInterpreter;
 import com.sparkit.staf.core.runtime.interpreter.TestSuite;
 import com.sparkit.staf.core.runtime.loader.exceptions.TestSuiteMainScriptNotFoundException;
@@ -32,9 +30,7 @@ public class TestRunner {
     @Autowired
     private TestContainer testContainer;
     @Autowired
-    private IKeywordLibrariesRepositoryFactory keywordsRepositoryFactory;
-    @Autowired
-    private IStafScriptInterpreterFactory scriptInterpreterFactory;
+    private IStafScriptInterpreter interpreter;
     @Value("${testDirectory}")
     private String testDirectory;
 
@@ -77,9 +73,6 @@ public class TestRunner {
         } catch (IOException e) {
             throw new TestSuiteMainScriptNotFoundException(testSuitePath);
         }
-        IStafScriptInterpreter interpreter = scriptInterpreterFactory.getScriptInterpreter(
-                scriptAST, fullPath, testDirectory + "/" + config.getProjectDir() + "/" + testSuitePath,
-                testSuite.getTestSuiteName(), testDirectory);
-        return interpreter.run();
+        return interpreter.run(System.getProperty("user.dir"), testSuite.getTestSuiteName(), scriptAST);
     }
 }
