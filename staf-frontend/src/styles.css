@@ -59,5 +59,7 @@
 }
 
 .test-res-header .badge {
-    padding: 5px;
+    padding: 10px;
+    line-height: 0;
+    max-width: 70px;
 }

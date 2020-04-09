@@ -37,8 +37,12 @@
                 </tr>
 			</tbody>
 		</table>
+        
+        <ng-container *ngIf="statement.screenShot">
+            <img [src]="statement.screenShotBase64">
+        </ng-container>
 
-        <app-statement-test-result *ngFor="let childStat of statement.children" [statement]="childStat"></app-statement-test-result>
+        <app-statement-test-result *ngFor="let childStat of statement?.statement?.statementReports" [statement]="childStat"></app-statement-test-result>
 
 	</div>
 </div>

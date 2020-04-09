@@ -156,4 +156,8 @@ export class ProjectService {
   saveFile(file: IFile) {
     return this.http.post(baseUrl + '/saveFile', file);
   }
+
+  getImage(screenShot: string) {
+    return this.http.get(baseUrl + "/screenshot/" + screenShot);
+  }
 }
