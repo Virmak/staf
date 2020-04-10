@@ -19,7 +19,7 @@ public class KeywordDeclarationVisitor extends StafBaseVisitor<KeywordDeclaratio
     public KeywordDeclaration visitKeyword_declaration(StafParser.Keyword_declarationContext ctx) {
         KeywordDeclaration keywordDeclaration = new KeywordDeclaration();
         keywordDeclaration.setFile(stafFileVisitor.getFilePath());
-        keywordDeclaration.setKeywordName(ctx.keyword_name().getText().toLowerCase().replaceAll(" ", ""));
+        keywordDeclaration.setKeywordName(ctx.keyword_name().getText());
         keywordDeclaration.setArgsList(keywordDeclarationArgumentsVisitor.visitKeyword_declaration_arguments(ctx.keyword_declaration_arguments()));
         keywordDeclaration.setStatementList(keywordBodyVisitor.visitKeyword_body(ctx.keyword_body()));
         keywordDeclaration.setReturnObject(keywordReturnStatementVisitor.visitKeyword_return_stat(ctx.keyword_return_stat()));

@@ -16,7 +16,7 @@ public class KeywordCallVisitor extends StafBaseVisitor<KeywordCall> {
         KeywordCall keywordCall = new KeywordCall();
         keywordCall.setFile(stafFileVisitor.getFilePath());
         keywordCall.setLineNumber(ctx.getStart().getLine());
-        keywordCall.setKeywordName(ctx.keyword_name().getText().toLowerCase().replaceAll(" ", ""));
+        keywordCall.setKeywordName(ctx.keyword_name().getText());
         StafParser.Keyword_call_argumentsContext keywordCallContext = ctx.keyword_call_arguments();
         if (keywordCallContext != null) {
             keywordCall.setArgumentsList(keywordCallArgumentsVisitor.visitKeyword_call_arguments(ctx.keyword_call_arguments()));

@@ -95,7 +95,11 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
                 KeywordCall captureScreenshotKeyword = new KeywordCall("capturescreenshot",
                         Arrays.asList(new AbstractStafObject[]{screenShotPath}));
                 captureScreenshotKeyword.execute(statementBlockExecutor, globalSymTable, null, keywordLibrariesRepository);
-            } catch (Throwable throwable) {
+            } catch (EmptyStackException e) {
+                LOG.error("No browser open");
+                statementReport.setErrorMessage("No browser open");
+            }
+            catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
             statementReport.setScreenShot(screenShotPath.getValue().toString());

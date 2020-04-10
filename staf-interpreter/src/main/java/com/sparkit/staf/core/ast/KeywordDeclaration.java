@@ -77,10 +77,23 @@ public class KeywordDeclaration implements IStatementBlock {
         this.argsList = argsList;
     }
 
-    public Object execute(StatementBlockExecutor statementBlockExecutor, SymbolsTable globalSymTable, KeywordLibrariesRepository keywordLibrariesRepository,
+    public Object execute(StatementBlockExecutor statementBlockExecutor, SymbolsTable globalSymTable,
+                          KeywordLibrariesRepository keywordLibrariesRepository,
                                          Object[] params) throws Throwable {
         reports = new ArrayList<>();
         SymbolsTable localSymTable = new SymbolsTable(statementBlockExecutor);
+        evaluateArgs(globalSymTable, localSymTable, keywordLibrariesRepository, params);
+        reports = statementBlockExecutor.execute(this, null, globalSymTable, localSymTable, keywordLibrariesRepository);
+        KeywordCall keywordCall = statementBlockExecutor.getCallStack().pop();
+        keywordCall.setStatementReports(reports);
+        return returnObject.evaluate(statementBlockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+    }
+
+    private void evaluateArgs(SymbolsTable globalSymTable,
+                              SymbolsTable localSymTable,
+                              KeywordLibrariesRepository keywordLibrariesRepository,
+                              Object[] params) throws Throwable {
+
         if (params.length != argsList.size())
             throw new InvalidArgsNumberKeywordCallException(argsList.size(), params.length, keywordName);
 
@@ -105,9 +118,6 @@ public class KeywordDeclaration implements IStatementBlock {
                 localSymTable.setSymbolValue(argsList.get(i), params[i]);
             }
         }
-        reports = statementBlockExecutor.execute(this, null, globalSymTable, localSymTable, keywordLibrariesRepository);
-        statementBlockExecutor.getCallStack().pop().setStatementReports(reports);
-        return null;
     }
 
     @Override

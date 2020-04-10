@@ -12,10 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 @Component
 public class StatementBlockExecutor {
@@ -23,6 +20,7 @@ public class StatementBlockExecutor {
     private OnStatementFailed statementFailed;
     private Stack<KeywordCall> callStack = new Stack<>();
 
+    // Execute statement block like test case or user defined keyword
     public List<StatementReport> execute(IStatementBlock statementBlock,
                                          OnStatementFailed statementFailed,
                                          SymbolsTable globalSymTable,
@@ -36,8 +34,13 @@ public class StatementBlockExecutor {
                 if (statement instanceof IStatementBlock) {
                     statementReport.setChildren(((IStatementBlock) statement).getStatementReports());
                 }
-                statementReport.setResult(TestResult.Pass);
-            } catch (Exception e) {
+                statementReport.setResult(statementListTestResult(statementReport.getChildren()));
+            } catch (EmptyStackException e) {
+                LOG.error("No browser open");
+                statementReport.setErrorMessage("No browser is opened  At " + statement);
+                statementReport.setResult(TestResult.Fail);
+            }
+            catch (Exception e) {
                 LOG.error("At " + statement);
                 statementReport.setErrorMessage("At " + statement);
                 statementReport.setResult(TestResult.Fail);
@@ -53,6 +56,7 @@ public class StatementBlockExecutor {
         return reports;
     }
 
+    // Execute loop statements
     public StatementReport executeIterable(IStafIterable iterable,
                                            SymbolsTable globalSymTable,
                                            SymbolsTable localSymTable,
@@ -81,7 +85,7 @@ public class StatementBlockExecutor {
                         if (statement instanceof IStatementBlock) {
                             statementReport.setChildren(((IStatementBlock) statement).getStatementReports());
                         }
-                        statementReport.setResult(TestResult.Pass);
+                        statementReport.setResult(statementListTestResult(statementReport.getChildren()));
                     } catch (Exception e) {
                         LOG.error("At " + statement);
                         statementReport.setErrorMessage("At " + statement);
@@ -115,7 +119,10 @@ public class StatementBlockExecutor {
         this.statementFailed = statementFailed;
     }
 
-    private TestResult statementListTestResult(List<StatementReport> statementReports) {
+    public static TestResult statementListTestResult(List<StatementReport> statementReports) {
+        if (statementReports == null) {
+            return TestResult.Pass;
+        }
         for (StatementReport statementReport: statementReports) {
             if (statementReport.getResult() == TestResult.Fail) {
                 return TestResult.Fail;

@@ -70,28 +70,34 @@ public class KeywordLibrariesRepository {
             userDefinedKeywords = new HashMap<>();
         }
         for (Map.Entry<String, KeywordDeclaration> keywordDeclaration : keywordDeclarationMap.entrySet()) {
-            if (isKeywordDeclared(keywordDeclaration.getKey())) {
+            if (isKeywordDeclared(normalizeKeywordName(keywordDeclaration.getKey()))) {
                 throw new KeywordAlreadyRegisteredException(keywordDeclaration.getKey());
             }
-            userDefinedKeywords.put(keywordDeclaration.getKey(), keywordDeclaration.getValue());
+            userDefinedKeywords.put(normalizeKeywordName(keywordDeclaration.getKey()), keywordDeclaration.getValue());
         }
     }
 
     public Object invokeKeyword(String keyword, Object[] params) throws Throwable {
         String normalizedKeywordName = normalizeKeywordName(keyword);
         if (builtinKeywordMap.containsKey(normalizedKeywordName)) {
-            Object ret = builtinKeywordMap.get(normalizedKeywordName).invoke(params);
-            statementBlockExecutor.getCallStack().pop();
-            return ret;
-        } else if (userDefinedKeywords.containsKey(keyword)) {
-            return userDefinedKeywords.get(keyword).execute(statementBlockExecutor, globalSymTable, this, params);
+            try {
+                Object ret = builtinKeywordMap.get(normalizedKeywordName).invoke(params);
+                statementBlockExecutor.getCallStack().pop();
+                return ret;
+            } catch (Exception e) {
+                statementBlockExecutor.getCallStack().pop();
+                throw e;
+            }
+        } else if (userDefinedKeywords.containsKey(normalizedKeywordName)) {
+            return userDefinedKeywords.get(normalizedKeywordName).execute(statementBlockExecutor, globalSymTable, this, params);
         } else {
             throw new UndefinedBuiltinKeywordException();
         }
     }
 
     public boolean isKeywordDeclared(String keyword) {
-        return builtinKeywordMap.containsKey(keyword) || (userDefinedKeywords != null && userDefinedKeywords.containsKey(keyword));
+        String normalized = normalizeKeywordName(keyword);
+        return builtinKeywordMap.containsKey(normalized) || (userDefinedKeywords != null && userDefinedKeywords.containsKey(normalized));
     }
 
     public String normalizeKeywordName(String keyword) {

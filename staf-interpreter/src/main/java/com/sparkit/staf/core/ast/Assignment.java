@@ -41,11 +41,17 @@ public class Assignment implements IStatement, IReportableBlock {
 
 
     @Override
-    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable,
+                          KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         if (value instanceof KeywordCall) {
             KeywordCall keywordCall = (KeywordCall) value;
             Object returnObj = keywordCall.execute(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
             this.reports = keywordCall.getStatementReports();
+            if (localSymTable != null && localSymTable.getSymbolsMap().containsKey(object.getValue().toString())) {
+                localSymTable.getSymbolsMap().put(object.getValue().toString(), returnObj);
+            } else if (globalSymTable.getSymbolsMap().containsKey(object.getValue().toString())) {
+                globalSymTable.getSymbolsMap().put(object.getValue().toString(), returnObj);
+            }
             return returnObj;
         }
         return (value);

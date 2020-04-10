@@ -92,6 +92,9 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
 
     @Override
     public String toString() {
+        if (argumentsList.size() == 0) {
+            return keywordName;
+        }
         StringBuilder args = new StringBuilder();
         argumentsList.forEach(o -> args.append(o.toString()).append(", "));
         return keywordName + " [" + args.substring(0, args.length() - 2) + "] at " + getFile() + "  at line " + lineNumber;
