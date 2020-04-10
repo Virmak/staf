@@ -6,6 +6,7 @@ import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.ast.types.StafList;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import com.sparkit.staf.core.runtime.reports.TestResult;
 import org.apache.logging.log4j.LogManager;
@@ -31,8 +32,8 @@ public class StatementBlockExecutor {
             StatementReport statementReport = createStatementReport(statement, TestResult.Pass);
             try {
                 statement.execute(this, globalSymTable, localSymTable, keywordLibrariesRepository);
-                if (statement instanceof IStatementBlock) {
-                    statementReport.setChildren(((IStatementBlock) statement).getStatementReports());
+                if (statement instanceof IReportableBlock) {
+                    statementReport.setChildren(((IReportableBlock) statement).getStatementReports());
                 }
                 statementReport.setResult(statementListTestResult(statementReport.getChildren()));
             } catch (EmptyStackException e) {
