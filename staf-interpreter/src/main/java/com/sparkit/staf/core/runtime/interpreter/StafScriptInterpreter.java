@@ -38,18 +38,18 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
     @Value("#{systemProperties['testDirectory']}")
     private String testDirectory;
 
-    public StafScriptInterpreter() {
-        this.testDirectory = System.getProperty("testDirectory");
-    }
+    public StafScriptInterpreter() { }
 
     public List<TestCaseReport> run(String currentDirectory, String testSuite, StafFile mainStafFile) {
         List<TestCaseReport> reports = new ArrayList<>();
         TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get("setup");
         TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get("teardown");
+        testDirectory = System.getProperty("testDirectory");
         try {
             Map<String, Assignment> varsAssignments = mainStafFile.getVariableDeclarationMap();
             Map<String, KeywordDeclaration> keywordsMap = mainStafFile.getKeywordDeclarationMap();
-            this.importsInterpreter.loadImports(mainStafFile.getImports(), currentDirectory, testDirectory);
+            String importRelativePath = mainStafFile.getFilePath().substring(0, mainStafFile.getFilePath().lastIndexOf("/"));
+            this.importsInterpreter.loadImports(mainStafFile.getImports(), importRelativePath, testDirectory);
             if (varsAssignments != null) {
                 this.globalSymTable.addVariablesMap(varsAssignments, keywordLibrariesRepository);
             }
