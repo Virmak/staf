@@ -86,7 +86,10 @@ public class KeywordDeclaration implements IStatementBlock {
         reports = statementBlockExecutor.execute(this, null, globalSymTable, localSymTable, keywordLibrariesRepository);
         KeywordCall keywordCall = statementBlockExecutor.getCallStack().pop();
         keywordCall.setStatementReports(reports);
-        return returnObject.evaluate(statementBlockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+        if (returnObject != null) {
+            return returnObject.evaluate(statementBlockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+        }
+        return null;
     }
 
     private void evaluateArgs(SymbolsTable globalSymTable,
