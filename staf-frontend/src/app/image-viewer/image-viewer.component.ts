@@ -16,9 +16,10 @@ export class ImageViewerComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-
-    this.filePath = this.route.snapshot.paramMap.get('filePath');
-    this.file = this.fileEditorService.getFile(this.filePath)
+    this.route.paramMap.subscribe(paramMap => {
+      this.filePath = paramMap.get('filePath');
+      this.file = this.fileEditorService.getFile(this.filePath);
+    })
   }
 
 }

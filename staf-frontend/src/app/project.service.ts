@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { TestSuiteService } from './test-suite.service';
 import { SequenceService } from './sequence.service';
@@ -11,7 +12,7 @@ import { IFile, FileType } from './interfaces/ifile';
 import { HttpClient } from '@angular/common/http';
 
 const defaultProjectsLocation = '~/tests';
-const baseUrl = 'http://127.0.0.1:8080';
+const baseUrl = environment.resolveApi();
 
 @Injectable({
   providedIn: 'root'

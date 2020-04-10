@@ -3,7 +3,14 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  resolveApi: () => {
+    const urlArr = window.location.href.split('/');
+    if (urlArr[2].indexOf('4200') > -1) {
+      urlArr[2] = urlArr[2].replace('4200', '8080');
+    }
+    return urlArr[0] + '//' + urlArr[2];
+  }
 };
 
 /*
