@@ -1,5 +1,6 @@
 package com.sparkit.staf.core.runtime.reports;
 
+import com.sparkit.staf.domain.TestResult;
 import lombok.Data;
 
 import java.util.Date;

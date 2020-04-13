@@ -1,9 +1,9 @@
 package com.sparkit.staf.api.controllers;
 
-import com.sparkit.staf.api.application.exception.ProjectNameAlreadyExist;
-import com.sparkit.staf.api.models.ProjectConfig;
-import com.sparkit.staf.api.models.request.CreateProjectRequest;
-import com.sparkit.staf.api.service.ProjectService;
+import com.sparkit.staf.application.exception.ProjectNameAlreadyExist;
+import com.sparkit.staf.application.models.request.CreateProjectRequest;
+import com.sparkit.staf.application.service.ProjectService;
+import com.sparkit.staf.domain.ProjectConfig;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

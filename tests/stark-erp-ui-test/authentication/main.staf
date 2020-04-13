@@ -11,6 +11,12 @@ VARS
     $VALID_USERNAME     =   "demo@spark-it.fr"
     $VALID_PASSWORD     =   "00000000"
     $INVALID_PASSWORD   =   "123456"
+KEYWORDS
+    User login()
+        Login page opened ()
+        Input username and password ($VALID_USERNAME, $VALID_PASSWORD)
+        Home page Opened ()
+    END
 
 TEST CASES
     SETUP:
@@ -18,11 +24,11 @@ TEST CASES
     END
 
     Login with valid credentials:
-          Log ("starting tests")
-          Given Login page opened ()
-          WHEN Input username and password      ($VALID_USERNAME, $VALID_PASSWORD)
-          THEN Home page Opened ()
-          Log("test valid login passed")
+        Log ("starting tests")
+        Given Login page opened ()
+        WHEN Input username and password      ($VALID_USERNAME, $VALID_PASSWORD)
+        THEN Home page Opened ()
+        Log("Valid login test passed")
     END
 
     Login with invalid credentials:

@@ -1,5 +1,7 @@
 package com.sparkit.staf.core.runtime.reports;
 
+import com.sparkit.staf.domain.TestResult;
+
 import java.util.List;
 
 public class JSONReportWriter implements ITestReporter {

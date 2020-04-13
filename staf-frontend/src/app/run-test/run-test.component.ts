@@ -55,11 +55,10 @@ export class RunTestComponent implements OnInit {
     this.testService.runTest({
       project: this._project.name,
       testSuites: this._testSuites.map(ts => ts.name),
-    })
-      .subscribe(this.testComplete.bind(this), err => {
-        testStartedToast.close();
-        this.testFailed();
-      });
+    }).subscribe(this.testComplete.bind(this), err => {
+      testStartedToast.close();
+      this.testFailed();
+    });
   }
 
   testSuiteCheck(e, testSuite) {

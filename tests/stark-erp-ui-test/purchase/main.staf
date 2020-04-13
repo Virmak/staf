@@ -3,29 +3,21 @@ IMPORTS
     IMPORT selenium
     IMPORT logger
     IMPORT ws
+    IMPORT "../authentication/main.staf"
+    IMPORT "./pages/order.page"
 VARS
-    $url = 'https://google.com'
-    $searchInput = 'name:q';
-KEYWORDS
-    Open google page()
-        Go to                           ($url)
-        Wait until element is visible   ($searchInput)
-        Element should be visible       ($searchInput)
-        Input Text                      ($searchInput, 'test automation')
-
-    END
-
+    $googleUrl = 'https://google.com'
+    
 TEST CASES
     SETUP:
         Open browser                    ('chrome')
+        Maximize browser window()
     END
 
-    SETTING THINS UP:
-        LOG ("set ok")
-    END
-
-    first:
-        GIVEN   Open google page()
+    Test purchase page:
+        Given user login()
+        WHEN Open Order list page()
+        THEN Order list page Opened()
     END
 
     TEARDOWN:
