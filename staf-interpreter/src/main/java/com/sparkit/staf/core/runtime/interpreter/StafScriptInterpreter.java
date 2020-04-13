@@ -1,6 +1,5 @@
 package com.sparkit.staf.core.runtime.interpreter;
 
-import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.Assignment;
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.ast.StafFile;
@@ -23,7 +22,7 @@ import java.util.*;
 
 @Component
 public class StafScriptInterpreter implements IStafScriptInterpreter {
-    private static final Logger LOG = LogManager.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger();
     @Autowired
     private IImportsInterpreter importsInterpreter;
     @Autowired
@@ -38,7 +37,8 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
     @Value("#{systemProperties['testDirectory']}")
     private String testDirectory;
 
-    public StafScriptInterpreter() { }
+    public StafScriptInterpreter() {
+    }
 
     public List<TestCaseReport> run(String currentDirectory, String testSuite, StafFile mainStafFile) {
         List<TestCaseReport> reports = new ArrayList<>();
@@ -67,9 +67,9 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
                 reports.add(executeTestCase(testSuite, testCase.getKey(), testCase.getValue()));
             }
         } catch (Throwable e) {
-            LOG.error("Script execution stopped");
-            LOG.error(e.getClass());
-            LOG.error(e.getMessage());
+            logger.error("Script execution stopped");
+            logger.error(e.getClass());
+            logger.error(e.getMessage());
             e.printStackTrace();
         } finally {
             if (tearDown != null) {
@@ -87,7 +87,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         testCaseReport.setResult(TestResult.Pass);
         testCaseReport.setStatementReports(new ArrayList<>());
         String lastErrorMessage = null;
-        LOG.info("Executing test case : " + testCaseDeclaration.getName());
+        logger.info("Executing test case : " + testCaseDeclaration.getName());
         OnStatementFailed statementFailed = (statementReport) -> {
             StafString screenShotPath = new StafString(
                     testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/" + config.getReportingDirectory() + "/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
@@ -96,10 +96,9 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
                         Arrays.asList(new AbstractStafObject[]{screenShotPath}));
                 captureScreenshotKeyword.execute(statementBlockExecutor, globalSymTable, null, keywordLibrariesRepository);
             } catch (EmptyStackException e) {
-                LOG.error("No browser open");
+                logger.error("No browser open");
                 statementReport.setErrorMessage("No browser open");
-            }
-            catch (Throwable throwable) {
+            } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
             statementReport.setScreenShot(screenShotPath.getValue().toString());
@@ -115,7 +114,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         } catch (Throwable e) {
             testCaseReport.setResult(TestResult.Fail);
             lastErrorMessage = e.getMessage();
-            LOG.error("Executing statement failed at [" + testSuite + "] : "
+            logger.error("Executing statement failed at [" + testSuite + "] : "
                     + testCaseDeclaration.getName()
                     + " | " + e.getMessage());
             e.printStackTrace();
@@ -123,7 +122,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         testCaseReport.setEnd(new Date());
         testCaseReport.setErrorMessage(lastErrorMessage);
 
-        LOG.info("Finished executing test case : " + testCaseDeclaration.getName());
+        logger.info("Finished executing test case : " + testCaseDeclaration.getName());
         return testCaseReport;
     }
 

@@ -1,6 +1,5 @@
 package com.sparkit.staf.core.runtime.loader;
 
-import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.parser.SyntaxErrorException;
 import com.sparkit.staf.core.runtime.interpreter.IStafScriptInterpreter;
@@ -22,7 +21,7 @@ import java.util.List;
 
 @Component
 public class TestRunner {
-    private static final Logger logger = LogManager.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger();
     @Autowired
     private IStafConfig config;
     @Autowired

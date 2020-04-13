@@ -1,7 +1,7 @@
 {
   "project": "STARK ERP UI TEST",
   "description": "Test and validation of the STARK ERP",
-  "logDir": "logs/app.log",
+  "logDir": "logs",
   "reportsDir": "reports",
   "type": "UITest",
   "testSuites": [

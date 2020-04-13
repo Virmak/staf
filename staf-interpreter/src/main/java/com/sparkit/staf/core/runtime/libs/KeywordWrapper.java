@@ -1,6 +1,5 @@
 package com.sparkit.staf.core.runtime.libs;
 
-import com.sparkit.staf.core.Main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class KeywordWrapper {
-    private static final Logger LOG = LogManager.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger();
     private AbstractStafLibrary libInstance;
     private Method method;
 
@@ -30,10 +29,10 @@ public class KeywordWrapper {
         }
         try {
             return method.invoke(libInstance, methodParams);
-        }  catch (InvocationTargetException ex) {
+        } catch (InvocationTargetException ex) {
             System.err.println("An InvocationTargetException was caught!");
             Throwable cause = ex.getCause();
-            LOG.error(String.format("Invocation of %s failed because of: %s%n",
+            logger.error(String.format("Invocation of %s failed because of: %s%n",
                     method.getName(), cause.getMessage()));
             throw ex.getCause();
         }

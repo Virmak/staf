@@ -6,10 +6,13 @@ import com.sparkit.staf.core.runtime.loader.TestRunner;
 import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -23,13 +26,17 @@ public class StafTestFacade {
     @Autowired
     private IStafCompiler stafFileReader;
 
+    private static Logger logger = LogManager.getLogger();
+
     public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, List<String> testSuites) throws ConfigFileNotFoundException {
         stafConfig.readConfigFile(projectDir, configFile);
-        System.setProperty("logFilename", stafConfig.getLogDirectory() + "/test.log");
+        System.setProperty("logFilename", stafConfig.getLogDirectory() + getLogFilename());
         System.setProperty("testDirectory", testDir);
-        org.apache.logging.log4j.core.LoggerContext ctx =
-                (org.apache.logging.log4j.core.LoggerContext) LogManager.getContext(false);
-        ctx.reconfigure();
         return loader.runTests(testSuites);
+    }
+
+    private String getLogFilename() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy-HH:mm:ss");
+        return dateFormat.format(new Date()) + ".log";
     }
 }

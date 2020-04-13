@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="INFO">
     <Appenders>
-        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+        <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
         </Console>
+
+        <Routing name="Routing">
+            <Routes pattern="$${sys:logFilename}">
+                <Route>
+                    <File name="File" fileName="logs/${sys:logFilename}"
+                          immediateFlush="false" append="false">
+                        <PatternLayout
+                                pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+                    </File>
+                </Route>
+
+            </Routes>
+        </Routing>
     </Appenders>
     <Loggers>
         <Root level="debug">
-            <AppenderRef ref="ConsoleAppender" />
-            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="Console" level="debug" />
+            <AppenderRef ref="Routing" level="debug" />
         </Root>
     </Loggers>
 </Configuration>

@@ -1,6 +1,5 @@
 package com.sparkit.staf.core.runtime.libs.builtin;
 
-import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
@@ -11,25 +10,25 @@ import org.apache.logging.log4j.Logger;
 
 @StafLibrary(name = "logger", builtin = true)
 public class LoggerLibrary extends AbstractStafLibrary {
-    private static final Logger LOG = LogManager.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger();
 
     @Keyword(name = "log")
     public void log(@KeywordArgument AbstractStafObject data) {
-        LOG.debug(data.getValue());
+        logger.debug(data.getValue());
     }
 
     @Keyword(name = "log info")
     public void logInfo(@KeywordArgument AbstractStafObject data) {
-        LOG.info(data.getValue());
+        logger.info(data.getValue());
     }
 
     @Keyword(name = "log warn")
     public void logWarn(@KeywordArgument AbstractStafObject data) {
-        LOG.warn(data.getValue());
+        logger.warn(data.getValue());
     }
 
     @Keyword(name = "log error")
     public void logErr(@KeywordArgument AbstractStafObject data) {
-        LOG.error(data.getValue());
+        logger.error(data.getValue());
     }
 }

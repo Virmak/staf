@@ -1,0 +1,26 @@
+IMPORTS
+    IMPORT selenium
+
+VARS
+    $PURCHASE_ORDER_ADD = "tag:app-purchase-order-add"
+    $TIER_INPUT         = "xpath://app-supplier-dropdown//input"
+    $TIER_LIST_ITEM                 = "xpath://kendo-popup//kendo-list//b[contains(text(), 'Tiers 15')]"
+    $KENDO_POPUP        = "tag:kendo-popup"
+
+KEYWORDS
+    Add order page opened()
+        Wait until element is visible   ($PURCHASE_ORDER_ADD)
+        Element should be visible       ($PURCHASE_ORDER_ADD)
+    END
+
+    Select tier list item ($tier)
+        Wait until element is visible   ($KENDO_POPUP)
+        Wait until element is visible   ("xpath://kendo-popup//kendo-list//b[contains(text(), '" + $tier + "')]")
+        Click element                   ("xpath://kendo-popup//kendo-list//b[contains(text(), '" + $tier + "')]")
+    END
+
+    Select tier ($tier)
+        Wait until element is visible   ($TIER_INPUT)
+        Input text                      ($TIER_INPUT, $tier)
+        Select tier list item           ($tier)
+    END

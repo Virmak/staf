@@ -1,6 +1,5 @@
 package com.sparkit.staf.core.runtime.libs.builtin.webservice;
 
-import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.StafDictionary;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
@@ -19,7 +18,7 @@ import static org.hamcrest.Matchers.equalTo;
 @StafLibrary(name = "ws")
 public class WsLibrary extends AbstractStafLibrary {
 
-    private static final Logger LOG = LogManager.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger();
 
     @Keyword(name = "get")
     public void getRequest(AbstractStafObject path, AbstractStafObject jsonPath, AbstractStafObject condition,
@@ -34,7 +33,7 @@ public class WsLibrary extends AbstractStafLibrary {
         } catch (Exception e) {
             throw new WebServiceTestFailedException(path.getValue().toString(), e.getMessage());
         }
-        LOG.info("WS GET test passed : " + path.getValue());
+        logger.info("WS GET test passed : " + path.getValue());
     }
 
     @Keyword(name = "post")
@@ -49,7 +48,7 @@ public class WsLibrary extends AbstractStafLibrary {
                     .assertThat()
                     .statusCode((Integer) statusCode.getValue())
                     .body(jsonPath.getValue().toString(), getMatcher(condition, expected));
-            LOG.info("WS POST passed : " + path.getValue());
+            logger.info("WS POST passed : " + path.getValue());
         } catch (Exception e) {
             throw new WebServiceTestFailedException(path.getValue().toString(), e.getMessage());
         }

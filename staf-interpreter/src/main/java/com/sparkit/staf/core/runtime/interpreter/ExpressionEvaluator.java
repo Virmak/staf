@@ -1,21 +1,21 @@
 package com.sparkit.staf.core.runtime.interpreter;
 
-import com.sparkit.staf.core.ast.types.AbstractStafObject;
-import com.sparkit.staf.core.ast.types.StafBoolean;
-import com.sparkit.staf.core.ast.types.StafDouble;
-import com.sparkit.staf.core.ast.types.StafInteger;
+import com.sparkit.staf.core.ast.types.*;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.InvalidExpressionOperationParams;
 
 public class ExpressionEvaluator {
     public static AbstractStafObject add(AbstractStafObject left, AbstractStafObject right) {
-        if (left.getValue() instanceof Double || right.getValue() instanceof Double) {
+        if (left.getValue() instanceof String || right.getValue() instanceof String) {
+            return new StafString(left.getValue().toString() + right.getValue());
+        } else if (left.getValue() instanceof Double || right.getValue() instanceof Double) {
             Double l = (Double) left.getValue();
             Double r = (Double) right.getValue();
             return new StafDouble(l + r);
         }
-        else {
+        else if (left.getValue() instanceof Integer) {
             return new StafInteger((Integer)left.getValue() + (Integer)right.getValue());
         }
+        return null;
     }
 
     public static AbstractStafObject subtract(AbstractStafObject left, AbstractStafObject right) {

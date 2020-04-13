@@ -1,20 +1,28 @@
 IMPORTS
     IMPORT selenium
 VARS
-    $ORDER_PAGE_URI = 'main/purchase/purchaseorder'
-    $APP_PURCHASE_ORDER_LIST = 'tag:app-purchase-order-list'
+    $ORDER_PAGE_URI                 = 'main/purchase/purchaseorder'
+    $APP_PURCHASE_ORDER_LIST        = 'tag:app-purchase-order-list'
 
-    $SIDENAV_PURCHASE_LINK = "xpath://app-sidebar-nav//a[contains(.,'Achat')]"
-    $SIDENAV_PURCHASE_ORDER_LINK = "xpath://app-sidebar-nav//a[@href='/main/purchase/purchaseorder']"
-
+    $SIDENAV_PURCHASE_LINK          = "xpath://app-sidebar-nav//a[contains(.,'Achat')]"
+    $SIDENAV_PURCHASE_ORDER_LINK    = "xpath://app-sidebar-nav//a[@href='/main/purchase/purchaseorder']"
+    $ADD_ORDER_BTN                  = "xpath://kendo-grid-toolbar//a[@href='/main/purchase/purchaseorder/add']"
 KEYWORDS
-    Order list page opened()
-        Wait until element is visible   ($APP_PURCHASE_ORDER_LIST)
-        Element should be visible       ($APP_PURCHASE_ORDER_LIST)
-    END
     
     Open Order list page()
+        Wait until element is visible   ($SIDENAV_PURCHASE_LINK)
+        Element should be visible       ($SIDENAV_PURCHASE_LINK)
         Click element                   ($SIDENAV_PURCHASE_LINK)
         Wait until element is visible   ($SIDENAV_PURCHASE_ORDER_LINK)
         Click element                   ($SIDENAV_PURCHASE_ORDER_LINK)
+    END
+    
+    Order list page opened()
+        Wait until element is visible   ($APP_PURCHASE_ORDER_LIST, 20)
+        Element should be visible       ($APP_PURCHASE_ORDER_LIST)
+    END
+    
+    Click add order button()
+        Wait until element is visible   ($ADD_ORDER_BTN)
+        Click element                   ($ADD_ORDER_BTN)
     END

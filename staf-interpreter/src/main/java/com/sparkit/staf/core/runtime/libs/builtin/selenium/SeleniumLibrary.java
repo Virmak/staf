@@ -27,6 +27,9 @@ import java.util.concurrent.TimeUnit;
 public class SeleniumLibrary extends AbstractStafLibrary {
     private Stack<WebDriver> webDrivers = new Stack<>();
 
+    private void setDefaultTimeout() {
+        webDrivers.peek().manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+    }
     @Keyword(name = "open browser")
     public void openBrowser(AbstractStafObject browser) throws UnsupportedBrowserDriverException {
         String browserString = browser.getValue().toString();
@@ -38,7 +41,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         } else {
             throw new UnsupportedBrowserDriverException(browserString);
         }
-        webDrivers.peek().manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        setDefaultTimeout();
     }
 
     @Keyword(name = "close browser")

@@ -1,6 +1,5 @@
 package com.sparkit.staf.core.runtime.interpreter;
 
-import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.IStatement;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
@@ -17,7 +16,7 @@ import java.util.*;
 
 @Component
 public class StatementBlockExecutor {
-    private static final Logger LOG = LogManager.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger();
     private OnStatementFailed statementFailed;
     private Stack<KeywordCall> callStack = new Stack<>();
 
@@ -49,11 +48,11 @@ public class StatementBlockExecutor {
                 }
                 statementReport.setResult(statementListTestResult(statementReport.getChildren()));
             } catch (EmptyStackException e) {
-                LOG.error("No browser open");
+                logger.error("No browser open");
                 statementReport.setErrorMessage("No browser is opened  At " + statement);
                 statementReport.setResult(TestResult.Fail);
             } catch (Exception e) {
-                LOG.error("At " + statement);
+                logger.error("At " + statement);
                 statementReport.setErrorMessage("At " + statement);
                 statementReport.setResult(TestResult.Fail);
                 if (this.statementFailed != null) {
@@ -99,7 +98,7 @@ public class StatementBlockExecutor {
                         }
                         statementReport.setResult(statementListTestResult(statementReport.getChildren()));
                     } catch (Exception e) {
-                        LOG.error("At " + statement);
+                        logger.error("At " + statement);
                         statementReport.setErrorMessage("At " + statement);
                         statementReport.setResult(TestResult.Fail);
                         if (this.statementFailed != null) {

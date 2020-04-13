@@ -1,13 +1,11 @@
 package com.sparkit.staf.core.ast;
 
-import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.runtime.interpreter.IStatementBlock;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.InvalidArgsNumberKeywordCallException;
-import com.sparkit.staf.core.runtime.interpreter.exceptions.StafRuntimeException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedKeywordException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
@@ -19,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KeywordDeclaration implements IStatementBlock {
-    private static final Logger LOG = LogManager.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger();
     protected String keywordName;
     protected List<String> argsList;
     protected List<IStatement> statementList;
@@ -79,7 +77,7 @@ public class KeywordDeclaration implements IStatementBlock {
 
     public Object execute(StatementBlockExecutor statementBlockExecutor, SymbolsTable globalSymTable,
                           KeywordLibrariesRepository keywordLibrariesRepository,
-                                         Object[] params) throws Throwable {
+                          Object[] params) throws Throwable {
         reports = new ArrayList<>();
         SymbolsTable localSymTable = new SymbolsTable(statementBlockExecutor);
         evaluateArgs(globalSymTable, localSymTable, keywordLibrariesRepository, params);

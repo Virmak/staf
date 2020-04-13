@@ -5,6 +5,7 @@ IMPORTS
     IMPORT ws
     IMPORT "../authentication/main.staf"
     IMPORT "./pages/order.page"
+    IMPORT "./pages/add_order.page"
 VARS
     $googleUrl = 'https://google.com'
     
@@ -14,12 +15,24 @@ TEST CASES
         Maximize browser window()
     END
 
-    Test purchase page:
-        Given user login()
-        WHEN Open Order list page()
-        THEN Order list page Opened()
+    Test go to purchase page:
+        GIVEN   user login()
+        WHEN    Open Order list page()
+        THEN    Order list page opened()
+    END
+    
+    Test go to add order page:
+        GIVEN   Order list page opened()
+        WHEN    Click add order button()
+        THEN    Add order page opened()
+    END
+
+    Test add order:
+        GIVEN   Add order page opened()
+        WHEN    Select tier ("Tiers 15")
+        AND     Log("ok")
+
     END
 
     TEARDOWN:
-        Close browser()
     END
