@@ -1,9 +1,9 @@
 package com.sparkit.staf.api.controllers;
 
-import com.sparkit.staf.api.exception.ProjectNotFoundException;
-import com.sparkit.staf.api.exception.TestDirectoryNotFound;
-import com.sparkit.staf.api.models.request.RunTestRequest;
-import com.sparkit.staf.api.service.ProjectService;
+import com.sparkit.staf.application.exception.ProjectNotFoundException;
+import com.sparkit.staf.application.exception.TestDirectoryNotFound;
+import com.sparkit.staf.application.models.request.RunTestRequest;
+import com.sparkit.staf.application.service.ProjectService;
 import com.sparkit.staf.core.StafTestFacade;
 import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;

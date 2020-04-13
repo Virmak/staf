@@ -55,14 +55,18 @@ public class SeleniumLibrary extends AbstractStafLibrary {
             webDriver.close();
         }
     }
+        @Keyword(name = "maximize browser window", doc = "Maximize current browser window")
+    public void maximizeWindow(@KeywordArgument AbstractStafObject selector, @KeywordArgument AbstractStafObject value) {
+        webDrivers.peek().manage().window().maximize();
+    }
 
-    @Keyword(name = "input text")
+    @Keyword(name = "input text", doc = "Types the given text into text field identified by locator")
     public void input(@KeywordArgument AbstractStafObject selector, @KeywordArgument AbstractStafObject value) {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         webDrivers.peek().findElement(elementSelector).sendKeys(value.getValue().toString());
     }
 
-    @Keyword(name = "click element")
+    @Keyword(name = "click element", doc = "Click element by locator")
     public void clickButton(@KeywordArgument AbstractStafObject selector) {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         webDrivers.peek().findElement(elementSelector).click();

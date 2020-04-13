@@ -1,0 +1,20 @@
+IMPORTS
+    IMPORT selenium
+VARS
+    $ORDER_PAGE_URI = 'main/purchase/purchaseorder'
+    $APP_PURCHASE_ORDER_LIST = 'tag:app-purchase-order-list'
+
+    $SIDENAV_PURCHASE_LINK = "xpath://app-sidebar-nav//a[contains(.,'Achat')]"
+    $SIDENAV_PURCHASE_ORDER_LINK = "xpath://app-sidebar-nav//a[@href='/main/purchase/purchaseorder']"
+
+KEYWORDS
+    Order list page opened()
+        Wait until element is visible   ($APP_PURCHASE_ORDER_LIST)
+        Element should be visible       ($APP_PURCHASE_ORDER_LIST)
+    END
+    
+    Open Order list page()
+        Click element                   ($SIDENAV_PURCHASE_LINK)
+        Wait until element is visible   ($SIDENAV_PURCHASE_ORDER_LINK)
+        Click element                   ($SIDENAV_PURCHASE_ORDER_LINK)
+    END

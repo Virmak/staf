@@ -1,6 +1,6 @@
 package com.sparkit.staf.api.controllers;
 
-import com.sparkit.staf.api.service.FileService;
+import com.sparkit.staf.application.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;

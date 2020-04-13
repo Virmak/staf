@@ -8,7 +8,7 @@ import com.sparkit.staf.core.ast.types.StafList;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
-import com.sparkit.staf.core.runtime.reports.TestResult;
+import com.sparkit.staf.domain.TestResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -20,6 +20,18 @@ public class StatementBlockExecutor {
     private static final Logger LOG = LogManager.getLogger(Main.class);
     private OnStatementFailed statementFailed;
     private Stack<KeywordCall> callStack = new Stack<>();
+
+    public static TestResult statementListTestResult(List<StatementReport> statementReports) {
+        if (statementReports == null) {
+            return TestResult.Pass;
+        }
+        for (StatementReport statementReport : statementReports) {
+            if (statementReport.getResult() == TestResult.Fail) {
+                return TestResult.Fail;
+            }
+        }
+        return TestResult.Pass;
+    }
 
     // Execute statement block like test case or user defined keyword
     public List<StatementReport> execute(IStatementBlock statementBlock,
@@ -40,8 +52,7 @@ public class StatementBlockExecutor {
                 LOG.error("No browser open");
                 statementReport.setErrorMessage("No browser is opened  At " + statement);
                 statementReport.setResult(TestResult.Fail);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 LOG.error("At " + statement);
                 statementReport.setErrorMessage("At " + statement);
                 statementReport.setResult(TestResult.Fail);
@@ -75,7 +86,7 @@ public class StatementBlockExecutor {
         if (actualIterator instanceof StafList) {
             int iteration = 0;
             for (AbstractStafObject item : ((StafList) actualIterator).getList()) {
-                StatementReport iterationReport = createStatementReport((IStatement)item, TestResult.Pass);
+                StatementReport iterationReport = createStatementReport((IStatement) item, TestResult.Pass);
                 iterableReport.setErrorMessage("Iteration[" + (iteration++) + "] : " + item);
                 iterationReport.setChildren(new ArrayList<>());
                 for (IStatement statement : iterable.getStatements()) {
@@ -118,18 +129,6 @@ public class StatementBlockExecutor {
 
     public void setStatementFailed(OnStatementFailed statementFailed) {
         this.statementFailed = statementFailed;
-    }
-
-    public static TestResult statementListTestResult(List<StatementReport> statementReports) {
-        if (statementReports == null) {
-            return TestResult.Pass;
-        }
-        for (StatementReport statementReport: statementReports) {
-            if (statementReport.getResult() == TestResult.Fail) {
-                return TestResult.Fail;
-            }
-        }
-        return TestResult.Pass;
     }
 
     public Stack<KeywordCall> getCallStack() {
