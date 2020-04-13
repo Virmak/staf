@@ -108,7 +108,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         }
     }
 
-    @Keyword(name = "Element should be visible")
+    @Keyword(name = "element should be visible")
     public void elementShouldBeVisible(AbstractStafObject selector) throws ElementShouldBeVisibleNotFoundException {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         List<WebElement> elementList = webDrivers.peek().findElements(elementSelector);
@@ -117,7 +117,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         }
     }
 
-    @Keyword(name = "Element should contain", doc = "Verifies that element 'locator' contains text expected.")
+    @Keyword(name = "element should contain", doc = "Verifies that element 'locator' contains text expected.")
     public void elementShouldContain(AbstractStafObject selector, AbstractStafObject expected, AbstractStafObject message)
             throws ElementShouldContainException {
         By elementSelector = By.xpath("//*[contains(text(),'" + expected.getValue() + "')]");

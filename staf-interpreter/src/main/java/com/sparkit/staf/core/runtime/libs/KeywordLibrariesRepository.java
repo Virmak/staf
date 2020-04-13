@@ -28,15 +28,9 @@ public class KeywordLibrariesRepository {
     @Autowired
     private TestContainer dependencyContainer;
     /* Map keyword to library method */
-    private Map<String, KeywordDeclaration> userDefinedKeywords;
-    private Map<String, KeywordWrapper> builtinKeywordMap;
-    private Map<String, AbstractStafLibrary> libsInstancesMap;
-
-    public KeywordLibrariesRepository() {
-        userDefinedKeywords = new HashMap<>();
-        builtinKeywordMap = new HashMap<>();
-        libsInstancesMap = new HashMap<>();
-    }
+    private Map<String, KeywordDeclaration> userDefinedKeywords = new HashMap<>();;
+    private Map<String, KeywordWrapper> builtinKeywordMap = new HashMap<>();;
+    private Map<String, AbstractStafLibrary> libsInstancesMap = new HashMap<>();;
 
     public Map<String, KeywordDeclaration> getUserDefinedKeywords() {
         return userDefinedKeywords;
