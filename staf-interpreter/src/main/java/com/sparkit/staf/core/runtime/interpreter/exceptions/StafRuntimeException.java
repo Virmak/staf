@@ -17,9 +17,14 @@ public class StafRuntimeException extends Exception {
         super(message);
         this.keywordName = keywordName;
     }
+
     public StafRuntimeException(String message, Throwable cause, String keywordName) {
         super(message, cause);
         this.keywordName = keywordName;
+    }
+
+    public StafRuntimeException(Throwable cause) {
+        super(cause);
     }
 
     public StafRuntimeException(Throwable cause, String keywordName, IStatement statement) {

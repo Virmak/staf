@@ -8,8 +8,8 @@ IMPORTS
     IMPORT  selenium
 
 VARS
-    $VALID_USERNAME     =   "demo@spark-it.fr"
-    $VALID_PASSWORD     =   "00000000"
+    $VALID_USERNAME     =   "test@auto"
+    $VALID_PASSWORD     =   "Test@123"
     $INVALID_PASSWORD   =   "123456"
 KEYWORDS
     User login()

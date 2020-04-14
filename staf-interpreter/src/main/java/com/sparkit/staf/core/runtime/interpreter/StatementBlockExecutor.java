@@ -1,9 +1,11 @@
 package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.ast.IStatement;
+import com.sparkit.staf.core.ast.TestCaseDeclaration;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.ast.types.StafList;
+import com.sparkit.staf.core.runtime.interpreter.exceptions.FatalErrorException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
@@ -51,6 +53,7 @@ public class StatementBlockExecutor {
                 logger.error("No browser open");
                 statementReport.setErrorMessage("No browser is opened  At " + statement);
                 statementReport.setResult(TestResult.Fail);
+                throw new FatalErrorException(reports, e);
             } catch (Exception e) {
                 logger.error("At " + statement);
                 statementReport.setErrorMessage("At " + statement);
@@ -58,11 +61,12 @@ public class StatementBlockExecutor {
                 if (this.statementFailed != null) {
                     this.statementFailed.execute(statementReport);
                 }
-                e.printStackTrace();
+                reports.add(statementReport);
+                throw new FatalErrorException(reports, e);
             } finally {
                 statementReport.setEnd(new Date());
+                reports.add(statementReport);
             }
-            reports.add(statementReport);
         }
         return reports;
     }

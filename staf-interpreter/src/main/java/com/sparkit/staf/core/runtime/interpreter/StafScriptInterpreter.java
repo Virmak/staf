@@ -7,6 +7,7 @@ import com.sparkit.staf.core.ast.TestCaseDeclaration;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.ast.types.StafString;
+import com.sparkit.staf.core.runtime.interpreter.exceptions.FatalErrorException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.loader.IStafConfig;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
@@ -89,6 +90,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         String lastErrorMessage = null;
         logger.info("Executing test case : " + testCaseDeclaration.getName());
         OnStatementFailed statementFailed = (statementReport) -> {
+            testCaseReport.setResult(TestResult.Fail);
             StafString screenShotPath = new StafString(
                     testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/" + config.getReportingDirectory() + "/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
             try {
@@ -112,6 +114,9 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
                 testCaseReport.setResult(TestResult.Fail);
             }
         } catch (Throwable e) {
+            if (e instanceof FatalErrorException) {
+                testCaseReport.setStatementReports(((FatalErrorException)e).getReports());
+            }
             testCaseReport.setResult(TestResult.Fail);
             lastErrorMessage = e.getMessage();
             logger.error("Executing statement failed at [" + testSuite + "] : "

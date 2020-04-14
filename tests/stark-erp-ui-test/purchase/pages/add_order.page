@@ -2,10 +2,13 @@ IMPORTS
     IMPORT selenium
 
 VARS
-    $PURCHASE_ORDER_ADD = "tag:app-purchase-order-add"
-    $TIER_INPUT         = "xpath://app-supplier-dropdown//input"
-    $TIER_LIST_ITEM                 = "xpath://kendo-popup//kendo-list//b[contains(text(), 'Tiers 15')]"
-    $KENDO_POPUP        = "tag:kendo-popup"
+    $PURCHASE_ORDER_ADD     = "tag:app-purchase-order-add"
+    $TIER_INPUT             = "xpath://app-supplier-dropdown//input"
+    $TIER_LIST_ITEM         = "xpath://kendo-popup//kendo-list//b[contains(text(), 'Tiers 15')]"
+    $KENDO_POPUP            = "tag:kendo-popup"
+    $ITEM_INPUT             = "xpath://app-purchase-order-grid//kendo-grid//kendo-grid-list//app-item-dropdown//kendo-combobox//kendo-searchbar/input"
+    $QTY_INPUT              = "xpath://app-purchase-order-grid//kendo-grid-list//app-grid-cell-input-template[@controlname='MovementQty']//input"
+    $ORDER_LINE_SAVE_BTN    = "id:btnSave"
 
 KEYWORDS
     Add order page opened()
@@ -13,7 +16,7 @@ KEYWORDS
         Element should be visible       ($PURCHASE_ORDER_ADD)
     END
 
-    Select tier list item ($tier)
+    Select tier dropdown item ($tier)
         Wait until element is visible   ($KENDO_POPUP)
         Wait until element is visible   ("xpath://kendo-popup//kendo-list//b[contains(text(), '" + $tier + "')]")
         Click element                   ("xpath://kendo-popup//kendo-list//b[contains(text(), '" + $tier + "')]")
@@ -22,5 +25,22 @@ KEYWORDS
     Select tier ($tier)
         Wait until element is visible   ($TIER_INPUT)
         Input text                      ($TIER_INPUT, $tier)
-        Select tier list item           ($tier)
+        Select tier dropdown item       ($tier)
+    END
+
+    Select item by id ($itemId)
+        Wait until element is visible   ($ITEM_INPUT)
+        Input text                      ($ITEM_INPUT, $itemId)
+        Wait until element is visible   ("xpath://kendo-popup//kendo-list//li//b[contains(text(), '" + $itemId + "')]")
+        Click element                   ("xpath://kendo-popup//kendo-list//li//b[contains(text(), '" + $itemId + "')]")
+    END
+
+    Set order line quantity($quantity)
+        Wait until element is visible   ($QTY_INPUT)
+        Input text                      ($QTY_INPUT, $quantity)
+    END
+
+    Click save order line()
+        Wait until element is visible   ($ORDER_LINE_SAVE_BTN)
+        Click element                   ($ORDER_LINE_SAVE_BTN)
     END

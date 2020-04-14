@@ -30,8 +30,9 @@ TEST CASES
     Test add order:
         GIVEN   Add order page opened()
         WHEN    Select tier ("Tiers 15")
-        AND     Log("ok")
-
+        AND     Select item by id ("63128")
+        AND     Set order line quantity(5)
+        AND     Click save order line()
     END
 
     TEARDOWN:

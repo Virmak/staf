@@ -101,7 +101,13 @@ public class KeywordDeclaration implements IStatementBlock {
         for (int i = 0; i < params.length; i++) {
             localSymTable.setSymbolValue(argsList.get(i), params[i]);
             AbstractStafObject stafObject = (AbstractStafObject) params[i];
-            if (stafObject.getType() == StafTypes.VAR_REF) {
+            StafTypes type;
+            try {
+                type = stafObject.getType();
+            } catch (NullPointerException e) {
+                throw new UndefinedVariableException((String) params[i]);
+            }
+            if (type == StafTypes.VAR_REF) {
                 AbstractStafObject valObj = (AbstractStafObject) globalSymTable.getSymbolValue(stafObject.getValue().toString());
                 if (valObj == null) {
                     throw new UndefinedVariableException(stafObject.getValue().toString());

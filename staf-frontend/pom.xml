@@ -7,7 +7,6 @@
     <groupId>com.sparkit</groupId>
     <artifactId>staf-framework</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <artifactId>staf-frontend</artifactId>
   <version>0.0.1-SNAPSHOT</version>

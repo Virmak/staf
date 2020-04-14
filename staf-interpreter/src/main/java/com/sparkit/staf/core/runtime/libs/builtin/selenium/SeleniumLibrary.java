@@ -9,6 +9,7 @@ import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.ElementSho
 import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.ElementShouldContainException;
 import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.NoBrowserOpenedException;
 import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.UnsupportedBrowserDriverException;
+import com.sparkit.staf.core.runtime.libs.exceptions.InvalidSelectorException;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -148,8 +149,14 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     }
 
     private By getLocatorFromString(String selector) {
-        String selectorType = selector.substring(0, selector.indexOf(':'));
+        String selectorType = "";
+        try {
+            selectorType = selector.substring(0, selector.indexOf(':'));
+        } catch (Exception e) {
+            throw new InvalidSelectorException("Invalid selector : " + selector);
+        }
         String selectorValue = selector.substring(selectorType.length() + 1);
+
 
         switch (selectorType) {
             case "name":
@@ -169,7 +176,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
             case "tag":
                 return By.tagName(selectorValue);
             default:
-                return null;
+                throw new InvalidSelectorException("Invalid selector : " + selector);
         }
     }
 }

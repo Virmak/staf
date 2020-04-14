@@ -4,7 +4,7 @@ VARS
     $ORDER_PAGE_URI                 = 'main/purchase/purchaseorder'
     $APP_PURCHASE_ORDER_LIST        = 'tag:app-purchase-order-list'
 
-    $SIDENAV_PURCHASE_LINK          = "xpath://app-sidebar-nav//a[contains(.,'Achat')]"
+    $SIDENAV_PURCHASE_LINK          = "xpath://app-sidebar-nav//a[contains(.,'Purchase')]"
     $SIDENAV_PURCHASE_ORDER_LINK    = "xpath://app-sidebar-nav//a[@href='/main/purchase/purchaseorder']"
     $ADD_ORDER_BTN                  = "xpath://kendo-grid-toolbar//a[@href='/main/purchase/purchaseorder/add']"
 KEYWORDS
