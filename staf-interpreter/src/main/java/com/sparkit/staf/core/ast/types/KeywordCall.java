@@ -47,8 +47,7 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
     @Override
     public Object evaluate(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable,
                            KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        this.execute(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
-        return this;
+        return this.execute(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
     }
 
     public String getKeywordName() {
@@ -72,7 +71,8 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
         Object[] params = new AbstractStafObject[argumentsList.size()];
         int i = 0;
         for (AbstractStafObject arg : argumentsList) {
-            params[i++] = arg.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+            Object  val = arg.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+            params[i++] = val;
         }
         return params;
     }

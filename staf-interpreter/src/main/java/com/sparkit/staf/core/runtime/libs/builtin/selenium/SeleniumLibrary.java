@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.runtime.libs.builtin.selenium;
 
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
+import com.sparkit.staf.core.ast.types.StafString;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.KeywordArgument;
@@ -143,6 +144,17 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     public void gotToUrl(@KeywordArgument AbstractStafObject url) throws NoBrowserOpenedException {
         try {
             webDrivers.peek().get(url.getValue().toString());
+        } catch (NullPointerException e) {
+            throw new NoBrowserOpenedException();
+        }
+    }
+
+    @Keyword(name = "get element attribute")
+    public String getElementAttribute(AbstractStafObject selector, AbstractStafObject attributeName) throws NoBrowserOpenedException {
+        By elementSelector = getLocatorFromString(selector.getValue().toString());
+        try {
+            WebElement element = webDrivers.peek().findElement(elementSelector);
+            return element.getAttribute(attributeName.getValue().toString());
         } catch (NullPointerException e) {
             throw new NoBrowserOpenedException();
         }

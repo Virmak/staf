@@ -12,6 +12,7 @@ public class TestSuiteReport {
     private String message;
     private TestResult result;
     private String source;
+    private String path;
     private Date start;
     private Date end;
     private List<TestCaseReport> testCaseReports;

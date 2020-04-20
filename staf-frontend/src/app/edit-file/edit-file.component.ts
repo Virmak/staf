@@ -81,7 +81,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
 
   saveFile() {
     this.fileChanged = false;
-    this.content = this.file.content;
+    this.file.content = this.content;
     this.projectService.saveFile(this.file).subscribe(res => {
       this.toastr.success('File saved', 'Success');
     }, err => this.toastr.error('Cannot save file', 'Error'));

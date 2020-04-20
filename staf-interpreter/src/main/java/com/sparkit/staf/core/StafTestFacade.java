@@ -12,6 +12,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -33,10 +34,12 @@ public class StafTestFacade {
 
     public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, List<String> testSuites) throws ConfigFileNotFoundException {
         stafConfig.readConfigFile(projectDir, configFile);
-        System.setProperty("logFilename", stafConfig.getLogDirectory() + getCurrentDateTime() + ".log");
+        System.setProperty("logFilename", Paths.get(testDir).toAbsolutePath() + "/" + stafConfig.getProjectDir() + stafConfig.getLogDirectory() + getCurrentDateTime() + ".log");
         System.setProperty("testDirectory", testDir);
+
         List<TestSuiteReport> reports = loader.runTests(testSuites);
-        jsonReportWriter.write(stafConfig.getReportingDirectory() + "/reports-" + getCurrentDateTime() + ".json", reports);
+        jsonReportWriter.write(Paths.get(testDir).toAbsolutePath() + "/" + stafConfig.getProjectDir()
+                + "/results/reports-" + getCurrentDateTime() + ".json", reports);
         return reports;
     }
 

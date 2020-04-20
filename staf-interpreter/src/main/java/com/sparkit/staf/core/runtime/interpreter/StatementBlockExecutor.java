@@ -1,7 +1,6 @@
 package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.ast.IStatement;
-import com.sparkit.staf.core.ast.TestCaseDeclaration;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.ast.types.StafList;
