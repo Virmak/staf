@@ -13,7 +13,7 @@ public class PrimitiveVisitor extends StafBaseVisitor<AbstractStafObject> {
         StafParser.BoolContext boolContext = ctx.bool();
         StafParser.StringContext str = ctx.string();
         if (numberContext != null) {
-            if (numberContext.INT().getText() != null) {
+            if (numberContext.INT() != null && numberContext.INT().getText() != null) {
                 obj = new StafInteger(Integer.parseInt(numberContext.getText()));
             } else {
                 obj = new StafDouble(Double.parseDouble(numberContext.getText()));

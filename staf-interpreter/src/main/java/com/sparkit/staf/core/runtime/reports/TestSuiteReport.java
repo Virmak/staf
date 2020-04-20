@@ -15,4 +15,7 @@ public class TestSuiteReport {
     private Date start;
     private Date end;
     private List<TestCaseReport> testCaseReports;
+    private int total;
+    private int pass;
+    private int failed;
 }
