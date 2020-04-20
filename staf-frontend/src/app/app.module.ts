@@ -1,3 +1,4 @@
+import { monacoConfig } from './monaco.config';
 import { LogModule } from './log/log.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -18,7 +19,6 @@ import { ProjectOverviewComponent } from './project-overview/project-overview.co
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { SidenavDirectoryComponent } from './sidenav-directory/sidenav-directory.component';
 import { AceEditorComponent } from './ace-editor/ace-editor.component';
-import { AceEditorModule } from 'ng2-ace-editor';
 import { ViewDirectoryComponent } from './view-directory/view-directory.component';
 import { ToastrModule } from 'ngx-toastr';
 import { RunTestComponent } from './run-test/run-test.component';
@@ -26,6 +26,7 @@ import { ReportComponent } from './report/report.component';
 import { DirStackBlockComponent } from './dir-stack-block/dir-stack-block.component';
 import { ImageViewerComponent } from './image-viewer/image-viewer.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
     ClarityModule,
     BrowserAnimationsModule,
     ContextMenuModule.forRoot(),
-    AceEditorModule,
+    MonacoEditorModule.forRoot(monacoConfig),
     HttpClientModule,
     ToastrModule.forRoot(),
     LogModule,

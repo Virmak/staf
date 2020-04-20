@@ -1,12 +1,6 @@
 import { IFile } from './../interfaces/ifile';
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 
-import * as ace from 'ace-builds/src-noconflict/ace';
-
-
-ace.config.set('basePath', '/assets/');
-ace.config.set('modePath', '/assets');
-ace.config.set('themePath', '');
 
 @Component({
   selector: 'app-ace-editor',

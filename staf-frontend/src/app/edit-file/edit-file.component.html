@@ -9,9 +9,12 @@
     <button [disabled]="!fileChanged" (click)="saveFile()">Save</button>
     </div>
 </div>
-
+<!--
 <app-ace-editor [file]="file" (onQuit)="showSaveDialog($event)" (contentChanged)="fileContentChanged($event)"></app-ace-editor>
-
+-->
+<div style="height: 800px;">
+    <ngx-monaco-editor style="height: 100%" [options]="editorOptions" [(ngModel)]="content"></ngx-monaco-editor>
+</div>
 <clr-modal [(clrModalOpen)]="saveModal">
     <h3 class="modal-title">Save file</h3>
     <div class="modal-body">
