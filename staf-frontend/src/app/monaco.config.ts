@@ -18,7 +18,7 @@ export const monacoConfig: NgxMonacoEditorConfig = {
                     const keywordDeclartion = textUntilPosition.match(/(?<=keywords[\s]*|end\s*)(([a-z0-9_ ]+)\(\s*(\$[a-z0-9_]+\s*,?\s*)*\s*\)[\S\s]*?)/gim);
                     if (keywordDeclartion) {
                         const keywordSignature = keywordDeclartion[keywordDeclartion.length - 1].trim();
-                        console.log(keywordSignature);
+                        //console.log(keywordSignature);
 
                     }
                 }
@@ -29,7 +29,6 @@ export const monacoConfig: NgxMonacoEditorConfig = {
                     startColumn: word.startColumn,
                     endColumn: word.endColumn
                 };
-                console.log(range)
                 return {
                     suggestions: createImportsDependencyProposals(range)
                 };              

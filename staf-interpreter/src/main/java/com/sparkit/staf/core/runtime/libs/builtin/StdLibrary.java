@@ -23,6 +23,11 @@ public class StdLibrary extends AbstractStafLibrary {
         System.out.println("Should be equal validated");
     }
 
+    @Keyword(name = "trim")
+    public String trim(AbstractStafObject object, AbstractStafObject expected) throws ShouldBeEqualException {
+        return object.getValue().toString().trim();
+    }
+
     public boolean compareStafObjects(AbstractStafObject object1, AbstractStafObject object2) {
         if (object1 instanceof StafDouble) {
             Double a = (Double) object1.getValue();

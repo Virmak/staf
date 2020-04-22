@@ -1,25 +1,23 @@
 <table class="table">
 
-	<thead>
-		<tr>
-			<th>Test case</th>
-			<th>Started</th>
-			<th>Ended</th>
-			<th>Result</th>
-		</tr>
-	</thead>
 	<ng-container *ngFor="let testSuite of reports">
 		<thead>
 			<tr>
 				<th colspan="4">{{testSuite.testSuite | titlecase}}</th>
 			</tr>
+			<tr>
+				<th>Test case</th>
+				<th>Started</th>
+				<th>Ended</th>
+				<th>Result</th>
+			</tr>
 		</thead>
 		<tbody>
-            <ng-template #testSuiteError>
-                <tr>
-                    <td colspan="4" class="Failed">{{testSuite.message}}</td>
-                </tr>
-            </ng-template>
+			<ng-template #testSuiteError>
+				<tr>
+					<td colspan="4" class="Failed">{{testSuite.message}}</td>
+				</tr>
+			</ng-template>
 
 			<ng-container *ngIf="testSuite.result == 'Ok'; else testSuiteError">
 				<tr *ngFor="let tc of testSuite.testCaseReports" [ngClass]="tc.result">

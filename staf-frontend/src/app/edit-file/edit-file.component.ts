@@ -19,7 +19,6 @@ export class EditFileComponent implements OnInit, OnDestroy {
   saveModal = false;
 
   editorOptions = {theme: 'vs-dark', language: 'staf'};
-  code: string= 'function x() {\nconsole.log("Hello world!");\n}';
 
 
   private keyEventListener = e => {
