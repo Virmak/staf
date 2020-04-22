@@ -1,3 +1,4 @@
+import { SequenceService } from './../sequence.service';
 import { ICreateTestSuite } from './../interfaces/icreate-test-suite';
 import { TestSuiteService } from './../test-suite.service';
 import { StafProject } from '../types/staf-project';
@@ -18,10 +19,13 @@ export class SidenavComponent implements OnInit {
     name: '',
     type: 'UITest',
     content: [],
+    projectName: '',
   };
   currentProject: StafProject;
 
-  constructor(private router: Router, private testSuiteService: TestSuiteService) { }
+  constructor(private router: Router,
+    private testSuiteService: TestSuiteService,
+    private sequence: SequenceService) { }
 
   ngOnInit(): void {
   }
@@ -36,12 +40,28 @@ export class SidenavComponent implements OnInit {
   }
 
   createTestSuite() {
-    this.currentProject.testSuites.push(this.testSuiteService.createTestSuite(this.testSuite));
-    this.testSuite.name = '';
-    this.testSuite.type = 'UITest';
-    this.createTestSuiteModal = false;
+    this.testSuite.projectName = this.currentProject.getNormalizedProjectName();
+
+    this.testSuiteService.createTestSuite(this.testSuite)
+      .subscribe(res => {
+        if (res.result == 'ok') {
+          this.currentProject.testSuites.push({
+            id: this.sequence.getNext('testSuite'),
+            name: res.name,
+            content: res.content,
+          });
+          this.initTestSuiteFields();
+        }
+      }, err => { alert('Error creating test suite') ; this.initTestSuiteFields() });
+
   }
 
+  initTestSuiteFields() {
+    this.testSuite.name = '';
+    this.testSuite.type = 'UITest';
+    this.testSuite.projectName = this.currentProject.getNormalizedProjectName();
+    this.createTestSuiteModal = false;
+  }
 
   createNewStafScript(msg) {
     console.log(msg)

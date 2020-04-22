@@ -1,9 +1,14 @@
+import { HttpClient } from '@angular/common/http';
 import { SequenceService } from './sequence.service';
 import { ITestSuite } from './interfaces/itest-suite';
 import { ICreateTestSuite } from './interfaces/icreate-test-suite';
 import { Injectable } from '@angular/core';
 import { IDirectory } from './interfaces/idirectory';
 import { IFile, FileType} from './interfaces/ifile';
+import { environment } from '../environments/environment';
+import { Observable } from 'rxjs';
+
+const baseUrl = environment.resolveApi();
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +17,9 @@ export class TestSuiteService {
 
 
 
-  constructor(private sequence: SequenceService) { }
+  constructor(private sequence: SequenceService, private http: HttpClient) { }
 
-  createTestSuite(createTestSuite: ICreateTestSuite): ITestSuite {
+  createTestSuite(createTestSuite: ICreateTestSuite): Observable<any> {
     let testSuiteContentDir: IDirectory = {
       name: createTestSuite.name,
       type: FileType.Directory,
@@ -54,12 +59,7 @@ export class TestSuiteService {
         content: '',
       });
     }
-    
-    return {
-      id: this.sequence.getNext('testSuite'),
-      name: createTestSuite.name,
-      content: testSuiteContentDir,
-    };
+    return this.http.post(baseUrl + '/testSuite', createTestSuite);
   }
 
   extractTestSuitesFromProject(project): ITestSuite[] {

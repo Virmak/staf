@@ -27,6 +27,7 @@ import { DirStackBlockComponent } from './dir-stack-block/dir-stack-block.compon
 import { ImageViewerComponent } from './image-viewer/image-viewer.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { ItemTypePipe } from './item-type.pipe';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     DirStackBlockComponent,
     ImageViewerComponent,
     SafeHtmlPipe,
+    ItemTypePipe,
   ],
   imports: [
     BrowserModule,
