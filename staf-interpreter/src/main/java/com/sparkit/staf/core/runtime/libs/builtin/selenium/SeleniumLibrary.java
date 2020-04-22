@@ -78,9 +78,9 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     }
 
     @Keyword(name = "input value")
-    public String getInputValue(@KeywordArgument AbstractStafObject selector) {
+    public StafString getInputValue(@KeywordArgument AbstractStafObject selector) {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
-        return webDrivers.peek().findElement(elementSelector).getAttribute("value");
+        return new StafString(webDrivers.peek().findElement(elementSelector).getAttribute("value"));
     }
 
     @Keyword(name = "capture screenshot")
@@ -150,11 +150,11 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     }
 
     @Keyword(name = "get element attribute")
-    public String getElementAttribute(AbstractStafObject selector, AbstractStafObject attributeName) throws NoBrowserOpenedException {
+    public StafString getElementAttribute(AbstractStafObject selector, AbstractStafObject attributeName) throws NoBrowserOpenedException {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         try {
             WebElement element = webDrivers.peek().findElement(elementSelector);
-            return element.getAttribute(attributeName.getValue().toString());
+            return new StafString(element.getAttribute(attributeName.getValue().toString()));
         } catch (NullPointerException e) {
             throw new NoBrowserOpenedException();
         }

@@ -1,5 +1,6 @@
 package com.sparkit.staf.core.runtime.interpreter;
 
+import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.Assignment;
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.ast.StafFile;
@@ -13,17 +14,18 @@ import com.sparkit.staf.core.runtime.loader.IStafConfig;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
 import com.sparkit.staf.domain.TestResult;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component
 public class StafScriptInterpreter implements IStafScriptInterpreter {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     @Autowired
     private IImportsInterpreter importsInterpreter;
     @Autowired
@@ -37,6 +39,9 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
 
     @Value("#{systemProperties['testDirectory']}")
     private String testDirectory;
+
+    @Autowired
+    private AutowireCapableBeanFactory autowireCapableBeanFactory;
 
     public StafScriptInterpreter() {
     }
@@ -69,7 +74,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
             }
         } catch (Throwable e) {
             logger.error("Script execution stopped");
-            logger.error(e.getClass());
+            logger.error(e.getClass().getName());
             logger.error(e.getMessage());
             e.printStackTrace();
         } finally {
@@ -107,9 +112,11 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         };
         statementBlockExecutor.setStatementFailed(statementFailed);
         try {
+            SymbolsTable localSymTable = new SymbolsTable();
+            autowireCapableBeanFactory.autowireBean(localSymTable);
             testCaseReport.setStatementReports(
                     statementBlockExecutor.execute(testCaseDeclaration, statementFailed, globalSymTable,
-                            null, keywordLibrariesRepository));
+                            localSymTable, keywordLibrariesRepository));
             if (!testCasePass(testCaseReport)) {
                 testCaseReport.setResult(TestResult.Fail);
             }

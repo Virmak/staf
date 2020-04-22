@@ -17,6 +17,8 @@
 
             </Routes>
         </Routing>
+
+        <File name="File1" fileName="output.log" bufferedIO="false" advertiseURI="file://path/to/output.log" advertise="true" />
     </Appenders>
     <Loggers>
         <Root level="debug">

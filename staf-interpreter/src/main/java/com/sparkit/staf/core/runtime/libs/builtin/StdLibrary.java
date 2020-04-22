@@ -2,6 +2,7 @@ package com.sparkit.staf.core.runtime.libs.builtin;
 
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.StafDouble;
+import com.sparkit.staf.core.ast.types.StafString;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
@@ -24,8 +25,8 @@ public class StdLibrary extends AbstractStafLibrary {
     }
 
     @Keyword(name = "trim")
-    public String trim(AbstractStafObject object, AbstractStafObject expected) throws ShouldBeEqualException {
-        return object.getValue().toString().trim();
+    public StafString trim(AbstractStafObject object, AbstractStafObject expected) throws ShouldBeEqualException {
+        return new StafString(object.getValue().toString().trim());
     }
 
     public boolean compareStafObjects(AbstractStafObject object1, AbstractStafObject object2) {

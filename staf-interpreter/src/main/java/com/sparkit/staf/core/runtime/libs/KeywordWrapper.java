@@ -1,7 +1,9 @@
 package com.sparkit.staf.core.runtime.libs;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import com.sparkit.staf.core.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class KeywordWrapper {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private AbstractStafLibrary libInstance;
     private Method method;
 

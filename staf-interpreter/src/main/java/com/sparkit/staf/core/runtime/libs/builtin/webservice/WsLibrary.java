@@ -1,5 +1,6 @@
 package com.sparkit.staf.core.runtime.libs.builtin.webservice;
 
+import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.StafDictionary;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
@@ -7,9 +8,9 @@ import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.core.runtime.libs.builtin.webservice.exceptions.WebServiceTestFailedException;
 import io.restassured.http.ContentType;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
@@ -18,7 +19,7 @@ import static org.hamcrest.Matchers.equalTo;
 @StafLibrary(name = "ws")
 public class WsLibrary extends AbstractStafLibrary {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     @Keyword(name = "get")
     public void getRequest(AbstractStafObject path, AbstractStafObject jsonPath, AbstractStafObject condition,

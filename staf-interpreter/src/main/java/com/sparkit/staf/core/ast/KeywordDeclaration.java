@@ -1,5 +1,6 @@
 package com.sparkit.staf.core.ast;
 
+import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.runtime.interpreter.IStatementBlock;
@@ -10,14 +11,14 @@ import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedKeywordExce
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class KeywordDeclaration implements IStatementBlock {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     protected String keywordName;
     protected List<String> argsList;
     protected List<IStatement> statementList;

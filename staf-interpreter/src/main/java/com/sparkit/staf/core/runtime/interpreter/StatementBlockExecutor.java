@@ -1,5 +1,6 @@
 package com.sparkit.staf.core.runtime.interpreter;
 
+import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.IStatement;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
@@ -9,15 +10,15 @@ import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import com.sparkit.staf.domain.TestResult;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 @Component
 public class StatementBlockExecutor {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private OnStatementFailed statementFailed;
     private Stack<KeywordCall> callStack = new Stack<>();
 
@@ -53,14 +54,14 @@ public class StatementBlockExecutor {
                 statementReport.setErrorMessage("No browser is opened  At " + statement);
                 statementReport.setResult(TestResult.Fail);
                 throw new FatalErrorException(reports, e);
-            } catch (Exception e) {
-                logger.error("At " + statement);
+            } catch (Exception e) {logger.error("At " + statement);
                 statementReport.setErrorMessage("At " + statement);
                 statementReport.setResult(TestResult.Fail);
                 if (this.statementFailed != null) {
                     this.statementFailed.execute(statementReport);
                 }
                 reports.add(statementReport);
+                e.printStackTrace();
                 throw new FatalErrorException(reports, e);
             } finally {
                 statementReport.setEnd(new Date());

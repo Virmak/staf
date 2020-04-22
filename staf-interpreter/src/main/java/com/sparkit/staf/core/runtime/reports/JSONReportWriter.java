@@ -1,8 +1,9 @@
 package com.sparkit.staf.core.runtime.reports;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.sparkit.staf.core.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public class JSONReportWriter implements ITestReportWriter {
     @Autowired
     private ObjectMapper objectMapper;
-    private static Logger logger = LogManager.getLogger();
+    private static Logger logger = LoggerFactory.getLogger(Main.class);
 
     @Override
     public void write(String filPath, List<TestSuiteReport> reports) {

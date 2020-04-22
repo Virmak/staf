@@ -30,12 +30,15 @@ public class StafTestFacade {
     @Autowired
     private ITestReportWriter jsonReportWriter;
 
-    private static Logger logger = LogManager.getLogger();
+    private static Logger logger = LogManager.getLogger(Main.class);
 
     public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, List<String> testSuites) throws ConfigFileNotFoundException {
         stafConfig.readConfigFile(projectDir, configFile);
-        System.setProperty("logFilename", Paths.get(testDir).toAbsolutePath() + "/" + stafConfig.getProjectDir() + stafConfig.getLogDirectory() + getCurrentDateTime() + ".log");
+        String logFilePath = stafConfig.getLogDirectory() + "/" + getCurrentDateTime() + ".log";
+        System.setProperty("logging.file", logFilePath);
         System.setProperty("testDirectory", testDir);
+
+        logger.info("Running project '" + projectDir + "' ");
 
         List<TestSuiteReport> reports = loader.runTests(testSuites);
         jsonReportWriter.write(Paths.get(testDir).toAbsolutePath() + "/" + stafConfig.getProjectDir()
@@ -45,6 +48,6 @@ public class StafTestFacade {
 
     private String getCurrentDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy-HH:mm:ss");
-        return dateFormat.format(new Date()) + ".log";
+        return dateFormat.format(new Date());
     }
 }
