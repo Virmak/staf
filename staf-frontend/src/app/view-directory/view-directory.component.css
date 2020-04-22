@@ -1,3 +1,11 @@
 td:first-child {
     text-align: left;
 }
+
+tbody tr {
+    cursor: pointer;
+}
+
+tbody tr:hover {
+    background-color: #eee;
+}

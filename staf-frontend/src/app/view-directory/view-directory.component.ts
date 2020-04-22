@@ -35,7 +35,4 @@ export class ViewDirectoryComponent implements OnInit {
   openItem(item) {
     this.fileEditor.openFile(item.value, this.project);
   }
-
-
-
 }
