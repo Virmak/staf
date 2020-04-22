@@ -10,5 +10,5 @@ import java.io.IOException;
 
 public interface IProjectBuilder {
     ProjectConfig buildProject(CreateProjectRequest createProjectRequest) throws IOException, ProjectNameAlreadyExist;
-    TestSuite buildTestSuite(CreateTestSuiteRequest createTestSuiteRequest);
+    TestSuite buildTestSuite(CreateTestSuiteRequest createTestSuiteRequest) throws IOException;
 }

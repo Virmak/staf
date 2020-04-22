@@ -6,12 +6,12 @@ import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.KeywordArgument;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @StafLibrary(name = "logger", builtin = true)
 public class LoggerLibrary extends AbstractStafLibrary {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static Logger logger = LogManager.getLogger(Main.class);
 
     @Keyword(name = "log")
     public void log(@KeywordArgument AbstractStafObject data) {

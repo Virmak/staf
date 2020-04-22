@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.sparkit.staf.application.exception.ProjectNameAlreadyExist;
 import com.sparkit.staf.application.models.request.CreateProjectRequest;
 import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
+import com.sparkit.staf.application.models.request.TestSuiteType;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.ProjectType;
 import com.sparkit.staf.domain.TestSuite;
@@ -49,8 +50,17 @@ public class ProjectBuilder implements IProjectBuilder {
     }
 
     @Override
-    public TestSuite buildTestSuite(CreateTestSuiteRequest createTestSuiteRequest) {
-        return null;
+    public TestSuite buildTestSuite(CreateTestSuiteRequest createTestSuiteRequest) throws IOException {
+        TestSuite testSuite = new TestSuite();
+        File projectDir = new File(testDir + "/" + normalizeProjectName(createTestSuiteRequest.getProjectName()));
+        if (createTestSuiteRequest.getType() == TestSuiteType.UITest) {
+            createUITestSuite(createTestSuiteRequest.getName(), null, projectDir);
+        } else if (createTestSuiteRequest.getType() == TestSuiteType.APITest) {
+            createAPITestSuite(createTestSuiteRequest.getName(), null, projectDir);
+        }
+        testSuite.setName(createTestSuiteRequest.getName());
+        testSuite.setRootPath(projectDir.getAbsolutePath() + "/" + createTestSuiteRequest.getName());
+        return testSuite;
     }
 
     private void createConfigFile(ProjectConfig config, File projectDir) throws IOException {
@@ -67,7 +77,9 @@ public class ProjectBuilder implements IProjectBuilder {
         mainFile.createNewFile();
         pagesDir.mkdir();
         stepsDir.mkdir();
-        config.getTestSuites().add(testSuiteName);
+        if (config != null) {
+            config.getTestSuites().add(testSuiteName);
+        }
     }
 
     private void createAPITestSuite(String testSuiteName, ProjectConfig config, File projectDir) throws IOException { // Create structure for API Testing project
@@ -77,7 +89,9 @@ public class ProjectBuilder implements IProjectBuilder {
         requestsDir.mkdir();
         File mainFile = new File(testSuiteDir, "main.staf");
         mainFile.createNewFile();
-        config.getTestSuites().add(testSuiteName);
+        if (config != null) {
+            config.getTestSuites().add(testSuiteName);
+        }
     }
 
     private ProjectConfig getJsonResourceFile(String filename) throws IOException {

@@ -4,7 +4,10 @@ import com.sparkit.staf.application.IProjectBuilder;
 import com.sparkit.staf.application.exception.ProjectNameAlreadyExist;
 import com.sparkit.staf.application.exception.TestDirectoryNotFound;
 import com.sparkit.staf.application.models.request.CreateProjectRequest;
+import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
+import com.sparkit.staf.application.models.response.CreateTestSuiteResponse;
 import com.sparkit.staf.domain.ProjectConfig;
+import com.sparkit.staf.domain.TestSuite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,7 +26,7 @@ public class ProjectService {
     private IProjectBuilder projectBuilder;
 
     @Value("${testDirectory}")
-    private String projectsDirPath;
+    private String testDir;
 
     public static String normalizeProjectName(String name) {
         return name.toLowerCase().replaceAll("\\s+", "-");
@@ -31,13 +34,13 @@ public class ProjectService {
 
     public List<String> readProjects() throws TestDirectoryNotFound {
         File currentDir = new File(System.getProperty("user.dir"));
-        File projectsDir = new File(currentDir, projectsDirPath);
+        File projectsDir = new File(currentDir, testDir);
         List<String> projects = new ArrayList<>();
         File[] files = projectsDir.listFiles();
         if (files != null) {
             Arrays.stream(files).forEach(f -> projects.add(f.getName()));
         } else {
-            throw new TestDirectoryNotFound(projectsDirPath);
+            throw new TestDirectoryNotFound(testDir);
         }
         return projects;
     }
@@ -72,11 +75,14 @@ public class ProjectService {
 
     private String readFileContent(File f) {
         String fileExtension = getFileExtension(f);
+        if (f.getName().startsWith("reports-") && f.getName().endsWith(".json")) {
+            return "";
+        }
         switch (fileExtension) {
-            case "png":
+            /*case "png":
             case "jpg":
             case "jpeg":
-                return readImageBase64(f);
+                return readImageBase64(f);*/
             case "staf":
             case "page":
             case "step":
@@ -120,5 +126,20 @@ public class ProjectService {
 
     private String getFileExtension(File f) {
         return f.getName().substring(f.getName().lastIndexOf(".") + 1);
+    }
+
+    public CreateTestSuiteResponse createTestSuite(CreateTestSuiteRequest request) {
+        CreateTestSuiteResponse response = new CreateTestSuiteResponse();
+        response.setName(request.getName());
+        try {
+            TestSuite testSuite = projectBuilder.buildTestSuite(request);
+            response.setResult("ok");
+            response.setContent(listDirectory(new File(testSuite.getRootPath()), testDir));
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setResult("error");
+            response.setMessage(e.getMessage());
+        }
+        return response;
     }
 }

@@ -2,6 +2,8 @@ package com.sparkit.staf.api.controllers;
 
 import com.sparkit.staf.application.exception.ProjectNameAlreadyExist;
 import com.sparkit.staf.application.models.request.CreateProjectRequest;
+import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
+import com.sparkit.staf.application.models.response.CreateTestSuiteResponse;
 import com.sparkit.staf.application.service.ProjectService;
 import com.sparkit.staf.domain.ProjectConfig;
 import org.modelmapper.ModelMapper;
@@ -47,6 +49,12 @@ public class ProjectController {
         String absoluteTestDir = currentDir + "/" + testDir;
         File projectsDir = new File(testDir);
         return projectService.listDirectory(projectsDir, absoluteTestDir);
+    }
+
+    @CrossOrigin
+    @PostMapping("/testSuite")
+    public CreateTestSuiteResponse createTestSuite(@RequestBody CreateTestSuiteRequest request) {
+        return projectService.createTestSuite(request);
     }
 
 }
