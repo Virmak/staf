@@ -41,7 +41,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute, 
     private router: Router, 
     private projectService: ProjectService, 
-    private fileEditorService: FileEditorService,
+    public fileEditorService: FileEditorService,
     private toastr: ToastrService) { }
 
   ngOnInit(): void {

@@ -261,14 +261,29 @@ function createImportsDependencyProposals(range) {
             label: 'Open browser',
             kind: monaco.languages.CompletionItemKind.Function,
             documentation: "Open browser | Selenium library",
-            insertText: 'Open browser()',
+            insertText: 'Open browser("chrome")',
             range: range
         },
+        {
+            label: 'Trim',
+            kind: monaco.languages.CompletionItemKind.Function,
+            documentation: "Remove white space from the start and end of a string | Standard library",
+            insertText: 'Trim($str)',
+            range: range
+        },
+        {
+            label: 'Get element attribute',
+            kind: monaco.languages.CompletionItemKind.Function,
+            documentation: "Get element attribute value | Selenium library",
+            insertText: 'Get element attribute($selector, "attribute")',
+            range: range
+        },
+
     ];
 }
 
 const monarchTokens = {
-	defaultToken: 'invalid',
+	//defaultToken: 'invalid',
 	tokenPostfix: '.staf',
 	ignoreCase: true,
 	keywords: [
@@ -281,6 +296,7 @@ const monarchTokens = {
 		'setup:',
 		'teardown:',
 		'end',
+    'return',
 		'for',
 	],
 
@@ -380,11 +396,11 @@ const monarchTokens = {
 		keywordDeclaration: [ 
 			{include: '@keywordSignature', next: '@push'},
 			{include: '@keywordBody', next: '@push'},
-			[/end/, 'regexp']
+			[/end|return/, 'regexp']
 		],
     keywordBody: [
 			{include: '@statement', next: '@push'},
-			[/end/, {
+			[/end|return/, {
         cases: {
           '@keywords': {token: 'regexp', next: '@keywordDeclaration'} 
         }
