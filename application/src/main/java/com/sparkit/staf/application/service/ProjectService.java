@@ -28,6 +28,8 @@ public class ProjectService {
     @Value("${testDirectory}")
     private String testDir;
 
+    private void init() {}
+
     public static String normalizeProjectName(String name) {
         return name.toLowerCase().replaceAll("\\s+", "-");
     }
@@ -49,20 +51,24 @@ public class ProjectService {
         return projectBuilder.buildProject(createProjectRequest);
     }
 
-    public Map<String, Object> listDirectory(File dir, String testDir) throws IOException {
+    public Map<String, Object> listDirectory(File dir, String testDir, boolean isProjectRoot) throws IOException {
         File[] content = dir.listFiles();
 
-        List<Map<String, String>> files = new LinkedList<>();
+        List<Map<String, com.sparkit.staf.domain.File>> files = new LinkedList<>();
         List<Map<String, Object>> folders = new LinkedList<>();
 
         for (File f : content) {
             if (f.isDirectory()) {
-                Map<String, Object> subList = listDirectory(f, testDir);
+                Map<String, Object> subList = listDirectory(f, testDir, false);
                 folders.add(subList);
             } else {
-                Map<String, String> file = new HashMap<>();
-                file.put(f.toString().replace(testDir, "$projectRoot"), readFileContent(f));
-                files.add(file);
+                Map<String, com.sparkit.staf.domain.File> fileMap = new HashMap<>();
+                com.sparkit.staf.domain.File file = new com.sparkit.staf.domain.File();
+                file.setName(f.getPath());
+                file.setFileContent(readFileContent(f));
+                file.setPath(f.toString());
+                fileMap.put(f.toString().replace(testDir, "$projectRoot"), file);
+                files.add(fileMap);
             }
         }
 
@@ -70,6 +76,7 @@ public class ProjectService {
         result.put("folders", folders);
         result.put("files", files);
         result.put("name", dir.toString().replace(testDir, "$projectRoot"));
+        result.put("path", dir.toString().replace(testDir, "$projectRoot"));
         return result;
     }
 
@@ -134,7 +141,7 @@ public class ProjectService {
         try {
             TestSuite testSuite = projectBuilder.buildTestSuite(request);
             response.setResult("ok");
-            response.setContent(listDirectory(new File(testSuite.getRootPath()), testDir));
+            response.setContent(listDirectory(new File(testSuite.getRootPath()), testDir, false));
         } catch (IOException e) {
             e.printStackTrace();
             response.setResult("error");

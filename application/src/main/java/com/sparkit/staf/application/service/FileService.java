@@ -15,10 +15,20 @@ public class FileService {
     @Value("${testDirectory}")
     String testDir;
 
-    public void saveFile(String path, String content) throws IOException {
+    // File type 'scroll' => file, 'folder' => dir
+    public void saveFile(String path, String content, String type) throws IOException {
         path = path.replace(testDir, "");
         File file = new File(testDir, path);
-        FileUtils.writeStringToFile(file, content, "UTF-8");
+        if (type.equals("scroll")) {
+            FileUtils.writeStringToFile(file, content, "UTF-8");
+        } else {
+            file.mkdir();
+        }
+    }
+
+    public boolean removeFile(String path) {
+        File file = new File(path);
+        return file.delete();
     }
 
     private boolean isChild(Path child, String parentText) {

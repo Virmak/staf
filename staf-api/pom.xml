@@ -21,6 +21,12 @@
     <dependencies>
         <dependency>
             <groupId>com.sparkit</groupId>
+            <artifactId>application</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sparkit</groupId>
             <artifactId>staf-interpreter</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
@@ -70,12 +76,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.12</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.sparkit</groupId>
-            <artifactId>application</artifactId>
-            <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 

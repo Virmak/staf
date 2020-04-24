@@ -6,5 +6,6 @@ import lombok.Data;
 public class File {
     protected String name;
     protected String fileContent;
+    protected String path;
     protected FileType type;
 }
