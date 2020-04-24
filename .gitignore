@@ -2,3 +2,5 @@
 ${sys:logFilename}
 target
 *.log
+*.gz
+*.iml
