@@ -29,6 +29,11 @@ public class StdLibrary extends AbstractStafLibrary {
         return new StafString(object.getValue().toString().trim());
     }
 
+    @Keyword(name = "replace text")
+    public StafString trim(AbstractStafObject str, AbstractStafObject oldStr, AbstractStafObject newStr) throws ShouldBeEqualException {
+        return new StafString(str.getValue().toString().replaceAll(oldStr.getValue().toString(), newStr.getValue().toString()));
+    }
+
     public boolean compareStafObjects(AbstractStafObject object1, AbstractStafObject object2) {
         if (object1 instanceof StafDouble) {
             Double a = (Double) object1.getValue();
