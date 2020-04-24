@@ -23,7 +23,7 @@ export class FileEditorService {
     return this.openedFiles.get(name);
   }
 
-  openFile(item: any, project: StafProject) {
+  openFile(item: any, project: StafProject) {debugger;
     if (item.type == FileType.Directory) {
       this.projectService.currentDir = item;
       this.router.navigate(['directory', project.getNormalizedProjectName(), item.name]);

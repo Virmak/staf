@@ -1,4 +1,15 @@
 .flex-line {
     display: flex;
     justify-content: space-between;
+
+    align-items: flex-end;
+    margin-bottom: 5px;
+}
+
+a {
+    cursor: pointer;
+}
+
+button {
+    margin: 0;
 }

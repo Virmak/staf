@@ -2,11 +2,13 @@
 <br>
 
 <div class="flex-line">
-    <div class="filePath">{{file?.name}}</div>
+    <div class="filePath">
+        <span *ngFor="let p of pathSplitted"> <a (click)="fileEditorService.openFile(p, project)">{{p.name}}</a> > </span>
+    </div>
 
     <div>
     
-    <button [disabled]="!fileChanged" (click)="saveFile()">Save</button>
+    <button class="btn btn-primary" [disabled]="!fileChanged" (click)="saveFile()">Save</button>
     </div>
 </div>
 <!--

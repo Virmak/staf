@@ -1,3 +1,4 @@
+import { FileType } from './../interfaces/ifile';
 import { FileEditorService } from './../file-editor.service';
 import { ProjectService } from './../project.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -20,6 +21,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
 
   editorOptions = {theme: 'vs-dark', language: 'staf'};
 
+  pathSplitted = [];
 
   private keyEventListener = e => {
 
@@ -70,6 +72,20 @@ export class EditFileComponent implements OnInit, OnDestroy {
       this.file = file;
       this.content = file.content as string;
       this.fileChanged = false;
+      this.pathSplitted = file.path.split('/');
+      let origPaths = this.pathSplitted.shift();
+      
+      let i;
+      for (i = 0; i < this.pathSplitted.length - 1; i++) {
+        this.pathSplitted[i] = {
+          name: this.pathSplitted[i],
+          type: FileType.Directory,
+        }
+      }
+      this.pathSplitted[i] = {
+        name: this.pathSplitted[i],
+        type: FileType.File,
+      }
     }
   }
 
