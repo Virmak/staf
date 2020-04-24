@@ -12,10 +12,9 @@ import org.apache.logging.log4j.Logger;
 @StafLibrary(name = "logger", builtin = true)
 public class LoggerLibrary extends AbstractStafLibrary {
     private static Logger logger = LogManager.getLogger(Main.class);
-
     @Keyword(name = "log")
     public void log(@KeywordArgument AbstractStafObject data) {
-        logger.debug(data.getValue().toString());
+        logger.info(data.getValue().toString());
     }
 
     @Keyword(name = "log info")
