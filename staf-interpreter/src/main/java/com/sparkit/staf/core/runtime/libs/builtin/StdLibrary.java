@@ -30,7 +30,7 @@ public class StdLibrary extends AbstractStafLibrary {
     }
 
     @Keyword(name = "replace text")
-    public StafString trim(AbstractStafObject str, AbstractStafObject oldStr, AbstractStafObject newStr) throws ShouldBeEqualException {
+    public StafString replaceString(AbstractStafObject str, AbstractStafObject oldStr, AbstractStafObject newStr) throws ShouldBeEqualException {
         return new StafString(str.getValue().toString().replaceAll(oldStr.getValue().toString(), newStr.getValue().toString()));
     }
 
