@@ -14,13 +14,17 @@ export class AppComponent implements OnInit {
   projects: IStafProject[];
   serverError = false;
 
-  constructor(private projectService: ProjectService) {}
+  constructor(public projectService: ProjectService) {}
 
   ngOnInit(): void {
     this.projectService.fetchProjects(err => {this.serverError = true});
     this.projectService.getProjectsSubject().subscribe(projects => {
-      this.projects = projects
+      this.projects = projects.filter(p => p != null);
     });
     this.projectService.next();
+  }
+
+  confirmDeleteFile() {
+
   }
 }

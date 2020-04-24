@@ -87,7 +87,7 @@ export class TestSuiteService {
       dirMap.set(filePath, {
         name: fileName,
         type: FileType.File,
-        content: file[filePath],
+        content: file[filePath].fileContent,
         path: filePath,
         extension: fileName.substr(1+ fileName.lastIndexOf(".")),
       })
@@ -99,6 +99,7 @@ export class TestSuiteService {
         name: folderName,
         type: FileType.Directory,
         content: this.readDirectory(folder),
+        path: folder.path
       });
     });
     return dirMap;

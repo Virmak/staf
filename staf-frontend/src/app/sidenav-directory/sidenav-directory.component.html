@@ -1,11 +1,11 @@
 <clr-tree-node *ngFor="let item of dir?.content | keyvalue">
-    <button class="clr-treenode-link" [contextMenu]="basicMenu" [contextMenuSubject]="item" (click)="openFile(item.value, item.key)">
+    <button class="clr-treenode-link" [contextMenu]="basicMenu" [contextMenuSubject]="{item: item.value, parent: dir}" (click)="openFile(item.value, item.key)">
       <clr-icon [attr.shape]="item.value.type"></clr-icon>
       {{item.value.name}}
     </button>
 
     <clr-tree-node *ngFor="let i of item.value.content | keyvalue">
-              <button class="clr-treenode-link" [contextMenu]="basicMenu" [contextMenuSubject]="i" (click)="openFile(i.value, i.key)">
+              <button class="clr-treenode-link" [contextMenu]="basicMenu" [contextMenuSubject]="{item: i.value, parent: item.value}" (click)="openFile(i.value, i.key)">
                   <clr-icon [attr.shape]="i.value.type"></clr-icon>
                   {{i.value.name}}
               </button>
@@ -16,26 +16,52 @@
 
 
 <context-menu>
-  <ng-template contextMenuItem (execute)="createNewFileSystemItem('Hi, ' + $event.item.name)">
-    New
-  </ng-template>
-  <ng-template contextMenuItem divider="true"></ng-template>
+	<ng-template contextMenuItem [subMenu]="subMenuNew">
+		New
+	</ng-template>
+	<context-menu #subMenuNew>
+		<ng-template contextMenuItem (execute)="createNewFileSystemItem($event.item.item, 'scroll')">
+			New file
+		</ng-template>
+		<ng-template contextMenuItem (execute)="createNewFileSystemItem($event.item.item, 'folder')">
+			New folder
+		</ng-template>
 
-  <ng-template contextMenuItem (execute)="openFile($event.item.value, $event.item.key)">
-    Open
-  </ng-template>
-  <ng-template contextMenuItem divider="true"></ng-template>
+	</context-menu>
+	<ng-template contextMenuItem divider="true"></ng-template>
 
-  <ng-template contextMenuItem (execute)="createNewFileSystemItem('Hi, ' + $event.item.name)">
-    Delete
-  </ng-template>
-  <ng-template contextMenuItem (execute)="createNewFileSystemItem('Hi, ' + $event.item.name)">
-    Copy
-  </ng-template>
-  <ng-template contextMenuItem (execute)="createNewFileSystemItem('Hi, ' + $event.item.name)">
-    Paste
-  </ng-template>
+	<ng-template contextMenuItem (execute)="openFile($event.item.item, '')">
+		Open
+	</ng-template>
+	<ng-template contextMenuItem divider="true"></ng-template>
+
+	<ng-template contextMenuItem (execute)="removeFile($event.item.item, $event.item.parent)">
+		Delete
+	</ng-template>
+	<ng-template contextMenuItem>
+		Copy
+	</ng-template>
+	<ng-template contextMenuItem>
+		Paste
+	</ng-template>
 
 
 </context-menu>
 
+
+<clr-modal [(clrModalOpen)]="createFileModal">
+	<h3 class="modal-title">Create</h3>
+	<div class="modal-body">
+		<form clrForm>
+			<clr-input-container>
+				<label>Name</label>
+				<input clrInput type="text" name="fileName" [(ngModel)]="newFile.name" required/>
+			</clr-input-container>
+		</form>
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline" (click)="createFileModal = false">Cancel</button>
+		<button type="button" class="btn btn-primary" (click)="createFile()">Ok</button>
+	</div>
+</clr-modal>

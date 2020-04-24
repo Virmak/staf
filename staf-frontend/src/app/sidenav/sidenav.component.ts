@@ -1,9 +1,13 @@
+import { ProjectService } from './../project.service';
 import { SequenceService } from './../sequence.service';
 import { ICreateTestSuite } from './../interfaces/icreate-test-suite';
 import { TestSuiteService } from './../test-suite.service';
 import { StafProject } from '../types/staf-project';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { ContextMenuComponent } from 'ngx-contextmenu';
+import { ITestSuite } from '../interfaces/itest-suite';
+import { FileType } from '../interfaces/ifile';
 
 @Component({
   selector: 'app-sidenav',
@@ -12,6 +16,7 @@ import { Router } from '@angular/router';
 })
 export class SidenavComponent implements OnInit {
   @Input() projects: StafProject[];
+  @ViewChild(ContextMenuComponent) public basicMenu: ContextMenuComponent;
 
 
   createTestSuiteModal = false;
@@ -23,9 +28,17 @@ export class SidenavComponent implements OnInit {
   };
   currentProject: StafProject;
 
+  newFile = {
+    name: '',
+  }
+  createFileModal = false;
+
+  current: any = {};
+
   constructor(private router: Router,
     private testSuiteService: TestSuiteService,
-    private sequence: SequenceService) { }
+    private sequence: SequenceService,
+    private projectService: ProjectService) { }
 
   ngOnInit(): void {
   }
@@ -63,8 +76,25 @@ export class SidenavComponent implements OnInit {
     this.createTestSuiteModal = false;
   }
 
-  createNewStafScript(msg) {
-    console.log(msg)
+  createNewFileSystemItem(testSuite: ITestSuite, project: StafProject, type: string) {
+    this.createFileModal = true;
+    this.current = {
+      testSuite, project, type
+    }
+  }
+
+  createFile() {debugger;
+    this.current.testSuite.content.path = this.current.project.getNormalizedProjectName() + '/' + this.current.testSuite.name;
+    this.projectService.createFile(this.current.testSuite.content, this.current.project, this.newFile.name, this.current.type);
+    this.createFileModal = false;
+  }
+
+  openFile(e) {
+    console.log(e);
+  }
+
+  deleteFile(item, parent) {
+    //this.projectService.deleteFile(item, parent);
   }
 
 }

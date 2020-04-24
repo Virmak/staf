@@ -20,10 +20,16 @@ const baseUrl = environment.resolveApi();
 export class ProjectService {
 
   private projectsSubject = new Subject<IStafProject[]>();
-  
+
   private projects: StafProject[] = [];
 
   currentDir;
+
+  public testDirectory;
+
+  public deleteFileModal = false;
+  public deleteFileConfirmed = false;
+  private deleteOperation = () => { };
 
   constructor(
     private sequence: SequenceService,
@@ -48,7 +54,9 @@ export class ProjectService {
   fetchProjects(errCallback = null) {
     this.http.get(baseUrl + '/projects').subscribe((projects: any) => {
       console.log(projects);
-      this.projects = projects.folders.map(this.createProject.bind(this));
+      this.testDirectory = projects.name;
+      this.projects = projects.folders.map(this.createProject.bind(this))
+        .filter(p => p != null);
       this.next();
     }, errCallback);
   }
@@ -65,10 +73,80 @@ export class ProjectService {
     return this.projects;
   }
 
+  createFile(parent: IDirectory, project: StafProject, filename: string, type: FileType) {
+    const filePath = parent.path + '/' + filename;
+    if (type == FileType.File) {
+      let file: IFile = {
+        name: filename,
+        content: '',
+        type,
+        path: filePath,
+        extension: filename.substr(filename.lastIndexOf('.') + 1)
+      };
+      if (parent.content.has(filePath)) {
+        this.toastr.error('File with the same name already exist', 'Error');
+      } else {
+        parent.content.set(filePath, file);
+      }
+      this.saveFile(file).subscribe((res: any) => {
+        if (res.result == 'ok') {
+          this.toastr.success('File created', 'Success');
+        } else {
+          this.toastr.error('Error creating file', 'Error');
+        }
+      });;
+    } else {
+      let dir: IDirectory = {
+        name: filename,
+        content: new Map(),
+        type: FileType.Directory,
+        path: filePath,
+      }
+      if (parent.content.has(filename)) {
+        this.toastr.error('Directory with the same name already exist', 'Error');
+      } else {
+        parent.content.set(filename, dir);
+      }
+      this.saveDirectory(dir);
+    }
+  }
+
+  saveDirectory(directory: IDirectory) {
+    this.saveFile(directory).subscribe((res: any) => {
+      if (res.result == 'ok') {
+        this.toastr.success('Directory created', 'Success');
+      } else {
+        this.toastr.error('Error creating directory', 'Error');
+      }
+    });
+  }
+
+  deleteFile(file: IFile, parent) {
+    this.deleteFileModal = true;
+
+    this.deleteOperation = () => {
+      const errorToastr = () => this.toastr.error('Error deleting file', 'Error');
+      this.http.delete(baseUrl + '/deleteFile/' + file.path.replace(/\//g, '<sep>'))
+        .subscribe((res: any) => {
+          if (res.result == 'ok') {
+            parent.content.delete(file.path);
+            this.toastr.info('File deleted', 'Success');
+          } else {
+            errorToastr();
+          }
+        }, errorToastr);
+    }
+  }
+
+  confirmDeleteFile() {
+    this.deleteOperation();
+    this.deleteFileModal = false;
+  }
+
   createProject(project) {
     const configFile = this.getProjectConfig(project);
     if (configFile != null) {
-      const config = JSON.parse(configFile);
+      const config = JSON.parse(configFile.fileContent);
       return StafProject.fromObject({
         id: this.sequence.getNext('project'),
         name: config.project,
@@ -92,8 +170,8 @@ export class ProjectService {
           this.projects.push(this.createProject(res));
         }
         this.toastr.success('Project created', 'Success');
-      }, err => {this.toastr.error('Error creating project', 'Error')})
-    
+      }, err => { this.toastr.error('Error creating project', 'Error') })
+
   }
 
   addTestSuite(project: IStafProject, testSuite: ITestSuite) {
@@ -121,7 +199,6 @@ export class ProjectService {
   getFile(project, path): IFile {
     console.log(project, path);
     const pathItems = path.split('/');
-    debugger
     let testSuite = this.getTestSuiteByName(project, pathItems[1]);
     let lastDir: any = testSuite.content;
 

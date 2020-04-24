@@ -1,5 +1,5 @@
 import { ProjectService } from './../project.service';
-import { FileType } from './../interfaces/ifile';
+import { FileType, IFile } from './../interfaces/ifile';
 import { FileEditorService } from './../file-editor.service';
 import { StafProject } from '../types/staf-project';
 import { ITestSuite } from './../interfaces/itest-suite';
@@ -21,6 +21,13 @@ export class SidenavDirectoryComponent implements OnInit {
   @Input() testSuite: ITestSuite;
   @ViewChild(ContextMenuComponent) public basicMenu: ContextMenuComponent;
 
+
+  newFile = {
+    name: '',
+  }
+  createFileModal = false;
+
+  current: any = {};
   constructor(
     private router: Router,
     private fileEditorService: FileEditorService,
@@ -29,8 +36,20 @@ export class SidenavDirectoryComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  createNewFileSystemItem(item) {
-    alert('creating new')
+  createNewFileSystemItem(item: IFile, type: string) {
+    this.createFileModal = true;
+    this.current = {
+      item, type
+    }
+  }
+
+  createFile() {
+    this.projectService.createFile(this.current.item, this.project, this.newFile.name, this.current.type);
+    this.createFileModal = false;
+  }
+
+  removeFile(item, parent) {
+    this.projectService.deleteFile(item, parent);
   }
 
   openFile(item, key) {
