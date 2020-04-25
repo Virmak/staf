@@ -17,6 +17,8 @@ export class AppComponent implements OnInit {
   constructor(public projectService: ProjectService) {}
 
   ngOnInit(): void {
+
+    (<any>window).userKeywords = {};
     this.projectService.fetchProjects(err => {this.serverError = true});
     this.projectService.getProjectsSubject().subscribe(projects => {
       this.projects = projects.filter(p => p != null);

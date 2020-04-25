@@ -11,6 +11,8 @@ export class FileEditorService {
 
   openedFiles: Map<string, IFile> = new Map();
 
+  
+
   constructor(
     private projectService: ProjectService,
     private router: Router) { }

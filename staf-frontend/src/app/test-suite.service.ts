@@ -84,14 +84,29 @@ export class TestSuiteService {
     dir.files.forEach(file => {
       let filePath = Object.keys(file)[0];
       const fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+      const extension = fileName.substr(1+ fileName.lastIndexOf("."));
       dirMap.set(filePath, {
         name: fileName,
         type: FileType.File,
         content: file[filePath].fileContent,
         path: filePath,
-        extension: fileName.substr(1+ fileName.lastIndexOf(".")),
-      })
-      
+        extension,
+      });
+      if (this.isStafScript(extension)) {
+        const keywordsDeclarations = file[filePath].fileContent
+        .match(/(?<=keywords[\s]*|end\s*)(([a-z0-9_ ]+)\(\s*(\$[a-z0-9_]+\s*,?\s*)*\s*\)[\S\s]*?)/gim);
+        if (keywordsDeclarations) {
+          (<any>window).userKeywords[filePath] = keywordsDeclarations.map(k => {
+            const keywordSignature = k.trim();
+            const keywordName = keywordSignature.substr(0, keywordSignature.indexOf('('));
+            return {
+              keywordSignature,
+              keywordName
+            }
+          });
+        }
+        
+      }
     });
     dir.folders.forEach(folder => {
       const folderName = folder.name.substring(folder.name.lastIndexOf('/') + 1);
@@ -103,5 +118,10 @@ export class TestSuiteService {
       });
     });
     return dirMap;
+  }
+
+  isStafScript(extension) {
+    return extension == 'staf' || extension == 'page' 
+      || extension == 'steps';
   }
 }
