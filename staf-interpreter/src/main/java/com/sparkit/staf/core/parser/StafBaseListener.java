@@ -40,6 +40,18 @@ public class StafBaseListener implements StafListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDocumentation(StafParser.DocumentationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDocumentation(StafParser.DocumentationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterImports_section(StafParser.Imports_sectionContext ctx) { }
 	/**
 	 * {@inheritDoc}

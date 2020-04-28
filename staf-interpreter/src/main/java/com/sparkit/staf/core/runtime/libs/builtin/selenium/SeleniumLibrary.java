@@ -1,15 +1,13 @@
 package com.sparkit.staf.core.runtime.libs.builtin.selenium;
 
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
+import com.sparkit.staf.core.ast.types.StafInteger;
 import com.sparkit.staf.core.ast.types.StafString;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.KeywordArgument;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.ElementShouldBeVisibleNotFoundException;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.ElementShouldContainException;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.NoBrowserOpenedException;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.UnsupportedBrowserDriverException;
+import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.*;
 import com.sparkit.staf.core.runtime.libs.exceptions.InvalidSelectorException;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
@@ -63,6 +61,28 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         @Keyword(name = "maximize browser window", doc = "Maximize current browser window")
     public void maximizeWindow(@KeywordArgument AbstractStafObject selector, @KeywordArgument AbstractStafObject value) {
         webDrivers.peek().manage().window().maximize();
+    }
+
+    @Keyword(name = "press key", doc = "Simulates the user pressing key to an element")
+    public void pressKey(@KeywordArgument AbstractStafObject selector, @KeywordArgument AbstractStafObject value) {
+        WebElement element;
+        String locator;
+        if (value == null) {
+            value = selector;
+            locator = "tag:body";
+        } else {
+            locator = value.getValue().toString();
+        }
+        By elementSelector = getLocatorFromString(locator);
+        element = webDrivers.peek().findElement(elementSelector);
+        switch (value.getValue().toString()) {
+            case "Escape":
+                element.sendKeys(Keys.ESCAPE);
+                break;
+            case "Enter":
+                element.sendKeys(Keys.ENTER);
+                break;
+        }
     }
 
     @Keyword(name = "input text", doc = "Types the given text into text field identified by locator")
@@ -147,6 +167,22 @@ public class SeleniumLibrary extends AbstractStafLibrary {
                 throw new ElementShouldContainException("Could not find element that contains '" + expected + "'");
             }
         }
+    }
+
+    @Keyword(name = "page should contain element", doc = "Verifies that page contains and element 'locator'")
+    public void pageShouldContainElement(AbstractStafObject selector)
+            throws ElementShouldContainException {
+        By elementSelector =getLocatorFromString(selector.getValue().toString());
+        if (webDrivers.peek().findElements(elementSelector).size() == 0) {
+            throw new PageShouldContainException();
+        }
+    }
+
+    @Keyword(name = "get element count", doc = "Returns the number of elements matching 'locator'")
+    public StafInteger getElementCount(AbstractStafObject selector)
+            throws ElementShouldContainException {
+        By elementSelector =getLocatorFromString(selector.getValue().toString());
+        return new StafInteger(webDrivers.peek().findElements(elementSelector).size());
     }
 
     @Keyword(name = "go to")

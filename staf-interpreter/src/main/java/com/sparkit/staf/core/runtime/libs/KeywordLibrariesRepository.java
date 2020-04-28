@@ -27,6 +27,7 @@ public class KeywordLibrariesRepository {
     private StatementBlockExecutor statementBlockExecutor;
     @Autowired
     private TestContainer dependencyContainer;
+    @Autowired LibraryFactory libraryFactory;
     /* Map keyword to library method */
     private Map<String, KeywordDeclaration> userDefinedKeywords = new HashMap<>();;
     private Map<String, KeywordWrapper> builtinKeywordMap = new HashMap<>();;
@@ -40,7 +41,7 @@ public class KeywordLibrariesRepository {
             throws KeywordAlreadyRegisteredException, InvocationTargetException,
             NoSuchMethodException, InstantiationException, IllegalAccessException {
 
-        AbstractStafLibrary libInstance = LibraryFactory.build(libClass, dependencyContainer);
+        AbstractStafLibrary libInstance = libraryFactory.build(libClass, dependencyContainer);
         if (libsInstancesMap.containsKey(libClass.getName())) {
             return;
         }

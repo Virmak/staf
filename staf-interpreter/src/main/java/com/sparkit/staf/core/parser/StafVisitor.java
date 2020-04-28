@@ -23,6 +23,12 @@ public interface StafVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSuite_name(StafParser.Suite_nameContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link StafParser#documentation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDocumentation(StafParser.DocumentationContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link StafParser#imports_section}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

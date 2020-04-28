@@ -28,7 +28,20 @@ public class FileService {
 
     public boolean removeFile(String path) {
         File file = new File(path);
+        if (file.isDirectory()) {
+            return deleteDirectory(file);
+        }
         return file.delete();
+    }
+
+    boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
     }
 
     private boolean isChild(Path child, String parentText) {

@@ -28,6 +28,16 @@ public interface StafListener extends ParseTreeListener {
 	 */
 	void exitSuite_name(StafParser.Suite_nameContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link StafParser#documentation}.
+	 * @param ctx the parse tree
+	 */
+	void enterDocumentation(StafParser.DocumentationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#documentation}.
+	 * @param ctx the parse tree
+	 */
+	void exitDocumentation(StafParser.DocumentationContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link StafParser#imports_section}.
 	 * @param ctx the parse tree
 	 */

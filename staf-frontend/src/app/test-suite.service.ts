@@ -94,7 +94,7 @@ export class TestSuiteService {
       });
       if (this.isStafScript(extension)) {
         const keywordsDeclarations = file[filePath].fileContent
-        .match(/(?<=keywords[\s]*|end\s*)(([a-z0-9_ ]+)\(\s*(\$[a-z0-9_]+\s*,?\s*)*\s*\)[\S\s]*?)/gim);
+          .match(/(?<=keywords[\s]*|end\s*|return.*\s*)(([a-z0-9_ ]+)\(\s*(\$[a-z0-9_]+\s*,?\s*)*\s*\)[\S\s]*?)/gim);
         if (keywordsDeclarations) {
           (<any>window).userKeywords[filePath] = keywordsDeclarations.map(k => {
             const keywordSignature = k.trim();

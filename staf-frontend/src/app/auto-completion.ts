@@ -124,7 +124,6 @@ export function createImportsDependencyProposals(range) {
             kind: monaco.languages.CompletionItemKind.Constant,
             documentation: "Standard library",
             insertText: 'std',
-            //insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
             range: range
         },
         {
@@ -212,6 +211,13 @@ export function createImportsDependencyProposals(range) {
             range: range
         },
         {
+            label: 'Get element attribute',
+            kind: monaco.languages.CompletionItemKind.Function,
+            documentation: "Get element attribute value | Selenium library",
+            insertText: 'Get element attribute($selector, "attribute")',
+            range: range
+        },
+        {
             label: 'Trim',
             kind: monaco.languages.CompletionItemKind.Function,
             documentation: "Remove white space from the start and end of a string | Standard library",
@@ -219,10 +225,17 @@ export function createImportsDependencyProposals(range) {
             range: range
         },
         {
-            label: 'Get element attribute',
+            label: 'Replace text',
             kind: monaco.languages.CompletionItemKind.Function,
-            documentation: "Get element attribute value | Selenium library",
-            insertText: 'Get element attribute($selector, "attribute")',
+            documentation: "Replace string | Standard library",
+            insertText: 'Replace text($str, $oldStr, $newStr)',
+            range: range
+        },
+        {
+            label: 'Parse number',
+            kind: monaco.languages.CompletionItemKind.Function,
+            documentation: "Parse a string into a double| Standard library",
+            insertText: 'Parse number($number)',
             range: range
         },
 

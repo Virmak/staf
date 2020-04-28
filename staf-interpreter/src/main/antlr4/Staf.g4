@@ -6,9 +6,11 @@ staf_file
     ;
 
 suite_name
-    : TEST_SUITE string
+    : TEST_SUITE string documentation?
     ;
-
+documentation
+    : '[' .*? ']'
+    ;
 imports_section
     : IMPORTS import_stat*
     ;
@@ -30,7 +32,7 @@ test_cases_section
     ;
 
 test_case_declaration
-    : keyword_name ':' test_case_body END
+    : keyword_name ':' documentation? test_case_body END
     ;
 
 test_case_body
@@ -45,6 +47,7 @@ keywords_section
 
 keyword_declaration
     : keyword_name keyword_declaration_arguments
+      documentation?
       keyword_body
       keyword_return_stat
     ;

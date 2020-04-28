@@ -1,16 +1,21 @@
 package com.sparkit.staf.core.runtime.libs.builtin;
 
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
+import com.sparkit.staf.core.ast.types.KeywordReference;
 import com.sparkit.staf.core.ast.types.StafDouble;
 import com.sparkit.staf.core.ast.types.StafString;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
+import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.ShouldBeEqualException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @StafLibrary(name = "standard", builtin = true)
 public class StdLibrary extends AbstractStafLibrary {
-    final double THRESHOLD = .0001;
+    private final double THRESHOLD = .0001;
+    @Autowired
+    private KeywordLibrariesRepository keywordLibrariesRepository;
 
     @Keyword(name = "should be equal")
     public void shouldBeEqual(AbstractStafObject object, AbstractStafObject expected, AbstractStafObject errorMessage) throws ShouldBeEqualException {

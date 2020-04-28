@@ -6,8 +6,9 @@ import com.sparkit.staf.core.ast.types.StafBoolean;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 
-public class RunKeywordIf extends KeywordCall implements IStatement {
+public class RunKeywordIf extends KeywordCall implements IStatement, IReportableBlock {
     protected AbstractStafObject condition;
     protected KeywordCall keywordCall;
 
