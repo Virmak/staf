@@ -34,6 +34,20 @@ public class StdLibrary extends AbstractStafLibrary {
         return new StafString(str.getValue().toString().replaceAll(oldStr.getValue().toString(), newStr.getValue().toString()));
     }
 
+    @Keyword(name = "parse number")
+    public AbstractStafObject parseNumber(AbstractStafObject object, AbstractStafObject defaultVal) throws ShouldBeEqualException {
+        String s;
+        s = object.getValue().toString().replace(",", ".");
+        s = object.getValue().toString().replaceAll(" TND", "");
+        s = object.getValue().toString().replaceAll(" €", "");
+        try {
+            double d = Double.parseDouble(s);
+            return new StafDouble(d);
+        } catch (NumberFormatException e) {
+            return defaultVal;
+        }
+    }
+
     public boolean compareStafObjects(AbstractStafObject object1, AbstractStafObject object2) {
         if (object1 instanceof StafDouble) {
             Double a = (Double) object1.getValue();

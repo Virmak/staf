@@ -68,7 +68,9 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     @Keyword(name = "input text", doc = "Types the given text into text field identified by locator")
     public void input(@KeywordArgument AbstractStafObject selector, @KeywordArgument AbstractStafObject value) {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
-        webDrivers.peek().findElement(elementSelector).sendKeys(value.getValue().toString());
+        WebElement element = webDrivers.peek().findElement(elementSelector);
+        element.clear();
+        element.sendKeys(value.getValue().toString());
     }
 
     @Keyword(name = "click element", doc = "Click element by locator")
@@ -76,6 +78,13 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         webDrivers.peek().findElement(elementSelector).click();
     }
+
+    @Keyword(name = "set focus to element", doc = "Focus element by locator")
+    public void setFocus(@KeywordArgument AbstractStafObject selector) {
+        By elementSelector = getLocatorFromString(selector.getValue().toString());
+        webDrivers.peek().findElement(elementSelector).sendKeys("");
+    }
+
 
     @Keyword(name = "input value")
     public StafString getInputValue(@KeywordArgument AbstractStafObject selector) {

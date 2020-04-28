@@ -56,6 +56,16 @@ public class Assignment implements IStatement, IReportableBlock {
             }
             return returnObj;
         }
+        if (localSymTable != null && localSymTable.getSymbolsMap().containsKey(object.getValue().toString())) {
+            localSymTable.getSymbolsMap().put(object.getValue().toString(),
+                    value.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository));
+        } else if (globalSymTable.getSymbolsMap().containsKey(object.getValue().toString())) {
+            globalSymTable.getSymbolsMap().put(object.getValue().toString(),
+                    value.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository));
+        } else if (localSymTable != null) {
+            localSymTable.getSymbolsMap().put(object.getValue().toString(),
+                    value.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository));
+        }
         return (value);
     }
 
