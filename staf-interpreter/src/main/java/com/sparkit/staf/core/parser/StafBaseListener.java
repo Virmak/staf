@@ -208,6 +208,18 @@ public class StafBaseListener implements StafListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterExit_loop_condition(StafParser.Exit_loop_conditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExit_loop_condition(StafParser.Exit_loop_conditionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterKeyword_call(StafParser.Keyword_callContext ctx) { }
 	/**
 	 * {@inheritDoc}

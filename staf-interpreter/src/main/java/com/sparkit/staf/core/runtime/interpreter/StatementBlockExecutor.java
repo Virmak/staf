@@ -98,7 +98,16 @@ public class StatementBlockExecutor {
                     try {
                         statement.execute(this, globalSymTable, localSymTable, keywordLibrariesRepository);
                         if (statement instanceof ExitLoopStatement) {
-                            break;
+                            ExitLoopStatement exitLoopStatement = (ExitLoopStatement) statement;
+                            if (exitLoopStatement.getCondition() != null) {
+                                boolean conditionVal = (boolean)exitLoopStatement.getCondition()
+                                        .evaluate(this, globalSymTable, localSymTable, keywordLibrariesRepository);
+                                if (conditionVal) {
+                                    break;
+                                }
+                            } else {
+                                break;
+                            }
                         }
                         if (statement instanceof IStatementBlock) {
                             statementReport.setChildren(((IStatementBlock) statement).getStatementReports());

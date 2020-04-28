@@ -57,15 +57,19 @@ keyword_body
     ;
 
 statement
-    : (assignment | keyword_call | for_stat | run_keyword_if|exit_loop)
+    : (exit_loop | assignment | keyword_call | for_stat | run_keyword_if)
     ;
 
 run_keyword_if
-    : RUN KEYWORD IF LPARENT expression RPARENT keyword_call
+    : RUN KEYWORD IF LPARENT expression RPARENT (keyword_call|exit_loop)
     ;
 
 exit_loop
-    :   EXIT LOOP
+    :   EXIT LOOP exit_loop_condition?
+    ;
+
+exit_loop_condition
+    :   (IF LPARENT expression RPARENT )
     ;
 
 keyword_call
@@ -316,12 +320,11 @@ THEN
     : T H E N
     ;
 
+EXIT : E X I T;
+LOOP :  L O O P;
 IDENTIFIER
     : [A-Za-z0-9_]+
     ;
-LOOP : L O O P;
-EXIT : E X I T;
-
 
 
 fragment A:('a'|'A');
