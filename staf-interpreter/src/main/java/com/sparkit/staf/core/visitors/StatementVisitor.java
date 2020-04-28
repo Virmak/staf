@@ -14,6 +14,8 @@ public class StatementVisitor extends StafBaseVisitor<IStatement> {
     private ForStatementVisitor forStatementVisitor;
     @Autowired
     private RunKeywordIfVisitor runKeywordIfVisitor;
+    @Autowired
+    private ExitLoopVisitor exitLoopVisitor;
 
     @Override
     public IStatement visitStatement(StafParser.StatementContext ctx) {
@@ -32,6 +34,10 @@ public class StatementVisitor extends StafBaseVisitor<IStatement> {
         StafParser.Run_keyword_ifContext runKeywordIfContext = ctx.run_keyword_if();
         if (runKeywordIfContext != null) {
             return runKeywordIfVisitor.visitRun_keyword_if(runKeywordIfContext);
+        }
+        StafParser.Exit_loopContext exitLoopContext = ctx.exit_loop();
+        if (exitLoopContext != null) {
+            return exitLoopVisitor.visitExit_loop(exitLoopContext);
         }
         return super.visitStatement(ctx);
     }

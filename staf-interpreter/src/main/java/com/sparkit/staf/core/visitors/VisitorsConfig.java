@@ -139,4 +139,9 @@ public class VisitorsConfig {
     public TestCaseDeclarationsSectionVisitor testCaseDeclarationsSectionVisitor() {
         return new TestCaseDeclarationsSectionVisitor();
     }
+
+    @Bean
+    public ExitLoopVisitor exitLoopVisitor() {
+        return new ExitLoopVisitor();
+    }
 }

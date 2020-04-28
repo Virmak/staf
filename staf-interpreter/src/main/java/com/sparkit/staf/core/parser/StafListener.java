@@ -158,6 +158,16 @@ public interface StafListener extends ParseTreeListener {
 	 */
 	void exitRun_keyword_if(StafParser.Run_keyword_ifContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link StafParser#exit_loop}.
+	 * @param ctx the parse tree
+	 */
+	void enterExit_loop(StafParser.Exit_loopContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#exit_loop}.
+	 * @param ctx the parse tree
+	 */
+	void exitExit_loop(StafParser.Exit_loopContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link StafParser#keyword_call}.
 	 * @param ctx the parse tree
 	 */

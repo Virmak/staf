@@ -57,11 +57,15 @@ keyword_body
     ;
 
 statement
-    : (assignment | keyword_call | for_stat | run_keyword_if)
+    : (assignment | keyword_call | for_stat | run_keyword_if|exit_loop)
     ;
 
 run_keyword_if
     : RUN KEYWORD IF LPARENT expression RPARENT keyword_call
+    ;
+
+exit_loop
+    :   EXIT LOOP
     ;
 
 keyword_call
@@ -93,7 +97,7 @@ assignment
 for_stat
     : FOR variable ':' (complex_object | variable_reference | keyword_call)
       for_stat_body
-      END FOR
+      ENDFOR
     ;
 
 for_stat_body
@@ -315,6 +319,8 @@ THEN
 IDENTIFIER
     : [A-Za-z0-9_]+
     ;
+LOOP : L O O P;
+EXIT : E X I T;
 
 
 

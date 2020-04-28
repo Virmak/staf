@@ -1,7 +1,9 @@
 package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.Main;
+import com.sparkit.staf.core.ast.ExitLoopStatement;
 import com.sparkit.staf.core.ast.IStatement;
+import com.sparkit.staf.core.ast.LoopIteration;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.ast.types.StafList;
@@ -76,8 +78,8 @@ public class StatementBlockExecutor {
                                            SymbolsTable globalSymTable,
                                            SymbolsTable localSymTable,
                                            KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        StatementReport iterableReport = createStatementReport((IStatement) iterable, null);
-        iterableReport.setChildren(new ArrayList<>());
+        StatementReport loopReport = createStatementReport((IStatement) iterable, null);
+        loopReport.setChildren(new ArrayList<>());
         AbstractStafObject tmp = null;  // used to save variable with the same name as the loop variable if it currently
         // exist in localSymTable so we can retrieve it later after for statement execution
         if (localSymTable == null) {
@@ -89,14 +91,15 @@ public class StatementBlockExecutor {
         if (actualIterator instanceof StafList) {
             int iteration = 0;
             for (AbstractStafObject item : ((StafList) actualIterator).getList()) {
-                StatementReport iterationReport = createStatementReport((IStatement) item, TestResult.Pass);
-                iterableReport.setErrorMessage("Iteration[" + (iteration++) + "] : " + item);
-                iterationReport.setChildren(new ArrayList<>());
+                loopReport.setErrorMessage("Iteration[" + (iteration++) + "] : " + item);
                 for (IStatement statement : iterable.getStatements()) {
                     StatementReport statementReport = new StatementReport();
                     localSymTable.setSymbolValue(iterable.getVar().getValue().toString(), item);
                     try {
                         statement.execute(this, globalSymTable, localSymTable, keywordLibrariesRepository);
+                        if (statement instanceof ExitLoopStatement) {
+                            break;
+                        }
                         if (statement instanceof IStatementBlock) {
                             statementReport.setChildren(((IStatementBlock) statement).getStatementReports());
                         }
@@ -111,15 +114,12 @@ public class StatementBlockExecutor {
                     } finally {
                         statementReport.setEnd(new Date());
                     }
-                    iterationReport.getChildren().add(statementReport);
+                    loopReport.getChildren().add(statementReport);
                 }
-                iterationReport.setResult(statementListTestResult(iterationReport.getChildren()));
-                iterationReport.setEnd(new Date());
-                iterableReport.getChildren().add(iterationReport);
             }
 
         }
-        return iterableReport;
+        return loopReport;
     }
 
     private StatementReport createStatementReport(IStatement statement, TestResult result) {

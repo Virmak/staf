@@ -96,6 +96,9 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         logger.info("Executing test case : " + testCaseDeclaration.getName());
         OnStatementFailed statementFailed = (statementReport) -> {
             testCaseReport.setResult(TestResult.Fail);
+            if (!keywordLibrariesRepository.isKeywordDeclared("capturescreenshot")) {
+                return;
+            }
             StafString screenShotPath = new StafString(
                     testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/" + config.getReportingDirectory() + "/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
             try {

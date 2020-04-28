@@ -1,9 +1,6 @@
 package com.sparkit.staf.core.runtime.libs.builtin;
 
-import com.sparkit.staf.core.ast.types.AbstractStafObject;
-import com.sparkit.staf.core.ast.types.KeywordReference;
-import com.sparkit.staf.core.ast.types.StafDouble;
-import com.sparkit.staf.core.ast.types.StafString;
+import com.sparkit.staf.core.ast.types.*;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
@@ -37,6 +34,23 @@ public class StdLibrary extends AbstractStafLibrary {
     @Keyword(name = "replace text")
     public StafString replaceString(AbstractStafObject str, AbstractStafObject oldStr, AbstractStafObject newStr) throws ShouldBeEqualException {
         return new StafString(str.getValue().toString().replaceAll(oldStr.getValue().toString(), newStr.getValue().toString()));
+    }
+
+    @Keyword(name = "range")
+    public StafList range(AbstractStafObject from, AbstractStafObject to) throws ShouldBeEqualException {
+        int start, end;
+        if (to == null) {
+            start = 0;
+            end = (int)from.getValue();
+        } else {
+            start = (int)from.getValue();
+            end = (int)to.getValue();
+        }
+        StafList list = new StafList();
+        for (; start < end; start++) {
+            list.getList().add(new StafInteger(start));
+        }
+        return list;
     }
 
     @Keyword(name = "parse number")

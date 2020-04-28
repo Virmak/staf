@@ -53,9 +53,7 @@ public class ForStatement implements IStatement, IStatementBlock, IStafIterable 
 
     @Override
     public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        statementReports = new ArrayList<>();
-        statementReports.add(blockExecutor.executeIterable(this, globalSymTable, localSymTable, keywordLibrariesRepository));
-        return null;
+        return blockExecutor.executeIterable(this, globalSymTable, localSymTable, keywordLibrariesRepository);
     }
 
     @Override
