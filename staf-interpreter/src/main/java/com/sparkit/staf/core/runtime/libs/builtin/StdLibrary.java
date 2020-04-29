@@ -15,12 +15,14 @@ public class StdLibrary extends AbstractStafLibrary {
     private KeywordLibrariesRepository keywordLibrariesRepository;
 
     @Keyword(name = "should be equal")
-    public void shouldBeEqual(AbstractStafObject object, AbstractStafObject expected, AbstractStafObject errorMessage) throws ShouldBeEqualException {
+    public void shouldBeEqual(AbstractStafObject object, AbstractStafObject expected, AbstractStafObject errorMessage)
+            throws ShouldBeEqualException {
         if (!compareStafObjects(object, expected)) {
             if (errorMessage != null) {
                 throw new ShouldBeEqualException(errorMessage.getValue().toString());
             } else {
-                throw new ShouldBeEqualException(object.getValue().toString() + ", " + expected.getValue().toString() + " are not equal");
+                throw new ShouldBeEqualException(object.getValue().toString()
+                        + ", " + expected.getValue().toString() + " are not equal");
             }
         }
         System.out.println("Should be equal validated");
@@ -32,7 +34,8 @@ public class StdLibrary extends AbstractStafLibrary {
     }
 
     @Keyword(name = "replace text")
-    public StafString replaceString(AbstractStafObject str, AbstractStafObject oldStr, AbstractStafObject newStr) throws ShouldBeEqualException {
+    public StafString replaceString(AbstractStafObject str, AbstractStafObject oldStr, AbstractStafObject newStr)
+            throws ShouldBeEqualException {
         return new StafString(str.getValue().toString().replaceAll(oldStr.getValue().toString(), newStr.getValue().toString()));
     }
 
@@ -54,7 +57,7 @@ public class StdLibrary extends AbstractStafLibrary {
     }
 
     @Keyword(name = "parse number")
-    public AbstractStafObject parseNumber(AbstractStafObject object, AbstractStafObject defaultVal) throws ShouldBeEqualException {
+    public AbstractStafObject parseNumber(AbstractStafObject object, AbstractStafObject defaultVal) {
         String s;
         s = object.getValue().toString().replace(",", ".");
         s = object.getValue().toString().replaceAll(" TND", "");

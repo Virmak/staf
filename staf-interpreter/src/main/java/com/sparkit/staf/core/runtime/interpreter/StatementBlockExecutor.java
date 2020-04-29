@@ -6,6 +6,7 @@ import com.sparkit.staf.core.ast.IStatement;
 import com.sparkit.staf.core.ast.LoopIteration;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
+import com.sparkit.staf.core.ast.types.StafBoolean;
 import com.sparkit.staf.core.ast.types.StafList;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.FatalErrorException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
@@ -91,6 +92,7 @@ public class StatementBlockExecutor {
         if (actualIterator instanceof StafList) {
             int iteration = 0;
             for (AbstractStafObject item : ((StafList) actualIterator).getList()) {
+                boolean loopExited = false;
                 loopReport.setErrorMessage("Iteration[" + (iteration++) + "] : " + item);
                 for (IStatement statement : iterable.getStatements()) {
                     StatementReport statementReport = new StatementReport();
@@ -100,12 +102,14 @@ public class StatementBlockExecutor {
                         if (statement instanceof ExitLoopStatement) {
                             ExitLoopStatement exitLoopStatement = (ExitLoopStatement) statement;
                             if (exitLoopStatement.getCondition() != null) {
-                                boolean conditionVal = (boolean)exitLoopStatement.getCondition()
-                                        .evaluate(this, globalSymTable, localSymTable, keywordLibrariesRepository);
-                                if (conditionVal) {
+                                StafBoolean conditionVal = (StafBoolean)(exitLoopStatement.getCondition()
+                                        .evaluate(this, globalSymTable, localSymTable, keywordLibrariesRepository));
+                                if ((boolean)conditionVal.getValue()) {
+                                    loopExited = true;
                                     break;
                                 }
                             } else {
+                                loopExited = true;
                                 break;
                             }
                         }
@@ -124,6 +128,9 @@ public class StatementBlockExecutor {
                         statementReport.setEnd(new Date());
                     }
                     loopReport.getChildren().add(statementReport);
+                }
+                if (loopExited) {
+                    break;
                 }
             }
 

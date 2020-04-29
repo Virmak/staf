@@ -21,7 +21,7 @@ export class StatementNameComponent implements OnInit {
         this.arguments += this._statement.value.argumentsList[i].value + ", ";
       }
       this.arguments = this.arguments.substr(0, this.arguments.length - 2);
-    } else {
+    } else if (this._statement.type == 'KEYWORD_CALL'){ 
       this.keyword = this._statement.keywordName;
 
       for (let i = 0; i < this._statement.argumentsList.length; i++) {
@@ -29,6 +29,9 @@ export class StatementNameComponent implements OnInit {
       }
 
       this.arguments = this.arguments.substr(0, this.arguments.length - 2);
+    } else if (this._statement.iterator != undefined) {
+      this.keyword = 'FOR ';
+      this.arguments = this._statement.var.value + ' IN ' + this._statement.iterator.type;
     }
   }
 

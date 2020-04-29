@@ -34,6 +34,9 @@ export const monacoConfig: NgxMonacoEditorConfig = {
                 };
 
                 const isFileImported = filePath => {
+                    if (fileImports == null) {
+                        return false;
+                    }
                     for (let i = 0; i < fileImports.length; i++) {
                         if (filePath.indexOf(fileImports[i]) != -1) {
                             return true;
