@@ -144,4 +144,13 @@ public class VisitorsConfig {
     public ExitLoopVisitor exitLoopVisitor() {
         return new ExitLoopVisitor();
     }
+
+    @Bean
+    public ListItemAccessVisitor listItemAccessVisitor() {
+        return new ListItemAccessVisitor();
+    }
+
+    @Bean DictionaryItemAccessVisitor dictionaryItemAccessVisitor() {
+        return new DictionaryItemAccessVisitor();
+    }
 }

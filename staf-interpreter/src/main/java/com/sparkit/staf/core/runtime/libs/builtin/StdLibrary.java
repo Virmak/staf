@@ -50,7 +50,7 @@ public class StdLibrary extends AbstractStafLibrary {
             end = (int)to.getValue();
         }
         StafList list = new StafList();
-        for (; start < end; start++) {
+        for (; start <= end; start++) {
             list.getList().add(new StafInteger(start));
         }
         return list;

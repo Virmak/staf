@@ -90,7 +90,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         WebElement element = webDrivers.peek().findElement(elementSelector);
         element.clear();
-        element.sendKeys(value.getValue().toString());
+        element.sendKeys(Keys.chord(Keys.CONTROL, "a"), value.getValue().toString());
     }
 
     @Keyword(name = "click element", doc = "Click element by locator")

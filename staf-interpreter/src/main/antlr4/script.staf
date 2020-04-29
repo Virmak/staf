@@ -8,6 +8,7 @@ VARS
 
 KEYWORDS
     Add order page opened()
+        $x[5].tttt = 4545
         For $i : [1,2,3]
             Exit loop if (5 == 2)
         ENDFOR

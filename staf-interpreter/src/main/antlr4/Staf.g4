@@ -77,7 +77,7 @@ keyword_call
     ;
 
 keyword_call_arguments
-    : '(' (object (',' object)*)? ')'
+    : LPARENT  (object (COMMA object)*)? RPARENT
     ;
 
 keyword_return_stat
@@ -109,7 +109,7 @@ for_stat_body
     ;
 
 listLiteral
-    : '[' (object (',' object)*)? ']'
+    : LBRACKET (object (COMMA object)*)? RBRACKET
     ;
 
 dictionaryLiteral
@@ -133,7 +133,9 @@ scalar_object
     ;
 
 variable_reference
-    : variable (list_item_access | dictionary_item_access)*
+    : variable_reference list_item_access
+    | variable_reference dictionary_item_access
+    | variable
     ;
 
 primitive
