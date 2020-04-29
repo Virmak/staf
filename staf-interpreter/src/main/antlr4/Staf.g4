@@ -32,11 +32,14 @@ test_cases_section
     ;
 
 test_case_declaration
-    : keyword_name ':' documentation? test_case_body END
+    : test_case_priority? keyword_name ':' documentation? test_case_body END
     ;
 
 test_case_body
     : ((GIVEN | WHEN | THEN | 'AND')? statement)*
+    ;
+test_case_priority
+    : INT '-'
     ;
 // End test cases ***/
 

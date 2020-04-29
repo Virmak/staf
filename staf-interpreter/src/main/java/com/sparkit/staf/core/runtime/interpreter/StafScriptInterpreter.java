@@ -65,8 +65,19 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
             if (setup != null) {
                 reports.add(executeTestCase(testSuite, "SETUP", setup));
             }
+            List<Map.Entry<String, TestCaseDeclaration>> entryList = new ArrayList<Map.Entry<String, TestCaseDeclaration>>(mainStafFile.getTestCaseDeclarationMap().entrySet());
 
-            for (Map.Entry<String, TestCaseDeclaration> testCase : mainStafFile.getTestCaseDeclarationMap().entrySet()) {
+            Collections.sort(
+                    entryList, new Comparator<Map.Entry<String, TestCaseDeclaration>>() {
+                        @Override
+                        public int compare(Map.Entry<String, TestCaseDeclaration> t1,
+                                           Map.Entry<String, TestCaseDeclaration> t2) {
+                            return t1.getValue().getOrder() - t2.getValue().getOrder();
+                        }
+                    }
+            );
+
+            for (Map.Entry<String, TestCaseDeclaration> testCase : entryList) {
                 if (testCase.getKey().toLowerCase().equals("setup") || testCase.getKey().toLowerCase().equals("teardown")) {
                     continue;
                 }

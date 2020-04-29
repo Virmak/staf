@@ -108,6 +108,16 @@ public interface StafListener extends ParseTreeListener {
 	 */
 	void exitTest_case_body(StafParser.Test_case_bodyContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link StafParser#test_case_priority}.
+	 * @param ctx the parse tree
+	 */
+	void enterTest_case_priority(StafParser.Test_case_priorityContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#test_case_priority}.
+	 * @param ctx the parse tree
+	 */
+	void exitTest_case_priority(StafParser.Test_case_priorityContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link StafParser#keywords_section}.
 	 * @param ctx the parse tree
 	 */
