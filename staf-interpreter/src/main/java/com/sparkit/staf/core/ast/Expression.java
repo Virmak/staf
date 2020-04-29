@@ -1,8 +1,6 @@
 package com.sparkit.staf.core.ast;
 
-import com.sparkit.staf.core.ast.types.AbstractStafObject;
-import com.sparkit.staf.core.ast.types.StafBoolean;
-import com.sparkit.staf.core.ast.types.StafVariable;
+import com.sparkit.staf.core.ast.types.*;
 import com.sparkit.staf.core.runtime.interpreter.ExpressionEvaluator;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
@@ -107,11 +105,13 @@ public class Expression extends AbstractStafObject {
         AbstractStafObject l = left;
         AbstractStafObject r = right;
 
-        if (left instanceof Expression || left instanceof StafVariable) {
+        if (left instanceof Expression || left instanceof StafVariable || left instanceof DictionaryItemAccess
+                || left instanceof ListItemAccess) {
             l = (AbstractStafObject)left.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
         }
 
-        if (right instanceof Expression || right instanceof StafVariable) {
+        if (right instanceof Expression || right instanceof StafVariable || right instanceof DictionaryItemAccess
+                || right instanceof ListItemAccess) {
             r = (AbstractStafObject)right.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
         }
 

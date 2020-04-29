@@ -60,8 +60,13 @@ public class StdLibrary extends AbstractStafLibrary {
     public AbstractStafObject parseNumber(AbstractStafObject object, AbstractStafObject defaultVal) {
         String s;
         s = object.getValue().toString().replace(",", ".");
-        s = object.getValue().toString().replaceAll(" TND", "");
-        s = object.getValue().toString().replaceAll(" €", "");
+        s = s.replace("TND", "");
+        s = s.replace("€", "");
+        s = s.replace("$", "");
+        s = s.replaceAll("\\s", "");
+        s = s.replace("\u00a0","");
+        s = s.replaceAll("\u00a0","");
+        s = s.trim();
         try {
             double d = Double.parseDouble(s);
             return new StafDouble(d);

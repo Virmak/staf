@@ -29,13 +29,10 @@ public class ExpressionEvaluator {
     }
 
     public static AbstractStafObject multiply(AbstractStafObject left, AbstractStafObject right) {
-        if (left.getValue() instanceof Double || right.getValue() instanceof Double) {
-            Double l = (Double) left.getValue();
-            Double r = (Double) right.getValue();
-            return new StafDouble(l * r);
-        } else {
-            return new StafInteger((Integer)left.getValue() * (Integer)right.getValue());
-        }
+
+        Double ld = Double.parseDouble(left.getValue().toString());
+        Double rd = Double.parseDouble(right.getValue().toString());
+        return new StafDouble(ld * rd);
     }
 
     public static AbstractStafObject div(AbstractStafObject left, AbstractStafObject right) {
