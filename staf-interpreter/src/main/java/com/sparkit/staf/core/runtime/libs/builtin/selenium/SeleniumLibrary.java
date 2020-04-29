@@ -26,9 +26,10 @@ import java.util.concurrent.TimeUnit;
 @StafLibrary(name = "selenium", builtin = true)
 public class SeleniumLibrary extends AbstractStafLibrary {
     private Stack<WebDriver> webDrivers = new Stack<>();
+    public static final int DEFAULT_TIMEOUT = 5;
 
     private void setDefaultTimeout() {
-        webDrivers.peek().manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        webDrivers.peek().manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
     }
     @Keyword(name = "open browser")
     public void openBrowser(AbstractStafObject browser) throws UnsupportedBrowserDriverException {
@@ -178,6 +179,18 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         }
     }
 
+
+
+    @Keyword(name = "wait until element is not visible")
+    public void waitUntilElementIsNotVisible(AbstractStafObject selector, AbstractStafObject timeout) {
+        int timeoutInt = DEFAULT_TIMEOUT;
+        if (timeout != null) {
+            timeoutInt = (int) timeout.getValue();
+        }
+        By elementSelector = getLocatorFromString(selector.getValue().toString());
+        WebDriverWait wait = new WebDriverWait(webDrivers.peek(), timeoutInt);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(elementSelector));
+    }
     @Keyword(name = "get element count", doc = "Returns the number of elements matching 'locator'")
     public StafInteger getElementCount(AbstractStafObject selector)
             throws ElementShouldContainException {
