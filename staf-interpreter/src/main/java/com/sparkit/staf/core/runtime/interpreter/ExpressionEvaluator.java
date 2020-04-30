@@ -8,8 +8,8 @@ public class ExpressionEvaluator {
         if (left.getValue() instanceof String || right.getValue() instanceof String) {
             return new StafString(left.getValue().toString() + right.getValue());
         } else if (left.getValue() instanceof Double || right.getValue() instanceof Double) {
-            Double l = (Double) left.getValue();
-            Double r = (Double) right.getValue();
+            Double l =  Double.parseDouble(left.getValue().toString());
+            Double r = Double.parseDouble(right.getValue().toString());
             return new StafDouble(l + r);
         }
         else if (left.getValue() instanceof Integer) {

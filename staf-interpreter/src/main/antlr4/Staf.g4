@@ -64,7 +64,11 @@ statement
     ;
 
 run_keyword_if
-    : RUN KEYWORD IF LPARENT expression RPARENT (keyword_call|exit_loop)
+    : RUN KEYWORD IF LPARENT expression RPARENT (keyword_call|exit_loop) run_keyword_else?
+    ;
+
+run_keyword_else
+    : ELSE (keyword_call|exit_loop)
     ;
 
 exit_loop
@@ -216,6 +220,7 @@ COMMA
 RUN: R U N;
 KEYWORD: K E Y W O R D;
 IF : I F;
+ELSE : E L S E;
 
 PLUS    : '+' ;
 MINUS   : '-' ;

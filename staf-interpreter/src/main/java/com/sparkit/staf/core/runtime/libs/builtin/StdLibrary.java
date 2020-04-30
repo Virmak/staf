@@ -1,23 +1,28 @@
 package com.sparkit.staf.core.runtime.libs.builtin;
 
+import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.*;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.ShouldBeEqualException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @StafLibrary(name = "standard", builtin = true)
 public class StdLibrary extends AbstractStafLibrary {
-    private final double THRESHOLD = .0001;
+    private final double THRESHOLD = .001;
     @Autowired
     private KeywordLibrariesRepository keywordLibrariesRepository;
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     @Keyword(name = "should be equal")
     public void shouldBeEqual(AbstractStafObject object, AbstractStafObject expected, AbstractStafObject errorMessage)
             throws ShouldBeEqualException {
         if (!compareStafObjects(object, expected)) {
+            logger.info("Should be equal not validated " + object + " = " + expected);
             if (errorMessage != null) {
                 throw new ShouldBeEqualException(errorMessage.getValue().toString());
             } else {
@@ -25,7 +30,7 @@ public class StdLibrary extends AbstractStafLibrary {
                         + ", " + expected.getValue().toString() + " are not equal");
             }
         }
-        System.out.println("Should be equal validated");
+        logger.info("Should be equal validated " + object + " = " + expected);
     }
 
     @Keyword(name = "trim")
@@ -77,9 +82,10 @@ public class StdLibrary extends AbstractStafLibrary {
 
     public boolean compareStafObjects(AbstractStafObject object1, AbstractStafObject object2) {
         if (object1 instanceof StafDouble) {
-            Double a = (Double) object1.getValue();
-            Double b = (Double) object1.getValue();
-            return Math.abs(a - b) < THRESHOLD;
+            double a = (Double) object1.getValue();
+            double b = (Double) object2.getValue();
+            double difference = Math.abs(a - b);
+            return difference  < THRESHOLD;
         }
         return object1.getValue().toString().equals(object2.getValue().toString());
     }

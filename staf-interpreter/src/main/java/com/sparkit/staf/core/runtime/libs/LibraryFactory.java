@@ -13,7 +13,7 @@ public class LibraryFactory {
     @Autowired
     private AutowireCapableBeanFactory autowireCapableBeanFactory;
 
-    public AbstractStafLibrary build(Class<? extends AbstractStafLibrary> libraryClass, TestContainer container)
+    public AbstractStafLibrary build(Class<? extends AbstractStafLibrary> libraryClass)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         StafLibrary libraryClassAnnotation = libraryClass.getAnnotation(StafLibrary.class);
         AbstractStafLibrary libraryInstance = (AbstractStafLibrary) libraryClass.getConstructors()[0].newInstance();

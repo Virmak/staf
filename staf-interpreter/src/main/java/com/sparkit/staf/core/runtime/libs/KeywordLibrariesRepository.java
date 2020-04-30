@@ -41,7 +41,7 @@ public class KeywordLibrariesRepository {
             throws KeywordAlreadyRegisteredException, InvocationTargetException,
             NoSuchMethodException, InstantiationException, IllegalAccessException {
 
-        AbstractStafLibrary libInstance = libraryFactory.build(libClass, dependencyContainer);
+        AbstractStafLibrary libInstance = libraryFactory.build(libClass);
         if (libsInstancesMap.containsKey(libClass.getName())) {
             return;
         }
