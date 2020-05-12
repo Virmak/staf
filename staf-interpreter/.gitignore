@@ -36,7 +36,7 @@ hs_err_pid*
 .DS_Store
 
 # Maven
-log/
+src/main/java/com/sparkit/staf/core/logging/
 target/
 
 #Libbre office / XLS files

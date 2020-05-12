@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
+  settingsMenuExpanded = false;
+  webDriverSettingsModalOpen = false;
+  webDriverIpAddrInput = '';
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  setWebDriverIpAddress() {
   }
 
 }

@@ -187,7 +187,7 @@ export class ProjectService {
     return null;
   }
 
-  getProjectByName(name: string) {
+  getProjectByName(name: string): StafProject {
     for (let i = 0; i < this.projects.length; i++) {
       if (this.projects[i].getNormalizedProjectName() == name) {
         return this.projects[i];

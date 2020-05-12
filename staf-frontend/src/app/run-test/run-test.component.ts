@@ -1,3 +1,4 @@
+import { LogServiceService } from './../log-service.service';
 import { TestSuiteReport, TestSuiteResult } from './../types/test-suite-report';
 import { ToastrService } from 'ngx-toastr';
 import { IStafProject } from './../interfaces/istaf-project';
@@ -16,6 +17,7 @@ export class RunTestComponent implements OnInit {
 
   _testSuites = [];
   private _project: IStafProject;
+  dataListModel;
 
   public get project(): IStafProject {
     return this._project;
@@ -34,12 +36,16 @@ export class RunTestComponent implements OnInit {
 
   @Output() testCompleted = new EventEmitter();
 
-  constructor(private testService: TestService, private toastr: ToastrService) { }
+  constructor(
+    private testService: TestService, 
+    private toastr: ToastrService,
+    private logService: LogServiceService) { }
 
   ngOnInit(): void {
   }
 
   runSelectedTests() {
+    this.logService.newSession();
     this.progress = true;
     this.testService.runTest({
       project: this._project.name,
@@ -50,6 +56,7 @@ export class RunTestComponent implements OnInit {
   }
 
   runAllTests() {
+    this.logService.newSession();
     let testStartedToast = this.toastr.info(this._project.name + ' Tests are running', 'Test').toastRef;
     this.progress = true;
     this.testService.runTest({

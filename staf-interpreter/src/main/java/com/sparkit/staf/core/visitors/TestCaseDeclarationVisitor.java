@@ -12,6 +12,9 @@ public class TestCaseDeclarationVisitor extends StafBaseVisitor<TestCaseDeclarat
     @Override
     public TestCaseDeclaration visitTest_case_declaration(StafParser.Test_case_declarationContext ctx) {
         TestCaseDeclaration testCaseDeclaration = new TestCaseDeclaration();
+        for (StafParser.Test_case_beforeContext testCaseBeforeContext : ctx.test_case_before()) {
+
+        }
         StafParser.Test_case_priorityContext priorityContext = ctx.test_case_priority();
         if (priorityContext != null) {
             int order = Integer.parseInt(priorityContext.INT().getText());

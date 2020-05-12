@@ -1,6 +1,5 @@
 package com.sparkit.staf.domain.report;
 
-import com.sparkit.staf.core.ast.IStatement;
 import com.sparkit.staf.domain.TestResult;
 import lombok.Data;
 
@@ -9,11 +8,12 @@ import java.util.List;
 
 @Data
 public class StatementReport {
-    private IStatement statement;
-    private List<StatementReport> children;
-    private TestResult result;
-    private String errorMessage;
-    private String screenShot;
-    private Date start;
-    private Date end;
+    protected String name;
+    protected List<StatementReport> childReports;
+    protected TestResult result;
+    protected String errorMessage;
+    protected String screenShotAttachment;
+    protected Date start;
+    protected Date end;
+
 }

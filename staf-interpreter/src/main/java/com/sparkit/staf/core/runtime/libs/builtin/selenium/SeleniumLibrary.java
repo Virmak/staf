@@ -1,6 +1,8 @@
 package com.sparkit.staf.core.runtime.libs.builtin.selenium;
 
+import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
+import com.sparkit.staf.core.ast.types.StafBoolean;
 import com.sparkit.staf.core.ast.types.StafInteger;
 import com.sparkit.staf.core.ast.types.StafString;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
@@ -12,13 +14,20 @@ import com.sparkit.staf.core.runtime.libs.exceptions.InvalidSelectorException;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.Augmenter;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
@@ -27,18 +36,23 @@ import java.util.concurrent.TimeUnit;
 public class SeleniumLibrary extends AbstractStafLibrary {
     private Stack<WebDriver> webDrivers = new Stack<>();
     public static final int DEFAULT_TIMEOUT = 5;
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     private void setDefaultTimeout() {
         webDrivers.peek().manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
     }
     @Keyword(name = "open browser")
-    public void openBrowser(AbstractStafObject browser) throws UnsupportedBrowserDriverException {
+    public void openBrowser(AbstractStafObject browser) throws UnsupportedBrowserDriverException, MalformedURLException {
         String browserString = browser.getValue().toString();
-        System.out.println("open browser : " + browserString);
+        logger.info("open browser : " + browserString);
         if (browserString.equals("chrome")) {
-            webDrivers.push(new ChromeDriver());
+            webDrivers.push(new RemoteWebDriver(
+                    new URL("http://127.0.0.1:9515"),
+                    new ChromeOptions()));
         } else if (browserString.equals("firefox")) {
-            webDrivers.push(new FirefoxDriver());
+            webDrivers.push(new RemoteWebDriver(
+                    new URL("http://127.0.0.1:9515"),
+                    new FirefoxOptions()));
         } else {
             throw new UnsupportedBrowserDriverException(browserString);
         }
@@ -170,7 +184,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         }
     }
 
-    @Keyword(name = "page should contain element", doc = "Verifies that page contains and element 'locator'")
+    @Keyword(name = "page should contain element", doc = "Verifies that page contains element 'locator'")
     public void pageShouldContainElement(AbstractStafObject selector)
             throws ElementShouldContainException {
         By elementSelector =getLocatorFromString(selector.getValue().toString());
@@ -179,7 +193,12 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         }
     }
 
-
+    @Keyword(name = "page contains element", doc = "Returns if page contains element 'locator'")
+    public StafBoolean pageContainsElement(AbstractStafObject selector)
+            throws ElementShouldContainException {
+        By elementSelector =getLocatorFromString(selector.getValue().toString());
+        return new StafBoolean(webDrivers.peek().findElements(elementSelector).size() > 0);
+    }
 
     @Keyword(name = "wait until element is not visible")
     public void waitUntilElementIsNotVisible(AbstractStafObject selector, AbstractStafObject timeout) {

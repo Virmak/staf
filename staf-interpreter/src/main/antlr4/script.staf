@@ -1,15 +1,11 @@
-IMPORTS
-    import selenium
-    import std
-    import "../config.staf"
-VARS
-    $PURCHASE_ORDER_GRID    = "xpath://*[@id='gridPucrhaseSales']"
+TEST SUITE "Module Achats"
 
+TEST CASES
+    8 - sds import purchase order:
+        GIVEN   Add purchase final order openend()
+        WHEN    Select tier ($ORDER_TIERS)
 
-KEYWORDS
-    Add order page opened()
-        $x[5].tttt = 4545
-        For $i : [1,2,3]
-            Exit loop if (5 == 2)
-        ENDFOR
+    END
+
+    TEARDOWN:
     END

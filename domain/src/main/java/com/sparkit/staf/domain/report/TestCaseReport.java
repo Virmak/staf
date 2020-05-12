@@ -1,16 +1,11 @@
 package com.sparkit.staf.domain.report;
 
-import com.sparkit.staf.domain.TestResult;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.util.Date;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class TestCaseReport {
-    private int id;
-    private String testSuite;
-    private String testCase;
-    private TestResult result;
-    private Date startTime;
-    private Date endTime;
+public class TestCaseReport extends StatementReport {
+    protected String testCase;
+    protected String documentation;
 }

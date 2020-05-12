@@ -1,3 +1,4 @@
+import { WebSocketApiService } from './web-socket-api.service';
 import { ProjectService } from './project.service';
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -14,7 +15,8 @@ export class AppComponent implements OnInit {
   projects: IStafProject[];
   serverError = false;
 
-  constructor(public projectService: ProjectService) {}
+  constructor(public projectService: ProjectService,
+    private webSocket: WebSocketApiService) {}
 
   ngOnInit(): void {
 
@@ -24,6 +26,7 @@ export class AppComponent implements OnInit {
       this.projects = projects.filter(p => p != null);
     });
     this.projectService.next();
+    this.webSocket._connect();
   }
 
   confirmDeleteFile() {

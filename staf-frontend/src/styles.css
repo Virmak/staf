@@ -63,3 +63,20 @@
     line-height: 0;
     max-width: 70px;
 }
+
+
+.log-error {
+    color: #dc3545;
+}
+
+.log-warn {
+    color: #ffc107;
+}
+
+.log-info {
+    color: #d8d8d8;
+}
+
+.log-debug {
+    color: darkslateblue;
+}

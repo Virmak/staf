@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class UserKeywordReport extends StatementReport {
+public class KeywordReport extends StatementReport {
     protected String keywordName;
     protected String argsList;
 }

@@ -1,3 +1,5 @@
+import { ITestSuite } from './../interfaces/itest-suite';
+import { StafProject } from './../types/staf-project';
 import { FileType } from './../interfaces/ifile';
 import { FileEditorService } from './../file-editor.service';
 import { ProjectService } from './../project.service';
@@ -13,15 +15,25 @@ import { ToastrService } from 'ngx-toastr';
 export class EditFileComponent implements OnInit, OnDestroy {
 
   filePath;
-  project;
+  project: StafProject;
   file;
   content = '';
   fileChanged = false;
   saveModal = false;
 
-  editorOptions = {theme: 'vs-dark', language: 'staf'};
+  vsThemes = [
+    {value:'vs', name: 'Light theme'},
+    {value:'vs-dark', name: 'Dark theme'},
+    {value:'hc-black', name: 'High contrast'}
+  ];
+  selectedTheme = this.vsThemes[1];
+  editorOptions = {theme: this.selectedTheme.value, language: 'staf'};
 
   pathSplitted = [];
+
+  allTestSuite = {id:999, name: 'All', content: null};
+  testSuites: ITestSuite[];
+  selectedTestSuite: ITestSuite = this.allTestSuite;
 
   private keyEventListener = e => {
 
@@ -50,6 +62,11 @@ export class EditFileComponent implements OnInit, OnDestroy {
       const projectName = this.route.snapshot.paramMap.get('project');
       this.filePath = this.route.snapshot.paramMap.get('filePath');
       this.project = this.projectService.getProjectByName(projectName);
+      if (this.project == null) {
+        this.router.navigate(['/']);
+        return;
+      }
+      this.testSuites = [this.allTestSuite, ...this.project.testSuites];
       
       if (this.file && this.file.content != this.content) {
         this.showSaveDialog(this.content)
@@ -110,5 +127,9 @@ export class EditFileComponent implements OnInit, OnDestroy {
     this.file.content = this.content;
     this.saveModal = false;
     this.openFile();
+  }
+
+  onInitEditor(editor) {
+
   }
 }

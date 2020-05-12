@@ -10,7 +10,8 @@ export const environment = {
       urlArr[2] = urlArr[2].replace('4200', '8080');
     }
     return urlArr[0] + '//' + urlArr[2];
-  }
+  },
+  webSocket: 'http://127.0.0.1:8080/staf-ws'
 };
 
 /*

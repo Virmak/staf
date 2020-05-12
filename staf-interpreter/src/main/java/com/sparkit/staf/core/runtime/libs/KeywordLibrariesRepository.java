@@ -1,5 +1,6 @@
 package com.sparkit.staf.core.runtime.libs;
 
+import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
@@ -7,6 +8,8 @@ import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
 import com.sparkit.staf.core.runtime.loader.TestContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -29,13 +32,15 @@ public class KeywordLibrariesRepository {
     private TestContainer dependencyContainer;
     @Autowired LibraryFactory libraryFactory;
     /* Map keyword to library method */
-    private Map<String, KeywordDeclaration> userDefinedKeywords = new HashMap<>();;
-    private Map<String, KeywordWrapper> builtinKeywordMap = new HashMap<>();;
-    private Map<String, AbstractStafLibrary> libsInstancesMap = new HashMap<>();;
+    private Map<String, KeywordDeclaration> userDefinedKeywords = new HashMap<>();
+    private Map<String, KeywordWrapper> builtinKeywordMap = new HashMap<>();
+    private Map<String, AbstractStafLibrary> libsInstancesMap = new HashMap<>();
 
     public Map<String, KeywordDeclaration> getUserDefinedKeywords() {
         return userDefinedKeywords;
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public void registerLibrary(Class<? extends AbstractStafLibrary> libClass)
             throws KeywordAlreadyRegisteredException, InvocationTargetException,
@@ -74,6 +79,8 @@ public class KeywordLibrariesRepository {
 
     public Object invokeKeyword(String keyword, Object[] params) throws Throwable {
         String normalizedKeywordName = normalizeKeywordName(keyword);
+
+        logger.debug("Invoking Keyword : " + keyword);
         if (builtinKeywordMap.containsKey(normalizedKeywordName)) {
             try {
                 Object ret = builtinKeywordMap.get(normalizedKeywordName).invoke(params);

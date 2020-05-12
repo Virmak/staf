@@ -65,6 +65,12 @@ public interface StafVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTest_case_declaration(StafParser.Test_case_declarationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link StafParser#test_case_before}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTest_case_before(StafParser.Test_case_beforeContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link StafParser#test_case_body}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -106,6 +112,12 @@ public interface StafVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitRun_keyword_if(StafParser.Run_keyword_ifContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link StafParser#run_keyword_else}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRun_keyword_else(StafParser.Run_keyword_elseContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link StafParser#exit_loop}.
 	 * @param ctx the parse tree

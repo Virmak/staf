@@ -16,6 +16,7 @@
         <module>staf-frontend</module>
         <module>application</module>
         <module>domain</module>
+        <module>interpreter</module>
     </modules>
     <build>
         <plugins>

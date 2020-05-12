@@ -124,6 +124,18 @@ public class StafBaseListener implements StafListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTest_case_before(StafParser.Test_case_beforeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTest_case_before(StafParser.Test_case_beforeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterTest_case_body(StafParser.Test_case_bodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -203,6 +215,18 @@ public class StafBaseListener implements StafListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitRun_keyword_if(StafParser.Run_keyword_ifContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRun_keyword_else(StafParser.Run_keyword_elseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRun_keyword_else(StafParser.Run_keyword_elseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

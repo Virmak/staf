@@ -44,6 +44,13 @@ public class StdLibrary extends AbstractStafLibrary {
         return new StafString(str.getValue().toString().replaceAll(oldStr.getValue().toString(), newStr.getValue().toString()));
     }
 
+    @Keyword(name = "debugger")
+    public void debugger(AbstractStafObject args)
+            throws ShouldBeEqualException {
+        System.out.println(args);
+    }
+
+
     @Keyword(name = "range")
     public StafList range(AbstractStafObject from, AbstractStafObject to) throws ShouldBeEqualException {
         int start, end;

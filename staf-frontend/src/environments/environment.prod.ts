@@ -6,5 +6,10 @@ export const environment = {
       urlArr[2] = urlArr[2].replace('4200', '8080');
     }
     return urlArr[0] + '//' + urlArr[2];
-  }
+  },
+  resolveWebSocket: () => {
+    const urlArr = window.location.href.split('/');
+    return 'ws://' + urlArr[2] + ':15674/ws'
+  },
+  webSocket: '/staf-ws'
 };

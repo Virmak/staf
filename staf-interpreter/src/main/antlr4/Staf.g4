@@ -32,7 +32,13 @@ test_cases_section
     ;
 
 test_case_declaration
-    : test_case_priority? keyword_name ':' documentation? test_case_body END
+    : test_case_before* test_case_priority? keyword_name ':' documentation? test_case_body END
+    ;
+
+
+
+test_case_before
+    : '@' LBRACKET keyword_name RBRACKET
     ;
 
 test_case_body
@@ -92,7 +98,7 @@ keyword_return_stat
     ;
 
 keyword_name
-    : IDENTIFIER (IDENTIFIER)*
+    : (IDENTIFIER|IMPORT) (IDENTIFIER|IMPORT)*
     ;
 
 keyword_declaration_arguments

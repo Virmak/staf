@@ -98,6 +98,16 @@ public interface StafListener extends ParseTreeListener {
 	 */
 	void exitTest_case_declaration(StafParser.Test_case_declarationContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link StafParser#test_case_before}.
+	 * @param ctx the parse tree
+	 */
+	void enterTest_case_before(StafParser.Test_case_beforeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#test_case_before}.
+	 * @param ctx the parse tree
+	 */
+	void exitTest_case_before(StafParser.Test_case_beforeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link StafParser#test_case_body}.
 	 * @param ctx the parse tree
 	 */
@@ -167,6 +177,16 @@ public interface StafListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRun_keyword_if(StafParser.Run_keyword_ifContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link StafParser#run_keyword_else}.
+	 * @param ctx the parse tree
+	 */
+	void enterRun_keyword_else(StafParser.Run_keyword_elseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#run_keyword_else}.
+	 * @param ctx the parse tree
+	 */
+	void exitRun_keyword_else(StafParser.Run_keyword_elseContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link StafParser#exit_loop}.
 	 * @param ctx the parse tree

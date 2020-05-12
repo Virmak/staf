@@ -28,6 +28,7 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
 import { SafeHtmlPipe } from './safe-html.pipe';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { ItemTypePipe } from './item-type.pipe';
+import { LogConsoleComponent } from './log-console/log-console.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { ItemTypePipe } from './item-type.pipe';
     ImageViewerComponent,
     SafeHtmlPipe,
     ItemTypePipe,
+    LogConsoleComponent,
   ],
   imports: [
     BrowserModule,
