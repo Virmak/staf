@@ -52,6 +52,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         } else {
             webDriverUrl = new URL("http://127.0.0.1:9515");
         }
+        logger.info("Connecting to web driver at : " + webDriverUrl);
         if (browserString.equals("chrome")) {
             webDrivers.push(new RemoteWebDriver(
                     webDriverUrl,
