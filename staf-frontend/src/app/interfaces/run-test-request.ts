@@ -1,4 +1,5 @@
 export class RunTestRequest {
     project: string;
-    testSuites: string[];   
+    testSuites: string[];
+    webDriverAddress?: string;
 }

@@ -13,9 +13,7 @@ import com.sparkit.staf.core.runtime.libs.builtin.selenium.exceptions.*;
 import com.sparkit.staf.core.runtime.libs.exceptions.InvalidSelectorException;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -23,6 +21,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +36,8 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     private Stack<WebDriver> webDrivers = new Stack<>();
     public static final int DEFAULT_TIMEOUT = 5;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    @Value("${webDriver}")
+    String webDriver;
 
     private void setDefaultTimeout() {
         webDrivers.peek().manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
@@ -45,13 +46,19 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     public void openBrowser(AbstractStafObject browser) throws UnsupportedBrowserDriverException, MalformedURLException {
         String browserString = browser.getValue().toString();
         logger.info("open browser : " + browserString);
+        URL webDriverUrl;
+        if (webDriver != null) {
+            webDriverUrl = new URL("http://" + webDriver);
+        } else {
+            webDriverUrl = new URL("http://127.0.0.1:9515");
+        }
         if (browserString.equals("chrome")) {
             webDrivers.push(new RemoteWebDriver(
-                    new URL("http://127.0.0.1:9515"),
+                    webDriverUrl,
                     new ChromeOptions()));
         } else if (browserString.equals("firefox")) {
             webDrivers.push(new RemoteWebDriver(
-                    new URL("http://127.0.0.1:9515"),
+                    webDriverUrl,
                     new FirefoxOptions()));
         } else {
             throw new UnsupportedBrowserDriverException(browserString);

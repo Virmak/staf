@@ -8,4 +8,5 @@ import java.util.List;
 public class RunTestRequest {
     private String project;
     private List<String> testSuites;
+    private String webDriverAddress;
 }

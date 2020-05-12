@@ -32,11 +32,14 @@ public class StafTestFacade {
 
     private static Logger logger = LogManager.getLogger(Main.class);
 
-    public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, List<String> testSuites) throws ConfigFileNotFoundException {
+    public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, List<String> testSuites, String webDriver) throws ConfigFileNotFoundException {
         stafConfig.readConfigFile(projectDir, configFile);
         String logFilePath = stafConfig.getLogDirectory() + "/" + getCurrentDateTime() + ".log";
         System.setProperty("logging.file", logFilePath);
         System.setProperty("testDirectory", testDir);
+        if (webDriver != null) {
+            System.setProperty("webDriver", webDriver);
+        }
 
         logger.info("Running project '" + projectDir + "' ");
 

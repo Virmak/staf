@@ -52,18 +52,15 @@ export class RunTestComponent implements OnInit {
       testSuites: this._testSuites.filter(ts => ts.checked).map(ts => ts.name),
     })
       .subscribe(this.testComplete.bind(this), this.testFailed.bind(this));
-    this.toastr.info(this._project.name + ' Tests are running', 'Test');
   }
 
   runAllTests() {
     this.logService.newSession();
-    let testStartedToast = this.toastr.info(this._project.name + ' Tests are running', 'Test').toastRef;
     this.progress = true;
     this.testService.runTest({
       project: this._project.name,
       testSuites: this._testSuites.map(ts => ts.name),
     }).subscribe(this.testComplete.bind(this), err => {
-      testStartedToast.close();
       this.testFailed();
     });
   }
