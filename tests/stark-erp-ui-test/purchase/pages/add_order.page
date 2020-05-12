@@ -1,31 +1,57 @@
 IMPORTS
-    IMPORT selenium
-
+    import selenium
+    import std
+    import "../config.staf"
+    import "./product_list_modal.page"
 VARS
-    $PURCHASE_ORDER_ADD     = "tag:app-purchase-order-add"
-    $TIER_INPUT             = "xpath://app-supplier-dropdown//input"
-    $TIER_LIST_ITEM         = "xpath://kendo-popup//kendo-list//b[contains(text(), 'Tiers 15')]"
-    $KENDO_POPUP            = "tag:kendo-popup"
-    $ITEM_INPUT             = "xpath://app-purchase-order-grid//kendo-grid//kendo-grid-list//app-item-dropdown//kendo-combobox//kendo-searchbar/input"
-    $QTY_INPUT              = "xpath://app-purchase-order-grid//kendo-grid-list//app-grid-cell-input-template[@controlname='MovementQty']//input"
-    $ORDER_LINE_SAVE_BTN    = "id:btnSave"
+    $PURCHASE_ORDER_GRID        = "xpath://*[@id='gridPucrhaseSales']"
+    $PURCHASE_ORDER_ADD         = "tag:app-purchase-order-add"
+    $CANCEL_ORDER_LINE          = "xpath://*[@id='gridPucrhaseSales']//kendo-grid-list//table//button[contains(@class, 'k-grid-cancel-command')]"
+    $QTY_INPUT                  = "xpath://kendo-grid-list//app-grid-cell-input-template[@controlname='MovementQty']//input"
+    
+    $ORDER_LINE_SAVE_BTN        = "id:btnSave"
+    $QTY_COL                    = "xpath://app-purchase-order-grid//kendo-grid//kendo-grid-list//tr[@data-kendo-grid-item-index='0']/td[2]/div"
+    $UNIT_PRICE_INPUT           = "xpath://app-purchase-order-grid//kendo-grid//kendo-grid-list//table/tbody/tr[1]/td[@aria-colindex='6']"
+    $ORDER_LINES_COUNT          = 0
+    
+    $TOTAL_HT_INPUT             = "xpath://kendo-numerictextbox[@formcontrolname='DocumentHtpriceWithCurrency']//input"
+    $TOTAL_TTC                  = "xpath://kendo-numerictextbox[@formcontrolname='DocumentTtcpriceWithCurrency']//input"
 
+    $PRODUCT_ADDED_NOTIFICATION = "xpath://ng-snotify//ng-snotify-toast/div/div/div[2][contains(text(), 'Ligne ajoutée avec succès dans le document')]"
+
+    $ORDER_ID_INPUT             = "xpath://app-purchase-order-add//form//input[@formcontrolname='Code']"
+    $ORDER_ID                   = ""
+    
 KEYWORDS
     Add order page opened()
         Wait until element is visible   ($PURCHASE_ORDER_ADD)
         Element should be visible       ($PURCHASE_ORDER_ADD)
     END
 
-    Select tier dropdown item ($tier)
-        Wait until element is visible   ($KENDO_POPUP)
-        Wait until element is visible   ("xpath://kendo-popup//kendo-list//b[contains(text(), '" + $tier + "')]")
-        Click element                   ("xpath://kendo-popup//kendo-list//b[contains(text(), '" + $tier + "')]")
+    Get purchase order id ()
+        Wait until element is visible   ($ORDER_ID_INPUT)
+        $ORDER_ID = Input value         ($ORDER_ID_INPUT)
+        Log("Order Id : " + $ORDER_ID)
     END
 
-    Select tier ($tier)
-        Wait until element is visible   ($TIER_INPUT)
-        Input text                      ($TIER_INPUT, $tier)
-        Select tier dropdown item       ($tier)
+
+    Add Order line ($productId, $quantity)
+        log("Adding product : " + $productId + " Quantity : " + $quantity)
+        Search product by reference     ($productId)
+        Set product quantity            (1, $quantity)
+        Add product                     (1)
+        Wait until element is visible   ($PRODUCT_ADDED_NOTIFICATION)
+        Element should be visible       ($PRODUCT_ADDED_NOTIFICATION)
+    END
+
+    Click orders grid()
+        Click element                   ($PURCHASE_ORDER_GRID)
+    END
+
+    Cancel order line()
+        Wait until element is visible   ($CANCEL_ORDER_LINE)
+        Wait until element is enabled   ($CANCEL_ORDER_LINE)
+        Click element                   ($CANCEL_ORDER_LINE)
     END
 
     Select item by id ($itemId)
@@ -44,3 +70,60 @@ KEYWORDS
         Wait until element is visible   ($ORDER_LINE_SAVE_BTN)
         Click element                   ($ORDER_LINE_SAVE_BTN)
     END
+
+    Get order line quantity($line)
+        $selector = "xpath://app-purchase-order-add//app-purchase-order-grid//kendo-grid//kendo-grid-list//tr["+ $line + "]/td[3]//input"
+        Wait until element is visible   ($selector)
+        $qt = Get element attribute     ($selctor, "value")
+        $quantity = Trim                ($qt)
+    RETURN $quantity
+
+    Get order line purchase unit price($line)
+        $selector = "xpath://app-purchase-order-add//app-purchase-order-grid//kendo-grid//kendo-grid-list//tr["+ $line + "]/td[4]"
+        Wait until element is visible   ($selector)
+        $p = Get element attribute      ($selector, "innerText")
+        $price = Parse number           ($p)
+    RETURN $price
+
+    Get order line ht price($line)
+        log("Get order line ht price : " + $line)
+        Run keyword if ( Page contains element($QTY_INPUT) ) 
+            Press key($QTY_INPUT, 'Escape')
+        $selector = "xpath://app-purchase-order-add//app-purchase-order-grid//kendo-grid//kendo-grid-list//tr["+ $line + "]/td[10]"
+        Wait until element is visible   ($selector)
+        $p = Get element attribute      ($selector, "innerText")
+        debugger($p)
+        $price = Parse number           ($p)
+        debugger($p)
+
+    RETURN $price
+
+    Get order line ttc price($line)
+        log("Get order line ttc price : " + $line)
+        Run keyword if ( Page contains element($QTY_INPUT) ) 
+            Press key($QTY_INPUT, 'Escape')
+        $p = Get element attribute("xpath://app-purchase-order-add//app-purchase-order-grid//kendo-grid//kendo-grid-list//tr["+ $line + "]/td[11]", "innerText")
+        $price = Parse number ($p)
+    RETURN $price
+
+    Get total hors tax amount()
+        Wait until element is visible   ($TOTAL_HT_INPUT)
+        $val = Input value              ($TOTAL_HT_INPUT)
+        $val = Parse number             ($val)
+    RETURN $val
+
+    Get total ttc amount()
+        Wait until element is visible   ($TOTAL_TTC)
+        $val = Input value              ($TOTAL_TTC)
+        $val = Parse number             ($val)
+    RETURN $val
+
+    TTTT()
+        Select item by id ($productId)
+        Set order line quantity($quantity)
+        Click save order line()
+        $ORDER_LINES_COUNT = $ORDER_LINES_COUNT + 1
+    END
+
+    Get last inserted order id()
+    RETURN $ORDER_ID

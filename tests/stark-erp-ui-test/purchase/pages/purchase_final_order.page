@@ -1,0 +1,34 @@
+VARS
+    $PURCHASE_FINAL_ORDER_LINK          = "xpath://app-document-menu//a[@href='/main/purchase/purchasefinalorder']"
+    $PURCHASE_FINAL_ORDER_HEADER        = "xpath://h3[contains(text(), 'Liste des factures achat')]"
+    $ADD_PURCHASE_FINAL_ORDER           = "xpath://a[@href='/main/purchase/purchasefinalorder/add']"
+    $APP_PURCHASE_FINAL_ORDER           = "xpath://app-purchase-final-order-add"
+    $IMPORT_PURCHASE_ORDER_BTN          = "xpath://button[@data-target='#ImportBLModal']"
+    $PURCHASE_FINAL_ORDER_TIERS_INPUT   = "xpath://kendo-combobox[@name='IdTiers']//input"
+KEYWORDS
+    Open purchase final order page()
+        Wait until element is visible   ($PURCHASE_FINAL_ORDER_LINK)
+        Click element                   ($PURCHASE_FINAL_ORDER_LINK)
+    END
+
+    Purchase final order page opened()
+        Wait until element is visible   ($PURCHASE_FINAL_ORDER_HEADER)
+        Element should be visible       ($PURCHASE_FINAL_ORDER_HEADER)
+    END
+
+    Click add purchase final order()
+        Wait until element is visible   ($ADD_PURCHASE_FINAL_ORDER)
+        Click element                   ($ADD_PURCHASE_FINAL_ORDER)
+    END
+
+    Add purchase final order openend()
+        Wait until element is visible   ($APP_PURCHASE_FINAL_ORDER)
+        Click element                   ($APP_PURCHASE_FINAL_ORDER)
+    END
+    
+    Click import purchase order()
+        Wait until element is visible ($IMPORT_PURCHASE_ORDER_BTN)
+        Click element($IMPORT_PURCHASE_ORDER_BTN)
+    END
+
+    

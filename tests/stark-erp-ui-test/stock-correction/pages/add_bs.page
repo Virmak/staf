@@ -1,0 +1,8 @@
+VARS
+    $APP_BS_ADD     = "tag:app-bs-add"
+KEYWORDS
+
+    Add bs page opened()
+        Wait until element is visible   ($APP_BS_ADD)
+        Element should be visible       ($APP_BS_ADD)
+    END

@@ -7,5 +7,6 @@ KEYWORDS
     Input username and password ($username, $password)
         Input username          ($username)
         Input password          ($password)
+        Select Company          ('Automation Test')
         Click login button      ()
     END

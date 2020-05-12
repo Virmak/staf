@@ -1,0 +1,91 @@
+IMPORTS
+    import selenium
+VARS
+    $PRODUCT_LIST_MODAL_HEADER  = "xpath://modal-dialog//div/h4[contains(text(), 'Liste des produits')]"     
+    $CLOSE_PRODUCT_LIST_MODAL   = "xpath://modal-dialog/div[2]/div/div/div[1]/button"
+    $PRODUCT_LIST_GRID          = "xpath://modal-dialog//app-search-item-add//app-fetch-products/app-list-products//kendo-grid"
+    $PRODUCT_GRID_ROWS          = "xpath://modal-dialog//app-search-item-add//app-fetch-products/app-list-products//kendo-grid//kendo-grid-list//table/tbody/tr"
+    $PRODUCT_GRID_ROWS_COUNT    = 0
+    $SEARCH_PRODUCT_REF_INPUT   = "xpath://modal-dialog//app-search-item-add//*[@id='referenceInput']"
+    $SEARCH_PRODUCT_BTN         = "xpath://modal-dialog//app-search-item-add//*[@id='button-addon2']"
+
+
+    $ITEM_INPUT                 = "xpath://kendo-grid//kendo-grid-list//app-item-dropdown//kendo-combobox//kendo-searchbar/input"
+    $OPEN_SEARCH_PRODUCT_BTN    = "xpath://div/kendo-grid-list//div/app-item-dropdown//button"
+    $ADD_ORDER_LINE_BTN         = "xpath://kendo-grid-toolbar//button/span[contains(text(), 'Ajouter une ligne')]"
+KEYWORDS
+    Close product list modal()
+        Wait until element is not visible ($PRODUCT_ADDED_NOTIFICATION)
+        Wait until element is visible ($CLOSE_PRODUCT_LIST_MODAL)
+        Wait until element is enabled ($CLOSE_PRODUCT_LIST_MODAL)
+        Click element($CLOSE_PRODUCT_LIST_MODAL)
+    END
+
+    Get product price($line)
+        $selector = "xpath://modal-dialog//app-search-item-add//app-fetch-products/app-list-products//kendo-grid/div/kendo-grid-list//tbody/tr[" + $line + "]/td[8]/kendo-numerictextbox"
+        Wait until element is visible ($selector)
+        $price = Get element attribute($selector, "innerText")
+    RETURN $price
+
+    Set product quantity($line, $quantity)
+        $selector = "xpath://modal-dialog//app-search-item-add//app-fetch-products/app-list-products//kendo-grid/div/kendo-grid-list//tbody/tr[" + $line + "]/td[12]//input"
+        Wait until element is enabled ($selector)
+        Input text($selector, $quantity)
+    END
+
+    Add product($line)
+        $selector = "xpath://modal-dialog//app-search-item-add//app-fetch-products/app-list-products//kendo-grid/div/kendo-grid-list//tbody/tr[" + $line + "]/td[12]//button"
+        Wait until element is enabled ($selector)
+        Click element($selector)
+    END
+
+    Get product reference($line)
+        $selector = "xpath://modal-dialog//app-search-item-add//app-fetch-products/app-list-products//kendo-grid/div/kendo-grid-list//tbody/tr[" + $line + "]/td[3]//a"
+        Element should be visible($selector)
+        $ref = Get element attribute($selector, "innerText")
+    RETURN $ref
+
+    Get product line by reference($reference)
+        $line = 0
+        FOR $i : range(1, $PRODUCT_GRID_ROWS_COUNT)
+            $line = $line + 1
+            $ref = Get product reference($i)
+            Exit Loop If ($ref == $reference)
+        ENDFOR
+    RETURN $line
+
+    Get product rows count()
+        Wait until element is visible ($PRODUCT_LIST_GRID)
+        $PRODUCT_GRID_ROWS_COUNT = Get element count($PRODUCT_GRID_ROWS)
+    RETURN $PRODUCT_GRID_ROWS_COUNT
+    
+    Search product by reference($reference)
+        Wait until element is visible ($SEARCH_PRODUCT_REF_INPUT)
+        Wait until element is enabled ($SEARCH_PRODUCT_REF_INPUT)
+        Input text($SEARCH_PRODUCT_REF_INPUT, $reference)
+        Wait until element is visible ($SEARCH_PRODUCT_BTN)
+        Wait until element is enabled ($SEARCH_PRODUCT_BTN)
+        Click element($SEARCH_PRODUCT_BTN)
+    END
+
+    Click add order line()
+        Wait until element is visible   ($ADD_ORDER_LINE_BTN)
+        Click element                   ($ADD_ORDER_LINE_BTN)
+    END
+
+    Click search product()
+        $itemInputCount = Get element count($ITEM_INPUT)
+        Run keyword if($itemInputCount == 0) Click add order line()
+        Wait until element is visible ($OPEN_SEARCH_PRODUCT_BTN)
+        Wait until element is enabled ($OPEN_SEARCH_PRODUCT_BTN)
+        Click element($OPEN_SEARCH_PRODUCT_BTN)
+    END
+
+    Open product list modal()
+        Click search product()
+        Close product list modal()
+        Click search product()
+        Wait until element is visible ($PRODUCT_LIST_MODAL_HEADER)
+        Wait until element is visible ($PRODUCT_LIST_GRID)
+        Get product rows count()
+    END

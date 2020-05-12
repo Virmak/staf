@@ -4,4 +4,4 @@ IMPORTS
     IMPORT selenium
 
 VARS
-    $PURCHASE_PAGE_URL = "http://192.168.1.230:4422/main/purchase/purchaseorder"
+    $PURCHASE_PAGE_URL = "http://192.168.1.230:4100/main/purchase/purchaseorder"

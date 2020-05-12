@@ -1,0 +1,45 @@
+TEST SUITE "Correction de stock"
+IMPORTS
+    import std
+    import "../authentication/main.staf"
+    import "../authentication/pages/home.page"
+    import "../purchase/pages/product_list_modal.page"
+    import "../purchase/pages/add_order.page"
+    import "./pages/bs.page"
+    import "./pages/add_bs.page"
+VARS
+    $BS_TIER = "Tiers 41100001"
+    $BS_PRODUCT_ID = "KC22"   
+
+KEYWORDS
+
+TEST CASES
+    SETUP:
+        Open browser                    ('chrome')
+        Maximize browser window()
+        User login()
+    END
+
+    1 - Test go to bs page:
+        GIVEN   Home page opened()
+        WHEN    Open bs page()
+        THEN    BS page opened()
+    END
+
+    2 - Test go to add bs page:
+        GIVEN   BS page opened()
+        WHEN    Click add bs button()
+        THEN    Add bs page opened()
+    END
+
+    3 - Test add order:
+        Add BS page opened()
+        Select tier ($BS_TIER)
+        Open product list modal()
+        Add Order line ($BS_PRODUCT_ID, 2)
+        Close product list modal()
+    END
+
+
+    TEARDOWN:
+    END

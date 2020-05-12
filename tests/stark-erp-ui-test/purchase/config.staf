@@ -1,0 +1,12 @@
+VARS
+    $VAT = 0.19
+    $LANGUAGE_BTN = "xpath://app-language-dropdown/li/a"
+
+KEYWORDS
+    Set Language($language)
+        Wait until element is visible ($LANGUAGE_BTN)
+        Click element($LANGUAGE_BTN)
+        $langSelector = "xpath://app-language-dropdown/li/div/button[contains(., '" + $language + "')]"
+        Wait until element is visible ($langSelector)
+        Click element($langSelector)
+    END

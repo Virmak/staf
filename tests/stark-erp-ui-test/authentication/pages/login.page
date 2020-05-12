@@ -4,11 +4,13 @@ IMPORTS
     IMPORT selenium
 
 VARS
-    $USERNAME_FIELD = "name:Email"
-    $PASSWORD_FIELD = "name:password"
-    $LOGIN_BTN      = "css:button[type=submit]"
-    $ERROR_MESSAGE  = "css:.snotifyToast__inner"
-    $LOGIN_PAGE_URL = "http://192.168.1.230:4422/login"
+    $LOGIN_PAGE_URL         = "http://192.168.1.230:4422/login"
+    $USERNAME_FIELD         = "name:Email"
+    $PASSWORD_FIELD         = "name:password"
+    $LOGIN_BTN              = "css:button[type=submit]"
+    $ERROR_MESSAGE          = "css:.snotifyToast__inner"
+    $COMPANY_INPUT          = "xpath://app-login//form//kendo-combobox//kendo-searchbar/input"
+    $CLEAR_COMPANY_INPUT    = "xpath://app-login//form//kendo-combobox/span/span"
 
 KEYWORDS
     Login page opened()
@@ -37,4 +39,13 @@ KEYWORDS
     Error Message Displayed()
         Wait until element is visible   ($ERROR_MESSAGE)
         Element should be visible       ($ERROR_MESSAGE)
+    END
+    
+    Select Company($company)
+        Wait until element is enabled   ($COMPANY_INPUT)
+        Set focus to element            ($COMPANY_INPUT)
+        Click element                   ($CLEAR_COMPANY_INPUT)
+        Input Text                      ($COMPANY_INPUT, $company)
+        Wait until element is visible   ("xpath://kendo-popup//kendo-list/div/ul/li")
+        Click element                   ("xpath://kendo-popup//kendo-list/div/ul/li")
     END
