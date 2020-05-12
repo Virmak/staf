@@ -31,7 +31,7 @@
     <div class="modal-body">
         <form clrForm (submit)="setWebDriverIpAddress()">
             <clr-input-container>
-                <label>Web driver address</label>
+                <label class="clr-col-6">Web driver address</label>
                 <input clrInput placeholder="0.0.0.0" 
                     required
                     name="webDriverIp" 
@@ -46,6 +46,12 @@
 
                 <clr-control-error *clrIfError="'pattern';  error as err">You need to provide a valid IPv4 address</clr-control-error>
             </clr-input-container>
+            <clr-toggle-container>
+                <clr-toggle-wrapper>
+                  <input type="checkbox" clrToggle value="headless" name="headless" />
+                  <label>Run tests in headless mode</label>
+                </clr-toggle-wrapper>
+            </clr-toggle-container>
         </form>
        
     </div>

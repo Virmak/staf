@@ -35,6 +35,7 @@ public class TestRunner {
     private String testDirectory;
 
     public List<TestSuiteReport> runTests(List<String> testSuites) {
+        logger.info("Started running tests at " + new Date());
         List<TestSuiteReport> testSuiteReports = new ArrayList<>();
         for (String testSuite : config.testSuites()) {
             if (!testSuites.contains(testSuite)) {
@@ -58,6 +59,7 @@ public class TestRunner {
             testSuiteReport.setEnd(new Date());
             testSuiteReports.add(testSuiteReport);
         }
+        logger.info("Finished running tests at " + new Date());
         return testSuiteReports;
     }
 

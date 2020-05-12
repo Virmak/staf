@@ -51,6 +51,8 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get("setup");
         TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get("teardown");
         testDirectory = System.getProperty("testDirectory");
+        logger.info("Started executing test suite : [" + testSuite + "] "
+                + mainStafFile.getTestCaseDeclarationMap().size() + " Test cases found");
         try {
             Map<String, Assignment> varsAssignments = mainStafFile.getVariableDeclarationMap();
             Map<String, KeywordDeclaration> keywordsMap = mainStafFile.getKeywordDeclarationMap();
@@ -104,7 +106,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         testCaseReport.setResult(TestResult.Pass);
         testCaseReport.setStatementReports(new ArrayList<>());
         String lastErrorMessage = null;
-        logger.info("Executing test case : " + testCaseDeclaration.getName());
+        logger.info("Started executing test case : [" + testCaseDeclaration.getName() + "]");
         OnStatementFailed statementFailed = (statementReport) -> {
             testCaseReport.setResult(TestResult.Fail);
             if (!keywordLibrariesRepository.isKeywordDeclared("capturescreenshot")) {

@@ -1,8 +1,8 @@
 package com.sparkit.staf.application.service;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import com.sparkit.staf.core.logging.LogObserver;
-import com.sparkit.staf.core.logging.SubscriptionAppender;
+import com.sparkit.staf.core.logger.LogObserver;
+import com.sparkit.staf.core.logger.SubscriptionAppender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;

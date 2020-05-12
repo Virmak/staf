@@ -7,7 +7,7 @@
             </pattern>
         </encoder>
     </appender>
-    <appender name="sub" class="com.sparkit.staf.core.logging.SubscriptionAppender">
+    <appender name="sub" class="com.sparkit.staf.core.logger.SubscriptionAppender">
         <prefix>test</prefix>
     </appender>
 

@@ -39,7 +39,7 @@ export class RunTestComponent implements OnInit {
   constructor(
     private testService: TestService, 
     private toastr: ToastrService,
-    private logService: LogServiceService) { }
+    public logService: LogServiceService) { }
 
   ngOnInit(): void {
   }
@@ -87,7 +87,7 @@ export class RunTestComponent implements OnInit {
     });
 
     this.testCompleted.emit(this.project.reports);
-    this.progress = false;
+    //this.progress = false;
     if (hasErrors) {
       this.toastr.warning("Some test suites encountered errors please refer to logs to learn more about the problem", "Error")
     } else {
@@ -95,7 +95,7 @@ export class RunTestComponent implements OnInit {
     }
   }
   testFailed() {
-    this.progress = false;
+    //this.progress = false;
     this.toastr.error('Tests execution failed', 'Error');
   }
 }

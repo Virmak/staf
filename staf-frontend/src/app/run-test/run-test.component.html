@@ -1,5 +1,11 @@
-<div *ngIf="progress" class="progress loop"><progress></progress></div>
+<div  *ngIf="progress">
+  <span><clr-icon shape="info-circle" class="is-solid"></clr-icon> Executing test case : {{logService.currentTestCaseIndex}} / {{logService.totalTestCases}} {{logService.currentTestCase?.name}}</span>
 
+<clr-progress-bar [clrLabeled]="true"
+[clrMax]="logService.totalTestCases" [clrValue]="logService.currentTestCaseIndex"
+[clrDisplayval]="(logService.currentTestCaseIndex *100 / logService.totalTestCases) + '%'" ></clr-progress-bar>
+
+</div>
 <br>
 
 <div class="btn-group btn-primary">
