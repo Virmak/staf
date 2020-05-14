@@ -39,6 +39,13 @@ export class LogServiceService {
         this.totalTestCases = testSuiteStartedMatch[2];
     }
 
+    const testCaseFinishedMatch = message.match(/Finished executing test case : \[(.*?)\] (.*?)/);
+    if (testCaseFinishedMatch) {
+      let logClass;
+      logClass = testCaseFinishedMatch[2] == 'Pass' ? 'log-success' : 'log-error';
+      message = '<span class="' + logClass + '">' + message + '</span>' 
+    }
+
     this.logContent += message + '<br>';
   }
   

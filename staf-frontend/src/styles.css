@@ -66,17 +66,21 @@
 
 
 .log-error {
-    color: #dc3545;
+    color: #e74c3c;
 }
 
 .log-warn {
-    color: #ffc107;
+    color: #f39c12;
 }
 
 .log-info {
-    color: #d8d8d8;
+    color: #ecf0f1;
 }
 
 .log-debug {
     color: darkslateblue;
+}
+
+.log-success {
+    color: #2ecc71;
 }

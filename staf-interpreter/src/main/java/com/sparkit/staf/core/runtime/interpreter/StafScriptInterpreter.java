@@ -150,7 +150,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         testCaseReport.setEnd(new Date());
         testCaseReport.setErrorMessage(lastErrorMessage);
 
-        logger.info("Finished executing test case : " + testCaseDeclaration.getName());
+        logger.info("Finished executing test case : [" + testCaseDeclaration.getName() + "] " + testCaseReport.getResult());
         return testCaseReport;
     }
 

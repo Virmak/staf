@@ -11,7 +11,7 @@ export const environment = {
     }
     return urlArr[0] + '//' + urlArr[2];
   },
-  webSocket: 'http://127.0.0.1:8080/staf-ws'
+  webSocket: () => 'http://127.0.0.1:8080/staf-ws'
 };
 
 /*

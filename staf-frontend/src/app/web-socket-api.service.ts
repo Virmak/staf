@@ -16,7 +16,7 @@ export class WebSocketApiService {
 
   _connect() {
     console.log("Initialize WebSocket Connection");
-    let ws = new SockJS(environment.webSocket);
+    let ws = new SockJS(environment.webSocket());
     this.stompClient = Stomp.over(ws);
     const _this = this;
     _this.stompClient.connect({}, function (frame) {
