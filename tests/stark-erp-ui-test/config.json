@@ -1,0 +1,12 @@
+{
+  "project": "STARK ERP UI TEST",
+  "description": "Test and validation of the STARK ERP",
+  "logDir": "logs",
+  "reportsDir": "reports",
+  "type": "UITest",
+  "testSuites": [
+    "authentication",
+    "purchase",
+    "stock-correction"
+  ]
+}

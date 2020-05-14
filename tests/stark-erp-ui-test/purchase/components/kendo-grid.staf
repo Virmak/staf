@@ -1,0 +1,7 @@
+VARS
+    $ADD_ROW_CANCEL_BTN = "xpath://tr[contains(@class, 'k-grid-add-row')]//button[@kendogridcancelcommand]"
+KEYWORDS
+    Click cancel add row button()
+        Wait until element is visible ($ADD_ROW_CANCEL_BTN)
+        Click element($ADD_ROW_CANCEL_BTN)
+    END

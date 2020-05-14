@@ -1,0 +1,11 @@
+tr {
+    color: black;
+}
+
+.Failed {
+    color: #ff0000;
+}
+
+.Passed {
+    color: #006924;
+}

@@ -1,0 +1,38 @@
+<h3>Edit file</h3>
+
+<form clrForm>
+<clr-select-container>
+    <label>Test Suite</label>
+    <select clrSelect [(ngModel)]="selectedTestSuite" name="testSuites">
+        <option *ngFor="let ts of testSuites" [ngValue]="ts">{{ts.name}}</option>
+    </select>
+  </clr-select-container>
+</form>
+<br>
+
+<div class="flex-line">
+    <div class="filePath">
+        <span *ngFor="let p of pathSplitted"> <a (click)="fileEditorService.openFile(p, project)">{{p.name}}</a> > </span>
+    </div>
+
+    <div>
+    
+    <button class="btn btn-primary" [disabled]="!fileChanged" (click)="saveFile()">Save</button>
+    </div>
+</div>
+<!--
+<app-ace-editor [file]="file" (onQuit)="showSaveDialog($event)" (contentChanged)="fileContentChanged($event)"></app-ace-editor>
+-->
+<div style="height: 800px;">
+    <ngx-monaco-editor style="height: 100%" [options]="editorOptions" [(ngModel)]="content" (onInit)="onInitEditor($event)"></ngx-monaco-editor>
+</div>
+<clr-modal [(clrModalOpen)]="saveModal">
+    <h3 class="modal-title">Save file</h3>
+    <div class="modal-body">
+        <p>Do you want to save changes you made?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="resetFileContent()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="openFile()">Ok</button>
+    </div>
+</clr-modal>

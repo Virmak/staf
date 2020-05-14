@@ -1,0 +1,51 @@
+TEST SUITE "Authentication"
+
+IMPORTS
+    IMPORT selenium
+
+VARS
+    $LOGIN_PAGE_URL         = "http://192.168.1.230:4422/login"
+    $USERNAME_FIELD         = "name:Email"
+    $PASSWORD_FIELD         = "name:password"
+    $LOGIN_BTN              = "css:button[type=submit]"
+    $ERROR_MESSAGE          = "css:.snotifyToast__inner"
+    $COMPANY_INPUT          = "xpath://app-login//form//kendo-combobox//kendo-searchbar/input"
+    $CLEAR_COMPANY_INPUT    = "xpath://app-login//form//kendo-combobox/span/span"
+
+KEYWORDS
+    Login page opened()
+        Go to                           ($LOGIN_PAGE_URL)
+        Wait until element is visible   ($USERNAME_FIELD)
+        Element should be visible       ($USERNAME_FIELD)
+        Wait until element is visible   ($PASSWORD_FIELD)
+        Element should be visible       ($PASSWORD_FIELD)
+    END
+
+    Input Username($username)
+        Wait until element is enabled   ($USERNAME_FIELD)
+        Input Text                      ($USERNAME_FIELD, $username)
+    END
+
+    Input Password($password)
+        Wait until element is enabled   ($PASSWORD_FIELD)
+        Input Text                      ($PASSWORD_FIELD, $password)
+    END
+
+    Click Login Button()
+        Wait until element is enabled   ($LOGIN_BTN)
+        Click element                   ($LOGIN_BTN)
+    END
+
+    Error Message Displayed()
+        Wait until element is visible   ($ERROR_MESSAGE)
+        Element should be visible       ($ERROR_MESSAGE)
+    END
+    
+    Select Company($company)
+        Wait until element is enabled   ($COMPANY_INPUT)
+        Set focus to element            ($COMPANY_INPUT)
+        Click element                   ($CLEAR_COMPANY_INPUT)
+        Input Text                      ($COMPANY_INPUT, $company)
+        Wait until element is visible   ("xpath://kendo-popup//kendo-list/div/ul/li")
+        Click element                   ("xpath://kendo-popup//kendo-list/div/ul/li")
+    END

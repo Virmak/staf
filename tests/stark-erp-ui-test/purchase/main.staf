@@ -1,0 +1,116 @@
+TEST SUITE "Module Achats"
+IMPORTS
+    import selenium
+    import logger
+    import std
+    import "./pages/order.page"
+    import "./pages/add_order.page"
+    import "./pages/purchase_final_order.page"
+    import "./components/app-supplier-dropdown.staf"
+    import "./components/app-purchase-final-order-add.staf"
+    import "./components/kendo-grid.staf"
+    import "../authentication/main.staf"
+    import "../authentication/pages/home.page"
+    import "./config.staf"
+VARS
+    $productList = [
+        { reference: 1206, quantity: 3},
+        { reference: 1208, quantity: 5}
+    ]
+    $calculatedTotalTTC = -1
+    $calculatedTotalHT = -1
+    $ORDER_TIERS = "Tiers 49"
+
+KEYWORDS
+TEST CASES
+    SETUP:
+        Open browser                    ('chrome')
+        Maximize browser window()
+        user login()
+    END
+
+    1 - Test go to purchase page:
+        GIVEN   Home page opened()
+        WHEN    Open Order list page()
+        THEN    Order list page opened()
+    END
+    
+    2 - Test go to add order page:
+        GIVEN   Order list page opened()
+        WHEN    Click add order button()
+        THEN    Add order page opened()
+    END
+    
+    3 - Test add order:
+        Add order page opened()
+        Select tier ($ORDER_TIERS)
+        Get purchase order id ()
+        Open product list modal()
+        FOR $product : $productList
+            Add Order line ($product.reference, $product.quantity)
+        ENDFOR
+        Close product list modal()
+    END
+
+    4 - Test price calculation:
+        $unitPrice1 = Get order line purchase unit price(1)
+        $unitPrice2 = Get order line purchase unit price(2)
+
+        $ht1 = Get order line ht price(1)
+        $ht2 = Get order line ht price(2)
+        $calculatedTotalHT = $ht1 + $ht2
+
+        $calculatedHt1 = $unitPrice1 * $productList[0].quantity
+        $calculatedHt2 = $unitPrice2 * $productList[1].quantity
+
+        Should be equal($ht1, $calculatedHt1)
+        Should be equal($ht2, $calculatedHt2)
+
+        $ttc1 = Get order line ttc price(1)
+        $ttc2 = Get order line ttc price(2)
+
+        $calculatedTTC1 = $calculatedHt1 * (1 + $VAT)
+        $calculatedTTC2 = $calculatedHt2 * (1 + $VAT)
+
+        Should be equal($ttc1, $calculatedTTC1)
+        Should be equal($ttc2, $calculatedTTC2)
+
+
+        $calculatedTotalTTC = $calculatedTTC1 + $calculatedTTC2
+
+
+        $orderTotalHT = Get total hors tax amount()
+        $orderTotalTTC = Get total ttc amount()
+
+        Should be equal($orderTotalHT, $calculatedTotalHT)
+        Should be equal($orderTotalTTC, $calculatedTotalTTC)
+    END
+
+    5 - Test purchase order added:
+        Click purchase order link()
+        Check purchase order id added()
+    END
+
+    6 - Test go to purchase final order:
+        GIVEN   Order list page opened()
+        WHEN    Open purchase final order page()
+        THEN    Purchase final order page opened()
+    END
+
+    7 - Test go to add purchase final order page:
+        GIVEN   Purchase final order page opened()
+        WHEN    Click add purchase final order()
+        THEN    Add purchase final order openend()
+    END
+
+    8 - Test import purchase order:
+        GIVEN   Add purchase final order openend()
+        WHEN    Select tier ($ORDER_TIERS)
+        AND     Click cancel add row button()
+        AND     Click import purchase order()
+        
+        
+    END
+    
+    TEARDOWN:
+    END

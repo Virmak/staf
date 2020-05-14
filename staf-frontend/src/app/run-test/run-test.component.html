@@ -1,0 +1,27 @@
+<div  *ngIf="progress">
+  <span><clr-icon shape="info-circle" class="is-solid"></clr-icon> Executing test case : {{logService.currentTestCaseIndex}} / {{logService.totalTestCases}} {{logService.currentTestCase?.name}}</span>
+
+<clr-progress-bar [clrLabeled]="true"
+[clrMax]="logService.totalTestCases" [clrValue]="logService.currentTestCaseIndex"
+[clrDisplayval]="(logService.currentTestCaseIndex *100 / logService.totalTestCases) + '%'" ></clr-progress-bar>
+
+</div>
+<br>
+
+<div class="btn-group btn-primary">
+    <button (click)="runSelectedTests()" [disabled]="runBtnDisabled" class="btn"><clr-icon shape="play" class="is-solid"></clr-icon> Run</button>
+    <button (click)="runAllTests()" class="btn"><clr-icon shape="fast-forward" class="is-solid"></clr-icon> Run All</button>
+</div>
+
+
+<form clrForm clrLayout="horizontal">
+<h4>Test suite</h4>
+<div class="flex" >
+  <clr-checkbox-wrapper  *ngFor="let testSuite of _testSuites" >
+    <input type="checkbox" clrCheckbox (change)="testSuiteCheck($event, testSuite)" [value]="testSuite.name" [checked]="testSuite.checked" />
+    <label>{{testSuite.name | titlecase}}</label>
+  </clr-checkbox-wrapper>
+</div>
+</form>
+
+<log-console></log-console>

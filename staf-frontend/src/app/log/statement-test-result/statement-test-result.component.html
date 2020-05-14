@@ -1,0 +1,48 @@
+<div class="container">
+	<div class="flex space-between test-res-header" (click)="toggleExpand()">
+
+		<div class="flex">
+			<div class="report-expand-toggle">{{statement?.expanded}}</div>
+			<div class="name flex">
+				<span class="badge" [ngClass]="statement.badge">KEYWORD</span>
+				<app-statement-name [statement]="statement?.statement"></app-statement-name>
+			</div>
+
+		</div>
+		<div>{{statement?.elapsed}}</div>
+
+	</div>
+
+
+	<div class="report-content" *ngIf="statement.expanded == '-'">
+		<table>
+			<tbody>
+				<tr>
+					<th>Documentation</th>
+					<td>-</td>
+				</tr>
+				<tr>
+					<th>Start / End / Elapsed</th>
+					<td>
+						{{statement?.start | date:'yyyy-MM-dd hh:mm:ss'}}
+						/
+						{{statement?.end | date:'yyyy-MM-dd hh:mm:ss'}}
+						/
+						{{statement?.elapsed}}
+					</td>
+				</tr>
+                <tr *ngIf="statement.errorMessage">
+                    <th>Message</th>
+                    <td>{{ statement.errorMessage }}</td>
+                </tr>
+			</tbody>
+		</table>
+        
+        <ng-container *ngIf="statement.screenShot">
+            <img [src]="statement.screenShotBase64">
+        </ng-container>
+
+        <app-statement-test-result *ngFor="let childStat of statement?.statement?.statementReports" [statement]="childStat"></app-statement-test-result>
+
+	</div>
+</div>

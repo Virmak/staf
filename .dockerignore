@@ -1,0 +1,3 @@
+staf-frontend/node_modules
+**/tests/*.jpg
+**/tests/results/

@@ -1,0 +1,22 @@
+VARS
+    $PURCHASE_FINAL_ORDER_ADD_MODAL = "xpath:app-purchase-final-order-add"
+KEYWORDS
+    Purchase final order add modal opened()
+        Wait until element is visible ($PURCHASE_FINAL_ORDER_ADD_MODAL)
+        Element should be visible($PURCHASE_FINAL_ORDER_ADD_MODAL)
+    END
+
+    Get purchase order row number by id($orderId)
+        $rowSelector = "xpath://app-import-order-document-lines//kendo-grid-list//table)[1]//tr"
+        Wait until element is visible ($rowSelector)
+        $rowCount = Get element count($rowSelector)
+        $selector = "xpath:(//app-import-order-document-lines//kendo-grid-list//table)[1]//td[text()[contains(.,'" + $orderId + "')]]"
+        FOR $line : range(1, $rowCount)
+            Element should be visible($selector)
+        ENDFOR
+    END
+
+    Get purchase order id from final order add modal($line)
+        $selector = "xpath:(//app-import-order-document-lines//kendo-grid-list//table)[1]//tr[" + $line + "]"
+        Element should be visible($selector)
+    RETURN Get element attribute($selector, "innerText")

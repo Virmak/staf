@@ -1,0 +1,5 @@
+<div *ngIf="reports.length > 0; else elseBlock">
+    <test-suite-result *ngFor="let testSuite of reports" [testSuite]="testSuite"></test-suite-result>
+</div>
+
+<p #elseBlock>Run tests to view logs</p>

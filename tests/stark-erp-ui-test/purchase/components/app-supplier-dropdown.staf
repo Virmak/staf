@@ -1,0 +1,17 @@
+VARS
+    $TIER_INPUT                 = "xpath://app-supplier-dropdown//input"
+    $TIER_LIST_ITEM             = "xpath://kendo-popup//kendo-list//b[contains(text(), 'Tiers 15')]"
+    $KENDO_POPUP                = "tag:kendo-popup"
+KEYWORDS
+    Select tier ($tier)
+        Log("Selecting Tier : " + $tier)
+        Wait until element is visible   ($TIER_INPUT)
+        Input text                      ($TIER_INPUT, $tier)
+        Select tier dropdown item       ($tier)
+    END
+
+    Select tier dropdown item ($tier)
+        Wait until element is visible   ($KENDO_POPUP)
+        Wait until element is visible   ("xpath://kendo-popup//kendo-list//b[contains(text(), '" + $tier + "')]")
+        Click element                   ("xpath://kendo-popup//kendo-list//b[contains(text(), '" + $tier + "')]")
+    END

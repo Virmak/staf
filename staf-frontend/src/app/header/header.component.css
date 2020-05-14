@@ -1,0 +1,6 @@
+.port {
+    width: 50px;
+}
+input:first-child {
+    margin-right: 10px;
+}
