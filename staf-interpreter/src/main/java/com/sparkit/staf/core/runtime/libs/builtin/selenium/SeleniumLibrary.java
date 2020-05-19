@@ -245,6 +245,19 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         }
     }
 
+    @Keyword(name = "click element using javascript")
+    public void clickElementJS(AbstractStafObject selector) {
+        WebDriver driver = webDrivers.peek();
+        By elementSelector = getLocatorFromString(selector.getValue().toString());
+        WebElement element = driver.findElement(elementSelector);
+        ((JavascriptExecutor)driver).executeScript("arguments[0].click();", element);
+    }
+
+    public void executeJavascript(StafString script) {
+        WebDriver driver = webDrivers.peek();
+        ((JavascriptExecutor)driver).executeScript(script.getValue().toString());
+    }
+
     private By getLocatorFromString(String selector) {
         String selectorType = "";
         try {
