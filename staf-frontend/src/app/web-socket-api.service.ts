@@ -20,8 +20,6 @@ export class WebSocketApiService {
     this.stompClient = Stomp.over(ws);
     const _this = this;
     _this.stompClient.connect({}, function (frame) {
-      
-      _this._send({message: 'okok'})
       _this.stompClient.subscribe('/staf/logs', function (sdkEvent) {
         _this.onMessageReceived(sdkEvent);
       });

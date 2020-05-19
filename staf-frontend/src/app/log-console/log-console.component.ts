@@ -1,6 +1,7 @@
 import { LogServiceService } from './../log-service.service';
 import { WebSocketApiService } from './../web-socket-api.service';
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'log-console',
@@ -8,25 +9,21 @@ import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@ang
   styleUrls: ['./log-console.component.css']
 })
 export class LogConsoleComponent implements OnInit, OnDestroy {
-  interval;
   @ViewChild('logConsole') logConsole: ElementRef;
-
+  logSubscription: Subscription;
   constructor(private webSocket: WebSocketApiService,
     public logService: LogServiceService) { }
 
   ngOnInit(): void {
-    this.webSocket.messageSubject.subscribe((message: string) => {
+    this.logSubscription = this.webSocket.messageSubject.subscribe((message: string) => {
       this.logService.addMessage(message);
-      this.logConsole.nativeElement.scrollTop = this.logConsole.nativeElement.scrollHeight + 50;
+      this.logConsole.nativeElement.scrollTop = this.logConsole.nativeElement.scrollHeight;
     });
   }
 
 
   ngOnDestroy(): void {
-  }
-
-  clearInterval() {
-    clearInterval(this.interval);
+    this.logSubscription.unsubscribe();
   }
 
 }
