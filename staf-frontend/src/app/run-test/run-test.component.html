@@ -3,7 +3,7 @@
 
 <clr-progress-bar [clrLabeled]="true"
 [clrMax]="logService.totalTestCases" [clrValue]="logService.currentTestCaseIndex"
-[clrDisplayval]="(logService.currentTestCaseIndex *100 / logService.totalTestCases) + '%'" ></clr-progress-bar>
+[clrDisplayval]="logService.currentProgress + '%'" ></clr-progress-bar>
 
 </div>
 <br>

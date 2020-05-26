@@ -1,4 +1,4 @@
-import { environment } from './../environments/environment.prod';
+import { environment } from './../environments/environment';
 import { RunTestRequest } from './interfaces/run-test-request';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';

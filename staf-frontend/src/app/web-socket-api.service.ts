@@ -16,12 +16,10 @@ export class WebSocketApiService {
 
   _connect() {
     console.log("Initialize WebSocket Connection");
-    let ws = new SockJS(environment.webSocket());
+    let ws = new SockJS(environment.resolveApi() + '/staf-ws');
     this.stompClient = Stomp.over(ws);
     const _this = this;
     _this.stompClient.connect({}, function (frame) {
-      
-      _this._send({message: 'okok'})
       _this.stompClient.subscribe('/staf/logs', function (sdkEvent) {
         _this.onMessageReceived(sdkEvent);
       });

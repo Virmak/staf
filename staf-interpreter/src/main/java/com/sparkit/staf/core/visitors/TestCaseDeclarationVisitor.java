@@ -17,8 +17,12 @@ public class TestCaseDeclarationVisitor extends StafBaseVisitor<TestCaseDeclarat
         }
         StafParser.Test_case_priorityContext priorityContext = ctx.test_case_priority();
         if (priorityContext != null) {
-            int order = Integer.parseInt(priorityContext.INT().getText());
-            testCaseDeclaration.setOrder(order);
+            if (priorityContext.INT() != null) {
+                int order = Integer.parseInt(priorityContext.INT().getText());
+                testCaseDeclaration.setOrder(order);
+            } else if (priorityContext.IGNORE() != null) {
+                testCaseDeclaration.setIgnored(true);
+            }
         } else {
             testCaseDeclaration.setOrder(testCaseDefaultOrder++);
         }

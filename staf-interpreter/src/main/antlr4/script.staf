@@ -1,10 +1,10 @@
 TEST SUITE "Module Achats"
 
 TEST CASES
-    8 - sds import purchase order:
+    IGNORE - sds import purchase order:
         GIVEN   Add purchase final order openend()
         WHEN    Select tier ($ORDER_TIERS)
-
+    #qsdqsdsdsqd
     END
 
     TEARDOWN:

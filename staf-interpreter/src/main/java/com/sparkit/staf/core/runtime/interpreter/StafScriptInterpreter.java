@@ -80,7 +80,8 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
             );
 
             for (Map.Entry<String, TestCaseDeclaration> testCase : entryList) {
-                if (testCase.getKey().toLowerCase().equals("setup") || testCase.getKey().toLowerCase().equals("teardown")) {
+                if (testCase.getKey().toLowerCase().equals("setup") || testCase.getKey().toLowerCase().equals("teardown")
+                        || testCase.getValue().isIgnored()) {
                     continue;
                 }
                 reports.add(executeTestCase(testSuite, testCase.getKey(), testCase.getValue()));

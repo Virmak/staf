@@ -13,6 +13,7 @@ public class TestCaseDeclaration implements IStatementBlock {
     private List<StatementReport> reports;
     private int order;
     private static int instanceCount;
+    private boolean ignored = false;
 
     public TestCaseDeclaration(String name, List<IStatement> statements) {
         this.name = name;

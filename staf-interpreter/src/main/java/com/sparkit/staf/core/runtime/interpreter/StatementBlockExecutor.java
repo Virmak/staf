@@ -4,10 +4,7 @@ import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.ExitLoopStatement;
 import com.sparkit.staf.core.ast.IStatement;
 import com.sparkit.staf.core.ast.LoopIteration;
-import com.sparkit.staf.core.ast.types.AbstractStafObject;
-import com.sparkit.staf.core.ast.types.KeywordCall;
-import com.sparkit.staf.core.ast.types.StafBoolean;
-import com.sparkit.staf.core.ast.types.StafList;
+import com.sparkit.staf.core.ast.types.*;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.FatalErrorException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
@@ -93,6 +90,7 @@ public class StatementBlockExecutor {
             int iteration = 0;
             for (AbstractStafObject item : ((StafList) actualIterator).getList()) {
                 boolean loopExited = false;
+                localSymTable.setSymbolValue("$__index__", new StafInteger(iteration));
                 loopReport.setErrorMessage("Iteration[" + (iteration++) + "] : " + item);
                 for (IStatement statement : iterable.getStatements()) {
                     StatementReport statementReport = new StatementReport();
@@ -124,6 +122,7 @@ public class StatementBlockExecutor {
                         if (this.statementFailed != null) {
                             this.statementFailed.execute(statementReport);
                         }
+                        e.printStackTrace();
                     } finally {
                         statementReport.setEnd(new Date());
                     }
