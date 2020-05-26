@@ -12,6 +12,8 @@ export class LogServiceService {
 
   currentTestCaseIndex;
 
+  currentProgress;
+
   constructor() { }
 
   addMessage(message) {
@@ -32,7 +34,9 @@ export class LogServiceService {
       this.currentTestCase = {
         name: testCaseStartedMatch[1],
         index: ++this.currentTestCaseIndex
-      }
+      };
+      this.currentProgress = (this.currentTestCaseIndex *100 / this.totalTestCases).toFixed(2);
+      
     }
     const testSuiteStartedMatch = message.match(/Started executing test suite : \[(.*?)\] (\d+) Test cases found/);
     if (testSuiteStartedMatch) {
@@ -57,5 +61,6 @@ export class LogServiceService {
     };
     this.totalTestCases = 0;
     this.currentTestCaseIndex = 0;
+    this.currentProgress = 0;
   }
 }

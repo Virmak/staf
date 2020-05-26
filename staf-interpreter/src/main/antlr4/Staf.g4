@@ -45,7 +45,7 @@ test_case_body
     : ((GIVEN | WHEN | THEN | 'AND')? statement)*
     ;
 test_case_priority
-    : INT '-'
+    : (INT|IGNORE) '-'
     ;
 // End test cases ***/
 
@@ -205,8 +205,6 @@ bool
     | FALSE
     ;
 
-
-
 SINGLE_STRING
     : '\'' ~('\'')* '\''
     ;
@@ -334,6 +332,9 @@ WHEN
     ;
 THEN
     : T H E N
+    ;
+IGNORE
+    : I G N O R E
     ;
 
 EXIT : E X I T;
