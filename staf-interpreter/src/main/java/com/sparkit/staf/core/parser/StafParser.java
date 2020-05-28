@@ -1,7 +1,5 @@
 // Generated from Staf.g4 by ANTLR 4.8
 package com.sparkit.staf.core.parser;
-import com.sparkit.staf.StafListener;
-import com.sparkit.staf.StafVisitor;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
