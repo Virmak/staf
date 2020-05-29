@@ -5,5 +5,5 @@ import com.sparkit.staf.core.ast.types.StafVariable;
 
 public interface IStafIterable extends IStatementBlock {
     AbstractStafObject getIterator();
-    StafVariable getVar();
+    StafVariable getLoopVariable();
 }

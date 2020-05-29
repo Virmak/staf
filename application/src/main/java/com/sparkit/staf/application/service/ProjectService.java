@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -37,21 +38,19 @@ public class ProjectService {
     public List<String> readProjects() throws TestDirectoryNotFound {
         File currentDir = new File(System.getProperty("user.dir"));
         File projectsDir = new File(currentDir, testDir);
-        List<String> projects = new ArrayList<>();
         File[] files = projectsDir.listFiles();
         if (files != null) {
-            Arrays.stream(files).forEach(f -> projects.add(f.getName()));
+            return Arrays.stream(files).map(File::getName).collect(Collectors.toList());
         } else {
             throw new TestDirectoryNotFound(testDir);
         }
-        return projects;
     }
 
     public ProjectConfig createProject(CreateProjectRequest createProjectRequest) throws IOException, ProjectNameAlreadyExist {
         return projectBuilder.buildProject(createProjectRequest);
     }
 
-    public Map<String, Object> listDirectory(File dir, String testDir, boolean isProjectRoot) throws IOException {
+    public Map<String, Object> listDirectory(File dir, String testDir) throws IOException {
         File[] content = dir.listFiles();
 
         List<Map<String, com.sparkit.staf.domain.File>> files = new LinkedList<>();
@@ -59,7 +58,7 @@ public class ProjectService {
 
         for (File f : content) {
             if (f.isDirectory()) {
-                Map<String, Object> subList = listDirectory(f, testDir, false);
+                Map<String, Object> subList = listDirectory(f, testDir);
                 folders.add(subList);
             } else {
                 Map<String, com.sparkit.staf.domain.File> fileMap = new HashMap<>();
@@ -141,7 +140,7 @@ public class ProjectService {
         try {
             TestSuite testSuite = projectBuilder.buildTestSuite(request);
             response.setResult("ok");
-            response.setContent(listDirectory(new File(testSuite.getRootPath()), testDir, false));
+            response.setContent(listDirectory(new File(testSuite.getRootPath()), testDir));
         } catch (IOException e) {
             e.printStackTrace();
             response.setResult("error");

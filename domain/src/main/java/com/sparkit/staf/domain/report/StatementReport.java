@@ -3,7 +3,7 @@ package com.sparkit.staf.domain.report;
 import com.sparkit.staf.domain.TestResult;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -13,7 +13,7 @@ public class StatementReport {
     protected TestResult result;
     protected String errorMessage;
     protected String screenShotAttachment;
-    protected Date start;
-    protected Date end;
+    protected LocalDateTime start;
+    protected LocalDateTime end;
 
 }

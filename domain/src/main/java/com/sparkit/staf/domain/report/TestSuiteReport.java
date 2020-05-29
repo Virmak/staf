@@ -3,7 +3,7 @@ package com.sparkit.staf.domain.report;
 import com.sparkit.staf.domain.TestResult;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -13,8 +13,8 @@ public class TestSuiteReport {
     private TestResult result;
     private String source;
     private String path;
-    private Date start;
-    private Date end;
+    private LocalDateTime start;
+    private LocalDateTime end;
     private List<TestCaseReport> testCaseReports;
     private int total;
     private int pass;

@@ -20,7 +20,7 @@ public class ForStatementVisitor extends StafBaseVisitor<ForStatement> {
     @Override
     public ForStatement visitFor_stat(StafParser.For_statContext ctx) {
         ForStatement forStatement = new ForStatement();
-        forStatement.setVar(new StafVariable(ctx.variable().getText()));
+        forStatement.setLoopVariable(new StafVariable(ctx.variable().getText()));
 
         StafParser.Complex_objectContext complexObjectContext = ctx.complex_object();
         StafParser.Variable_referenceContext variableReferenceContext = ctx.variable_reference();

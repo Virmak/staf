@@ -78,12 +78,12 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
     }
 
     @Override
-    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable,
+    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable,
                           KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         blockExecutor.getCallStack().push(this);
         if (keywordLibrariesRepository.isKeywordDeclared(keywordName)) {
-            Object[] params = evaluateArgumentsList(blockExecutor, globalSymTable,
-                    localSymTable, keywordLibrariesRepository);
+            Object[] params = evaluateArgumentsList(blockExecutor, globalSymbolsTable,
+                    localSymbolsTable, keywordLibrariesRepository);
             return keywordLibrariesRepository.invokeKeyword(keywordName, params);
         } else {
             throw new UndefinedKeywordException(keywordName);

@@ -37,12 +37,12 @@ public class RunKeywordIf extends KeywordCall implements IStatement, IReportable
     }
 
     @Override
-    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable,
+    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable,
                           KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         StafBoolean conditionResult = (StafBoolean)
-                condition.evaluate(blockExecutor, globalSymTable, localSymTable,keywordLibrariesRepository);
+                condition.evaluate(blockExecutor, globalSymbolsTable, localSymbolsTable,keywordLibrariesRepository);
         if ((Boolean) conditionResult.getValue()) {
-            keywordCall.execute(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+            keywordCall.execute(blockExecutor, globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
         }
         return null;
     }

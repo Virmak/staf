@@ -41,30 +41,30 @@ public class Assignment implements IStatement, IReportableBlock {
 
 
     @Override
-    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable,
+    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable,
                           KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         if (value instanceof KeywordCall) {
             KeywordCall keywordCall = (KeywordCall) value;
-            Object returnObj = keywordCall.execute(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+            Object returnObj = keywordCall.execute(blockExecutor, globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
             this.reports = keywordCall.getStatementReports();
-            if (localSymTable != null && localSymTable.getSymbolsMap().containsKey(object.getValue().toString())) {
-                localSymTable.getSymbolsMap().put(object.getValue().toString(), returnObj);
-            } else if (globalSymTable.getSymbolsMap().containsKey(object.getValue().toString())) {
-                globalSymTable.getSymbolsMap().put(object.getValue().toString(), returnObj);
-            } else if (localSymTable != null) {
-                localSymTable.getSymbolsMap().put(object.getValue().toString(), returnObj);
+            if (localSymbolsTable != null && localSymbolsTable.getSymbolsMap().containsKey(object.getValue().toString())) {
+                localSymbolsTable.getSymbolsMap().put(object.getValue().toString(), returnObj);
+            } else if (globalSymbolsTable.getSymbolsMap().containsKey(object.getValue().toString())) {
+                globalSymbolsTable.getSymbolsMap().put(object.getValue().toString(), returnObj);
+            } else if (localSymbolsTable != null) {
+                localSymbolsTable.getSymbolsMap().put(object.getValue().toString(), returnObj);
             }
             return returnObj;
         }
-        if (localSymTable != null && localSymTable.getSymbolsMap().containsKey(object.getValue().toString())) {
-            localSymTable.getSymbolsMap().put(object.getValue().toString(),
-                    value.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository));
-        } else if (globalSymTable.getSymbolsMap().containsKey(object.getValue().toString())) {
-            globalSymTable.getSymbolsMap().put(object.getValue().toString(),
-                    value.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository));
-        } else if (localSymTable != null) {
-            localSymTable.getSymbolsMap().put(object.getValue().toString(),
-                    value.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository));
+        if (localSymbolsTable != null && localSymbolsTable.getSymbolsMap().containsKey(object.getValue().toString())) {
+            localSymbolsTable.getSymbolsMap().put(object.getValue().toString(),
+                    value.evaluate(blockExecutor, globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository));
+        } else if (globalSymbolsTable.getSymbolsMap().containsKey(object.getValue().toString())) {
+            globalSymbolsTable.getSymbolsMap().put(object.getValue().toString(),
+                    value.evaluate(blockExecutor, globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository));
+        } else if (localSymbolsTable != null) {
+            localSymbolsTable.getSymbolsMap().put(object.getValue().toString(),
+                    value.evaluate(blockExecutor, globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository));
         }
         return (value);
     }

@@ -19,7 +19,7 @@ public class FileService {
     public void saveFile(String path, String content, String type) throws IOException {
         path = path.replace(testDir, "");
         File file = new File(testDir, path);
-        if (type.equals("scroll")) {
+        if ("scroll".equals(type)) {
             FileUtils.writeStringToFile(file, content, "UTF-8");
         } else {
             file.mkdir();

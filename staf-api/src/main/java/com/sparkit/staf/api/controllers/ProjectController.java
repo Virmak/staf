@@ -39,7 +39,7 @@ public class ProjectController {
         File projectDir = new File(testDir, ProjectService.normalizeProjectName(createProjectRequest.getName()));
         String currentDir = System.getProperty("user.dir");
         String absoluteTestDir = currentDir + "/" + testDir;
-        return ResponseEntity.ok(projectService.listDirectory(projectDir, absoluteTestDir, true));
+        return ResponseEntity.ok(projectService.listDirectory(projectDir, absoluteTestDir));
     }
 
     @CrossOrigin(origins = "*")
@@ -48,7 +48,7 @@ public class ProjectController {
         String currentDir = System.getProperty("user.dir");
         String absoluteTestDir = currentDir + "/" + testDir;
         File projectsDir = new File(testDir);
-        return projectService.listDirectory(projectsDir, absoluteTestDir, true);
+        return projectService.listDirectory(projectsDir, absoluteTestDir);
     }
 
     @CrossOrigin
