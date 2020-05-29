@@ -43,9 +43,4 @@ public class FileService {
         }
         return directoryToBeDeleted.delete();
     }
-
-    private boolean isChild(Path child, String parentText) {
-        Path parent = Paths.get(parentText).toAbsolutePath();
-        return child.startsWith(parent);
-    }
 }

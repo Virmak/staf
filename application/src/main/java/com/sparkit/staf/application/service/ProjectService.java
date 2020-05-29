@@ -29,8 +29,6 @@ public class ProjectService {
     @Value("${testDirectory}")
     private String testDir;
 
-    private void init() {}
-
     public static String normalizeProjectName(String name) {
         return name.toLowerCase().replaceAll("\\s+", "-");
     }

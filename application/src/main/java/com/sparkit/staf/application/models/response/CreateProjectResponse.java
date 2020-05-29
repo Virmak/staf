@@ -5,7 +5,4 @@ import lombok.Data;
 @Data
 public class CreateProjectResponse {
     private String result;
-    public CreateProjectResponse(String result) {
-        this.result = result;
-    }
 }
