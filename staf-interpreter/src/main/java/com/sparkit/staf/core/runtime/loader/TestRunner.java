@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Component
@@ -35,14 +35,14 @@ public class TestRunner {
     private String testDirectory;
 
     public List<TestSuiteReport> runTests(List<String> testSuites) {
-        logger.info("Started running tests at " + new Date());
+        logger.info("Started running tests at " + LocalDateTime.now());
         List<TestSuiteReport> testSuiteReports = new ArrayList<>();
         for (String testSuite : config.testSuites()) {
             if (!testSuites.contains(testSuite)) {
                 continue;
             }
             TestSuiteReport testSuiteReport = new TestSuiteReport();
-            testSuiteReport.setStart(new Date());
+            testSuiteReport.setStart(LocalDateTime.now());
             testSuiteReport.setTestSuite(testSuite);
             testSuiteReport.setSource(testSuite + "/main.staf");
             try {
@@ -56,10 +56,10 @@ public class TestRunner {
                 testSuiteReport.setResult(TestResult.Fail);
                 testSuiteReport.setMessage(e.getMessage());
             }
-            testSuiteReport.setEnd(new Date());
+            testSuiteReport.setEnd(LocalDateTime.now());
             testSuiteReports.add(testSuiteReport);
         }
-        logger.info("Finished running tests at " + new Date());
+        logger.info("Finished running tests at " + LocalDateTime.now());
         return testSuiteReports;
     }
 

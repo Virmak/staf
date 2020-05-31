@@ -11,8 +11,8 @@ public class StafString extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable,
-                           SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) {
+    public Object evaluate(SymbolsTable globalSymbolsTable,
+                           SymbolsTable localSymbolsTable) {
         return this;
     }
 

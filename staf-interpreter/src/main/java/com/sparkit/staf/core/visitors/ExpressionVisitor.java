@@ -37,7 +37,7 @@ public class ExpressionVisitor extends StafBaseVisitor<AbstractStafObject> {
         StafParser.ExpressionContext leftExpressionContext = ctx.expression(0);
         if (leftExpressionContext != null) {
             Expression e = new Expression();
-            e.setLeft(visitExpression(leftExpressionContext));
+            e.setExpressionLeftMember(visitExpression(leftExpressionContext));
             StafParser.MulopContext mulopContext = ctx.mulop();
             if (mulopContext != null) {
                 e.setOperation(mulopContext.getText());
@@ -51,7 +51,7 @@ public class ExpressionVisitor extends StafBaseVisitor<AbstractStafObject> {
                 e.setOperation(binopContext.getText());
             }
 
-            e.setRight(visitExpression(ctx.expression(1)));
+            e.setExpressionRightMember(visitExpression(ctx.expression(1)));
             return e;
         }
         StafParser.Scalar_objectContext scalarObjectContext = ctx.scalar_object();

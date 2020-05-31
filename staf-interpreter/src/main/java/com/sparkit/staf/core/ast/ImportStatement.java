@@ -1,9 +1,9 @@
 package com.sparkit.staf.core.ast;
 
-import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
-import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import lombok.Data;
 
+@Data
 public class ImportStatement implements IStatement {
     private String path;
     private ImportTypes type;
@@ -11,25 +11,6 @@ public class ImportStatement implements IStatement {
     public ImportStatement(String path) {
         this.path = path;
         this.resolveType();
-    }
-
-    public ImportStatement() {
-    }
-
-    public ImportTypes getType() {
-        return type;
-    }
-
-    public void setType(ImportTypes type) {
-        this.type = type;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
     }
 
     private void resolveType() {
@@ -46,7 +27,7 @@ public class ImportStatement implements IStatement {
     }
 
     @Override
-    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
-        throw new Exception("Not implemented");
+    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
+        return null;
     }
 }

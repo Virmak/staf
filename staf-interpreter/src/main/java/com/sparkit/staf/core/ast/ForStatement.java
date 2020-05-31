@@ -14,28 +14,25 @@ import java.util.List;
 
 @Data
 public class ForStatement implements IStatement, IStatementBlock, IStafIterable {
+    private final StatementBlockExecutor blockExecutor;
+    private final KeywordLibrariesRepository keywordLibrariesRepository;
     private StafVariable loopVariable;
     private AbstractStafObject iterator;
     private List<IStatement> statementList;
     private List<StatementReport> statementReports;
 
-    public ForStatement() {
-    }
-
-    public ForStatement(StafVariable var, AbstractStafObject iterator, List<IStatement> statementList) {
-        this.loopVariable = var;
-        this.iterator = iterator;
-        this.statementList = statementList;
-    }
-
-    @Override
-    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable,
-                          KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        return blockExecutor.executeIterable(this, globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
+    public ForStatement(StatementBlockExecutor blockExecutor, KeywordLibrariesRepository keywordLibrariesRepository) {
+        this.blockExecutor = blockExecutor;
+        this.keywordLibrariesRepository = keywordLibrariesRepository;
     }
 
     @Override
     public List<IStatement> getStatements() {
         return statementList;
+    }
+
+    @Override
+    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
+        return blockExecutor.executeIterable(this, globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
     }
 }

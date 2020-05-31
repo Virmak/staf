@@ -21,10 +21,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
-public class StafScriptInterpreter implements IStafScriptInterpreter {
+public class StafScriptInterpreter implements IStafScriptInterpreter { // refactor
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     @Autowired
     private IImportsInterpreter importsInterpreter;
@@ -100,12 +101,12 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
         }
         return reports;
     }
-
+    /*** Refactor ***/
     public TestCaseReport executeTestCase(String testSuite, String testCaseName, TestCaseDeclaration testCaseDeclaration) {
         TestCaseReport testCaseReport = new TestCaseReport();
         testCaseReport.setTestSuite(testSuite);
         testCaseReport.setTestCase(testCaseName);
-        testCaseReport.setStart(new Date());
+        testCaseReport.setStart(LocalDateTime.now());
         testCaseReport.setResult(TestResult.Pass);
         testCaseReport.setStatementReports(new ArrayList<>());
         String lastErrorMessage = null;
@@ -115,12 +116,12 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
             if (!keywordLibrariesRepository.isKeywordDeclared("capturescreenshot")) {
                 return;
             }
-            StafString screenShotPath = new StafString(
-                    testDirectory + "/" + config.getProjectDir() + "/" + testSuite + "/" + config.getReportingDirectory() + "/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
+            StafString screenShotPath = new StafString(testDirectory + "/" + config.getProjectDir() + "/"
+                    + testSuite + "/" + config.getReportingDirectory() + "/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
             try {
-                KeywordCall captureScreenshotKeyword = new KeywordCall("capturescreenshot",
-                        Arrays.asList(new AbstractStafObject[]{screenShotPath}));
-                captureScreenshotKeyword.execute(statementBlockExecutor, globalSymTable, null, keywordLibrariesRepository);
+                KeywordCall captureScreenshotKeyword = new KeywordCall(statementBlockExecutor, keywordLibrariesRepository,
+                        "capturescreenshot", Arrays.asList(new AbstractStafObject[]{screenShotPath}));
+                captureScreenshotKeyword.execute(globalSymTable, null);
             } catch (EmptyStackException e) {
                 logger.error("No browser open");
                 statementReport.setErrorMessage("No browser open");
@@ -141,7 +142,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
             }
         } catch (Throwable e) {
             if (e instanceof FatalErrorException) {
-                testCaseReport.setStatementReports(((FatalErrorException)e).getReports());
+                testCaseReport.setStatementReports(((FatalErrorException) e).getReports());
             }
             testCaseReport.setResult(TestResult.Fail);
             lastErrorMessage = e.getMessage();
@@ -150,7 +151,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter {
                     + " | " + e.getMessage());
             e.printStackTrace();
         }
-        testCaseReport.setEnd(new Date());
+        testCaseReport.setEnd(LocalDateTime.now());
         testCaseReport.setErrorMessage(lastErrorMessage);
 
         logger.info("Finished executing test case : [" + testCaseDeclaration.getName() + "] " + testCaseReport.getResult());

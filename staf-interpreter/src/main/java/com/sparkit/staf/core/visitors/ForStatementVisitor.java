@@ -4,6 +4,8 @@ import com.sparkit.staf.core.ast.ForStatement;
 import com.sparkit.staf.core.ast.types.StafVariable;
 import com.sparkit.staf.core.parser.StafBaseVisitor;
 import com.sparkit.staf.core.parser.StafParser;
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
+import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ForStatementVisitor extends StafBaseVisitor<ForStatement> {
@@ -16,10 +18,14 @@ public class ForStatementVisitor extends StafBaseVisitor<ForStatement> {
     private KeywordCallVisitor keywordCallVisitor;
     @Autowired
     private ForStatementBodyVisitor forStatementBodyVisitor;
+    @Autowired
+    private StatementBlockExecutor blockExecutor;
+    @Autowired
+    private KeywordLibrariesRepository keywordLibrariesRepository;
 
     @Override
     public ForStatement visitFor_stat(StafParser.For_statContext ctx) {
-        ForStatement forStatement = new ForStatement();
+        ForStatement forStatement = new ForStatement(blockExecutor, keywordLibrariesRepository);
         forStatement.setLoopVariable(new StafVariable(ctx.variable().getText()));
 
         StafParser.Complex_objectContext complexObjectContext = ctx.complex_object();

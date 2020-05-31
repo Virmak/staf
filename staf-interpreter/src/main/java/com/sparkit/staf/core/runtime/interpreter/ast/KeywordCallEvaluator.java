@@ -21,9 +21,8 @@ public class KeywordCallEvaluator implements INodeEvaluator<KeywordCall> {
             throws Throwable {
         blockExecutor.getCallStack().push(node);
         if (keywordLibrariesRepository.isKeywordDeclared(node.getKeywordName())) {
-            Object[] params = node.evaluateArgumentsList(blockExecutor, globalSymTable,
-                    localSymTable, keywordLibrariesRepository);
-            return (AbstractStafObject)keywordLibrariesRepository.invokeKeyword(node.getKeywordName(), params);
+            Object[] params = node.evaluateArgumentsList(globalSymTable, localSymTable);
+            return (AbstractStafObject) keywordLibrariesRepository.invokeKeyword(node.getKeywordName(), params);
         } else {
             throw new UndefinedKeywordException(node.getKeywordName());
         }

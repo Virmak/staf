@@ -35,8 +35,7 @@ public class SymbolsTable {
             if (symbolsMap.containsKey(assignmentEntry.getKey())) {
                 throw new VariableAlreadyDefinedException(assignmentEntry.getKey());
             }
-            symbolsMap.put(assignmentEntry.getKey(), assignmentEntry.getValue().execute(blockExecutor,
-                    this, null, keywordLibrariesRepository));
+            symbolsMap.put(assignmentEntry.getKey(), assignmentEntry.getValue().execute(this, null));
         }
     }
 

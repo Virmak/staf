@@ -19,12 +19,12 @@ import java.util.List;
 
 public class KeywordDeclaration implements IStatementBlock {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    protected String keywordName;
-    protected List<String> argsList;
-    protected List<IStatement> statementList;
-    protected AbstractStafObject returnObject;
-    protected String file;
-    protected List<StatementReport> reports;
+    private String keywordName;
+    private List<String> argsList;
+    private List<IStatement> statementList;
+    private AbstractStafObject returnObject;
+    private String file;
+    private List<StatementReport> reports;
 
     public KeywordDeclaration(String keywordName, List<String> argsList, List<IStatement> statementList, AbstractStafObject returnObject) {
         this.keywordName = keywordName;
@@ -86,7 +86,7 @@ public class KeywordDeclaration implements IStatementBlock {
         KeywordCall keywordCall = statementBlockExecutor.getCallStack().pop();
         keywordCall.setStatementReports(reports);
         if (returnObject != null) {
-            return returnObject.evaluate(statementBlockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+            return returnObject.evaluate(globalSymTable, localSymTable);
         }
         return null;
     }
