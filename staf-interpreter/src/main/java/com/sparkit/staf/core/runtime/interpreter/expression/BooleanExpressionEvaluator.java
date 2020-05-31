@@ -4,9 +4,11 @@ import com.sparkit.staf.core.ast.Expression;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.StafBoolean;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.InvalidExpressionOperationParams;
+import org.springframework.stereotype.Component;
 
 import javax.naming.OperationNotSupportedException;
 
+@Component
 public class BooleanExpressionEvaluator implements ExpressionEvaluator {
     @Override
     public AbstractStafObject evaluate(Expression expression) throws InvalidExpressionOperationParams, OperationNotSupportedException {

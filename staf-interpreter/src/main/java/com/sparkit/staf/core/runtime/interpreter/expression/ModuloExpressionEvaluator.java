@@ -3,15 +3,14 @@ package com.sparkit.staf.core.runtime.interpreter.expression;
 import com.sparkit.staf.core.ast.Expression;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.StafDouble;
-import com.sparkit.staf.core.runtime.interpreter.exceptions.InvalidExpressionOperationParams;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DivisionExpressionEvaluator implements ExpressionEvaluator {
+public class ModuloExpressionEvaluator implements ExpressionEvaluator {
     @Override
-    public AbstractStafObject evaluate(Expression expression) throws InvalidExpressionOperationParams {
+    public AbstractStafObject evaluate(Expression expression) {
         double expressionLeftMemberValue = (double) expression.getExpressionLeftMember().getValue();
         double expressionRightMemberValue = (double) expression.getExpressionRightMember().getValue();
-        return new StafDouble(expressionLeftMemberValue / expressionRightMemberValue);
+        return new StafDouble(expressionLeftMemberValue % expressionRightMemberValue);
     }
 }

@@ -1,124 +1,95 @@
 package com.sparkit.staf.core.ast;
 
-import com.sparkit.staf.core.ast.types.*;
+import com.sparkit.staf.core.ast.types.AbstractStafObject;
+import com.sparkit.staf.core.ast.types.DictionaryItemAccess;
+import com.sparkit.staf.core.ast.types.ListItemAccess;
+import com.sparkit.staf.core.ast.types.StafVariable;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
-import com.sparkit.staf.core.runtime.interpreter.expression.ExpressionEvaluatorO;
+import com.sparkit.staf.core.runtime.interpreter.expression.ExpressionEvaluator;
+import com.sparkit.staf.core.runtime.interpreter.expression.ExpressionEvaluatorFactory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.naming.OperationNotSupportedException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class Expression extends AbstractStafObject {
     private AbstractStafObject expressionLeftMember;
     private AbstractStafObject expressionRightMember;
-    private ExpressionOps operation;
-    private boolean inverted; // tell if expr is inverted like - minus or ! not for booleans
+    private ExpressionOperators operation;
+    private boolean inverted; // tell if expr is inverted like - minus or boolean not (!)
 
-    public Expression() {
-    }
+    @Autowired
+    private ExpressionEvaluatorFactory expressionEvaluatorFactory;
 
-    public Expression(AbstractStafObject left, AbstractStafObject right, ExpressionOps operation) {
+    public Expression(AbstractStafObject left, AbstractStafObject right, ExpressionOperators operation) {
         this.expressionLeftMember = left;
         this.expressionRightMember = right;
         this.operation = operation;
         this.type = StafTypes.EXPRESSION;
     }
 
-    public void setExpressionLeftMember(AbstractStafObject expressionLeftMember) {
-        this.expressionLeftMember = expressionLeftMember;
-    }
-
-    public void setExpressionRightMember(AbstractStafObject expressionRightMember) {
-        this.expressionRightMember = expressionRightMember;
-    }
-
-    public ExpressionOps getOperation() {
-        return operation;
+    public Expression(ExpressionEvaluatorFactory expressionEvaluatorFactory) {
+        this.expressionEvaluatorFactory = expressionEvaluatorFactory;
+        this.type = StafTypes.EXPRESSION;
     }
 
     public void setOperation(String operation) {
         switch (operation) {
             case "+":
-                this.operation = ExpressionOps.PLUS;
+                this.operation = ExpressionOperators.PLUS;
                 break;
             case "-":
-                this.operation = ExpressionOps.MINUS;
+                this.operation = ExpressionOperators.MINUS;
                 break;
             case "*":
-                this.operation = ExpressionOps.MUL;
+                this.operation = ExpressionOperators.MUL;
                 break;
             case "/":
-                this.operation = ExpressionOps.DIV;
+                this.operation = ExpressionOperators.DIV;
                 break;
             case "%":
-                this.operation = ExpressionOps.MOD;
+                this.operation = ExpressionOperators.MOD;
                 break;
             case "==":
-                this.operation = ExpressionOps.EQUAL;
+                this.operation = ExpressionOperators.EQUAL;
                 break;
             case "!=":
-                this.operation = ExpressionOps.NE;
+                this.operation = ExpressionOperators.NE;
                 break;
             case ">=":
-                this.operation = ExpressionOps.GTE;
+                this.operation = ExpressionOperators.GTE;
                 break;
             case "<=":
-                this.operation = ExpressionOps.LTE;
+                this.operation = ExpressionOperators.LTE;
                 break;
             case ">":
-                this.operation = ExpressionOps.GT;
+                this.operation = ExpressionOperators.GT;
                 break;
             case "<":
-                this.operation = ExpressionOps.LT;
+                this.operation = ExpressionOperators.LT;
                 break;
             case "AND":
-                this.operation = ExpressionOps.AND;
+                this.operation = ExpressionOperators.AND;
                 break;
             case "OR":
-                this.operation = ExpressionOps.OR;
+                this.operation = ExpressionOperators.OR;
                 break;
         }
     }
 
     @Override
     public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
-        AbstractStafObject expressionLeftMemberValue = expressionLeftMember;
-        AbstractStafObject expressionRightMemberValue = expressionRightMember;
-
         if (expressionLeftMember instanceof Expression || expressionLeftMember instanceof StafVariable || expressionLeftMember instanceof DictionaryItemAccess
                 || expressionLeftMember instanceof ListItemAccess) {
-            expressionLeftMemberValue = (AbstractStafObject) expressionLeftMember.evaluate(globalSymbolsTable, localSymbolsTable);
+            expressionLeftMember = (AbstractStafObject) expressionLeftMember.evaluate(globalSymbolsTable, localSymbolsTable);
         }
 
         if (expressionRightMember instanceof Expression || expressionRightMember instanceof StafVariable || expressionRightMember instanceof DictionaryItemAccess
                 || expressionRightMember instanceof ListItemAccess) {
-            expressionRightMemberValue = (AbstractStafObject) expressionRightMember.evaluate(globalSymbolsTable, localSymbolsTable);
+            expressionRightMember = (AbstractStafObject) expressionRightMember.evaluate(globalSymbolsTable, localSymbolsTable);
         }
-
-        switch (operation) {
-            case EQUAL:
-                return new StafBoolean(expressionLeftMemberValue.getValue().toString().equals(expressionRightMemberValue.getValue().toString()));
-            case PLUS:
-                return ExpressionEvaluatorO.add(expressionLeftMemberValue, expressionRightMemberValue);
-            case MINUS:
-                return ExpressionEvaluatorO.subtract(expressionLeftMemberValue, expressionRightMemberValue);
-            case MUL:
-                return ExpressionEvaluatorO.multiply(expressionLeftMemberValue, expressionRightMemberValue);
-            case DIV:
-                return ExpressionEvaluatorO.div(expressionLeftMemberValue, expressionRightMemberValue);
-            case GT:
-                return ExpressionEvaluatorO.greaterThan(expressionLeftMemberValue, expressionRightMemberValue);
-            case LT:
-                return ExpressionEvaluatorO.lessThan(expressionLeftMemberValue, expressionRightMemberValue);
-            case GTE:
-                return ExpressionEvaluatorO.greaterThanOrEqual(expressionLeftMemberValue, expressionRightMemberValue);
-            case LTE:
-                return ExpressionEvaluatorO.lessThanOrEqual(expressionLeftMemberValue, expressionRightMemberValue);
-            case NE:
-                return ExpressionEvaluatorO.notEqual(expressionLeftMemberValue, expressionRightMemberValue);
-        }
-        throw new OperationNotSupportedException();
+        ExpressionEvaluator expressionEvaluator = expressionEvaluatorFactory.getExpressionEvaluator(operation);
+        return expressionEvaluator.evaluate(this);
     }
 }

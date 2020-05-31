@@ -6,7 +6,9 @@ import com.sparkit.staf.core.ast.types.StafDouble;
 import com.sparkit.staf.core.ast.types.StafInteger;
 import com.sparkit.staf.core.ast.types.StafString;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.InvalidExpressionOperationParams;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AdditionExpressionEvaluator implements ExpressionEvaluator {
     @Override
     public AbstractStafObject evaluate(Expression expression) throws InvalidExpressionOperationParams {

@@ -11,12 +11,14 @@ import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedKeywordExce
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class KeywordDeclaration implements IStatementBlock {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private String keywordName;
@@ -26,54 +28,7 @@ public class KeywordDeclaration implements IStatementBlock {
     private String file;
     private List<StatementReport> reports;
 
-    public KeywordDeclaration(String keywordName, List<String> argsList, List<IStatement> statementList, AbstractStafObject returnObject) {
-        this.keywordName = keywordName;
-        this.argsList = argsList;
-        this.statementList = statementList;
-        this.returnObject = returnObject;
-    }
-
     public KeywordDeclaration() {
-    }
-
-    public String getFile() {
-        return file;
-    }
-
-    public void setFile(String file) {
-        this.file = file;
-    }
-
-    public AbstractStafObject getReturnObject() {
-        return returnObject;
-    }
-
-    public void setReturnObject(AbstractStafObject returnObject) {
-        this.returnObject = returnObject;
-    }
-
-    public List<IStatement> getStatementList() {
-        return statementList;
-    }
-
-    public void setStatementList(List<IStatement> statementList) {
-        this.statementList = statementList;
-    }
-
-    public String getKeywordName() {
-        return keywordName;
-    }
-
-    public void setKeywordName(String keywordName) {
-        this.keywordName = keywordName;
-    }
-
-    public List<String> getArgsList() {
-        return argsList;
-    }
-
-    public void setArgsList(List<String> argsList) {
-        this.argsList = argsList;
     }
 
     public Object execute(StatementBlockExecutor statementBlockExecutor, SymbolsTable globalSymTable,

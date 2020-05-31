@@ -6,12 +6,15 @@ import com.sparkit.staf.core.ast.types.StafBoolean;
 import com.sparkit.staf.core.ast.types.StafInteger;
 import com.sparkit.staf.core.parser.StafBaseVisitor;
 import com.sparkit.staf.core.parser.StafParser;
+import com.sparkit.staf.core.runtime.interpreter.expression.ExpressionEvaluatorFactory;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ExpressionVisitor extends StafBaseVisitor<AbstractStafObject> {
     @Autowired
     private ScalarObjectVisitor scalarObjectVisitor;
+    @Autowired
+    private ExpressionEvaluatorFactory expressionEvaluatorFactory;
 
     @Override
     public AbstractStafObject visitExpression(StafParser.ExpressionContext ctx) {
@@ -20,11 +23,11 @@ public class ExpressionVisitor extends StafBaseVisitor<AbstractStafObject> {
         if (minus != null || not != null) {
             AbstractStafObject obj = visitExpression(ctx.expression(0));
             if (obj instanceof Expression) {
-                ((Expression)obj).setInverted(true);
+                ((Expression) obj).setInverted(true);
             } else if (obj instanceof StafInteger) {
-                obj.setValue( -(int)obj.getValue());
+                obj.setValue(-(int) obj.getValue());
             } else if (obj instanceof StafBoolean) {
-                obj.setValue(!(boolean)obj.getValue());
+                obj.setValue(!(boolean) obj.getValue());
             }
             return obj;
         }
@@ -36,7 +39,7 @@ public class ExpressionVisitor extends StafBaseVisitor<AbstractStafObject> {
 
         StafParser.ExpressionContext leftExpressionContext = ctx.expression(0);
         if (leftExpressionContext != null) {
-            Expression e = new Expression();
+            Expression e = new Expression(expressionEvaluatorFactory);
             e.setExpressionLeftMember(visitExpression(leftExpressionContext));
             StafParser.MulopContext mulopContext = ctx.mulop();
             if (mulopContext != null) {
