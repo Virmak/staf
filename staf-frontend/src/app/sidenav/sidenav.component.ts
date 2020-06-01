@@ -94,7 +94,7 @@ export class SidenavComponent implements OnInit {
   }
 
   deleteFile(item, parent) {
-    //this.projectService.deleteFile(item, parent);
+    this.projectService.deleteFile(item, parent);
   }
 
 }

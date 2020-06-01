@@ -20,15 +20,15 @@ export class StafProject implements IStafProject {
     }
 
     static fromObject(project: IStafProject) {
-        const p = new StafProject();
-        p.id = project.id;
-        p.name = project.name;
-        p.description = project.description;
-        p.location = project.location;
-        p.logDir = project.logDir;
-        p.reportsDir = project.reportsDir;
-        p.testSuites = project.testSuites;
-        p.type = project.type;
-        return p;
+        const newStafProject = new StafProject();
+        newStafProject.id = project.id;
+        newStafProject.name = project.name;
+        newStafProject.description = project.description;
+        newStafProject.location = project.location;
+        newStafProject.logDir = project.logDir;
+        newStafProject.reportsDir = project.reportsDir;
+        newStafProject.testSuites = project.testSuites;
+        newStafProject.type = project.type;
+        return newStafProject;
     }
 }
