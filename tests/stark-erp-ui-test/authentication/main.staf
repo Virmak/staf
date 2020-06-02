@@ -1,0 +1,38 @@
+TEST SUITE "Authentication"
+
+IMPORTS
+    IMPORT  "./pages/login.page"
+    IMPORT  "./pages/home.page"
+    IMPORT  "./steps/login.steps"
+    IMPORT  logger
+    IMPORT  selenium
+
+VARS
+    $VALID_USERNAME     =   "test@auto"
+    $VALID_PASSWORD     =   "Test@123"
+    $INVALID_PASSWORD   =   "123456"
+KEYWORDS
+    User login()
+        Login page opened ()
+        Input username and password ($VALID_USERNAME, $VALID_PASSWORD)
+        Home page Opened ()
+    END
+TEST CASES
+    SETUP:
+        Open browser ("chrome")
+    END
+
+    Login with valid credentials:
+        Log ("starting tests")
+        Given Login page opened ()
+        WHEN Input username and password    ($VALID_USERNAME, $VALID_PASSWORD)
+        THEN Home page Opened ()
+        Log("Valid login test passed")
+    END
+
+    Login with invalid credentials:
+        Given Login page opened ()
+        WHEN Input username and password    ($VALID_USERNAME, $INVALID_PASSWORD)
+        THEN Error message displayed ()
+        Log("test invalid login passed")
+    END

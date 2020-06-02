@@ -1,0 +1,15 @@
+TEST SUITE "Authentication"
+
+IMPORTS
+    IMPORT selenium
+VARS
+    $APP_MAIN   =   "tag:app-main"
+    $LOGO       =   "css:.navbar-brand"
+
+KEYWORDS
+    Home page opened()
+        Wait until element is visible   ($APP_MAIN)
+        Element should be visible       ($APP_MAIN)
+        Wait until element is visible   ($LOGO)
+        Element should be visible       ($LOGO)
+    END

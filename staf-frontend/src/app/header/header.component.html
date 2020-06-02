@@ -1,0 +1,62 @@
+<header class="header-6">
+    <div class="branding">
+        <a href="/" class="nav-link">
+            <span class="title">STAF</span>
+        </a>
+    </div>
+    <div class="header-nav">
+        <a href="javascript://" class="active nav-link nav-text">Dashboard</a>
+    </div>
+    <div class="header-actions">
+        <div class="dropdown bottom-left open">
+            <button class="dropdown-toggle" (click)="settingsMenuExpanded = !settingsMenuExpanded" >
+                <clr-icon shape="cog" size="24"></clr-icon>
+                <clr-icon shape="caret down"></clr-icon>
+            </button>
+            <div *ngIf="settingsMenuExpanded" class="dropdown-menu">
+                <h4 class="dropdown-header">Settings</h4>
+                <div class="dropdown-item" (click)="webDriverSettingsModalOpen = true">Web driver address</div>
+                <!--<div class="dropdown-divider"></div>-->
+            </div>
+        </div>
+        &nbsp;
+        &nbsp;
+    </div>
+
+   
+</header>
+
+<clr-modal [(clrModalOpen)]="webDriverSettingsModalOpen">
+    <h3 class="modal-title">Web driver settings</h3>
+    <div class="modal-body">
+        <form clrForm (submit)="setWebDriverIpAddress()">
+            <clr-input-container>
+                <label class="clr-col-6">Web driver address</label>
+                <input clrInput placeholder="0.0.0.0" 
+                    required
+                    name="webDriverIp" 
+                    [(ngModel)]="webDriverIpAddrInput"  
+                    pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" /> 
+                    <input clrInput placeholder="9515" 
+                    required
+                    name="webDriverPort" 
+                    [(ngModel)]="webDriverPortInput"  
+                    pattern="\d+" class="port" />
+                <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+
+                <clr-control-error *clrIfError="'pattern';  error as err">You need to provide a valid IPv4 address</clr-control-error>
+            </clr-input-container>
+            <clr-toggle-container>
+                <clr-toggle-wrapper>
+                  <input type="checkbox" clrToggle value="headless" name="headless" />
+                  <label>Run tests in headless mode</label>
+                </clr-toggle-wrapper>
+            </clr-toggle-container>
+        </form>
+       
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="webDriverSettingsModalOpen = false">Cancel</button>
+        <button type="submit" class="btn btn-primary" (click)="setWebDriverIpAddress()">Ok</button>
+    </div>
+</clr-modal>

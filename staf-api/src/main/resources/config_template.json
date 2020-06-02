@@ -1,0 +1,9 @@
+{
+  "project": "PROJECT_NAME",
+  "description": "PROJECT_DESCRIPTION",
+  "logDir": "logs",
+  "reportsDir": "reports",
+  "type": "Custom",
+  "testSuites": [
+  ]
+}

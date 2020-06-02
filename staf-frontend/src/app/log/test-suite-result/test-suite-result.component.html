@@ -1,0 +1,54 @@
+<div class="container">
+	<div class="flex space-between test-res-header" (click)="toggleExpand()">
+
+		<div class="flex">
+			<div class="report-expand-toggle">{{testSuite?.expanded}}</div>
+			<div class="name">
+				<span class="badge" [ngClass]="testSuite.badge">SUITE</span>
+				{{ testSuite?.testSuite | titlecase }}
+			</div>
+
+		</div>
+		<div>{{testSuite?.elapsed}}</div>
+
+	</div>
+	<div class="report-content" *ngIf="testSuite?.expanded == '-'">
+ 
+		<table>
+			<tbody>
+				<tr>
+					<th>Name</th>
+					<td>{{testSuite?.testSuite | titlecase }}</td>
+				</tr>
+				<tr>
+					<th>Source</th>
+					<td>{{testSuite?.source}}</td>
+				</tr>
+				<tr>
+					<th>Start / End / Elapsed</th>
+					<td>
+						{{testSuite?.start | date:'yyyy-MM-dd hh:mm:ss'}}
+						/
+						{{testSuite?.end | date:'yyyy-MM-dd hh:mm:ss'}}
+						/
+						{{testSuite?.elapsed}}
+
+
+					</td>
+				</tr>
+				<tr>
+					<th>Status</th>
+					<td>{{testSuite?.testSuite | titlecase }}</td>
+				</tr>
+				<tr>
+					<th>Message</th>
+					<td>{{testSuite?.message | titlecase }}</td>
+				</tr>
+			</tbody>
+		</table>
+
+
+		<app-test-case-result *ngFor="let testCase of testSuite.testCaseReports" [testCase]="testCase"></app-test-case-result>
+
+	</div>
+</div>

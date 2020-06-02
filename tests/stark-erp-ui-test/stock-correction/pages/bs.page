@@ -1,0 +1,26 @@
+IMPORTS
+    import selenium
+VARS
+    $SIDENAV_STOCK_CORRECTION       = "xpath://app-sidebar-nav//a[contains(.,'Correction de stock')]"
+    $SIDENAV_BON_SORTIE             = "xpath://app-sidebar-nav//a[@href='/main/stockCorrection/bs']"
+    $ADD_BS_BTN                     = "xpath://bs-list/app-document-list//kendo-grid-toolbar//app-btn-grid/a[@href='/main/stockCorrection/bs/add']"
+    $BS_LIST_PAGE_HEADER            = "xpath://bs-list/app-document-list//h3[contains(text(), 'Liste des bons de sorties')]"
+KEYWORDS
+    Open bs page()
+        Wait until element is visible   ($SIDENAV_STOCK_CORRECTION, 20)
+        Element should be visible       ($SIDENAV_STOCK_CORRECTION)
+        Click element                   ($SIDENAV_STOCK_CORRECTION)
+        Wait until element is visible   ($SIDENAV_BON_SORTIE)
+        Click element                   ($SIDENAV_BON_SORTIE)
+    END
+
+    BS page opened()
+        Wait until element is visible   ($BS_LIST_PAGE_HEADER, 20)
+        Element should be visible       ($BS_LIST_PAGE_HEADER)
+    END
+
+    Click add bs button()
+        Wait until element is visible   ($ADD_BS_BTN)
+        Wait until element is enabled   ($ADD_BS_BTN)
+        Click element                   ($ADD_BS_BTN)
+    END

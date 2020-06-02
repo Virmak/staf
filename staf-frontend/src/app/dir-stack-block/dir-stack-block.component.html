@@ -1,0 +1,8 @@
+ <clr-stack-block [clrStackViewLevel]="1" [clrStackViewSetsize]="3" [clrStackViewPosinset]="2">
+    <clr-stack-label>{{directory.name}}</clr-stack-label>
+    <clr-stack-content>Directory</clr-stack-content>
+    <clr-stack-block  *ngFor="let item of directory.content | keyvalue" [clrStackViewLevel]="2" [clrStackViewSetsize]="3" [clrStackViewPosinset]="1">
+        <clr-stack-label>{{item.value.name}}</clr-stack-label>
+        <clr-stack-content>Sub-content 1</clr-stack-content>
+    </clr-stack-block>
+</clr-stack-block>

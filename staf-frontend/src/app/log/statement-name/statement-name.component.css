@@ -1,0 +1,7 @@
+.regular {
+    font-weight: 400;
+}
+
+strong:first-child, .args {
+    font-size: 12px;
+}

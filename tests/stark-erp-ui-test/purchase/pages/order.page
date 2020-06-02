@@ -1,0 +1,43 @@
+IMPORTS
+    import selenium
+VARS
+    $ORDER_PAGE_URI                 = "xpath://app-document-menu//a[@href='/main/purchase/purchaseorder']"
+    $APP_PURCHASE_ORDER_LIST        = 'tag:app-purchase-order-list'
+
+    $SIDENAV_PURCHASE_LINK          = "xpath://app-sidebar-nav//a[contains(.,'Achat')]"
+    $SIDENAV_PURCHASE_ORDER_LINK    = "xpath://app-sidebar-nav//a[@href='/main/purchase/purchaseorder']"
+    $ADD_ORDER_BTN                  = "xpath://kendo-grid-toolbar//a[@href='/main/purchase/purchaseorder/add']"
+    $ORDER_LIST_HEADER              = "xpath://h3[contains(text(), 'Liste des commandes')]"
+KEYWORDS
+    
+    Open Order list page()
+        Wait until element is visible   ($SIDENAV_PURCHASE_LINK, 20)
+        Element should be visible       ($SIDENAV_PURCHASE_LINK)
+        Click element                   ($SIDENAV_PURCHASE_LINK)
+        Wait until element is visible   ($SIDENAV_PURCHASE_ORDER_LINK)
+        Click element                   ($SIDENAV_PURCHASE_ORDER_LINK)
+    END
+    
+    Order list page opened()
+        Wait until element is visible   ($APP_PURCHASE_ORDER_LIST, 20)
+        Element should be visible       ($APP_PURCHASE_ORDER_LIST)
+    END
+    
+    Click add order button()
+        Wait until element is visible   ($ADD_ORDER_BTN)
+        Wait until element is enabled   ($ADD_ORDER_BTN)
+        Click element                   ($ADD_ORDER_BTN)
+    END
+
+    Click purchase order link()
+        Wait until element is visible   ($ORDER_PAGE_URI)
+        Click element                   ($ORDER_PAGE_URI)
+        Wait until element is visible   ($ORDER_LIST_HEADER)
+        Page should contain element     ($ORDER_LIST_HEADER)
+    END
+
+    Check purchase order id added()
+        $orderIdSelector = "xpath://td/span[contains(@class, 'doc-code') and contains(text(), '" + $ORDER_ID + "')]"
+        Wait until element is visible ($orderIdSelector)
+        Element should be visible($orderIdSelector)
+    END

@@ -1,0 +1,11 @@
+.container {
+    margin-top: 10px;
+    background-color: #ffffff;
+    padding: 10px;
+    border: 1px solid #c2c2c2;
+}
+
+th {
+    width: 200px;
+    text-align: left;
+}

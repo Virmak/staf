@@ -1,0 +1,29 @@
+version: '2'
+services:
+  staf-api:
+    image: java:8-jdk-alpine
+    container_name: staf-api
+    working_dir: /usr/app
+    ports:
+      - "6500:8080"
+    command: ["java", "-jar", "-Dspring.profiles.active=prod", "application.jar", "tests"]
+    volumes:
+      - ./tests:/usr/app/tests
+      - ./staf-api-0.0.1-SNAPSHOT.jar:/usr/app/application.jar
+    networks:
+      - staf-network
+  staf-frontend:
+    build:
+      context: .
+      dockerfile: front.Dockerfile
+    depends_on:
+      - staf-api
+    image: staf-nginx
+    container_name: staf-front
+    ports:
+      - "8088:80"
+    networks:
+      - staf-network
+networks:
+  staf-network:
+    driver: bridge
