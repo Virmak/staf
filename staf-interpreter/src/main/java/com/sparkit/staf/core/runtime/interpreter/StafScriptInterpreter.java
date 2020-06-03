@@ -60,7 +60,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter { // refact
             String importRelativePath = mainStafFile.getFilePath().substring(0, mainStafFile.getFilePath().lastIndexOf("/"));
             this.importsInterpreter.loadImports(mainStafFile.getImports(), importRelativePath, testDirectory);
             if (varsAssignments != null) {
-                this.globalSymTable.addVariablesMap(varsAssignments, keywordLibrariesRepository);
+                this.globalSymTable.addVariablesMap(varsAssignments);
             }
             if (keywordsMap != null) {
                 keywordLibrariesRepository.addUserDefinedKeywords(keywordsMap);
@@ -70,15 +70,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter { // refact
             }
             List<Map.Entry<String, TestCaseDeclaration>> entryList = new ArrayList<Map.Entry<String, TestCaseDeclaration>>(mainStafFile.getTestCaseDeclarationMap().entrySet());
 
-            Collections.sort(
-                    entryList, new Comparator<Map.Entry<String, TestCaseDeclaration>>() {
-                        @Override
-                        public int compare(Map.Entry<String, TestCaseDeclaration> t1,
-                                           Map.Entry<String, TestCaseDeclaration> t2) {
-                            return t1.getValue().getOrder() - t2.getValue().getOrder();
-                        }
-                    }
-            );
+            entryList.sort(Comparator.comparingInt(t -> t.getValue().getOrder()));
 
             for (Map.Entry<String, TestCaseDeclaration> testCase : entryList) {
                 if (testCase.getKey().toLowerCase().equals("setup") || testCase.getKey().toLowerCase().equals("teardown")) {

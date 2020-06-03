@@ -85,7 +85,7 @@ public class StatementBlockExecutor {
         AbstractStafObject tmp = null;  // used to save variable with the same name as the loop variable if it currently
         // exist in localSymTable so we can retrieve it later after for statement execution
         if (localSymbolsTable == null) {
-            localSymbolsTable = new SymbolsTable(this);
+            localSymbolsTable = new SymbolsTable();
         } else {
             tmp = (AbstractStafObject) localSymbolsTable.getSymbolValue(iterable.getLoopVariable().getValue().toString());
         }

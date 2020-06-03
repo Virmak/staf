@@ -33,7 +33,7 @@ public class StafScriptLoader implements IStafScriptLoader {
 
     private final List<String> loadedFilesList = new ArrayList<>();
     @Value("#{systemProperties['testDirectory']}")
-    private String testDirectory;
+    private final String testDirectory;
 
     public StafScriptLoader() {
         testDirectory = System.getProperty("testDirectory");
@@ -54,7 +54,7 @@ public class StafScriptLoader implements IStafScriptLoader {
             importsInterpreter.loadImports(imports, currentDirectory, testDirectory);
         }
         if (varsMap != null) {
-            globalSymTable.addVariablesMap(varsMap, keywordLibrariesRepository);
+            globalSymTable.addVariablesMap(varsMap);
         }
         if (keywordsMap != null) {
             keywordLibrariesRepository.addUserDefinedKeywords(keywordsMap);

@@ -24,23 +24,23 @@ import java.util.Map;
 @Component
 @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class KeywordLibrariesRepository {
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private final Map<String, KeywordWrapper> builtinKeywordMap = new HashMap<>();
+    private final Map<String, AbstractStafLibrary> libsInstancesMap = new HashMap<>();
+    @Autowired
+    LibraryFactory libraryFactory;
     @Autowired
     private SymbolsTable globalSymTable;
     @Autowired
     private StatementBlockExecutor statementBlockExecutor;
     @Autowired
     private TestContainer dependencyContainer;
-    @Autowired LibraryFactory libraryFactory;
     /* Map keyword to library method */
     private Map<String, KeywordDeclaration> userDefinedKeywords = new HashMap<>();
-    private Map<String, KeywordWrapper> builtinKeywordMap = new HashMap<>();
-    private Map<String, AbstractStafLibrary> libsInstancesMap = new HashMap<>();
 
     public Map<String, KeywordDeclaration> getUserDefinedKeywords() {
         return userDefinedKeywords;
     }
-
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public void registerLibrary(Class<? extends AbstractStafLibrary> libClass)
             throws KeywordAlreadyRegisteredException, InvocationTargetException,

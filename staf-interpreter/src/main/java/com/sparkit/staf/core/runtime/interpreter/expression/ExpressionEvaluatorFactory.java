@@ -1,6 +1,6 @@
 package com.sparkit.staf.core.runtime.interpreter.expression;
 
-import com.sparkit.staf.core.ast.ExpressionOperators;
+import com.sparkit.staf.core.ast.ExpressionOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ public class ExpressionEvaluatorFactory {
     @Autowired
     private BooleanExpressionEvaluator booleanExpressionEvaluator;
 
-    public ExpressionEvaluator getExpressionEvaluator(ExpressionOperators operation) throws OperationNotSupportedException {
+    public ExpressionEvaluator getExpressionEvaluator(ExpressionOperator operation) throws OperationNotSupportedException {
         switch (operation) {
             case PLUS:
                 return additionExpressionEvaluator;

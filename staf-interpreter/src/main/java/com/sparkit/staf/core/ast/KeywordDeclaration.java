@@ -35,7 +35,7 @@ public class KeywordDeclaration implements IStatementBlock {
                           KeywordLibrariesRepository keywordLibrariesRepository,
                           Object[] params) throws Throwable {
         reports = new ArrayList<>();
-        SymbolsTable localSymTable = new SymbolsTable(statementBlockExecutor);
+        SymbolsTable localSymTable = new SymbolsTable();
         evaluateArgs(globalSymTable, localSymTable, keywordLibrariesRepository, params);
         reports = statementBlockExecutor.execute(this, null, globalSymTable, localSymTable, keywordLibrariesRepository);
         KeywordCall keywordCall = statementBlockExecutor.getCallStack().pop();

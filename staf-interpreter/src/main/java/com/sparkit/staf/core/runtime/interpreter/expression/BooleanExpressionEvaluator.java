@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.runtime.interpreter.expression;
 
 import com.sparkit.staf.core.ast.Expression;
+import com.sparkit.staf.core.ast.ExpressionOperator;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.StafBoolean;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.InvalidExpressionOperationParams;
@@ -11,30 +12,32 @@ import javax.naming.OperationNotSupportedException;
 @Component
 public class BooleanExpressionEvaluator implements ExpressionEvaluator {
     @Override
-    public AbstractStafObject evaluate(Expression expression) throws InvalidExpressionOperationParams, OperationNotSupportedException {
-        if (expression.getExpressionLeftMember().getValue() instanceof String || expression.getExpressionRightMember().getValue() instanceof String) {
+    public AbstractStafObject evaluate(AbstractStafObject expressionLeftMember, AbstractStafObject expressionRightMember, ExpressionOperator operator) throws InvalidExpressionOperationParams, OperationNotSupportedException {
+        if (expressionLeftMember.getValue() instanceof String || expressionRightMember.getValue() instanceof String) {
             throw new InvalidExpressionOperationParams();
-        } else if (expression.getExpressionLeftMember().getValue() instanceof Double || expression.getExpressionRightMember().getValue() instanceof Double
-        || expression.getExpressionLeftMember().getValue() instanceof Integer || expression.getExpressionRightMember().getValue() instanceof Integer) {
-            return new StafBoolean(compareNumbers(expression));
+        } else if (expressionLeftMember.getValue() instanceof Double || expressionRightMember.getValue() instanceof Double
+                || expressionLeftMember.getValue() instanceof Integer || expressionRightMember.getValue() instanceof Integer) {
+            double expressionLeftMemberValue = Double.parseDouble(expressionLeftMember.getValue().toString());
+            double expressionRightMemberValue = Double.parseDouble(expressionRightMember.getValue().toString());
+            return new StafBoolean(compareNumbers(expressionLeftMemberValue, expressionRightMemberValue, operator));
         }
         throw new InvalidExpressionOperationParams();
     }
 
-    private boolean compareNumbers(Expression expression) throws OperationNotSupportedException {
-        switch (expression.getOperation()) {
+    private boolean compareNumbers(double expressionLeftMember, double expressionRightMember, ExpressionOperator operator) throws OperationNotSupportedException {
+        switch (operator) {
             case EQUAL:
-                return (double) expression.getExpressionLeftMember().getValue() == (double) expression.getExpressionRightMember().getValue();
+                return expressionLeftMember == expressionRightMember;
             case GT:
-                return (double) expression.getExpressionLeftMember().getValue() > (double) expression.getExpressionRightMember().getValue();
+                return  expressionLeftMember > expressionRightMember;
             case LT:
-                return (double) expression.getExpressionLeftMember().getValue() < (double) expression.getExpressionRightMember().getValue();
+                return expressionLeftMember < expressionRightMember;
             case NE:
-                return (double) expression.getExpressionLeftMember().getValue() != (double) expression.getExpressionRightMember().getValue();
+                return expressionLeftMember != expressionRightMember;
             case GTE:
-                return (double) expression.getExpressionLeftMember().getValue() >= (double) expression.getExpressionRightMember().getValue();
+                return expressionLeftMember >= expressionRightMember;
             case LTE:
-                return (double) expression.getExpressionLeftMember().getValue() <= (double) expression.getExpressionRightMember().getValue();
+                return expressionLeftMember <= expressionRightMember;
             default:
                 throw new OperationNotSupportedException();
         }
