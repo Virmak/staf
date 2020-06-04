@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -109,11 +110,12 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     }
 
     @Keyword(name = "input text", doc = "Types the given text into text field identified by locator")
-    public void input(@KeywordArgument AbstractStafObject selector, @KeywordArgument AbstractStafObject value) {
+    public void input(@KeywordArgument AbstractStafObject selector, @KeywordArgument AbstractStafObject value) throws InterruptedException {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         WebElement element = webDrivers.peek().findElement(elementSelector);
         element.clear();
-        element.sendKeys(Keys.chord(Keys.CONTROL, "a"), value.getValue().toString());
+        Actions navigator = new Actions(webDrivers.peek());
+        navigator.click(element).sendKeys(value.getValue().toString()).perform();
     }
 
     @Keyword(name = "click element", doc = "Click element by locator")
