@@ -2,6 +2,7 @@ package com.sparkit.staf.core.ast;
 
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
+import com.sparkit.staf.core.ast.types.StafVariable;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
@@ -59,6 +60,10 @@ public class Assignment implements IStatement, IReportableBlock {
         } else if (localSymbolsTable != null) {
             localSymbolsTable.getSymbolsMap().put(object.getValue().toString(),
                     value.evaluate(globalSymbolsTable, localSymbolsTable));
+        }
+
+        if (value instanceof Expression || value instanceof StafVariable) {
+            return value.evaluate(globalSymbolsTable, localSymbolsTable);
         }
         return (value);
     }
