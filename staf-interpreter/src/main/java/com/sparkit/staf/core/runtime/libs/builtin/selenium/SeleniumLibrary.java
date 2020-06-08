@@ -255,6 +255,16 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         ((JavascriptExecutor)driver).executeScript("arguments[0].click();", element);
     }
 
+    @Keyword(name = "checkbox should be selected")
+    public void checkboxShouldBeSelected(AbstractStafObject selector) {
+        WebDriver driver = webDrivers.peek();
+        By elementSelector = getLocatorFromString(selector.getValue().toString());
+        WebElement element = driver.findElement(elementSelector);
+        if (!element.isSelected()) {
+            throw new CheckboxShouldBeSelectedException(selector.getValue().toString());
+        }
+    }
+
     public void executeJavascript(StafString script) {
         WebDriver driver = webDrivers.peek();
         ((JavascriptExecutor)driver).executeScript(script.getValue().toString());
