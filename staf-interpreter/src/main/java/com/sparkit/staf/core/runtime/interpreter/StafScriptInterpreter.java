@@ -44,6 +44,8 @@ public class StafScriptInterpreter implements IStafScriptInterpreter { // refact
     @Autowired
     private AutowireCapableBeanFactory autowireCapableBeanFactory;
 
+    private boolean testTerminated;
+
     public StafScriptInterpreter() {
     }
 
@@ -54,6 +56,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter { // refact
         testDirectory = System.getProperty("testDirectory");
         logger.info("Started executing test suite : [" + testSuite + "] "
                 + mainStafFile.getTestCaseDeclarationMap().size() + " Test cases found");
+        testTerminated = false;
         try {
             Map<String, Assignment> varsAssignments = mainStafFile.getVariableDeclarationMap();
             Map<String, KeywordDeclaration> keywordsMap = mainStafFile.getKeywordDeclarationMap();
@@ -78,6 +81,10 @@ public class StafScriptInterpreter implements IStafScriptInterpreter { // refact
                 } else if (testCase.getValue().isIgnored()) {
                     logger.info("Test case [" + testCase.getValue().getName() + "] Ignored");
                     continue;
+                }
+                if (testTerminated) {
+                    logger.warn("Test execution terminated by user");
+                    break;
                 }
                 reports.add(executeTestCase(testSuite, testCase.getKey(), testCase.getValue()));
             }
@@ -157,6 +164,10 @@ public class StafScriptInterpreter implements IStafScriptInterpreter { // refact
             }
         }
         return true;
+    }
+
+    public void terminateTestExecution() {
+        testTerminated = true;
     }
 
 }

@@ -248,6 +248,16 @@ public interface StafListener extends ParseTreeListener {
 	 */
 	void exitKeyword_name(StafParser.Keyword_nameContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link StafParser#reserved_keyword}.
+	 * @param ctx the parse tree
+	 */
+	void enterReserved_keyword(StafParser.Reserved_keywordContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link StafParser#reserved_keyword}.
+	 * @param ctx the parse tree
+	 */
+	void exitReserved_keyword(StafParser.Reserved_keywordContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link StafParser#keyword_declaration_arguments}.
 	 * @param ctx the parse tree
 	 */

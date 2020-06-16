@@ -185,6 +185,13 @@ public class StafBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements S
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitReserved_keyword(StafParser.Reserved_keywordContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitKeyword_declaration_arguments(StafParser.Keyword_declaration_argumentsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

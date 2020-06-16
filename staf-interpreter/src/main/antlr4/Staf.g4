@@ -98,7 +98,11 @@ keyword_return_stat
     ;
 
 keyword_name
-    : (IDENTIFIER|IMPORT) (IDENTIFIER|IMPORT)*
+    : (IDENTIFIER|reserved_keyword) (IDENTIFIER|reserved_keyword)*
+    ;
+
+reserved_keyword
+    :   IMPORT | FOR | GIVEN | WHEN | THEN
     ;
 
 keyword_declaration_arguments

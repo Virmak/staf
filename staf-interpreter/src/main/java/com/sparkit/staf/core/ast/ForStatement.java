@@ -1,5 +1,6 @@
 package com.sparkit.staf.core.ast;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.StafVariable;
 import com.sparkit.staf.core.runtime.interpreter.IStafIterable;
@@ -14,7 +15,9 @@ import java.util.List;
 
 @Data
 public class ForStatement implements IStatement, IStatementBlock, IStafIterable {
+    @JsonIgnore
     private final StatementBlockExecutor blockExecutor;
+    @JsonIgnore
     private final KeywordLibrariesRepository keywordLibrariesRepository;
     private StafVariable loopVariable;
     private AbstractStafObject iterator;

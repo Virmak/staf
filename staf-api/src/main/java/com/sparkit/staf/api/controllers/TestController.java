@@ -5,6 +5,7 @@ import com.sparkit.staf.application.exception.TestDirectoryNotFound;
 import com.sparkit.staf.application.models.request.RunTestRequest;
 import com.sparkit.staf.application.service.ProjectService;
 import com.sparkit.staf.core.StafTestFacade;
+import com.sparkit.staf.core.runtime.interpreter.StafScriptInterpreter;
 import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class TestController {
     private StafTestFacade testFacade;
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private StafScriptInterpreter interpreter;
 
     @CrossOrigin("*")
     @PostMapping("/runTest")
@@ -35,5 +38,12 @@ public class TestController {
             }
         }
         throw new ProjectNotFoundException();
+    }
+
+    @CrossOrigin("*")
+    @PostMapping("/terminateTest")
+    public String terminateTest() {
+        interpreter.terminateTestExecution();
+        return "{\"result\": \"Test terminated\"}";
     }
 }
