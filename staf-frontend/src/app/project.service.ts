@@ -193,6 +193,7 @@ export class ProjectService {
           this.toastr.error('Another project with the same name already exists', 'Error');
         } else {
           this.projects.push(this.createProject(res));
+          this.projectsSubject.next(this.projects);
         }
         this.toastr.success('Project created', 'Success');
       }, err => { this.toastr.error('Error creating project', 'Error') })
