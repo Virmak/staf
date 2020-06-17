@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { ITestSuite } from '../interfaces/itest-suite';
 import { FileType } from '../interfaces/ifile';
+import { IDirectory } from '../interfaces/idirectory';
 
 @Component({
   selector: 'app-sidenav',
@@ -56,12 +57,17 @@ export class SidenavComponent implements OnInit {
     this.testSuite.projectName = this.currentProject.getNormalizedProjectName();
 
     this.testSuiteService.createTestSuite(this.testSuite)
-      .subscribe(res => {
-        if (res.result == 'ok') {
+      .subscribe(testSuiteRes => {debugger;
+        if (testSuiteRes.result == 'ok') {
+          let testSuiteContentDir: IDirectory = {
+            name: testSuiteRes.name,
+            type: FileType.Directory,
+            content: this.testSuiteService.readDirectory(testSuiteRes.content),
+          }
           this.currentProject.testSuites.push({
             id: this.sequence.getNext('testSuite'),
-            name: res.name,
-            content: res.content,
+            name: testSuiteRes.name,
+            content: testSuiteContentDir
           });
           this.initTestSuiteFields();
         }

@@ -59,7 +59,7 @@ public class ProjectBuilder implements IProjectBuilder {
             createAPITestSuite(createTestSuiteRequest.getName(), null, projectDir);
         }
         testSuite.setName(createTestSuiteRequest.getName());
-        testSuite.setRootPath(projectDir.getAbsolutePath() + "/" + createTestSuiteRequest.getName());
+        testSuite.setRootPath(projectDir.getPath() + "/" + createTestSuiteRequest.getName());
         return testSuite;
     }
 

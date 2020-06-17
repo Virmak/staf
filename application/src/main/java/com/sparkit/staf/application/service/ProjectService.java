@@ -67,7 +67,7 @@ public class ProjectService {
                 file.setName(f.getPath());
                 file.setFileContent(readFileContent(f));
                 file.setPath(f.toString());
-                fileMap.put(f.toString().replace(testDir, "$projectRoot"), file);
+                fileMap.put(f.toString().replaceAll(testDir, "$projectRoot"), file);
                 files.add(fileMap);
             }
         }
@@ -140,8 +140,9 @@ public class ProjectService {
         response.setName(request.getName());
         try {
             TestSuite testSuite = projectBuilder.buildTestSuite(request);
+            String absoluteTestDir = System.getProperty("user.dir") + "/" + testDir;
             response.setResult("ok");
-            response.setContent(listDirectory(new File(testSuite.getRootPath()), testDir));
+            response.setContent(listDirectory(new File(testSuite.getRootPath()), absoluteTestDir));
         } catch (IOException e) {
             e.printStackTrace();
             response.setResult("error");

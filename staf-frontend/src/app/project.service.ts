@@ -123,14 +123,12 @@ export class ProjectService {
   }
 
   showDeleteFileDialog(file: IFile, parent) {
-    debugger;
     this.deleteOperation = () => {
         this.deleteFile(file, parent);
     }
     this.deleteFileModal = true;
   }
-  showDeleteTestSuiteDialog(file: IFile, parent) {
-    debugger;
+  showDeleteTestSuiteDialog(file: ITestSuite, parent) {
     this.deleteOperation = () => {
       this.deleteTestSuite(file, parent);
     }
@@ -155,7 +153,7 @@ export class ProjectService {
     this.http.delete(baseUrl + '/testSuite/' + project.getNormalizedProjectName() + '/' + testSuite.name)
       .subscribe((res: any) => {
         if (res.result == 'ok') {
-          const testSuiteIndex = project.testSuites.map(testSuite => testSuite.id).indexOf(testSuite.id);
+          const testSuiteIndex = project.testSuites.findIndex(ts => ts.id == testSuite.id);
           project.testSuites.splice(testSuiteIndex, 1);
           this.toastr.info('Test suite deleted', 'Success');
         } else {
@@ -198,10 +196,6 @@ export class ProjectService {
         }
         this.toastr.success('Project created', 'Success');
       }, err => { this.toastr.error('Error creating project', 'Error') })
-
-  }
-
-  addTestSuite(project: IStafProject, testSuite: ITestSuite) {
 
   }
 
