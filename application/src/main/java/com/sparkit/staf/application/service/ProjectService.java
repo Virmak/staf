@@ -6,6 +6,7 @@ import com.sparkit.staf.application.exception.TestDirectoryNotFound;
 import com.sparkit.staf.application.models.request.CreateProjectRequest;
 import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
 import com.sparkit.staf.application.models.response.CreateTestSuiteResponse;
+import com.sparkit.staf.application.models.response.GetProjectReportsResponse;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestSuite;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +101,7 @@ public class ProjectService {
         }
     }
 
-    private String readImageBase64(File f) {
+    public String readImageBase64(File f) {
         String encodedFile = null;
         FileInputStream fileInputStreamReader = null;
         try {
@@ -144,6 +145,17 @@ public class ProjectService {
             response.setResult("error");
             response.setMessage(e.getMessage());
         }
+        return response;
+    }
+
+    public GetProjectReportsResponse getProjectReports(String projectName) {
+        GetProjectReportsResponse response = new GetProjectReportsResponse();
+        response.setProjectName(projectName);
+        String reportsDirectoryPath = testDir + "/" + normalizeProjectName(projectName) + "/results";
+        File reportsDirectory = new File(reportsDirectoryPath);
+        response.setReportsFileNameList(
+                Arrays.stream(Objects.requireNonNull(reportsDirectory.listFiles()))
+                .map(File::getName).collect(Collectors.toList()));
         return response;
     }
 }

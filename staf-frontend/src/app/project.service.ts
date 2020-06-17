@@ -238,4 +238,12 @@ export class ProjectService {
   getImage(screenShot: string) {
     return this.http.get(baseUrl + "/screenshot/" + screenShot);
   }
+
+  getReports(projectName: string) {
+    return this.http.get(baseUrl + "/projectReports/" + projectName);
+  }
+
+  getTestReport(projectName: string, fileName: string) {
+    return this.http.get(baseUrl + '/testReport/' + projectName + '/' + fileName);
+  }
 }

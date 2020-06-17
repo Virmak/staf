@@ -10,7 +10,7 @@
 
 <div class="btn-group btn-primary">
     <button (click)="runSelectedTests()" [disabled]="runBtnDisabled" class="btn"><clr-icon shape="play" class="is-solid"></clr-icon> Run</button>
-    <button (click)="runAllTests()" class="btn"><clr-icon shape="fast-forward" class="is-solid"></clr-icon> Run All</button>
+    <button (click)="runAllTests()" [disabled]="runAllBtnDisabled" class="btn"><clr-icon shape="fast-forward" class="is-solid"></clr-icon> Run All</button>
     <button (click)="stopTests()" [disabled]="stopBtnDisabled" class="btn"><clr-icon shape="stop" class="is-solid"></clr-icon> Stop</button>
 </div>
 

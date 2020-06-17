@@ -76,15 +76,15 @@ public class StafScriptInterpreter implements IStafScriptInterpreter { // refact
             entryList.sort(Comparator.comparingInt(t -> t.getValue().getOrder()));
 
             for (Map.Entry<String, TestCaseDeclaration> testCase : entryList) {
+                if (testTerminated) {
+                    logger.warn("Test execution terminated by user");
+                    break;
+                }
                 if (testCase.getKey().toLowerCase().equals("setup") || testCase.getKey().toLowerCase().equals("teardown")) {
                     continue;
                 } else if (testCase.getValue().isIgnored()) {
                     logger.info("Test case [" + testCase.getValue().getName() + "] Ignored");
                     continue;
-                }
-                if (testTerminated) {
-                    logger.warn("Test execution terminated by user");
-                    break;
                 }
                 reports.add(executeTestCase(testSuite, testCase.getKey(), testCase.getValue()));
             }
@@ -116,7 +116,9 @@ public class StafScriptInterpreter implements IStafScriptInterpreter { // refact
                 return;
             }
             StafString screenShotPath = new StafString(testDirectory + "/" + config.getProjectDir() + "/"
-                    + testSuite + "/" + config.getReportingDirectory() + "/screenshot-" + testSuite + "-" + testCaseName + "-" + new Date().getTime() + ".png");
+                    + testSuite + "/" + config.getReportingDirectory()
+                    + "/screenshot-" + testSuite + "-" + testCaseName.replaceAll(" ",  "")
+                    + "-" + new Date().getTime() + ".png");
             try {
                 KeywordCall captureScreenshotKeyword = new KeywordCall(statementBlockExecutor, keywordLibrariesRepository,
                         "capturescreenshot", Arrays.asList(new AbstractStafObject[]{screenShotPath}));
@@ -168,6 +170,7 @@ public class StafScriptInterpreter implements IStafScriptInterpreter { // refact
 
     public void terminateTestExecution() {
         testTerminated = true;
+        logger.warn("Received test termination signal : stopping tests ...");
     }
 
 }

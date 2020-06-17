@@ -21,7 +21,7 @@
     <clr-tab>
         <button clrTabLink>Logs</button>
         <clr-tab-content *clrIfActive="reportTabActive">
-            <app-view-log [reports]="reports"></app-view-log>
+            <app-view-log [project]="project" [reports]="reports"></app-view-log>
         </clr-tab-content>
     </clr-tab>
 </clr-tabs>

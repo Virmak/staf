@@ -13,6 +13,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class RunTestComponent implements OnInit {
   runBtnDisabled = true;
+  runAllBtnDisabled = true;
   stopBtnDisabled = true;
   progress = false;
 
@@ -49,6 +50,8 @@ export class RunTestComponent implements OnInit {
     this.logService.newSession();
     this.progress = true;
     this.stopBtnDisabled = false;
+    this.runAllBtnDisabled = true;
+    this.runBtnDisabled = true;
     this.testService.runTest({
       project: this._project.name,
       testSuites: this._testSuites.filter(ts => ts.checked).map(ts => ts.name),
@@ -60,6 +63,8 @@ export class RunTestComponent implements OnInit {
     this.logService.newSession();
     this.progress = true;
     this.stopBtnDisabled = false;
+    this.runAllBtnDisabled = true;
+    this.runBtnDisabled = true;
     this.testService.runTest({
       project: this._project.name,
       testSuites: this._testSuites.map(ts => ts.name),
@@ -92,6 +97,8 @@ export class RunTestComponent implements OnInit {
     this.testCompleted.emit(this.project.reports);
     this.progress = false;
     this.stopBtnDisabled = true;
+    this.runBtnDisabled = false;
+    this.runAllBtnDisabled = false;
     if (hasErrors) {
       this.toastr.warning("Some test suites encountered errors please refer to logs to learn more about the problem", "Error")
     } else {
@@ -103,9 +110,16 @@ export class RunTestComponent implements OnInit {
     this.progress = false;
     this.stopBtnDisabled = true;
     this.toastr.error('Tests execution failed', 'Error');
+    this.runBtnDisabled = false;
+    this.runAllBtnDisabled = false;
   }
 
   stopTests() {
-    this.testService.stopTest().subscribe(() => {});
+    this.testService.stopTest().subscribe(() => {
+      this.runBtnDisabled = false;
+      this.runAllBtnDisabled = false;
+      this.stopBtnDisabled = true;
+      this.progress = false;
+    });
   }
 }

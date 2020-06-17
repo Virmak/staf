@@ -4,6 +4,7 @@ import com.sparkit.staf.application.exception.ProjectNameAlreadyExist;
 import com.sparkit.staf.application.models.request.CreateProjectRequest;
 import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
 import com.sparkit.staf.application.models.response.CreateTestSuiteResponse;
+import com.sparkit.staf.application.models.response.GetProjectReportsResponse;
 import com.sparkit.staf.application.service.ProjectService;
 import com.sparkit.staf.domain.ProjectConfig;
 import org.modelmapper.ModelMapper;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,4 +60,17 @@ public class ProjectController {
         return projectService.createTestSuite(request);
     }
 
+    @CrossOrigin("*")
+    @GetMapping("/testReport/{project}/{fileName}")
+    public String getTestReport(@PathVariable(name = "project") String project, @PathVariable(name = "fileName") String fileName) throws IOException {
+        // refactor to project service
+        String filePath = testDir + "/" + ProjectService.normalizeProjectName(project) + "/results/" + fileName;
+        return  new String(Files.readAllBytes(Paths.get(filePath)));
+    }
+
+    @CrossOrigin("*")
+    @GetMapping("/projectReports/{project}")
+    public GetProjectReportsResponse getProjectReports(@PathVariable(name = "project") String project) {
+        return projectService.getProjectReports(project);
+    }
 }
