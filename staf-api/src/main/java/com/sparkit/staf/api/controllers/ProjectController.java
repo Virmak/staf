@@ -54,12 +54,6 @@ public class ProjectController {
         return projectService.listDirectory(projectsDir, absoluteTestDir);
     }
 
-    @CrossOrigin
-    @PostMapping("/testSuite")
-    public CreateTestSuiteResponse createTestSuite(@RequestBody CreateTestSuiteRequest request) {
-        return projectService.createTestSuite(request);
-    }
-
     @CrossOrigin("*")
     @GetMapping("/testReport/{project}/{fileName}")
     public String getTestReport(@PathVariable(name = "project") String project, @PathVariable(name = "fileName") String fileName) throws IOException {

@@ -49,7 +49,7 @@ export class SidenavDirectoryComponent implements OnInit {
   }
 
   removeFile(item, parent) {
-    this.projectService.deleteFile(item, parent);
+    this.projectService.showDeleteFileDialog(item, parent);
   }
 
   openFile(item, key) {

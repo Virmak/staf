@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class StafTestFacade {
     }
 
     private String getCurrentDateTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy-HH:mm:ss");
-        return dateFormat.format(new Date());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return dateTimeFormatter.format(LocalDateTime.now());
     }
 }

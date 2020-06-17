@@ -28,6 +28,7 @@ export class ProjectService {
   public testDirectory;
 
   public deleteFileModal = false;
+  public deleteTestSuiteModal = false;
   public deleteFileConfirmed = false;
   private deleteOperation = () => { };
 
@@ -121,26 +122,52 @@ export class ProjectService {
     });
   }
 
-  deleteFile(file: IFile, parent) {
-    this.deleteFileModal = true;
-
+  showDeleteFileDialog(file: IFile, parent) {
+    debugger;
     this.deleteOperation = () => {
-      const errorToastr = () => this.toastr.error('Error deleting file', 'Error');
-      this.http.delete(baseUrl + '/deleteFile/' + file.path.replace(/\//g, '<sep>'))
-        .subscribe((res: any) => {
-          if (res.result == 'ok') {
-            parent.content.delete(file.path);
-            this.toastr.info('File deleted', 'Success');
-          } else {
-            errorToastr();
-          }
-        }, errorToastr);
+        this.deleteFile(file, parent);
     }
+    this.deleteFileModal = true;
+  }
+  showDeleteTestSuiteDialog(file: IFile, parent) {
+    debugger;
+    this.deleteOperation = () => {
+      this.deleteTestSuite(file, parent);
+    }
+    this.deleteTestSuiteModal = true;
+  }
+
+  deleteFile(file, parent) {
+    const errorToastr = () => this.toastr.error('Error deleting file', 'Error');
+    this.http.delete(baseUrl + '/deleteFile/' + file.path.replace(/\//g, '<sep>'))
+      .subscribe((res: any) => {
+        if (res.result == 'ok') {
+          parent.content.delete(file.path);
+          this.toastr.info('File deleted', 'Success');
+        } else {
+          errorToastr();
+        }
+      }, errorToastr);
+  }
+
+  deleteTestSuite(testSuite: ITestSuite, project:StafProject) {
+    const errorToastr = () => this.toastr.error('Error deleting test suite', 'Error');
+    this.http.delete(baseUrl + '/testSuite/' + project.getNormalizedProjectName() + '/' + testSuite.name)
+      .subscribe((res: any) => {
+        if (res.result == 'ok') {
+          const testSuiteIndex = project.testSuites.map(testSuite => testSuite.id).indexOf(testSuite.id);
+          project.testSuites.splice(testSuiteIndex, 1);
+          this.toastr.info('Test suite deleted', 'Success');
+        } else {
+          errorToastr();
+        }
+      }, errorToastr);
   }
 
   confirmDeleteFile() {
     this.deleteOperation();
     this.deleteFileModal = false;
+    this.deleteTestSuiteModal = false;
   }
 
   createProject(project) {

@@ -6,9 +6,11 @@ import com.sparkit.staf.application.exception.TestDirectoryNotFound;
 import com.sparkit.staf.application.models.request.CreateProjectRequest;
 import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
 import com.sparkit.staf.application.models.response.CreateTestSuiteResponse;
+import com.sparkit.staf.application.models.response.DeleteTestSuiteResponse;
 import com.sparkit.staf.application.models.response.GetProjectReportsResponse;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestSuite;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -156,6 +158,19 @@ public class ProjectService {
         response.setReportsFileNameList(
                 Arrays.stream(Objects.requireNonNull(reportsDirectory.listFiles()))
                 .map(File::getName).collect(Collectors.toList()));
+        return response;
+    }
+
+    public DeleteTestSuiteResponse deleteTestSuite(String project, String testSuite) {
+        DeleteTestSuiteResponse response = new DeleteTestSuiteResponse();
+        String testSuitePath = testDir + "/" + project + "/" + testSuite;
+        try {
+            FileUtils.deleteDirectory(new File(testSuitePath));
+            response.setResult("ok");
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setResult("error");
+        }
         return response;
     }
 }
