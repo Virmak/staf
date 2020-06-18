@@ -16,6 +16,7 @@ export class RunTestComponent implements OnInit {
   runAllBtnDisabled = true;
   stopBtnDisabled = true;
   progress = false;
+  sessionCount = 1;
 
   _testSuites = [];
   private _project: IStafProject;
@@ -55,6 +56,7 @@ export class RunTestComponent implements OnInit {
     this.testService.runTest({
       project: this._project.name,
       testSuites: this._testSuites.filter(ts => ts.checked).map(ts => ts.name),
+      sessionCount: this.sessionCount
     })
       .subscribe(this.testComplete.bind(this), this.testFailed.bind(this));
   }
@@ -68,6 +70,7 @@ export class RunTestComponent implements OnInit {
     this.testService.runTest({
       project: this._project.name,
       testSuites: this._testSuites.map(ts => ts.name),
+      sessionCount: this.sessionCount
     }).subscribe(this.testComplete.bind(this), err => {
       this.testFailed();
     });

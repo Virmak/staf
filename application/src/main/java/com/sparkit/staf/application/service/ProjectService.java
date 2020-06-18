@@ -13,6 +13,7 @@ import com.sparkit.staf.domain.TestSuite;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -36,7 +37,14 @@ public class ProjectService {
         return name.toLowerCase().replaceAll("\\s+", "-");
     }
 
-    public List<String> readProjects() throws TestDirectoryNotFound {
+    public Map<String, Object> readProjectContent(String projectName) throws IOException {
+        File projectDir = new File(testDir, ProjectService.normalizeProjectName(projectName));
+        String currentDir = System.getProperty("user.dir");
+        String absoluteTestDir = currentDir + "/" + testDir;
+        return listDirectory(projectDir, absoluteTestDir);
+    }
+
+    public List<String> getProjectsList() throws TestDirectoryNotFound {
         File currentDir = new File(System.getProperty("user.dir"));
         File projectsDir = new File(currentDir, testDir);
         File[] files = projectsDir.listFiles();

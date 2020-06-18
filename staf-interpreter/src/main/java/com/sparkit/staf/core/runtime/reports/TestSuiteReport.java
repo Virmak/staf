@@ -16,6 +16,7 @@ public class TestSuiteReport {
     private LocalDateTime start;
     private LocalDateTime end;
     private List<TestCaseReport> testCaseReports;
+    private long testSessionId;
     private int total;
     private int pass;
     private int failed;

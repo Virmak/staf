@@ -39,10 +39,7 @@ public class ProjectController {
             res.put("error", "Project name already exists");
             return ResponseEntity.ok(res);
         }
-        File projectDir = new File(testDir, ProjectService.normalizeProjectName(createProjectRequest.getName()));
-        String currentDir = System.getProperty("user.dir");
-        String absoluteTestDir = currentDir + "/" + testDir;
-        return ResponseEntity.ok(projectService.listDirectory(projectDir, absoluteTestDir));
+        return ResponseEntity.ok(projectService.readProjectContent(createProjectRequest.getName()));
     }
 
     @CrossOrigin(origins = "*")
@@ -59,7 +56,7 @@ public class ProjectController {
     public String getTestReport(@PathVariable(name = "project") String project, @PathVariable(name = "fileName") String fileName) throws IOException {
         // refactor to project service
         String filePath = testDir + "/" + ProjectService.normalizeProjectName(project) + "/results/" + fileName;
-        return  new String(Files.readAllBytes(Paths.get(filePath)));
+        return new String(Files.readAllBytes(Paths.get(filePath)));
     }
 
     @CrossOrigin("*")

@@ -210,25 +210,7 @@ export class ProjectService {
   }
 
   getProjectByName(name: string): StafProject {
-    for (let i = 0; i < this.projects.length; i++) {
-      if (this.projects[i].getNormalizedProjectName() == name) {
-        return this.projects[i];
-      }
-    }
-    return null;
-  }
-
-  getFile(project, path): IFile {
-    console.log(project, path);
-    const pathItems = path.split('/');
-    let testSuite = this.getTestSuiteByName(project, pathItems[1]);
-    let lastDir: any = testSuite.content;
-
-    for (let i = 2; i < pathItems.length; i++) {
-
-    }
-
-    return null;
+    return this.projects.find(p => p.getNormalizedProjectName() == name);
   }
 
   getEmptyProject(): IStafProject {

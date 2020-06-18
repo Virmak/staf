@@ -1,5 +1,6 @@
 package com.sparkit.staf.core.ast.types;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparkit.staf.core.ast.IStatement;
 import com.sparkit.staf.core.ast.StafTypes;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
@@ -18,6 +19,7 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
     protected List<AbstractStafObject> argumentsList;
     protected int lineNumber;
     protected String file;
+    @JsonIgnore
     protected List<StatementReport> statementReports;
 
     public KeywordCall(StatementBlockExecutor blockExecutor, KeywordLibrariesRepository keywordLibrariesRepository,
@@ -113,7 +115,7 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
         if (keywordLibrariesRepository.isKeywordDeclared(keywordName)) {
             Object[] params = evaluateArgumentsList(globalSymbolsTable,
                     localSymbolsTable);
-            return keywordLibrariesRepository.invokeKeyword(keywordName, params);
+            return keywordLibrariesRepository.invokeKeyword(globalSymbolsTable, keywordName, params);
         } else {
             throw new UndefinedKeywordException(keywordName);
         }

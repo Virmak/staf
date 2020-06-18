@@ -26,7 +26,7 @@ public class JsonStafProjectConfig implements IStafConfig {
     private String projectDir;
     private String logDirectory;
     private String reportingDirectory;
-    private Set<String> testSuites = new HashSet<>();
+    private final Set<String> testSuites = new HashSet<>();
     @Value("${testDirectory}")
     String testDirectory;
 

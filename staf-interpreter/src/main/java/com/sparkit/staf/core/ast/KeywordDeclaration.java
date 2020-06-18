@@ -46,7 +46,7 @@ public class KeywordDeclaration implements IStatementBlock {
         return null;
     }
 
-    private void evaluateArgs(SymbolsTable globalSymTable,
+    private void evaluateArgs(SymbolsTable globalSymbolsTable,
                               SymbolsTable localSymTable,
                               KeywordLibrariesRepository keywordLibrariesRepository,
                               Object[] params) throws Throwable {
@@ -64,7 +64,7 @@ public class KeywordDeclaration implements IStatementBlock {
                 throw new UndefinedVariableException((String) params[i]);
             }
             if (type == StafTypes.VAR_REF) {
-                AbstractStafObject valObj = (AbstractStafObject) globalSymTable.getSymbolValue(stafObject.getValue().toString());
+                AbstractStafObject valObj = (AbstractStafObject) globalSymbolsTable.getSymbolValue(stafObject.getValue().toString());
                 if (valObj == null) {
                     throw new UndefinedVariableException(stafObject.getValue().toString());
                 }
@@ -73,7 +73,7 @@ public class KeywordDeclaration implements IStatementBlock {
                 KeywordCall keywordCall = (KeywordCall) stafObject.getValue();
                 if (keywordLibrariesRepository.isKeywordDeclared(keywordCall.getKeywordName())) {
                     localSymTable.setSymbolValue(argsList.get(i),
-                            keywordLibrariesRepository.invokeKeyword(keywordCall.getKeywordName(), keywordCall.getArgumentsList().toArray()));
+                            keywordLibrariesRepository.invokeKeyword(globalSymbolsTable, keywordCall.getKeywordName(), keywordCall.getArgumentsList().toArray()));
                 } else {
                     throw new UndefinedKeywordException(keywordCall.getKeywordName());
                 }

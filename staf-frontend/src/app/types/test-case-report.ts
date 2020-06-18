@@ -1,9 +1,12 @@
+import { StatementReport } from './statement-report';
 export class TestCaseReport {
     testSuite: string;
     testCase: string;
     result: TestCaseResult;
-    startTime: Date;
-    endTime: Date;
+    start: Date;
+    end: Date;
+    errorMessage: string;
+    statemmentReports: StatementReport[];
 }
 
 export enum TestCaseResult {

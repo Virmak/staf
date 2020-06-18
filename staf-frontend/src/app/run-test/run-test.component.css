@@ -5,3 +5,7 @@
 clr-checkbox-wrapper {
     padding: 10px;
 }
+
+clr-input-container {
+    margin-top: 0;
+}

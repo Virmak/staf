@@ -10,6 +10,7 @@ export class StafProject implements IStafProject {
     reportsDir: string;
     testSuites: ITestSuite[];
     type: ProjectType;
+    expanded: boolean;
 
     getNormalizedProjectName() {
         return StafProject.getNormalizedProjectName(this.name);

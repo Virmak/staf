@@ -26,6 +26,14 @@
    
 </header>
 
+<nav class="subnav">
+    <ul class="nav">
+        <li class="nav-item" *ngFor="file of fileExplorer.openedFiles">
+            <a class="nav-link active" href="#">Dashboard</a>
+        </li>
+    </ul>
+</nav>
+
 <clr-modal [(clrModalOpen)]="webDriverSettingsModalOpen">
     <h3 class="modal-title">Web driver settings</h3>
     <div class="modal-body">

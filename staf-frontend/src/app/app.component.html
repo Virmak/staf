@@ -14,7 +14,6 @@
     </button>
 	</div>
 	<app-header></app-header>
-	<nav class="subnav"></nav>
 	<div class="content-container">
 		<div class="content-area">
 			<router-outlet></router-outlet>
@@ -26,6 +25,8 @@
 </div>
 
 
+
+<log-console></log-console>
 
 <div class="modal" *ngIf="projectService.deleteFileModal">
     <div class="modal-dialog" role="dialog" aria-hidden="true" >
