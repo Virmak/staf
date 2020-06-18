@@ -5,6 +5,8 @@ import { TestSuiteResultComponent } from './test-suite-result/test-suite-result.
 import { TestCaseResultComponent } from './test-case-result/test-case-result.component';
 import { StatementTestResultComponent } from './statement-test-result/statement-test-result.component';
 import { StatementNameComponent } from './statement-name/statement-name.component';
+import { ClarityModule } from '@clr/angular';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -14,10 +16,12 @@ import { StatementNameComponent } from './statement-name/statement-name.componen
     TestSuiteResultComponent,
     TestCaseResultComponent,
     StatementTestResultComponent,
-    StatementNameComponent
+    StatementNameComponent,
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    ClarityModule,
   ],
   exports: [
     ViewLogComponent,

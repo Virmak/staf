@@ -1,7 +1,13 @@
 package com.sparkit.staf.core.runtime.interpreter;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class TestSuite {
-    private String testSuiteName;
+    @Getter
+    private final String testSuiteName;
+    @Getter
+    @Setter
     private String testDirectory;
 
     public TestSuite(String testSuiteName, String testDirectory) {
@@ -11,21 +17,5 @@ public class TestSuite {
 
     public String getFullPath() {
         return testDirectory + "/" + testSuiteName;
-    }
-
-    public String getTestDirectory() {
-        return testDirectory;
-    }
-
-    public void setTestDirectory(String testDirectory) {
-        this.testDirectory = testDirectory;
-    }
-
-    public String getTestSuiteName() {
-        return testSuiteName;
-    }
-
-    public void setTestSuiteName(String testSuiteName) {
-        this.testSuiteName = testSuiteName;
     }
 }

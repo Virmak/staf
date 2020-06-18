@@ -9,4 +9,5 @@ public class RunTestRequest {
     private String project;
     private List<String> testSuites;
     private String webDriverAddress;
+    private int sessionCount;
 }

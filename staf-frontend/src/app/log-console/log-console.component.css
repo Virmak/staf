@@ -1,8 +1,26 @@
+.container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+}
+
 
 .log-console {
     width: 100%;
-    height: 400px;
+    height: 260px;
     overflow: scroll;
     background-color: #000;
     color: white;
+    overflow-x: hidden;
+    padding: 10px;
+}
+
+
+.toggle {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
 }

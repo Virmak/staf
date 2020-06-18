@@ -11,8 +11,6 @@ export class FileEditorService {
 
   openedFiles: Map<string, IFile> = new Map();
 
-  
-
   constructor(
     private projectService: ProjectService,
     private router: Router) { }
@@ -20,7 +18,6 @@ export class FileEditorService {
   setFile(file: IFile) {
     this.openedFiles.set(file.name, file);
   }
-
   getFile(name) {
     return this.openedFiles.get(name);
   }

@@ -11,6 +11,8 @@ export class StatementTestResultComponent implements OnInit {
 
   _statement;
 
+  screenshotModalOpenend = false;
+
   @Input() set statement(value) {
     this._statement = value;
     this._statement.elapsed = TestSuiteResultComponent.getTimeString((new Date(value.end)).getTime()
@@ -19,8 +21,8 @@ export class StatementTestResultComponent implements OnInit {
     this._statement.badge = this._statement.result == 'Pass' ? 'badge-success' : 'badge-danger';
     
     if (this._statement.screenShot) {
-      this.projectService.getImage(this._statement.screenShot)
-      .subscribe(img => this._statement.screenShotBase64 = img);
+      this.projectService.getImage(this._statement.screenShot.replace(/\//g, '<sep>'))
+      .subscribe((img:any) => this._statement.imageBase64 = img.imageData);
     }
   }
 

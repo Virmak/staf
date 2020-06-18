@@ -1,3 +1,4 @@
+import { FileExplorerService } from './../file-explorer.service';
 import { TestService } from './../test.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -13,7 +14,9 @@ export class HeaderComponent implements OnInit {
   webDriverIpAddrInput = '';
   webDriverPortInput = '9515';
 
-  constructor(private testService: TestService) { }
+  constructor(
+    private testService: TestService,
+    public fileExplorer: FileExplorerService) { }
 
   ngOnInit(): void {
     if (this.testService.webDriverAddress) {

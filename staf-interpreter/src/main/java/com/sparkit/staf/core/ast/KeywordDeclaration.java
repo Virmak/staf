@@ -11,87 +11,42 @@ import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedKeywordExce
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class KeywordDeclaration implements IStatementBlock {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    protected String keywordName;
-    protected List<String> argsList;
-    protected List<IStatement> statementList;
-    protected AbstractStafObject returnObject;
-    protected String file;
-    protected List<StatementReport> reports;
-
-    public KeywordDeclaration(String keywordName, List<String> argsList, List<IStatement> statementList, AbstractStafObject returnObject) {
-        this.keywordName = keywordName;
-        this.argsList = argsList;
-        this.statementList = statementList;
-        this.returnObject = returnObject;
-    }
+    private String keywordName;
+    private List<String> argsList;
+    private List<IStatement> statementList;
+    private AbstractStafObject returnObject;
+    private String file;
+    private List<StatementReport> reports;
 
     public KeywordDeclaration() {
-    }
-
-    public String getFile() {
-        return file;
-    }
-
-    public void setFile(String file) {
-        this.file = file;
-    }
-
-    public AbstractStafObject getReturnObject() {
-        return returnObject;
-    }
-
-    public void setReturnObject(AbstractStafObject returnObject) {
-        this.returnObject = returnObject;
-    }
-
-    public List<IStatement> getStatementList() {
-        return statementList;
-    }
-
-    public void setStatementList(List<IStatement> statementList) {
-        this.statementList = statementList;
-    }
-
-    public String getKeywordName() {
-        return keywordName;
-    }
-
-    public void setKeywordName(String keywordName) {
-        this.keywordName = keywordName;
-    }
-
-    public List<String> getArgsList() {
-        return argsList;
-    }
-
-    public void setArgsList(List<String> argsList) {
-        this.argsList = argsList;
     }
 
     public Object execute(StatementBlockExecutor statementBlockExecutor, SymbolsTable globalSymTable,
                           KeywordLibrariesRepository keywordLibrariesRepository,
                           Object[] params) throws Throwable {
         reports = new ArrayList<>();
-        SymbolsTable localSymTable = new SymbolsTable(statementBlockExecutor);
+        SymbolsTable localSymTable = new SymbolsTable();
         evaluateArgs(globalSymTable, localSymTable, keywordLibrariesRepository, params);
         reports = statementBlockExecutor.execute(this, null, globalSymTable, localSymTable, keywordLibrariesRepository);
         KeywordCall keywordCall = statementBlockExecutor.getCallStack().pop();
         keywordCall.setStatementReports(reports);
         if (returnObject != null) {
-            return returnObject.evaluate(statementBlockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+            return returnObject.evaluate(globalSymTable, localSymTable);
         }
         return null;
     }
 
-    private void evaluateArgs(SymbolsTable globalSymTable,
+    private void evaluateArgs(SymbolsTable globalSymbolsTable,
                               SymbolsTable localSymTable,
                               KeywordLibrariesRepository keywordLibrariesRepository,
                               Object[] params) throws Throwable {
@@ -109,7 +64,7 @@ public class KeywordDeclaration implements IStatementBlock {
                 throw new UndefinedVariableException((String) params[i]);
             }
             if (type == StafTypes.VAR_REF) {
-                AbstractStafObject valObj = (AbstractStafObject) globalSymTable.getSymbolValue(stafObject.getValue().toString());
+                AbstractStafObject valObj = (AbstractStafObject) globalSymbolsTable.getSymbolValue(stafObject.getValue().toString());
                 if (valObj == null) {
                     throw new UndefinedVariableException(stafObject.getValue().toString());
                 }
@@ -118,7 +73,7 @@ public class KeywordDeclaration implements IStatementBlock {
                 KeywordCall keywordCall = (KeywordCall) stafObject.getValue();
                 if (keywordLibrariesRepository.isKeywordDeclared(keywordCall.getKeywordName())) {
                     localSymTable.setSymbolValue(argsList.get(i),
-                            keywordLibrariesRepository.invokeKeyword(keywordCall.getKeywordName(), keywordCall.getArgumentsList().toArray()));
+                            keywordLibrariesRepository.invokeKeyword(globalSymbolsTable, keywordCall.getKeywordName(), keywordCall.getArgumentsList().toArray()));
                 } else {
                     throw new UndefinedKeywordException(keywordCall.getKeywordName());
                 }

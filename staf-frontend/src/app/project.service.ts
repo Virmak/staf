@@ -28,6 +28,7 @@ export class ProjectService {
   public testDirectory;
 
   public deleteFileModal = false;
+  public deleteTestSuiteModal = false;
   public deleteFileConfirmed = false;
   private deleteOperation = () => { };
 
@@ -121,26 +122,50 @@ export class ProjectService {
     });
   }
 
-  deleteFile(file: IFile, parent) {
-    this.deleteFileModal = true;
-
+  showDeleteFileDialog(file: IFile, parent) {
     this.deleteOperation = () => {
-      const errorToastr = () => this.toastr.error('Error deleting file', 'Error');
-      this.http.delete(baseUrl + '/deleteFile/' + file.path.replace(/\//g, '<sep>'))
-        .subscribe((res: any) => {
-          if (res.result == 'ok') {
-            parent.content.delete(file.path);
-            this.toastr.info('File deleted', 'Success');
-          } else {
-            errorToastr();
-          }
-        }, errorToastr);
+        this.deleteFile(file, parent);
     }
+    this.deleteFileModal = true;
+  }
+  showDeleteTestSuiteDialog(file: ITestSuite, parent) {
+    this.deleteOperation = () => {
+      this.deleteTestSuite(file, parent);
+    }
+    this.deleteTestSuiteModal = true;
+  }
+
+  deleteFile(file, parent) {
+    const errorToastr = () => this.toastr.error('Error deleting file', 'Error');
+    this.http.delete(baseUrl + '/deleteFile/' + file.path.replace(/\//g, '<sep>'))
+      .subscribe((res: any) => {
+        if (res.result == 'ok') {
+          parent.content.delete(file.path);
+          this.toastr.info('File deleted', 'Success');
+        } else {
+          errorToastr();
+        }
+      }, errorToastr);
+  }
+
+  deleteTestSuite(testSuite: ITestSuite, project:StafProject) {
+    const errorToastr = () => this.toastr.error('Error deleting test suite', 'Error');
+    this.http.delete(baseUrl + '/testSuite/' + project.getNormalizedProjectName() + '/' + testSuite.name)
+      .subscribe((res: any) => {
+        if (res.result == 'ok') {
+          const testSuiteIndex = project.testSuites.findIndex(ts => ts.id == testSuite.id);
+          project.testSuites.splice(testSuiteIndex, 1);
+          this.toastr.info('Test suite deleted', 'Success');
+        } else {
+          errorToastr();
+        }
+      }, errorToastr);
   }
 
   confirmDeleteFile() {
     this.deleteOperation();
     this.deleteFileModal = false;
+    this.deleteTestSuiteModal = false;
   }
 
   createProject(project) {
@@ -168,13 +193,10 @@ export class ProjectService {
           this.toastr.error('Another project with the same name already exists', 'Error');
         } else {
           this.projects.push(this.createProject(res));
+          this.projectsSubject.next(this.projects);
         }
         this.toastr.success('Project created', 'Success');
       }, err => { this.toastr.error('Error creating project', 'Error') })
-
-  }
-
-  addTestSuite(project: IStafProject, testSuite: ITestSuite) {
 
   }
 
@@ -188,25 +210,7 @@ export class ProjectService {
   }
 
   getProjectByName(name: string): StafProject {
-    for (let i = 0; i < this.projects.length; i++) {
-      if (this.projects[i].getNormalizedProjectName() == name) {
-        return this.projects[i];
-      }
-    }
-    return null;
-  }
-
-  getFile(project, path): IFile {
-    console.log(project, path);
-    const pathItems = path.split('/');
-    let testSuite = this.getTestSuiteByName(project, pathItems[1]);
-    let lastDir: any = testSuite.content;
-
-    for (let i = 2; i < pathItems.length; i++) {
-
-    }
-
-    return null;
+    return this.projects.find(p => p.getNormalizedProjectName() == name);
   }
 
   getEmptyProject(): IStafProject {
@@ -237,5 +241,13 @@ export class ProjectService {
 
   getImage(screenShot: string) {
     return this.http.get(baseUrl + "/screenshot/" + screenShot);
+  }
+
+  getReports(projectName: string) {
+    return this.http.get(baseUrl + "/projectReports/" + projectName);
+  }
+
+  getTestReport(projectName: string, fileName: string) {
+    return this.http.get(baseUrl + '/testReport/' + projectName + '/' + fileName);
   }
 }

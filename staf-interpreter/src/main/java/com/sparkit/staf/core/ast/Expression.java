@@ -1,141 +1,96 @@
 package com.sparkit.staf.core.ast;
 
-import com.sparkit.staf.core.ast.types.*;
-import com.sparkit.staf.core.runtime.interpreter.ExpressionEvaluator;
-import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
+import com.sparkit.staf.core.ast.types.AbstractStafObject;
+import com.sparkit.staf.core.ast.types.DictionaryItemAccess;
+import com.sparkit.staf.core.ast.types.ListItemAccess;
+import com.sparkit.staf.core.ast.types.StafVariable;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
-import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.core.runtime.interpreter.expression.ExpressionEvaluator;
+import com.sparkit.staf.core.runtime.interpreter.expression.ExpressionEvaluatorFactory;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.naming.OperationNotSupportedException;
-
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class Expression extends AbstractStafObject {
-    protected AbstractStafObject left;
-    protected AbstractStafObject right;
-    protected ExpressionOps operation;
-    protected boolean inverted; // tell if expr is inverted like - minus or ! not for booleans
+    private AbstractStafObject expressionLeftMember;
+    private AbstractStafObject expressionRightMember;
+    private ExpressionOperator operation;
+    private boolean inverted; // tell if expr is inverted like - minus or boolean not (!)
 
-    public Expression() {
-    }
+    @Autowired
+    private ExpressionEvaluatorFactory expressionEvaluatorFactory;
 
-    public Expression(AbstractStafObject left, AbstractStafObject right, ExpressionOps operation) {
-        this.left = left;
-        this.right = right;
+    public Expression(AbstractStafObject left, AbstractStafObject right, ExpressionOperator operation) {
+        this.expressionLeftMember = left;
+        this.expressionRightMember = right;
         this.operation = operation;
         this.type = StafTypes.EXPRESSION;
     }
 
-    public boolean isInverted() {
-        return inverted;
-    }
-
-    public void setInverted(boolean inverted) {
-        this.inverted = inverted;
-    }
-
-    public AbstractStafObject getLeft() {
-        return left;
-    }
-
-    public void setLeft(AbstractStafObject left) {
-        this.left = left;
-    }
-
-    public AbstractStafObject getRight() {
-        return right;
-    }
-
-    public void setRight(AbstractStafObject right) {
-        this.right = right;
-    }
-
-    public ExpressionOps getOperation() {
-        return operation;
-    }
-
-    public void setOperation(ExpressionOps operation) {
-        this.operation = operation;
+    public Expression(ExpressionEvaluatorFactory expressionEvaluatorFactory) {
+        this.expressionEvaluatorFactory = expressionEvaluatorFactory;
+        this.type = StafTypes.EXPRESSION;
     }
 
     public void setOperation(String operation) {
         switch (operation) {
             case "+":
-                this.operation = ExpressionOps.PLUS;
+                this.operation = ExpressionOperator.PLUS;
                 break;
             case "-":
-                this.operation = ExpressionOps.MINUS;
+                this.operation = ExpressionOperator.MINUS;
                 break;
             case "*":
-                this.operation = ExpressionOps.MUL;
+                this.operation = ExpressionOperator.MUL;
                 break;
             case "/":
-                this.operation = ExpressionOps.DIV;
+                this.operation = ExpressionOperator.DIV;
                 break;
             case "%":
-                this.operation = ExpressionOps.MOD;
+                this.operation = ExpressionOperator.MOD;
                 break;
             case "==":
-                this.operation = ExpressionOps.EQUAL;
+                this.operation = ExpressionOperator.EQUAL;
                 break;
             case "!=":
-                this.operation = ExpressionOps.NE;
+                this.operation = ExpressionOperator.NE;
                 break;
             case ">=":
-                this.operation = ExpressionOps.GTE;
+                this.operation = ExpressionOperator.GTE;
                 break;
             case "<=":
-                this.operation = ExpressionOps.LTE;
+                this.operation = ExpressionOperator.LTE;
                 break;
             case ">":
-                this.operation = ExpressionOps.GT;
+                this.operation = ExpressionOperator.GT;
                 break;
             case "<":
-                this.operation = ExpressionOps.LT;
+                this.operation = ExpressionOperator.LT;
                 break;
             case "AND":
-                this.operation = ExpressionOps.AND;
+                this.operation = ExpressionOperator.AND;
                 break;
             case "OR":
-                this.operation = ExpressionOps.OR;
+                this.operation = ExpressionOperator.OR;
                 break;
         }
     }
 
     @Override
-    public Object evaluate(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        AbstractStafObject l = left;
-        AbstractStafObject r = right;
-
-        if (left instanceof Expression || left instanceof StafVariable || left instanceof DictionaryItemAccess
-                || left instanceof ListItemAccess) {
-            l = (AbstractStafObject)left.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+    public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
+        AbstractStafObject expressionLeftMemberValue = expressionLeftMember;
+        AbstractStafObject expressionRightMemberValue = expressionRightMember;
+        if (expressionLeftMember instanceof Expression || expressionLeftMember instanceof StafVariable || expressionLeftMember instanceof DictionaryItemAccess
+                || expressionLeftMember instanceof ListItemAccess) {
+            expressionLeftMemberValue = (AbstractStafObject) expressionLeftMember.evaluate(globalSymbolsTable, localSymbolsTable);
         }
-
-        if (right instanceof Expression || right instanceof StafVariable || right instanceof DictionaryItemAccess
-                || right instanceof ListItemAccess) {
-            r = (AbstractStafObject)right.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+        if (expressionRightMember instanceof Expression || expressionRightMember instanceof StafVariable || expressionRightMember instanceof DictionaryItemAccess
+                || expressionRightMember instanceof ListItemAccess) {
+            expressionRightMemberValue = (AbstractStafObject) expressionRightMember.evaluate(globalSymbolsTable, localSymbolsTable);
         }
-
-        if (operation == ExpressionOps.EQUAL) {
-            return new StafBoolean( l.getValue().toString().equals(r.getValue().toString()));
-        } else if (operation == ExpressionOps.PLUS) {
-           return ExpressionEvaluator.add(l, r);
-        } else if (operation == ExpressionOps.MINUS) {
-            return ExpressionEvaluator.subtract(l, r);
-        } else if (operation == ExpressionOps.MUL) {
-            return ExpressionEvaluator.multiply(l, r);
-        } else if (operation == ExpressionOps.DIV) {
-            return ExpressionEvaluator.div(l, r);
-        } else if (operation == ExpressionOps.GT) {
-            return ExpressionEvaluator.greaterThan(l, r);
-        }else if (operation == ExpressionOps.LT) {
-            return ExpressionEvaluator.lessThan(l, r);
-        }else if (operation == ExpressionOps.GTE) {
-            return ExpressionEvaluator.greaterThanOrEqual(l, r);
-        }else if (operation == ExpressionOps.LTE) {
-            return ExpressionEvaluator.lessThanOrEqual(l, r);
-        }else if (operation == ExpressionOps.NE) {
-            return ExpressionEvaluator.notEqual(l, r);
-        }
-        throw new OperationNotSupportedException();
+        ExpressionEvaluator expressionEvaluator = expressionEvaluatorFactory.getExpressionEvaluator(operation);
+        return expressionEvaluator.evaluate(expressionLeftMemberValue, expressionRightMemberValue, operation);
     }
 }

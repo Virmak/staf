@@ -304,6 +304,18 @@ public class StafBaseListener implements StafListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReserved_keyword(StafParser.Reserved_keywordContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReserved_keyword(StafParser.Reserved_keywordContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterKeyword_declaration_arguments(StafParser.Keyword_declaration_argumentsContext ctx) { }
 	/**
 	 * {@inheritDoc}

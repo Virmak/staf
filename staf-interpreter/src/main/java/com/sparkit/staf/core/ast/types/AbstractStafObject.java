@@ -44,7 +44,7 @@ public abstract class AbstractStafObject {
                 || this.type == StafTypes.STRING;
     }
 
-    public abstract Object evaluate(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable;
+    public abstract Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable;
 
     public Object toJSON() {
         return value;

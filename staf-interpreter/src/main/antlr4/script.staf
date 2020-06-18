@@ -1,7 +1,11 @@
 TEST SUITE "Module Achats"
+KEYWORDS
 
+    okok  hello()
+
+    END
 TEST CASES
-    IGNORE - sds import purchase order:
+    IGNORE-sds for import purchase order:
         GIVEN   Add purchase final order openend()
         WHEN    Select tier ($ORDER_TIERS)
     #qsdqsdsdsqd

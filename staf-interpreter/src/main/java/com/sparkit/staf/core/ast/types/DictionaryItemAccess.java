@@ -1,8 +1,6 @@
 package com.sparkit.staf.core.ast.types;
 
-import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
-import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 
 public class DictionaryItemAccess extends AbstractStafObject {
     protected AbstractStafObject dictVariable;
@@ -11,9 +9,6 @@ public class DictionaryItemAccess extends AbstractStafObject {
     public DictionaryItemAccess(AbstractStafObject dictVariable, String indexObject) {
         this.dictVariable = dictVariable;
         this.itemIdentifier = indexObject;
-    }
-
-    public DictionaryItemAccess() {
     }
 
     public AbstractStafObject getDictVariable() {
@@ -33,8 +28,8 @@ public class DictionaryItemAccess extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        StafDictionary actualDict = (StafDictionary) dictVariable.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+    public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
+        StafDictionary actualDict = (StafDictionary) dictVariable.evaluate(globalSymbolsTable, localSymbolsTable);
         return actualDict.getObjectMap().get(itemIdentifier);
     }
 }

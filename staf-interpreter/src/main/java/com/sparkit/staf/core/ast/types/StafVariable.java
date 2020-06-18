@@ -1,9 +1,8 @@
 package com.sparkit.staf.core.ast.types;
 
 import com.sparkit.staf.core.ast.StafTypes;
-import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
-import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 
 public class StafVariable extends AbstractStafObject {
     public StafVariable(Object value) {
@@ -11,17 +10,19 @@ public class StafVariable extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+    public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
         Object obj = null;
-        if (localSymTable != null) {
-            obj = localSymTable.getSymbolValue(value.toString());
+        if (localSymbolsTable != null) {
+            obj = localSymbolsTable.getSymbolValue(value.toString());
         }
         if (obj == null) {
-            obj = globalSymTable.getSymbolValue(value.toString());
+            obj = globalSymbolsTable.getSymbolValue(value.toString());
         }
         if (obj instanceof StafVariable) {
-            AbstractStafObject stafObject = (AbstractStafObject)obj;
-            return stafObject.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+            AbstractStafObject stafObject = (AbstractStafObject) obj;
+            return stafObject.evaluate(globalSymbolsTable, localSymbolsTable);
+        } else if (obj == null) {
+            throw new UndefinedVariableException(value.toString());
         }
         return obj;
     }

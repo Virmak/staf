@@ -1,6 +1,6 @@
 package com.sparkit.staf.core.ast;
 
-public enum  ExpressionOps {
+public enum ExpressionOperator {
     PLUS,
     MINUS,
     MUL,

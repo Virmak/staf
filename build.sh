@@ -1,6 +1,6 @@
 #!/bin/sh
 mvn clean package
-cd staf-frontend && ng build --prod && cd ..
+cd staf-frontend && npm install && npm run build && cd ..
 mkdir -p build
 rm -r build/dist
 cp -r staf-frontend/dist build/

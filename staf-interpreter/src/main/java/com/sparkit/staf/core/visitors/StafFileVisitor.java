@@ -29,7 +29,7 @@ public class StafFileVisitor extends StafBaseVisitor<Object> {
         StafFile stafFile = new StafFile();
         StafParser.Suite_nameContext suiteNameCtx = ctx.suite_name();
         if (suiteNameCtx != null) {
-            stafFile.setSuiteName(suiteNameCtx.string().getText());
+            stafFile.setSuiteName(suiteNameCtx.string().getText().replaceAll("\"", ""));
         }
         StafParser.Imports_sectionContext importsSection = ctx.imports_section();
         if (importsSection != null) {

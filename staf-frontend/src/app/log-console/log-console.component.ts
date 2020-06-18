@@ -11,19 +11,25 @@ import { Subscription } from 'rxjs';
 export class LogConsoleComponent implements OnInit, OnDestroy {
   @ViewChild('logConsole') logConsole: ElementRef;
   logSubscription: Subscription;
+  showConsole = true;
   constructor(private webSocket: WebSocketApiService,
     public logService: LogServiceService) { }
 
   ngOnInit(): void {
     this.logSubscription = this.webSocket.messageSubject.subscribe((message: string) => {
+      this.showConsole = true;
       this.logService.addMessage(message);
-      this.logConsole.nativeElement.scrollTop = this.logConsole.nativeElement.scrollHeight;
+      setTimeout(() => this.logConsole.nativeElement.scrollTop = 10000000, 0);
     });
   }
 
 
   ngOnDestroy(): void {
     this.logSubscription.unsubscribe();
+  }
+
+  toggleConsoleLog() {
+    this.showConsole = !this.showConsole;
   }
 
 }

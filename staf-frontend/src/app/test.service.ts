@@ -37,4 +37,8 @@ export class TestService {
     
   }
 
+  stopTest() {
+    return this.http.post(baseUrl + '/terminateTest', {});
+  }
+
 }

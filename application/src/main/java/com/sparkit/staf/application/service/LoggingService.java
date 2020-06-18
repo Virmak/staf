@@ -17,10 +17,6 @@ public class LoggingService implements LogObserver {
         SubscriptionAppender.getInstance().subscribe(this);
     }
 
-    public void sendMessages() {
-        simpleMessageTemplate.convertAndSend("Hello user");
-    }
-
     @Override
     public void update(ILoggingEvent event) {
         simpleMessageTemplate.convertAndSend(WS_MESSAGE_TRANSFER_DESTINATION, event.toString());

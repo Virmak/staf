@@ -1,6 +1,8 @@
 package com.sparkit.staf.api.controllers;
 
+import com.sparkit.staf.application.models.response.ImageBase64;
 import com.sparkit.staf.application.service.FileService;
+import com.sparkit.staf.application.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import java.util.Map;
 public class FileController {
     @Autowired
     private FileService fileService;
+    @Autowired
+    private ProjectService projectService;
     @Value("${testDirectory}")
     String testDir;
 
@@ -38,8 +42,13 @@ public class FileController {
 
     @CrossOrigin("*")
     @GetMapping("/screenshot/{url}")
-    public String imageBase64(@PathVariable String url) {
-        return "ok";
+    public ImageBase64 imageBase64(@PathVariable String url) {
+        String screenShotPath = url.replaceAll("<sep>", "/");
+        File file = new File(screenShotPath);
+        ImageBase64 imageBase64 = new ImageBase64();
+        imageBase64.setFileName(screenShotPath.substring(screenShotPath.lastIndexOf('/')));
+        imageBase64.setImageData(projectService.readImageBase64(file));
+        return imageBase64;
     }
 
     private boolean isChild(String path) {

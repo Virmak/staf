@@ -7,6 +7,7 @@ import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.ShouldBeEqualException;
+import com.sparkit.staf.core.runtime.libs.exceptions.ShouldNotBeEqualException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,21 @@ public class StdLibrary extends AbstractStafLibrary {
             }
         }
         logger.info("Should be equal validated " + object + " = " + expected);
+    }
+
+    @Keyword(name = "should not be equal")
+    public void shouldNoBeEqual(AbstractStafObject object, AbstractStafObject expected, AbstractStafObject errorMessage)
+            throws ShouldBeEqualException {
+        if (compareStafObjects(object, expected)) {
+            logger.info("Should not be equal not validated " + object + " = " + expected);
+            if (errorMessage != null) {
+                throw new ShouldNotBeEqualException(errorMessage.getValue().toString());
+            } else {
+                throw new ShouldNotBeEqualException(object.getValue().toString()
+                        + ", " + expected.getValue().toString() + " are equal");
+            }
+        }
+        logger.info("Should not be equal validated " + object + " = " + expected);
     }
 
     @Keyword(name = "trim")

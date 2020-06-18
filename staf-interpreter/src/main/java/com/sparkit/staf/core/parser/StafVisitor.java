@@ -155,6 +155,12 @@ public interface StafVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitKeyword_name(StafParser.Keyword_nameContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link StafParser#reserved_keyword}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReserved_keyword(StafParser.Reserved_keywordContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link StafParser#keyword_declaration_arguments}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

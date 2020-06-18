@@ -6,10 +6,14 @@ import com.sparkit.staf.application.exception.TestDirectoryNotFound;
 import com.sparkit.staf.application.models.request.CreateProjectRequest;
 import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
 import com.sparkit.staf.application.models.response.CreateTestSuiteResponse;
+import com.sparkit.staf.application.models.response.DeleteTestSuiteResponse;
+import com.sparkit.staf.application.models.response.GetProjectReportsResponse;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestSuite;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -28,30 +33,33 @@ public class ProjectService {
     @Value("${testDirectory}")
     private String testDir;
 
-    private void init() {}
-
     public static String normalizeProjectName(String name) {
         return name.toLowerCase().replaceAll("\\s+", "-");
     }
 
-    public List<String> readProjects() throws TestDirectoryNotFound {
+    public Map<String, Object> readProjectContent(String projectName) throws IOException {
+        File projectDir = new File(testDir, ProjectService.normalizeProjectName(projectName));
+        String currentDir = System.getProperty("user.dir");
+        String absoluteTestDir = currentDir + "/" + testDir;
+        return listDirectory(projectDir, absoluteTestDir);
+    }
+
+    public List<String> getProjectsList() throws TestDirectoryNotFound {
         File currentDir = new File(System.getProperty("user.dir"));
         File projectsDir = new File(currentDir, testDir);
-        List<String> projects = new ArrayList<>();
         File[] files = projectsDir.listFiles();
         if (files != null) {
-            Arrays.stream(files).forEach(f -> projects.add(f.getName()));
+            return Arrays.stream(files).map(File::getName).collect(Collectors.toList());
         } else {
             throw new TestDirectoryNotFound(testDir);
         }
-        return projects;
     }
 
     public ProjectConfig createProject(CreateProjectRequest createProjectRequest) throws IOException, ProjectNameAlreadyExist {
         return projectBuilder.buildProject(createProjectRequest);
     }
 
-    public Map<String, Object> listDirectory(File dir, String testDir, boolean isProjectRoot) throws IOException {
+    public Map<String, Object> listDirectory(File dir, String testDir) throws IOException {
         File[] content = dir.listFiles();
 
         List<Map<String, com.sparkit.staf.domain.File>> files = new LinkedList<>();
@@ -59,7 +67,7 @@ public class ProjectService {
 
         for (File f : content) {
             if (f.isDirectory()) {
-                Map<String, Object> subList = listDirectory(f, testDir, false);
+                Map<String, Object> subList = listDirectory(f, testDir);
                 folders.add(subList);
             } else {
                 Map<String, com.sparkit.staf.domain.File> fileMap = new HashMap<>();
@@ -67,7 +75,7 @@ public class ProjectService {
                 file.setName(f.getPath());
                 file.setFileContent(readFileContent(f));
                 file.setPath(f.toString());
-                fileMap.put(f.toString().replace(testDir, "$projectRoot"), file);
+                fileMap.put(f.toString().replaceAll(testDir, "$projectRoot"), file);
                 files.add(fileMap);
             }
         }
@@ -103,7 +111,7 @@ public class ProjectService {
         }
     }
 
-    private String readImageBase64(File f) {
+    public String readImageBase64(File f) {
         String encodedFile = null;
         FileInputStream fileInputStreamReader = null;
         try {
@@ -140,12 +148,37 @@ public class ProjectService {
         response.setName(request.getName());
         try {
             TestSuite testSuite = projectBuilder.buildTestSuite(request);
+            String absoluteTestDir = System.getProperty("user.dir") + "/" + testDir;
             response.setResult("ok");
-            response.setContent(listDirectory(new File(testSuite.getRootPath()), testDir, false));
+            response.setContent(listDirectory(new File(testSuite.getRootPath()), absoluteTestDir));
         } catch (IOException e) {
             e.printStackTrace();
             response.setResult("error");
             response.setMessage(e.getMessage());
+        }
+        return response;
+    }
+
+    public GetProjectReportsResponse getProjectReports(String projectName) {
+        GetProjectReportsResponse response = new GetProjectReportsResponse();
+        response.setProjectName(projectName);
+        String reportsDirectoryPath = testDir + "/" + normalizeProjectName(projectName) + "/results";
+        File reportsDirectory = new File(reportsDirectoryPath);
+        response.setReportsFileNameList(
+                Arrays.stream(Objects.requireNonNull(reportsDirectory.listFiles()))
+                .map(File::getName).collect(Collectors.toList()));
+        return response;
+    }
+
+    public DeleteTestSuiteResponse deleteTestSuite(String project, String testSuite) {
+        DeleteTestSuiteResponse response = new DeleteTestSuiteResponse();
+        String testSuitePath = testDir + "/" + project + "/" + testSuite;
+        try {
+            FileUtils.deleteDirectory(new File(testSuitePath));
+            response.setResult("ok");
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setResult("error");
         }
         return response;
     }

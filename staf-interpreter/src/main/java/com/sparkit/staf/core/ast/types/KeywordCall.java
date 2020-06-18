@@ -1,5 +1,6 @@
 package com.sparkit.staf.core.ast.types;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparkit.staf.core.ast.IStatement;
 import com.sparkit.staf.core.ast.StafTypes;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
@@ -12,19 +13,27 @@ import com.sparkit.staf.core.runtime.reports.StatementReport;
 import java.util.List;
 
 public class KeywordCall extends AbstractStafObject implements IStatement, IReportableBlock {
+    protected final StatementBlockExecutor blockExecutor;
+    protected final KeywordLibrariesRepository keywordLibrariesRepository;
     protected String keywordName;
     protected List<AbstractStafObject> argumentsList;
     protected int lineNumber;
     protected String file;
+    @JsonIgnore
     protected List<StatementReport> statementReports;
 
-    public KeywordCall(String keywordName, List<AbstractStafObject> argumentsList) {
+    public KeywordCall(StatementBlockExecutor blockExecutor, KeywordLibrariesRepository keywordLibrariesRepository,
+                       String keywordName, List<AbstractStafObject> argumentsList) {
+        this.blockExecutor = blockExecutor;
+        this.keywordLibrariesRepository = keywordLibrariesRepository;
         this.keywordName = keywordName;
         this.argumentsList = argumentsList;
         this.type = StafTypes.KEYWORD_CALL;
     }
 
-    public KeywordCall() {
+    public KeywordCall(StatementBlockExecutor blockExecutor, KeywordLibrariesRepository keywordLibrariesRepository) {
+        this.blockExecutor = blockExecutor;
+        this.keywordLibrariesRepository = keywordLibrariesRepository;
         this.type = StafTypes.KEYWORD_CALL;
     }
 
@@ -45,9 +54,8 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
     }
 
     @Override
-    public Object evaluate(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable,
-                           KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        return this.execute(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+    public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
+        return this.execute(globalSymbolsTable, localSymbolsTable);
     }
 
     public String getKeywordName() {
@@ -66,28 +74,14 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
         this.argumentsList = argumentsList;
     }
 
-    public Object[] evaluateArgumentsList(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable,
-                                          KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+    public Object[] evaluateArgumentsList(SymbolsTable globalSymTable, SymbolsTable localSymTable) throws Throwable {
         Object[] params = new AbstractStafObject[argumentsList.size()];
         int i = 0;
         for (AbstractStafObject arg : argumentsList) {
-            Object  val = arg.evaluate(blockExecutor, globalSymTable, localSymTable, keywordLibrariesRepository);
+            Object val = arg.evaluate(globalSymTable, localSymTable);
             params[i++] = val;
         }
         return params;
-    }
-
-    @Override
-    public Object execute(StatementBlockExecutor blockExecutor, SymbolsTable globalSymTable, SymbolsTable localSymTable,
-                          KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        blockExecutor.getCallStack().push(this);
-        if (keywordLibrariesRepository.isKeywordDeclared(keywordName)) {
-            Object[] params = evaluateArgumentsList(blockExecutor, globalSymTable,
-                    localSymTable, keywordLibrariesRepository);
-            return keywordLibrariesRepository.invokeKeyword(keywordName, params);
-        } else {
-            throw new UndefinedKeywordException(keywordName);
-        }
     }
 
     @Override
@@ -113,5 +107,17 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
 
     public void setStatementReports(List<StatementReport> statementReports) {
         this.statementReports = statementReports;
+    }
+
+    @Override
+    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
+        blockExecutor.getCallStack().push(this);
+        if (keywordLibrariesRepository.isKeywordDeclared(keywordName)) {
+            Object[] params = evaluateArgumentsList(globalSymbolsTable,
+                    localSymbolsTable);
+            return keywordLibrariesRepository.invokeKeyword(globalSymbolsTable, keywordName, params);
+        } else {
+            throw new UndefinedKeywordException(keywordName);
+        }
     }
 }
