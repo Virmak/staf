@@ -16,17 +16,25 @@ export class FileEditorService {
     private router: Router) { }
 
   setFile(file: IFile) {
+    this.openedFiles.forEach(f => f.active = false);
     this.openedFiles.set(file.name, file);
+    file.active = true;
   }
+
+  closeFile(file: IFile, key) {
+    this.openedFiles.delete(key);
+  }
+
   getFile(name) {
     return this.openedFiles.get(name);
   }
 
-  openFile(item: any, project: StafProject) {debugger;
+  openFile(item: any, project: StafProject) {
     if (item.type == FileType.Directory) {
       this.projectService.currentDir = item;
       this.router.navigate(['directory', project.getNormalizedProjectName(), item.name]);
     } else if (this.isTextFile(item)) {
+      if (item.project == undefined) { item.project = project; }
       this.setFile(item);
       this.router.navigate(['editFile', project.getNormalizedProjectName(), item.name, item.path]);
     } else if (this.isImageFile(item)) {

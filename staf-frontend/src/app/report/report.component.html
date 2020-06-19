@@ -9,6 +9,7 @@
 				<th>Test case</th>
 				<th>Started</th>
 				<th>Ended</th>
+				<th>Elapsed</th>
 				<th>Result</th>
 			</tr>
 		</thead>
@@ -19,11 +20,13 @@
 				</tr>
 			</ng-template>
 
-			<ng-container *ngIf="testSuite.result == 'Ok'; else testSuiteError">
+			<ng-container *ngIf="testSuite.result == 'Pass'; else testSuiteError">
 				<tr *ngFor="let tc of testSuite.testCaseReports" [ngClass]="tc.result">
 					<td>{{tc.testCase | titlecase}}</td>
-					<td>{{tc.startTime}}</td>
-					<td>{{tc.endTime}}</td>
+					<td>{{tc.start}}</td>
+					<td>{{tc.end}}</td>
+					<td>{{tc.end}}</td>
+					<td>{{tc.elapsed}}</td>
 					<td>{{tc.result}}</td>
 				</tr>
 			</ng-container>

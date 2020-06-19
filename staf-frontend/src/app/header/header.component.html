@@ -28,8 +28,8 @@
 
 <nav class="subnav">
     <ul class="nav">
-        <li class="nav-item" *ngFor="file of fileExplorer.openedFiles">
-            <a class="nav-link active" href="#">Dashboard</a>
+        <li class="nav-item" *ngFor="let file of fileEditor.openedFiles | keyvalue;">
+            <a class="nav-link file" [ngClass]="{'active': file.value.active}" (click)="openFile(file.value, file.value.project)">{{file.key}} <clr-icon (click)="closeFile(file.value, file.key)" shape="window-close"></clr-icon> </a>
         </li>
     </ul>
 </nav>

@@ -7,6 +7,7 @@ export class TestCaseReport {
     end: Date;
     errorMessage: string;
     statemmentReports: StatementReport[];
+    elapsed?: string;
 }
 
 export enum TestCaseResult {

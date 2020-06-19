@@ -1,3 +1,4 @@
+import { StafProject } from './../types/staf-project';
 
 export interface IFile {
     name: string;
@@ -5,6 +6,8 @@ export interface IFile {
     type: FileType;
     extension?: string;
     path?: string;
+    active?: boolean;
+    project?: StafProject;
 }
 
 export enum FileType {

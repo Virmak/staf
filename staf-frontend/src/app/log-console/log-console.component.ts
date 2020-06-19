@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 export class LogConsoleComponent implements OnInit, OnDestroy {
   @ViewChild('logConsole') logConsole: ElementRef;
   logSubscription: Subscription;
-  showConsole = true;
+  showConsole = false;
   constructor(private webSocket: WebSocketApiService,
     public logService: LogServiceService) { }
 

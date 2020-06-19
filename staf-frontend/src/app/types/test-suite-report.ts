@@ -7,6 +7,7 @@ export class TestSuiteReport {
     testCaseReports: TestCaseReport[];
     start: string;
     end: string;
+    elapsed?: string;
 }
 
 export enum TestSuiteResult {

@@ -1,6 +1,7 @@
-import { FileExplorerService } from './../file-explorer.service';
+import { FileEditorService } from './../file-editor.service';
 import { TestService } from './../test.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +17,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private testService: TestService,
-    public fileExplorer: FileExplorerService) { }
+    private router: Router,
+    public fileEditor: FileEditorService) { }
 
   ngOnInit(): void {
     if (this.testService.webDriverAddress) {
@@ -30,6 +32,15 @@ export class HeaderComponent implements OnInit {
     this.testService.setWebDriverAddress(this.webDriverIpAddrInput, this.webDriverPortInput);
     this.webDriverSettingsModalOpen = false;
     this.settingsMenuExpanded = false;
+  }
+  
+  openFile(file, project)  {
+    this.fileEditor.setFile(file);
+    this.router.navigate(['editFile', project.getNormalizedProjectName(), file.name, file.path]);
+  }
+
+  closeFile(file, key) {
+    this.fileEditor.closeFile(file, key);
   }
 
 }
