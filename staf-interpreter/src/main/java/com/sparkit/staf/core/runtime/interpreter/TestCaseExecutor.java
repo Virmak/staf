@@ -24,8 +24,8 @@ import java.util.Date;
 import java.util.EmptyStackException;
 
 @Component
-public class TestcaseExecutor {
-    private static final Logger logger = LoggerFactory.getLogger(TestcaseExecutor.class);
+public class TestCaseExecutor {
+    private static final Logger logger = LoggerFactory.getLogger(TestCaseExecutor.class);
     @Autowired
     private AutowireCapableBeanFactory autowireCapableBeanFactory;
     @Autowired

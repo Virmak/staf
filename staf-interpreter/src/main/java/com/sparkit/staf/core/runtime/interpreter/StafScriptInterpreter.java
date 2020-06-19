@@ -39,14 +39,14 @@ public class StafScriptInterpreter { // refactor
     private String testDirectory;
 
     @Autowired
-    private TestcaseExecutor testCaseRunner;
+    private TestCaseExecutor testCaseRunner;
 
     private List<TestSession> testSessionList;
 
     public StafScriptInterpreter() {
     }
 
-    public List<TestSuiteReport> run(String currentDirectory, String testSuite, StafFile mainStafFile, int sessionCount) {
+    public List<TestSuiteReport> run(String testSuite, StafFile mainStafFile, int sessionCount) {
         testSessionList = new ArrayList<>();
         testDirectory = System.getProperty("testDirectory");
         logger.info("Started executing test suite : [" + testSuite + "] "
@@ -65,10 +65,10 @@ public class StafScriptInterpreter { // refactor
             List<Map.Entry<String, TestCaseDeclaration>> entryList = new ArrayList<Map.Entry<String, TestCaseDeclaration>>(mainStafFile.getTestCaseDeclarationMap().entrySet());
 
             entryList.sort(Comparator.comparingInt(t -> t.getValue().getOrder()));
-
+            TestSession.initSessionCount();
             ExecutorService es = Executors.newCachedThreadPool();
             for (int i = 0; i < sessionCount; i++) {
-                TestSession testSession = testSession(mainStafFile, entryList);
+                TestSession testSession = testSession(testSuite, mainStafFile, entryList);
                 testSessionList.add(testSession);
                 es.execute(testSession);
             }
@@ -90,8 +90,8 @@ public class StafScriptInterpreter { // refactor
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    private TestSession testSession(StafFile mainStafFile, List<Map.Entry<String, TestCaseDeclaration>> testCasesEntryList) {
-        return new TestSession(sharedGlobalSymbolsTable, testCaseRunner, mainStafFile, testCasesEntryList);
+    private TestSession testSession(String testSuite, StafFile mainStafFile, List<Map.Entry<String, TestCaseDeclaration>> testCasesEntryList) {
+        return new TestSession(sharedGlobalSymbolsTable, testCaseRunner, mainStafFile, testCasesEntryList, testSuite);
     }
 
 }

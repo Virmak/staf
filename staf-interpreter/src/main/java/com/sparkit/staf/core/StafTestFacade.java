@@ -1,7 +1,6 @@
 package com.sparkit.staf.core;
 
 import com.sparkit.staf.core.parser.SyntaxErrorException;
-import com.sparkit.staf.core.runtime.loader.IStafCompiler;
 import com.sparkit.staf.core.runtime.loader.IStafConfig;
 import com.sparkit.staf.core.runtime.loader.TestSuiteRunner;
 import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
@@ -10,7 +9,6 @@ import com.sparkit.staf.core.runtime.reports.ITestReportWriter;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +19,7 @@ import java.util.List;
 
 @Component
 public class StafTestFacade {
-    private static Logger logger = LogManager.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger(Main.class);
     @Autowired
     private IStafConfig stafConfig;
     @Autowired

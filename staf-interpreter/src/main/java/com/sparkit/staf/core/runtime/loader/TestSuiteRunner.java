@@ -45,10 +45,10 @@ public class TestSuiteRunner {
         return testSuiteReport;
     }
 
-    public List<TestSuiteReport> runTestScript(String mainFilePath, String testSuitePath, String testDirectory, int sessionCount)
+    public List<TestSuiteReport> runTestScript(String mainFilePath, String testSuiteName, String testDirectory, int sessionCount)
             throws TestSuiteMainScriptNotFoundException, SyntaxErrorException {
-        logger.info("Running test suite : " + testSuitePath);
-        TestSuite testSuite = new TestSuite(testSuitePath, testDirectory);
+        logger.info("Running test suite : " + testSuiteName);
+        TestSuite testSuite = new TestSuite(testSuiteName, testDirectory);
         testContainer.setTestSuite(testSuite);
         keywordLibrariesRepository.clearUserDefinedKeywordsMap();
         globalSymTable.clearSymbolsMap();
@@ -58,8 +58,8 @@ public class TestSuiteRunner {
         try {
             scriptAST = stafCompiler.compile(fullPath);
         } catch (IOException e) {
-            throw new TestSuiteMainScriptNotFoundException(testSuitePath);
+            throw new TestSuiteMainScriptNotFoundException(testSuiteName);
         }
-        return interpreter.run(System.getProperty("user.dir"), testSuite.getTestSuiteName(), scriptAST, sessionCount);
+        return interpreter.run(testSuite.getTestSuiteName(), scriptAST, sessionCount);
     }
 }
