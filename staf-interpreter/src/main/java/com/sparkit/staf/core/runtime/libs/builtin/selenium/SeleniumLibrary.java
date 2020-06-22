@@ -62,8 +62,13 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         }
     }
 
+    @Keyword(name = "set window size", doc = "Set window size")
+    public void setWindowSize(WebDriver webDriver, @KeywordArgument StafInteger width, @KeywordArgument StafInteger height) {
+        webDriver.manage().window().setSize(new Dimension((int)width.getValue(), (int)height.getValue()));
+    }
+
     @Keyword(name = "maximize browser window", doc = "Maximize current browser window")
-    public void maximizeWindow(WebDriver webDriver, @KeywordArgument AbstractStafObject selector, @KeywordArgument AbstractStafObject value) {
+    public void maximizeWindow(WebDriver webDriver) {
         webDriver.manage().window().maximize();
     }
 
@@ -103,6 +108,14 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         webDriver.findElement(elementSelector).click();
     }
+
+    @Keyword(name = "open context menu", doc = "Right click element")
+    public void openContextMenu(WebDriver webDriver, @KeywordArgument AbstractStafObject selector) {
+        By elementSelector = getLocatorFromString(selector.getValue().toString());
+        Actions action= new Actions(webDriver);
+        action.contextClick(webDriver.findElement(elementSelector)).build().perform();
+    }
+
 
     @Keyword(name = "set focus to element", doc = "Focus element by locator")
     public void setFocus(WebDriver webDriver, @KeywordArgument AbstractStafObject selector) {
@@ -157,6 +170,15 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         List<WebElement> elementList = webDriver.findElements(elementSelector);
         if (elementList.size() == 0) {
             throw new ElementShouldBeVisibleNotFoundException(selector.getValue().toString());
+        }
+    }
+
+    @Keyword(name = "element should be enabled")
+    public void elementShouldBeEnabled(WebDriver webDriver, AbstractStafObject selector) throws ElementShouldBeVisibleNotFoundException {
+        By elementSelector = getLocatorFromString(selector.getValue().toString());
+        WebElement element = webDriver.findElement(elementSelector);
+        if (!element.isEnabled()) {
+            throw new ElementShouldBeEnabledException(selector.getValue().toString());
         }
     }
 
