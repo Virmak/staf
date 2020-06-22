@@ -8,7 +8,7 @@ export class StafProject implements IStafProject {
     location: string;
     logDir: string;
     reportsDir: string;
-    testSuites: ITestSuite[];
+    testSuites: ITestSuite[] = [];
     type: ProjectType;
     expanded: boolean;
 

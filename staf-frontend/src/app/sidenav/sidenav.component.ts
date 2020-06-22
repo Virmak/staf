@@ -3,7 +3,7 @@ import { SequenceService } from './../sequence.service';
 import { ICreateTestSuite } from './../interfaces/icreate-test-suite';
 import { TestSuiteService } from './../test-suite.service';
 import { StafProject } from '../types/staf-project';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { ITestSuite } from '../interfaces/itest-suite';
@@ -15,9 +15,9 @@ import { IDirectory } from '../interfaces/idirectory';
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.css']
 })
-export class SidenavComponent implements OnInit {
-  @Input() projects: StafProject[];
-  @ViewChild(ContextMenuComponent) public basicMenu: ContextMenuComponent;
+export class SidenavComponent implements OnInit, AfterViewInit {
+  @Input() projects: StafProject[] = [];
+  @ViewChild(ContextMenuComponent,  { static: true }) public basicMenu: ContextMenuComponent;
 
 
   createTestSuiteModal = false;
@@ -39,7 +39,12 @@ export class SidenavComponent implements OnInit {
   constructor(private router: Router,
     private testSuiteService: TestSuiteService,
     private sequence: SequenceService,
-    private projectService: ProjectService) { }
+    private projectService: ProjectService,
+    private cdr: ChangeDetectorRef) { }
+    
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges()
+  }
 
   ngOnInit(): void {
   }

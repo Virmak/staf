@@ -12,8 +12,9 @@ import { IStafProject } from './interfaces/istaf-project';
 export class AppComponent implements OnInit {
 
   title = 'staf-gui';
-  projects: IStafProject[];
+  projects: IStafProject[] = [];
   serverError = false;
+  showSidenav = true;
 
   constructor(public projectService: ProjectService,
     private webSocket: WebSocketApiService) {}
@@ -23,7 +24,10 @@ export class AppComponent implements OnInit {
     (<any>window).userKeywords = {};
     this.projectService.fetchProjects(err => {this.serverError = true});
     this.projectService.getProjectsSubject().subscribe(projects => {
+      setTimeout(() => {
+
       this.projects = projects.filter(p => p != null);
+      }, 1000)
     });
     this.projectService.next();
     this.webSocket._connect();
