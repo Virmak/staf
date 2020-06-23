@@ -9,29 +9,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
+  settingsModal = false;
   settingsMenuExpanded = false;
-  webDriverSettingsModalOpen = false;
-  webDriverIpAddrInput = '';
-  webDriverPortInput = '9515';
+  saveFileModal = false;
+
+  closingFile;
 
   constructor(
-    private testService: TestService,
     private router: Router,
     public fileEditor: FileEditorService) { }
 
-  ngOnInit(): void {
-    if (this.testService.webDriverAddress) {
-      const addressArr = this.testService.webDriverAddress.split(':');
-      this.webDriverIpAddrInput = addressArr[0];
-      this.webDriverPortInput = addressArr[1];
-    }
-  }
+  ngOnInit() {
 
-  setWebDriverIpAddress() {
-    this.testService.setWebDriverAddress(this.webDriverIpAddrInput, this.webDriverPortInput);
-    this.webDriverSettingsModalOpen = false;
-    this.settingsMenuExpanded = false;
   }
   
   openFile(file, project)  {
@@ -40,7 +29,23 @@ export class HeaderComponent implements OnInit {
   }
 
   closeFile(file, key) {
-    this.fileEditor.closeFile(file, key);
+    if (file.changed) {
+      this.saveFileModal = true;
+      this.closingFile = {
+        file, key
+      };
+    } else {
+      this.fileEditor.closeFile(file, key, false);
+    }
+  }
+
+  resetFileContent() {
+
+  }
+
+  closeAndSaveFile(save) {
+      this.fileEditor.closeFile(this.closingFile.file, this.closingFile.key, save);
+      this.saveFileModal = false;
   }
 
 }

@@ -12,7 +12,7 @@ const routes: Routes = [
   {path: '', component: DashboardComponent},
   {path: 'createProject', component: CreateProjectComponent},
   {path: 'projectDetails/:id', component: ProjectDetailsComponent},
-  {path: 'editFile/:project/:filePath/:fullPath', component: EditFileComponent},
+  {path: 'editFile/:project/:fileName/:fullPath', component: EditFileComponent},
   {path: 'viewImage/:project/:filePath/:fullPath', component: ImageViewerComponent},
   {path: 'directory/:project/:path', component: ViewDirectoryComponent}
   

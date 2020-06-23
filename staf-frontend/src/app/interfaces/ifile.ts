@@ -8,6 +8,8 @@ export interface IFile {
     path?: string;
     active?: boolean;
     project?: StafProject;
+    changed?: boolean;
+    originalContent?: string;
 }
 
 export enum FileType {

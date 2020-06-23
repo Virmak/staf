@@ -116,7 +116,7 @@ export const monarchTokens = {
   
 	  whitespace: [
 		[/[ \t\r\n]+/, 'white'],
-		[/^#(?=.*)/,       'comment', '@comment' ],
+		[/#(?=.*)/,       'comment', '@comment' ],
 		[/\/\/.*$/,    'comment'],
 	  ],
 	},
