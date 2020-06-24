@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.runtime.libs.builtin;
 
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import com.sparkit.staf.core.ast.KeyValuePair;
 import com.sparkit.staf.core.ast.types.*;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
@@ -9,11 +10,13 @@ import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @StafLibrary(name = "csv")
@@ -33,6 +36,30 @@ public class CsvLibrary extends AbstractStafLibrary {
             }
         }
         return stafList;
+    }
+
+    @Keyword(name = "write csv")
+    public void writeCsv(@Inject(name = "__keyword__") KeywordCall keywordCall, StafString filePath, StafList stafList) throws IOException {
+        Path csvFilePath = getCSVFilePath(keywordCall.getFilePath(), (String) filePath.getValue());
+        List<String[]> lines = new ArrayList<>();
+        try (CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath.toString()),
+                CSVWriter.DEFAULT_SEPARATOR,
+                CSVWriter.NO_QUOTE_CHARACTER,
+                CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                CSVWriter.RFC4180_LINE_END)) {
+            StafDictionary firstDict = (StafDictionary) stafList.getList().get(0);
+            String[] firstLine = firstDict.getObjectMap().keySet().toArray(new String[0]); // first line for dictionaries keys
+            lines.add(firstLine);
+            for (int i = 1; i < stafList.getList().size(); i++) {
+                lines.add(getStringArrayFromDictionary((StafDictionary) stafList.getList().get(i)));
+            }
+            writer.writeAll(lines);
+        }
+
+    }
+
+    private String[] getStringArrayFromDictionary(StafDictionary dictionary) {
+        return dictionary.getObjectMap().values().stream().map(v -> v.getValue().toString()).toArray(String[]::new);
     }
 
     private StafDictionary createDictionaryFromCsvLine(String[] headerLine, String[] line) {
