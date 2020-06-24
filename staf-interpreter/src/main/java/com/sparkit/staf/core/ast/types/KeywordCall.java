@@ -9,17 +9,29 @@ import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedKeywordExce
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 public class KeywordCall extends AbstractStafObject implements IStatement, IReportableBlock {
     protected final StatementBlockExecutor blockExecutor;
     protected final KeywordLibrariesRepository keywordLibrariesRepository;
+    @Getter
+    @Setter
     protected String keywordName;
+    @Getter
+    @Setter
     protected List<AbstractStafObject> argumentsList;
+    @Getter
+    @Setter
     protected int lineNumber;
-    protected String file;
+    @Getter
+    @Setter
+    protected String filePath;
     @JsonIgnore
+    @Getter
+    @Setter
     protected List<StatementReport> statementReports;
 
     public KeywordCall(StatementBlockExecutor blockExecutor, KeywordLibrariesRepository keywordLibrariesRepository,
@@ -37,41 +49,9 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
         this.type = StafTypes.KEYWORD_CALL;
     }
 
-    public String getFile() {
-        return file;
-    }
-
-    public void setFile(String file) {
-        this.file = file;
-    }
-
-    public int getLineNumber() {
-        return lineNumber;
-    }
-
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
-    }
-
     @Override
     public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
         return this.execute(globalSymbolsTable, localSymbolsTable);
-    }
-
-    public String getKeywordName() {
-        return keywordName;
-    }
-
-    public void setKeywordName(String keywordName) {
-        this.keywordName = keywordName;
-    }
-
-    public List<AbstractStafObject> getArgumentsList() {
-        return argumentsList;
-    }
-
-    public void setArgumentsList(List<AbstractStafObject> argumentsList) {
-        this.argumentsList = argumentsList;
     }
 
     public Object[] evaluateArgumentsList(SymbolsTable globalSymTable, SymbolsTable localSymTable) throws Throwable {
@@ -97,25 +77,16 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
         } else {
             argsString = "";
         }
-        return keywordName + " [" + argsString + "] at " + getFile() + "  at line " + lineNumber;
-    }
-
-    @Override
-    public List<StatementReport> getStatementReports() {
-        return statementReports;
-    }
-
-    public void setStatementReports(List<StatementReport> statementReports) {
-        this.statementReports = statementReports;
+        return keywordName + " [" + argsString + "] at " + getFilePath() + "  at line " + lineNumber;
     }
 
     @Override
     public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
-        blockExecutor.getCallStack().push(this);
+        blockExecutor.getCallStack().push(this, globalSymbolsTable.getSessionId());
         if (keywordLibrariesRepository.isKeywordDeclared(keywordName)) {
             Object[] params = evaluateArgumentsList(globalSymbolsTable,
                     localSymbolsTable);
-            return keywordLibrariesRepository.invokeKeyword(globalSymbolsTable, keywordName, params);
+            return keywordLibrariesRepository.invokeKeyword(globalSymbolsTable, this, params);
         } else {
             throw new UndefinedKeywordException(keywordName);
         }

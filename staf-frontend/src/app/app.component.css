@@ -1,3 +1,32 @@
 nav.sidenav {
     overflow: scroll;
 }
+
+app-sidenav {
+    overflow: auto;
+}
+
+.showSideNav {
+    transform: rotate(90deg) translateY(-50%);
+    position: absolute;
+    top:50%;
+    left: -20px !important;
+    cursor: pointer;
+}
+
+.hideSideNav {
+    transform: rotate(270deg) translateY(-50%);
+    position: absolute;
+    top:50%;
+    left: -5px !important;
+    cursor: pointer;
+}
+
+.navToggle {
+
+    padding: 0 12px;
+    box-sizing: content-box;
+    background: #bbb;
+    position: absolute;
+    border-radius: 0px 0px 5px 5px;
+}

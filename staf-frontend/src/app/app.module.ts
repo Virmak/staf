@@ -18,7 +18,6 @@ import { EditFileComponent } from './edit-file/edit-file.component';
 import { ProjectOverviewComponent } from './project-overview/project-overview.component';
 import { ContextMenuModule } from 'ngx-contextmenu';
 import { SidenavDirectoryComponent } from './sidenav-directory/sidenav-directory.component';
-import { AceEditorComponent } from './ace-editor/ace-editor.component';
 import { ViewDirectoryComponent } from './view-directory/view-directory.component';
 import { ToastrModule } from 'ngx-toastr';
 import { RunTestComponent } from './run-test/run-test.component';
@@ -29,6 +28,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { ItemTypePipe } from './item-type.pipe';
 import { LogConsoleComponent } from './log-console/log-console.component';
+import { SettingsModalComponent } from './settings-modal/settings-modal.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +41,6 @@ import { LogConsoleComponent } from './log-console/log-console.component';
     EditFileComponent,
     ProjectOverviewComponent,
     SidenavDirectoryComponent,
-    AceEditorComponent,
     ViewDirectoryComponent,
     RunTestComponent,
     ReportComponent,
@@ -50,6 +49,7 @@ import { LogConsoleComponent } from './log-console/log-console.component';
     SafeHtmlPipe,
     ItemTypePipe,
     LogConsoleComponent,
+    SettingsModalComponent,
   ],
   imports: [
     BrowserModule,

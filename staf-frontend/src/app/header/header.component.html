@@ -15,7 +15,7 @@
             </button>
             <div *ngIf="settingsMenuExpanded" class="dropdown-menu">
                 <h4 class="dropdown-header">Settings</h4>
-                <div class="dropdown-item" (click)="webDriverSettingsModalOpen = true">Web driver address</div>
+                <div class="dropdown-item" (click)="settingsModal = true">Web driver settings</div>
                 <!--<div class="dropdown-divider"></div>-->
             </div>
         </div>
@@ -28,43 +28,26 @@
 
 <nav class="subnav">
     <ul class="nav">
-        <li class="nav-item" *ngFor="file of fileExplorer.openedFiles">
-            <a class="nav-link active" href="#">Dashboard</a>
+        <li class="nav-item" *ngFor="let file of fileEditor.openedFiles | keyvalue;">
+            <a class="nav-link file" [ngClass]="{'active': file.value.active}" (click)="openFile(file.value, file.value.project)">{{file.value.name}} <span *ngIf="file.value.changed">*</span> <clr-icon (click)="closeFile(file.value, file.key)" shape="window-close"></clr-icon> </a>
         </li>
     </ul>
 </nav>
-
-<clr-modal [(clrModalOpen)]="webDriverSettingsModalOpen">
+<clr-modal [(clrModalOpen)]="settingsModal">
     <h3 class="modal-title">Web driver settings</h3>
     <div class="modal-body">
-        <form clrForm (submit)="setWebDriverIpAddress()">
-            <clr-input-container>
-                <label class="clr-col-6">Web driver address</label>
-                <input clrInput placeholder="0.0.0.0" 
-                    required
-                    name="webDriverIp" 
-                    [(ngModel)]="webDriverIpAddrInput"  
-                    pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" /> 
-                    <input clrInput placeholder="9515" 
-                    required
-                    name="webDriverPort" 
-                    [(ngModel)]="webDriverPortInput"  
-                    pattern="\d+" class="port" />
-                <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+        <app-settings-modal></app-settings-modal>
+    </div>
+        
+</clr-modal>
 
-                <clr-control-error *clrIfError="'pattern';  error as err">You need to provide a valid IPv4 address</clr-control-error>
-            </clr-input-container>
-            <clr-toggle-container>
-                <clr-toggle-wrapper>
-                  <input type="checkbox" clrToggle value="headless" name="headless" />
-                  <label>Run tests in headless mode</label>
-                </clr-toggle-wrapper>
-            </clr-toggle-container>
-        </form>
-       
+<clr-modal [(clrModalOpen)]="saveFileModal">
+    <h3 class="modal-title">Save file</h3>
+    <div class="modal-body">
+        <p>Do you want to save changes you made?</p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="webDriverSettingsModalOpen = false">Cancel</button>
-        <button type="submit" class="btn btn-primary" (click)="setWebDriverIpAddress()">Ok</button>
+        <button type="button" class="btn btn-outline" (click)="closeAndSaveFile(false)">No</button>
+        <button type="button" class="btn btn-primary" (click)="closeAndSaveFile(true)">Yes</button>
     </div>
 </clr-modal>

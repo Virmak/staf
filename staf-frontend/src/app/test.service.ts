@@ -30,8 +30,8 @@ export class TestService {
     return this.http.post(baseUrl + '/runTest', runTest);
   }
 
-  setWebDriverAddress(addr, port) {
-    this.webDriverAddress = addr + ':' + port;
+  setWebDriverAddress(url) {
+    this.webDriverAddress = url;
     localStorage.setItem('webDriverAddr', this.webDriverAddress);
     this.toastr.success('Web driver address set', 'Success');
     

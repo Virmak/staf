@@ -1,6 +1,6 @@
 import { ITestSuite } from './../interfaces/itest-suite';
 import { StafProject } from './../types/staf-project';
-import { FileType } from './../interfaces/ifile';
+import { FileType, IFile } from './../interfaces/ifile';
 import { FileEditorService } from './../file-editor.service';
 import { ProjectService } from './../project.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -16,10 +16,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
 
   filePath;
   project: StafProject;
-  file;
-  content = '';
-  fileChanged = false;
-  saveModal = false;
+  file: IFile;
 
   vsThemes = [
     {value:'vs', name: 'Light theme'},
@@ -36,9 +33,10 @@ export class EditFileComponent implements OnInit, OnDestroy {
   selectedTestSuite: ITestSuite = this.allTestSuite;
 
   private keyEventListener = e => {
-
-    if (this.file.content != this.content) {
-      this.fileContentChanged(this.file);
+    if (this.file.content != this.file.originalContent) {
+      this.file.changed = true;
+    } else {
+      this.file.changed = false;
     }
 
     if (!(e.which == 83 && e.ctrlKey)) return true;
@@ -60,19 +58,14 @@ export class EditFileComponent implements OnInit, OnDestroy {
     document.addEventListener('keydown', this.keyEventListener);
     this.route.paramMap.subscribe( paramMap => {
       const projectName = this.route.snapshot.paramMap.get('project');
-      this.filePath = this.route.snapshot.paramMap.get('filePath');
+      this.filePath = this.route.snapshot.paramMap.get('fullPath');
       this.project = this.projectService.getProjectByName(projectName);
       if (this.project == null) {
         this.router.navigate(['/']);
         return;
       }
       this.testSuites = [this.allTestSuite, ...this.project.testSuites];
-      
-      if (this.file && this.file.content != this.content) {
-        this.showSaveDialog(this.content)
-      } else {
-        this.openFile();
-      }
+      this.openFile();
     });
   }
 
@@ -81,16 +74,13 @@ export class EditFileComponent implements OnInit, OnDestroy {
   }
 
   openFile() {
-    this.saveModal = false;
     let file = this.fileEditorService.getFile(this.filePath);
     if (file == null) {
       this.router.navigate(['/']);
     } else {
       this.file = file;
-      this.content = file.content as string;
-      this.fileChanged = false;
+      this.file.originalContent = this.file.content as string;
       this.pathSplitted = file.path.split('/');
-      let origPaths = this.pathSplitted.shift();
       
       let i;
       for (i = 0; i < this.pathSplitted.length - 1; i++) {
@@ -106,27 +96,8 @@ export class EditFileComponent implements OnInit, OnDestroy {
     }
   }
 
-  fileContentChanged(file) {
-    console.log('file chagned')
-    this.fileChanged = true;
-  }
-
   saveFile() {
-    this.fileChanged = false;
-    this.file.content = this.content;
-    this.projectService.saveFile(this.file).subscribe(res => {
-      this.toastr.success('File saved', 'Success');
-    }, err => this.toastr.error('Cannot save file', 'Error'));
-  }
-
-  showSaveDialog(orig) {
-    this.saveModal = true;
-  }
-
-  resetFileContent() {
-    this.file.content = this.content;
-    this.saveModal = false;
-    this.openFile();
+    this.fileEditorService.saveFile(this.file);
   }
 
   onInitEditor(editor) {

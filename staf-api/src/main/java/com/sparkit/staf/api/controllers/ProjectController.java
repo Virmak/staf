@@ -2,12 +2,8 @@ package com.sparkit.staf.api.controllers;
 
 import com.sparkit.staf.application.exception.ProjectNameAlreadyExist;
 import com.sparkit.staf.application.models.request.CreateProjectRequest;
-import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
-import com.sparkit.staf.application.models.response.CreateTestSuiteResponse;
 import com.sparkit.staf.application.models.response.GetProjectReportsResponse;
 import com.sparkit.staf.application.service.ProjectService;
-import com.sparkit.staf.domain.ProjectConfig;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +22,12 @@ public class ProjectController {
     String testDir;
     @Autowired
     private ProjectService projectService;
-    @Autowired
-    private ModelMapper mapper;
 
     @CrossOrigin(origins = "*")
     @PostMapping("/projects")
     public ResponseEntity<Map<String, Object>> createProject(@RequestBody CreateProjectRequest createProjectRequest) throws IOException {
         try {
-            ProjectConfig config = projectService.createProject(createProjectRequest);
+            projectService.createProject(createProjectRequest);
         } catch (IOException | ProjectNameAlreadyExist e) {
             Map<String, Object> res = new HashMap<>();
             res.put("error", "Project name already exists");

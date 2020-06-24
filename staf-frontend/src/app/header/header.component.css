@@ -4,3 +4,7 @@
 input:first-child {
     margin-right: 10px;
 }
+
+.file {
+    cursor: pointer;
+}

@@ -38,7 +38,7 @@ public class KeywordDeclaration implements IStatementBlock {
         SymbolsTable localSymTable = new SymbolsTable();
         evaluateArgs(globalSymTable, localSymTable, keywordLibrariesRepository, params);
         reports = statementBlockExecutor.execute(this, null, globalSymTable, localSymTable, keywordLibrariesRepository);
-        KeywordCall keywordCall = statementBlockExecutor.getCallStack().pop();
+        KeywordCall keywordCall = statementBlockExecutor.getCallStack().pop(globalSymTable.getSessionId());
         keywordCall.setStatementReports(reports);
         if (returnObject != null) {
             return returnObject.evaluate(globalSymTable, localSymTable);
@@ -73,7 +73,7 @@ public class KeywordDeclaration implements IStatementBlock {
                 KeywordCall keywordCall = (KeywordCall) stafObject.getValue();
                 if (keywordLibrariesRepository.isKeywordDeclared(keywordCall.getKeywordName())) {
                     localSymTable.setSymbolValue(argsList.get(i),
-                            keywordLibrariesRepository.invokeKeyword(globalSymbolsTable, keywordCall.getKeywordName(), keywordCall.getArgumentsList().toArray()));
+                            keywordLibrariesRepository.invokeKeyword(globalSymbolsTable, keywordCall, keywordCall.getArgumentsList().toArray()));
                 } else {
                     throw new UndefinedKeywordException(keywordCall.getKeywordName());
                 }

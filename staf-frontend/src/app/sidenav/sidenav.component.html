@@ -23,7 +23,7 @@
 				</a>
 			</clr-tree-node>
 			<clr-tree-node *ngFor="let testSuite of project.testSuites">
-				<button class="clr-treenode-link" [class.active]="testSuite.active" [contextMenu]="basicMenu" [contextMenuSubject]="{testSuite: testSuite, project: project}">
+				<button class="clr-treenode-link" [contextMenu]="basicMenu" [contextMenuSubject]="{testSuite: testSuite, project: project}">
 					<clr-icon shape="host-group"></clr-icon>
 
 

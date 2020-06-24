@@ -16,10 +16,12 @@
 	<app-header></app-header>
 	<div class="content-container">
 		<div class="content-area">
+            <clr-icon shape="caret" *ngIf="!showSidenav" (click)="showSidenav = true" class="showSideNav navToggle"></clr-icon>
+            <clr-icon shape="caret" *ngIf="showSidenav" (click)="showSidenav = false" class="hideSideNav navToggle"></clr-icon>
 			<router-outlet></router-outlet>
 		</div>
-		<nav class="sidenav">
-			<app-sidenav [projects]="projects"></app-sidenav>
+		<nav class="sidenav" *ngIf="showSidenav">
+            <app-sidenav [projects]="projects"></app-sidenav>
 		</nav>
 	</div>
 </div>

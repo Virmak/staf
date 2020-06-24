@@ -1,6 +1,7 @@
-import { FileExplorerService } from './../file-explorer.service';
+import { FileEditorService } from './../file-editor.service';
 import { TestService } from './../test.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,28 +9,43 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
+  settingsModal = false;
   settingsMenuExpanded = false;
-  webDriverSettingsModalOpen = false;
-  webDriverIpAddrInput = '';
-  webDriverPortInput = '9515';
+  saveFileModal = false;
+
+  closingFile;
 
   constructor(
-    private testService: TestService,
-    public fileExplorer: FileExplorerService) { }
+    private router: Router,
+    public fileEditor: FileEditorService) { }
 
-  ngOnInit(): void {
-    if (this.testService.webDriverAddress) {
-      const addressArr = this.testService.webDriverAddress.split(':');
-      this.webDriverIpAddrInput = addressArr[0];
-      this.webDriverPortInput = addressArr[1];
+  ngOnInit() {
+
+  }
+  
+  openFile(file, project)  {
+    this.fileEditor.setFile(file);
+    this.router.navigate(['editFile', project.getNormalizedProjectName(), file.name, file.path]);
+  }
+
+  closeFile(file, key) {
+    if (file.changed) {
+      this.saveFileModal = true;
+      this.closingFile = {
+        file, key
+      };
+    } else {
+      this.fileEditor.closeFile(file, key, false);
     }
   }
 
-  setWebDriverIpAddress() {
-    this.testService.setWebDriverAddress(this.webDriverIpAddrInput, this.webDriverPortInput);
-    this.webDriverSettingsModalOpen = false;
-    this.settingsMenuExpanded = false;
+  resetFileContent() {
+
+  }
+
+  closeAndSaveFile(save) {
+      this.fileEditor.closeFile(this.closingFile.file, this.closingFile.key, save);
+      this.saveFileModal = false;
   }
 
 }

@@ -1,0 +1,39 @@
+
+    <form clrForm (submit)="setWebDriverIpAddress()">
+        <clr-input-container>
+            <label class="clr-col-6">Web driver url</label>
+            <input clrInput placeholder="http://0.0.0.0:9515" 
+                required
+                name="webDriverUrl" 
+                [(ngModel)]="webDriverUrl"   /> 
+                
+            <clr-control-error *clrIfError="'required'">This is a required field</clr-control-error>
+        </clr-input-container>
+
+        <clr-input-container >
+            <label class="clr-col-6">Number of browser instances</label>
+                <input clrInput placeholder="1" 
+                [disabled]="!runInSelenoid"
+                required
+                name="sessionCount" 
+                [(ngModel)]="sessionCount"  
+                pattern="\d+" class="port" />
+        </clr-input-container>
+
+        <clr-checkbox-container>
+            <label class="clr-col-6">Web driver options</label>
+            <clr-checkbox-wrapper>
+              <input type="checkbox" [(ngModel)]="runInSelenoid"  clrCheckbox value="option1" name="options" />
+              <label>Run using selenoid (Parallel multi sessions)</label>
+            </clr-checkbox-wrapper>
+            <clr-checkbox-wrapper>
+              <input type="checkbox" clrCheckbox value="option2" name="options" />
+              <label>Run tests in headless mode</label>
+            </clr-checkbox-wrapper>
+          </clr-checkbox-container>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-outline" (click)="hideModal()">Cancel</button>
+              <button type="submit" class="btn btn-primary" (click)="setWebDriverIpAddress()">Ok</button>
+          </div>
+    </form>
+    

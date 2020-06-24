@@ -48,7 +48,10 @@ export class RunTestComponent implements OnInit {
   }
 
   runSelectedTests() {
-    this.logService.newSession();
+    if (!this.isSessionCountValid()) {
+      return;
+    }
+    this.logService.newSession(this.sessionCount);
     this.progress = true;
     this.stopBtnDisabled = false;
     this.runAllBtnDisabled = true;
@@ -62,7 +65,10 @@ export class RunTestComponent implements OnInit {
   }
 
   runAllTests() {
-    this.logService.newSession();
+    if (!this.isSessionCountValid()) {
+      return;
+    }
+    this.logService.newSession(this.sessionCount);
     this.progress = true;
     this.stopBtnDisabled = false;
     this.runAllBtnDisabled = true;
@@ -124,5 +130,13 @@ export class RunTestComponent implements OnInit {
       this.stopBtnDisabled = true;
       this.progress = false;
     });
+  }
+
+  isSessionCountValid() {
+    if ( isNaN(this.sessionCount) || this.sessionCount < 1) {
+      this.toastr.error("Error, minimum test session is 1");
+      return false;
+    }
+    return true;
   }
 }

@@ -58,6 +58,7 @@ export class SidenavDirectoryComponent implements OnInit {
       this.router.navigate(['directory', this.project.getNormalizedProjectName(), item.name]);
     } else if (this.isTextFile(item)) {
       this.fileEditorService.setFile(item);
+      item.project = this.project;
       this.router.navigate(['editFile', this.project.getNormalizedProjectName(), item.name, key]);
     } else if (this.isImageFile(item)) {
       this.fileEditorService.setFile(item);
