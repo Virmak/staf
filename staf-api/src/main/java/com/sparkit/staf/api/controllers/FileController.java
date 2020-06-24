@@ -43,17 +43,11 @@ public class FileController {
     @CrossOrigin("*")
     @GetMapping("/screenshot/{url}")
     public ImageBase64 imageBase64(@PathVariable String url) {
-        String screenShotPath = url.replaceAll("<sep>", "/");
+        String screenShotPath = url.replace("<sep>", "/");
         File file = new File(screenShotPath);
         ImageBase64 imageBase64 = new ImageBase64();
         imageBase64.setFileName(screenShotPath.substring(screenShotPath.lastIndexOf('/')));
         imageBase64.setImageData(projectService.readImageBase64(file));
         return imageBase64;
-    }
-
-    private boolean isChild(String path) {
-        Path parent = Paths.get(testDir).toAbsolutePath();
-        Path child = Paths.get(path).toAbsolutePath();
-        return child.startsWith(parent);
     }
 }

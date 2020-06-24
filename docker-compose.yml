@@ -5,7 +5,7 @@ services:
     container_name: staf-api
     working_dir: /usr/app
     ports:
-      - "6500:8080"
+      - "6500:8081"
     command: ["java", "-jar", "-Dspring.profiles.active=prod", "application.jar", "tests"]
     volumes:
       - ./tests:/usr/app/tests

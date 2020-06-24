@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 @StafLibrary(name = "logger", builtin = true)
 public class LoggerLibrary extends AbstractStafLibrary {
-    private static Logger logger = LogManager.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger(Main.class);
     @Keyword(name = "log")
 
     public void log(AbstractStafObject data) {

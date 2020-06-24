@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 public class LogController {
     @MessageMapping("/hello")
     @SendTo("/staf/logs")
-    public WebSocketHandshakeResponse handshake(WebSocketHandshakeRequest message) throws Exception {
+    public WebSocketHandshakeResponse handshake(WebSocketHandshakeRequest message) {
         return new WebSocketHandshakeResponse("hello");
     }
 }

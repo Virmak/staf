@@ -1,13 +1,11 @@
 package com.sparkit.staf.core.runtime.libs;
 
-import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.SeleniumLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
 import com.sparkit.staf.core.runtime.loader.TestContainer;
@@ -23,25 +21,24 @@ import java.util.*;
 
 @Component
 public class KeywordLibrariesRepository {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final Logger logger = LoggerFactory.getLogger(KeywordLibrariesRepository.class);
     private final Map<String, BuiltInLibraryKeywordWrapper> builtinKeywordMap = new HashMap<>();
     private final Map<String, AbstractStafLibrary> libsInstancesMap = new HashMap<>();
+    /* Map keyword to library method */
+    private final Map<String, KeywordDeclaration> userDefinedKeywords = new HashMap<>();
     @Autowired
     private LibraryFactory libraryFactory;
     @Autowired
     private StatementBlockExecutor statementBlockExecutor;
     @Autowired
     private TestContainer dependencyContainer;
-    /* Map keyword to library method */
-    private final Map<String, KeywordDeclaration> userDefinedKeywords = new HashMap<>();
 
     public Map<String, KeywordDeclaration> getUserDefinedKeywords() {
         return userDefinedKeywords;
     }
 
     public void registerLibrary(Class<? extends AbstractStafLibrary> libClass)
-            throws KeywordAlreadyRegisteredException, InvocationTargetException,
-            NoSuchMethodException, InstantiationException, IllegalAccessException {
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
         AbstractStafLibrary libInstance = libraryFactory.build(libClass);
         if (libsInstancesMap.containsKey(libClass.getName())) {
@@ -65,8 +62,7 @@ public class KeywordLibrariesRepository {
         userDefinedKeywords.clear();
     }
 
-    public void addUserDefinedKeywords(Map<String, KeywordDeclaration> keywordDeclarationMap)
-            throws KeywordAlreadyRegisteredException {
+    public void addUserDefinedKeywords(Map<String, KeywordDeclaration> keywordDeclarationMap) {
         for (Map.Entry<String, KeywordDeclaration> keywordDeclaration : keywordDeclarationMap.entrySet()) {
             if (isKeywordDeclared(normalizeKeywordName(keywordDeclaration.getKey()))) {
                 throw new KeywordAlreadyRegisteredException(keywordDeclaration.getKey());
@@ -78,7 +74,7 @@ public class KeywordLibrariesRepository {
     public Object invokeKeyword(SymbolsTable globalSymbolsTable, KeywordCall keyword, Object[] params) throws Throwable {
         String normalizedKeywordName = normalizeKeywordName(keyword.getKeywordName());
 
-        logger.debug("Invoking Keyword : " + keyword);
+        logger.debug("Invoking Keyword : {}", keyword);
         if (builtinKeywordMap.containsKey(normalizedKeywordName)) {
             try {
                 Object ret;
@@ -87,7 +83,7 @@ public class KeywordLibrariesRepository {
                 dependencies.addAll(Arrays.asList(params));
                 ret = builtinKeywordMap.get(normalizedKeywordName).invoke(dependencies);
                 statementBlockExecutor.getCallStack().pop(globalSymbolsTable.getSessionId());
-                if (ret instanceof WebDriver) {
+                if (ret instanceof WebDriver) { // this is used by selenium library open browser to save an instance of web driver in global sym table
                     globalSymbolsTable.setSymbolValue("__web_driver__", ret);
                     return null;
                 }
@@ -109,7 +105,7 @@ public class KeywordLibrariesRepository {
     }
 
     public String normalizeKeywordName(String keyword) {
-        return keyword.toLowerCase().replaceAll(" ", "");
+        return keyword.toLowerCase().replaceAll("\\s*", "");
     }
 
     private List<Object> injectKeywordDependencies(SymbolsTable symbolsTable, KeywordCall keywordCall, BuiltInLibraryKeywordWrapper keywordWrapper)
