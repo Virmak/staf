@@ -19,10 +19,10 @@ public class KeywordCallEvaluator implements INodeEvaluator<KeywordCall> {
     @Override
     public AbstractStafObject evaluate(KeywordCall keywordCall, SymbolsTable globalSymbolsTable, SymbolsTable localSymTable)
             throws Throwable {
-        blockExecutor.getCallStack().push(keywordCall);
+        blockExecutor.getCallStack().push(keywordCall, globalSymbolsTable.getSessionId());
         if (keywordLibrariesRepository.isKeywordDeclared(keywordCall.getKeywordName())) {
             Object[] params = keywordCall.evaluateArgumentsList(globalSymbolsTable, localSymTable);
-            return (AbstractStafObject) keywordLibrariesRepository.invokeKeyword(globalSymbolsTable, keywordCall.getKeywordName(), params);
+            return (AbstractStafObject) keywordLibrariesRepository.invokeKeyword(globalSymbolsTable, keywordCall, params);
         } else {
             throw new UndefinedKeywordException(keywordCall.getKeywordName());
         }

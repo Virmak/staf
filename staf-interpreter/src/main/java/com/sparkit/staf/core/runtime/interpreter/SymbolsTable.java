@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.ast.Assignment;
+import com.sparkit.staf.core.ast.types.StafInteger;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.VariableAlreadyDefinedException;
 import org.springframework.stereotype.Component;
@@ -43,5 +44,10 @@ public class SymbolsTable {
 
     public void clearSymbolsMap() {
         symbolsMap.clear();
+    }
+
+    public int getSessionId() {
+        StafInteger session = (StafInteger) this.symbolsMap.get("$__session__");
+        return (int)session.getValue();
     }
 }

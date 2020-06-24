@@ -9,8 +9,10 @@ import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import com.sparkit.staf.domain.TestResult;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -23,7 +25,9 @@ import java.util.Stack;
 public class StatementBlockExecutor {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private OnStatementFailed statementFailed;
-    private Stack<KeywordCall> callStack = new Stack<>();
+    @Autowired
+    @Getter
+    private KeywordCallStack callStack;
 
     public static TestResult statementListTestResult(List<StatementReport> statementReports) {
         if (statementReports == null) {
@@ -151,9 +155,5 @@ public class StatementBlockExecutor {
 
     public void setStatementFailed(OnStatementFailed statementFailed) {
         this.statementFailed = statementFailed;
-    }
-
-    public Stack<KeywordCall> getCallStack() {
-        return callStack;
     }
 }

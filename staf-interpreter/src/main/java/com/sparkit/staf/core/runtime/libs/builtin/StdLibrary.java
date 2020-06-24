@@ -3,21 +3,17 @@ package com.sparkit.staf.core.runtime.libs.builtin;
 import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.*;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
-import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.ShouldBeEqualException;
 import com.sparkit.staf.core.runtime.libs.exceptions.ShouldNotBeEqualException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @StafLibrary(name = "standard", builtin = true)
 public class StdLibrary extends AbstractStafLibrary {
-    private final double THRESHOLD = .001;
-    @Autowired
-    private KeywordLibrariesRepository keywordLibrariesRepository;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private final double THRESHOLD = .001;
 
     @Keyword(name = "should be equal")
     public void shouldBeEqual(AbstractStafObject object, AbstractStafObject expected, AbstractStafObject errorMessage)
@@ -72,10 +68,10 @@ public class StdLibrary extends AbstractStafLibrary {
         int start, end;
         if (to == null) {
             start = 0;
-            end = (int)from.getValue();
+            end = (int) from.getValue();
         } else {
-            start = (int)from.getValue();
-            end = (int)to.getValue();
+            start = (int) from.getValue();
+            end = (int) to.getValue();
         }
         StafList list = new StafList();
         for (; start <= end; start++) {
@@ -87,14 +83,8 @@ public class StdLibrary extends AbstractStafLibrary {
     @Keyword(name = "parse number")
     public AbstractStafObject parseNumber(AbstractStafObject object, AbstractStafObject defaultVal) {
         String s;
-        s = object.getValue().toString().replace(",", ".");
-        s = s.replace("TND", "");
-        s = s.replace("€", "");
-        s = s.replace("$", "");
-        s = s.replaceAll("\\s", "");
-        s = s.replace("\u00a0","");
-        s = s.replaceAll("\u00a0","");
-        s = s.trim();
+        s = removeCurrency(object.getValue().toString());
+        s = removeWhiteSpace(s);
         try {
             double d = Double.parseDouble(s);
             return new StafDouble(d);
@@ -103,12 +93,25 @@ public class StdLibrary extends AbstractStafLibrary {
         }
     }
 
+    private String removeCurrency(String s) {
+        return s.replace(",", ".")
+                .replace("TND", "")
+                .replace("€", "")
+                .replace("$", "");
+    }
+
+    private String removeWhiteSpace(String s) {
+        return s.replaceAll("\\s", "")
+                .replace("\u00a0", "")
+                .replaceAll("\u00a0", "").trim();
+    }
+
     public boolean compareStafObjects(AbstractStafObject object1, AbstractStafObject object2) {
         if (object1 instanceof StafDouble) {
             double a = (Double) object1.getValue();
             double b = (Double) object2.getValue();
             double difference = Math.abs(a - b);
-            return difference  < THRESHOLD;
+            return difference < THRESHOLD;
         }
         return object1.getValue().toString().equals(object2.getValue().toString());
     }

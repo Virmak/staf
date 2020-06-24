@@ -2,14 +2,15 @@ package com.sparkit.staf.core.runtime.libs;
 
 import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.KeywordDeclaration;
+import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.builtin.selenium.SeleniumLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
 import com.sparkit.staf.core.runtime.loader.TestContainer;
-import org.apache.commons.lang3.ArrayUtils;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +19,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class KeywordLibrariesRepository {
@@ -75,29 +75,25 @@ public class KeywordLibrariesRepository {
         }
     }
 
-    public Object invokeKeyword(SymbolsTable globalSymbolsTable, String keyword, Object[] params) throws Throwable {
-        String normalizedKeywordName = normalizeKeywordName(keyword);
+    public Object invokeKeyword(SymbolsTable globalSymbolsTable, KeywordCall keyword, Object[] params) throws Throwable {
+        String normalizedKeywordName = normalizeKeywordName(keyword.getKeywordName());
 
         logger.debug("Invoking Keyword : " + keyword);
         if (builtinKeywordMap.containsKey(normalizedKeywordName)) {
             try {
                 Object ret;
                 BuiltInLibraryKeywordWrapper keywordWrapper = builtinKeywordMap.get(normalizedKeywordName);
-                if (keywordWrapper.getLibInstance() instanceof SeleniumLibrary
-                        && globalSymbolsTable.getSymbolsMap().containsKey("__WEB_DRIVER__")) { // inject web driver to selenium library
-
-                    ret = builtinKeywordMap.get(normalizedKeywordName).invoke(params, globalSymbolsTable.getSymbolValue("__WEB_DRIVER__"));
-                } else {
-                    ret = builtinKeywordMap.get(normalizedKeywordName).invoke(params, null);
-                }
-                statementBlockExecutor.getCallStack().pop();
+                List<Object> dependencies = injectKeywordDependencies(globalSymbolsTable, keyword, keywordWrapper);
+                dependencies.addAll(Arrays.asList(params));
+                ret = builtinKeywordMap.get(normalizedKeywordName).invoke(dependencies);
+                statementBlockExecutor.getCallStack().pop(globalSymbolsTable.getSessionId());
                 if (ret instanceof WebDriver) {
-                    globalSymbolsTable.setSymbolValue("__WEB_DRIVER__", ret);
+                    globalSymbolsTable.setSymbolValue("__web_driver__", ret);
                     return null;
                 }
                 return ret;
             } catch (Exception e) {
-                statementBlockExecutor.getCallStack().pop();
+                statementBlockExecutor.getCallStack().pop(globalSymbolsTable.getSessionId());
                 throw e;
             }
         } else if (userDefinedKeywords.containsKey(normalizedKeywordName)) {
@@ -114,5 +110,15 @@ public class KeywordLibrariesRepository {
 
     public String normalizeKeywordName(String keyword) {
         return keyword.toLowerCase().replaceAll(" ", "");
+    }
+
+    private List<Object> injectKeywordDependencies(SymbolsTable symbolsTable, KeywordCall keywordCall, BuiltInLibraryKeywordWrapper keywordWrapper)
+            throws UndefinedVariableException {
+        List<Object> keywordDependencies = new ArrayList<>();
+        symbolsTable.setSymbolValue("__keyword__", keywordCall);
+        for (String dep : keywordWrapper.getInjectAnnotatedParams()) {
+            keywordDependencies.add(symbolsTable.getSymbolValue(dep));
+        }
+        return keywordDependencies;
     }
 }
