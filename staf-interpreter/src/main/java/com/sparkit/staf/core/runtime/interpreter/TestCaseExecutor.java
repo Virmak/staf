@@ -48,7 +48,7 @@ public class TestCaseExecutor {
         testCaseReport.setResult(TestResult.Pass);
         testCaseReport.setStatementReports(new ArrayList<>());
         String lastErrorMessage = null;
-        logger.info("Started executing test case : [" + testCaseDeclaration.getName() + "]");
+        logger.info("Started executing test case : [{}]", testCaseDeclaration.getName());
         OnStatementFailed statementFailed = (statementReport) -> {
             testCaseReport.setResult(TestResult.Fail);
             if (!keywordLibrariesRepository.isKeywordDeclared("capturescreenshot")) {
@@ -56,7 +56,7 @@ public class TestCaseExecutor {
             }
             StafString screenShotPath = new StafString(testDirectory + "/" + config.getProjectDir() + "/"
                     + testSuite + "/" + config.getReportingDirectory()
-                    + "/screenshot-" + testSuite + "-" + testCaseName.replaceAll(" ", "")
+                    + "/screenshot-" + testSuite + "-" + testCaseName.replaceAll("\\s*", "")
                     + "-" + new Date().getTime() + ".png");
             try {
                 KeywordCall captureScreenshotKeyword = new KeywordCall(statementBlockExecutor, keywordLibrariesRepository,
@@ -86,15 +86,13 @@ public class TestCaseExecutor {
             }
             testCaseReport.setResult(TestResult.Fail);
             lastErrorMessage = e.getMessage();
-            logger.error("Executing statement failed at [" + testSuite + "] : "
-                    + testCaseDeclaration.getName()
-                    + " | " + e.getMessage());
+            logger.error("Executing statement failed at [{}] : {} | {}", testSuite, testCaseDeclaration.getName(), e.getMessage());
             e.printStackTrace();
         }
         testCaseReport.setEnd(LocalDateTime.now());
         testCaseReport.setErrorMessage(lastErrorMessage);
 
-        logger.info("Finished executing test case : [" + testCaseDeclaration.getName() + "] " + testCaseReport.getResult());
+        logger.info("Finished executing test case : [{}] {} ", testCaseDeclaration.getName(), testCaseReport.getResult());
         return testCaseReport;
     }
 

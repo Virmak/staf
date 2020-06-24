@@ -83,7 +83,7 @@ public class KeywordLibrariesRepository {
                 dependencies.addAll(Arrays.asList(params));
                 ret = builtinKeywordMap.get(normalizedKeywordName).invoke(dependencies);
                 statementBlockExecutor.getCallStack().pop(globalSymbolsTable.getSessionId());
-                if (ret instanceof WebDriver) { // this is used by selenium library open browser to save an instance of web driver in global sym table
+                if (ret instanceof WebDriver) { // this is used by selenium library (open browser) keyword to save an instance of web driver in global sym table
                     globalSymbolsTable.setSymbolValue("__web_driver__", ret);
                     return null;
                 }

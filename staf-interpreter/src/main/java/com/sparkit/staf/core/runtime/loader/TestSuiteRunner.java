@@ -53,7 +53,7 @@ public class TestSuiteRunner {
         keywordLibrariesRepository.clearUserDefinedKeywordsMap();
         globalSymTable.clearSymbolsMap();
 
-        String fullPath = getFilePath(testDirectory, mainFilePath);
+        String fullPath = getFilePath(testDirectory, config.getProjectDir(), mainFilePath);
         StafFile scriptAST;
         try {
             scriptAST = stafCompiler.compile(fullPath);
@@ -63,8 +63,9 @@ public class TestSuiteRunner {
         return interpreter.run(testSuite.getTestSuiteName(), scriptAST, sessionCount);
     }
 
-    private String getFilePath(String testDirectory, String mainScriptFilePath) {
-        File scriptFile = new File(testDirectory, mainScriptFilePath);
+    private String getFilePath(String testDirectory, String projectDirectory, String mainScriptFilePath) {
+        File project = new File(testDirectory, projectDirectory);
+        File scriptFile = new File(project, mainScriptFilePath);
         return scriptFile.getPath();
     }
 }
