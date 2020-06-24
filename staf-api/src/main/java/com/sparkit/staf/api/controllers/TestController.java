@@ -45,7 +45,7 @@ public class TestController {
         for (String projectName : projectService.getProjectsList()) {
             if (project.equals(projectName)) {
                 return testFacade.runProject(testDir, projectName, testDir + "/" + project + "/" + "config.json",
-                        runTestRequest.getTestSuites().get(0), runTestRequest.getWebDriverAddress(), runTestRequest.getSessionCount());
+                        runTestRequest.getTestSuites().get(0), runTestRequest.getWebDriverOptions(), runTestRequest.getWebDriverOptions().getSessionCount());
             }
         }
         throw new ProjectNotFoundException();

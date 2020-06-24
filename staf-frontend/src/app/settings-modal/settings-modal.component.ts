@@ -12,18 +12,53 @@ export class SettingsModalComponent implements OnInit {
 
   webDriverUrl = '';
   runInSelenoid = false;
-  sessionCount = '';
+  sessionCount = 1;
+  remoteWebDriver = false;
+  enableVnc = false;
+  enableVideo = false;
 
-  constructor(private testService: TestService) { }
+  browserList = {
+    chrome: ['81.0', '83.0'],
+    firefox: ['76.0', '77.0'],
+    opera: ['67.0', '68.0'],
+  };
+
+  browserNames = [
+    'chrome',
+    'firefox',
+    'opera'
+  ]
+
+  selectedBrowser = this.browserNames[0];
+
+  selectedVersion;
+
+  constructor(public testService: TestService) { }
 
   ngOnInit(): void {
-    if (this.testService.webDriverAddress) {
-      this.webDriverUrl = this.testService.webDriverAddress;
+    if (this.testService.driverOptions) {
+      this.webDriverUrl = this.testService.driverOptions.webDriverAddress;
+      this.remoteWebDriver = this.testService.driverOptions.remote;
+      this.sessionCount = this.testService.driverOptions.sessionCount;
+      this.selectedBrowser = this.testService.driverOptions.browserName;
+      this.selectedVersion = this.testService.driverOptions.browserVersion;
+      this.enableVideo = this.testService.driverOptions.enableVideo;
+      this.enableVnc = this.testService.driverOptions.enableVnc;
+      this.runInSelenoid = this.testService.driverOptions.runInSelenoid;
     }
   }
 
-  setWebDriverIpAddress() {
-    this.testService.setWebDriverAddress(this.webDriverUrl);
+  saveWebDriverOptions() {
+    this.testService.setWebDriverOptions({
+      webDriverAddress: this.webDriverUrl,
+      remote: this.remoteWebDriver,
+      sessionCount: this.runInSelenoid ? this.sessionCount : 1,
+      browserName: this.selectedBrowser,
+      browserVersion: this.selectedVersion,
+      enableVideo: this.enableVideo,
+      enableVnc: this.enableVnc,
+      runInSelenoid: this.runInSelenoid
+    });
   }
 
   hideModal() {

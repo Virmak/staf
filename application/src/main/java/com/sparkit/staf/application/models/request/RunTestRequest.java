@@ -1,5 +1,6 @@
 package com.sparkit.staf.application.models.request;
 
+import com.sparkit.staf.core.runtime.libs.builtin.selenium.WebDriverOptions;
 import lombok.Data;
 
 import java.util.List;
@@ -8,6 +9,6 @@ import java.util.List;
 public class RunTestRequest {
     private String project;
     private List<String> testSuites;
-    private String webDriverAddress;
-    private int sessionCount;
+    WebDriverOptions webDriverOptions;
+
 }

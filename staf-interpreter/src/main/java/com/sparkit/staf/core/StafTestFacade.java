@@ -1,6 +1,7 @@
 package com.sparkit.staf.core;
 
 import com.sparkit.staf.core.parser.SyntaxErrorException;
+import com.sparkit.staf.core.runtime.libs.builtin.selenium.WebDriverOptions;
 import com.sparkit.staf.core.runtime.loader.IStafConfig;
 import com.sparkit.staf.core.runtime.loader.TestSuiteRunner;
 import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
@@ -28,15 +29,20 @@ public class StafTestFacade {
     @Autowired
     private ITestReportWriter jsonReportWriter;
 
-    public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, String testSuite, String webDriverAddress,
+    public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, String testSuite, WebDriverOptions webDriverOptions,
                                             int sessionCount)
             throws ConfigFileNotFoundException, TestSuiteMainScriptNotFoundException, SyntaxErrorException {
         stafConfig.readConfigFile(projectDir, configFile);
         String logFilePath = getLogFilePath(stafConfig.getLogDirectory());
         System.setProperty("logging.file", logFilePath);
         System.setProperty("testDirectory", testDir);
-        if (webDriverAddress != null) {
-            System.setProperty("webDriver", webDriverAddress);
+        if (webDriverOptions != null) {
+            System.setProperty("webDriverAddress", webDriverOptions.getWebDriverAddress());
+            System.setProperty("remote", String.valueOf(webDriverOptions.isRemote()));
+            System.setProperty("browserName", webDriverOptions.getBrowserName());
+            System.setProperty("browserVersion", webDriverOptions.getBrowserVersion());
+            System.setProperty("enableVnc", String.valueOf(webDriverOptions.isEnableVnc()));
+            System.setProperty("enableVideo", String.valueOf(webDriverOptions.isEnableVideo()));
         }
 
         logger.info("Running project '{}'", projectDir);

@@ -29,7 +29,7 @@ export class RunTestComponent implements OnInit {
 
   @Input('project')
   public set project(value: IStafProject) {
-    this._testSuites = value.testSuites.filter(testSuite => testSuite.name != 'logs')
+    this._testSuites = value.testSuites.filter(testSuite => ['logs', 'results'].indexOf(testSuite.name) == -1)
       .map((ts: any) => {
         ts.checked = false;
         return ts;
@@ -59,7 +59,6 @@ export class RunTestComponent implements OnInit {
     this.testService.runTest({
       project: this._project.name,
       testSuites: this._testSuites.filter(ts => ts.checked).map(ts => ts.name),
-      sessionCount: this.sessionCount
     })
       .subscribe(this.testComplete.bind(this), this.testFailed.bind(this));
   }
@@ -75,8 +74,7 @@ export class RunTestComponent implements OnInit {
     this.runBtnDisabled = true;
     this.testService.runTest({
       project: this._project.name,
-      testSuites: this._testSuites.map(ts => ts.name),
-      sessionCount: this.sessionCount
+      testSuites: this._testSuites.map(ts => ts.name)
     }).subscribe(this.testComplete.bind(this), err => {
       this.testFailed();
     });

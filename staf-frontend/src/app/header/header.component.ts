@@ -48,4 +48,8 @@ export class HeaderComponent implements OnInit {
       this.saveFileModal = false;
   }
 
+  showHideModal(e) {
+    this.settingsModal = e;
+  }
+
 }
