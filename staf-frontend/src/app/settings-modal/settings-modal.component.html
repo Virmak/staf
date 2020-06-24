@@ -1,8 +1,17 @@
 
-    <form clrForm (submit)="setWebDriverIpAddress()">
+    <form clrForm (submit)="saveWebDriverOptions()">
+
+        <clr-toggle-container>
+            <clr-toggle-wrapper>
+              <input type="checkbox" clrToggle [(ngModel)]="remoteWebDriver" name="remote" />
+              <label>Remote web driver</label>
+            </clr-toggle-wrapper>
+        </clr-toggle-container>
+
         <clr-input-container>
-            <label class="clr-col-6">Web driver url</label>
+            <label class="clr-col-6">Web driver / Selenoid Hub (Url)</label>
             <input clrInput placeholder="http://0.0.0.0:9515" 
+                [disabled]="!remoteWebDriver"
                 required
                 name="webDriverUrl" 
                 [(ngModel)]="webDriverUrl"   /> 
@@ -23,17 +32,37 @@
         <clr-checkbox-container>
             <label class="clr-col-6">Web driver options</label>
             <clr-checkbox-wrapper>
-              <input type="checkbox" [(ngModel)]="runInSelenoid"  clrCheckbox value="option1" name="options" />
+              <input type="checkbox" [(ngModel)]="runInSelenoid"  clrCheckbox name="selenoid" />
               <label>Run using selenoid (Parallel multi sessions)</label>
             </clr-checkbox-wrapper>
             <clr-checkbox-wrapper>
-              <input type="checkbox" clrCheckbox value="option2" name="options" />
-              <label>Run tests in headless mode</label>
+              <input type="checkbox" clrCheckbox [(ngModel)]="enableVnc" name="enableVnc" />
+              <label>Enable VNC</label>
             </clr-checkbox-wrapper>
-          </clr-checkbox-container>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-outline" (click)="hideModal()">Cancel</button>
-              <button type="submit" class="btn btn-primary" (click)="setWebDriverIpAddress()">Ok</button>
-          </div>
+            <clr-checkbox-wrapper>
+                <input type="checkbox" clrCheckbox  [(ngModel)]="enableVideo" name="enableVideo" />
+                <label>Enable Video</label>
+            </clr-checkbox-wrapper>
+        </clr-checkbox-container>
+
+        <clr-select-container>
+            <label>Browser</label>
+            <select clrSelect name="browser" [(ngModel)]="selectedBrowser">
+                <option *ngFor="let browser of browserNames" [value]="browser" >{{browser}}</option>
+            </select>
+        </clr-select-container>
+
+
+        <clr-select-container>
+            <label>Browser version</label>
+            <select clrSelect name="options" [(ngModel)]="selectedVersion">
+                <option *ngFor="let version of browserList[selectedBrowser]" [value]="version" >{{version}}</option>
+            </select>
+        </clr-select-container>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline" (click)="hideModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Ok</button>
+        </div>
     </form>
     

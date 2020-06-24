@@ -54,7 +54,6 @@ export class ProjectService {
 
   fetchProjects(errCallback = null) {
     this.http.get(baseUrl + '/projects').subscribe((projects: any) => {
-      console.log(projects);
       this.testDirectory = projects.name;
       this.projects = projects.folders.map(this.createProject.bind(this))
         .filter(p => p != null);

@@ -20,7 +20,6 @@ export class ProjectDetailsComponent implements OnInit {
     this.projectService.getProjectsSubject().subscribe(projects => {
       this.projects = projects;
       this.project = this.projectService.getProjectById(this.projectId);
-      console.log(this.projectId, this.project)
     });
     this.route.paramMap.subscribe(paramMap => {
       this.projectId = paramMap.get('id');

@@ -36,7 +36,7 @@
 <clr-modal [(clrModalOpen)]="settingsModal">
     <h3 class="modal-title">Web driver settings</h3>
     <div class="modal-body">
-        <app-settings-modal></app-settings-modal>
+        <app-settings-modal (showModalChange)="showHideModal($event)" ></app-settings-modal>
     </div>
         
 </clr-modal>
