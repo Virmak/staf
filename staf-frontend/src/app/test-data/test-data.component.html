@@ -1,0 +1,32 @@
+
+
+<h3>Project data files</h3>
+<clr-datagrid>
+    <clr-dg-action-bar>
+        <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-secondary" (click)="createDataFileModal = true"><clr-icon shape="plus"></clr-icon> Create</button>
+            <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="import"></clr-icon> Import</button>
+            <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="pencil"></clr-icon> Edit</button>
+            <button type="button" class="btn btn-sm btn-secondary" ><clr-icon shape="trash"></clr-icon> Delete</button>
+        </div>
+    </clr-dg-action-bar>
+
+
+    <clr-dg-column>File name</clr-dg-column>
+    <clr-dg-column>Type</clr-dg-column>
+    <clr-dg-column>Location</clr-dg-column>
+
+    <clr-dg-row *ngFor="let file of dataFiles">
+        <clr-dg-cell>
+            {{file.name}}
+        </clr-dg-cell>
+        <clr-dg-cell>
+            {{file.extension}}
+        </clr-dg-cell>
+        <clr-dg-cell>
+            {{file.relativePath}}
+        </clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>{{dataFiles.length}} Files</clr-dg-footer>
+</clr-datagrid>

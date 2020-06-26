@@ -1,0 +1,30 @@
+<clr-datagrid>
+    <clr-dg-action-bar>
+        <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-secondary" (click)="newLine()"><clr-icon shape="plus"></clr-icon> New line</button>
+            <button type="button" class="btn btn-sm btn-secondary" (click)="save()"><clr-icon shape="floppy"></clr-icon> Save</button>
+            <button type="button" class="btn btn-sm btn-secondary" (click)="deleteLines()" ><clr-icon shape="close"></clr-icon> Delete</button>
+        </div>
+    </clr-dg-action-bar>
+
+
+    <clr-dg-column [style.width.px]="20" >
+        <clr-checkbox-wrapper class="selectAll" >
+            <input type="checkbox" clrCheckbox name="selectAllCb" required [(ngModel)]="selectAllCheckbox" (click)="toggleSelectAllRows($event)" />
+          </clr-checkbox-wrapper>
+
+    </clr-dg-column>
+    <clr-dg-column  *ngFor="let col of csv.headers[0]" >{{col}}</clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let record of csv.csvRecords; let i = index" [clrDgItem]="record">
+        <clr-dg-cell >
+            <input type="checkbox" clrCheckbox [(ngModel)]="rowsCheckboxModels[i]" />
+         
+        </clr-dg-cell>
+        <clr-dg-cell *ngFor="let recordCell of record | keyvalue" >
+            <input type="text" (change)="fileChanged()" [(ngModel)]="csv.cellModels[i][recordCell.key]">            
+        </clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>{{csv.csvRecords.length}} lines</clr-dg-footer>
+</clr-datagrid>

@@ -1,5 +1,4 @@
 import { FileEditorService } from './../file-editor.service';
-import { TestService } from './../test.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -24,8 +23,7 @@ export class HeaderComponent implements OnInit {
   }
   
   openFile(file, project)  {
-    this.fileEditor.setFile(file);
-    this.router.navigate(['editFile', project.getNormalizedProjectName(), file.name, file.path]);
+    this.fileEditor.openFile(file, project);
   }
 
   closeFile(file, key) {

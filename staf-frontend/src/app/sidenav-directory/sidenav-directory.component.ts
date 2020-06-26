@@ -56,27 +56,17 @@ export class SidenavDirectoryComponent implements OnInit {
     if (item.type == FileType.Directory) {
       this.projectService.currentDir = item;
       this.router.navigate(['directory', this.project.getNormalizedProjectName(), item.name]);
-    } else if (this.isTextFile(item)) {
+    } else if (this.fileEditorService.isTextFile(item)) {
       this.fileEditorService.setFile(item);
       item.project = this.project;
       this.router.navigate(['editFile', this.project.getNormalizedProjectName(), item.name, key]);
-    } else if (this.isImageFile(item)) {
+    } else if (this.fileEditorService.isCsvFile(item)) {
+      this.fileEditorService.setFile(item);
+      item.project = this.project;
+      this.router.navigate(['csvEditor', this.project.getNormalizedProjectName(), item.path]);
+    } else if (this.fileEditorService.isImageFile(item)) {
       this.fileEditorService.setFile(item);
       this.router.navigate(['viewImage', this.project.getNormalizedProjectName(), item.name, key]);
     }
-  }
-
-  isTextFile(file) {
-    return file.extension == 'txt' 
-      || file.extension == "staf"
-      || file.extension == "page"
-      || file.extension == "steps"
-      || file.extension == "step"
-  }
-
-  isImageFile(item) {
-    return item.extension == "png"
-      || item.extension == "jpg"
-      || item.extension == "jpeg"
   }
 }

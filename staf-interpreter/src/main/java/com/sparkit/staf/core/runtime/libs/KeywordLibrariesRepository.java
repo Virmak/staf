@@ -8,7 +8,6 @@ import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableExc
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
-import com.sparkit.staf.core.runtime.loader.TestContainer;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +29,6 @@ public class KeywordLibrariesRepository {
     private LibraryFactory libraryFactory;
     @Autowired
     private StatementBlockExecutor statementBlockExecutor;
-    @Autowired
-    private TestContainer dependencyContainer;
 
     public Map<String, KeywordDeclaration> getUserDefinedKeywords() {
         return userDefinedKeywords;
@@ -109,7 +106,7 @@ public class KeywordLibrariesRepository {
     }
 
     private List<Object> injectKeywordDependencies(SymbolsTable symbolsTable, KeywordCall keywordCall, BuiltInLibraryKeywordWrapper keywordWrapper)
-            throws UndefinedVariableException {
+            throws UndefinedVariableException { // Fetch variables requested using keyword method @Inject annotation from globalSymbolsTable
         List<Object> keywordDependencies = new ArrayList<>();
         symbolsTable.setSymbolValue("__keyword__", keywordCall);
         for (String dep : keywordWrapper.getInjectAnnotatedParams()) {

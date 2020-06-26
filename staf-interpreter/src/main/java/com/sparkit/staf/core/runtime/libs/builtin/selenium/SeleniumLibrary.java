@@ -31,6 +31,8 @@ import java.util.concurrent.TimeUnit;
 public class SeleniumLibrary extends AbstractStafLibrary {
     public static final int DEFAULT_TIMEOUT = 5;
     private static final Logger logger = LoggerFactory.getLogger(SeleniumLibrary.class);
+    @Autowired
+    private WebDriverFactory webDriverFactory;
     @Value("${webDriverAddress}")
     String webDriverAddress;
     @Value("${browserName}")
@@ -43,8 +45,6 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     String enableVnc;
     @Value("${enableVideo}")
     String enableVideo;
-    @Autowired
-    private WebDriverFactory webDriverFactory;
 
     private void setDefaultTimeout(WebDriver webDriver) {
         webDriver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);

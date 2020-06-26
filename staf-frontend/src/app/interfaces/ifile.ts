@@ -10,6 +10,7 @@ export interface IFile {
     project?: StafProject;
     changed?: boolean;
     originalContent?: string;
+    relativePath?: string;
 }
 
 export enum FileType {
