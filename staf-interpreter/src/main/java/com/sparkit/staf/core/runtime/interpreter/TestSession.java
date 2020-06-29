@@ -62,10 +62,10 @@ public class TestSession implements Runnable {
                     testSuiteReport.setResult(TestResult.Fail);
                     break;
                 }
-                if (testCase.getKey().toLowerCase().equals("setup") || testCase.getKey().toLowerCase().equals("teardown")) {
+                if (testCase.getKey().equalsIgnoreCase("setup") || testCase.getKey().equalsIgnoreCase("teardown")) {
                     continue;
                 } else if (testCase.getValue().isIgnored()) {
-                    logger.info("Test case [" + testCase.getValue().getName() + "] Ignored");
+                    logger.info("Test case [{}] Ignored", testCase.getValue().getName());
                     continue;
                 }
                 TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, testCase.getKey(), testCase.getValue(), sessionGlobalSymbolsTable);

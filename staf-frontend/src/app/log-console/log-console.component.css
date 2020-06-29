@@ -19,8 +19,16 @@
 
 
 .toggle {
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
+    cursor: pointer;    
+}
+
+.consoleTitle {
+    font-weight: bold;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    background-color: #eee;
 }

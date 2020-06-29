@@ -51,7 +51,7 @@ export class FileEditorService {
     } else {
       file.content = file.originalContent;
       if (this.isCsvFile(file)) {
-        this.csv.readCsvFile(file);
+        this.csv.readCsvFile(file).then(r => {});
       }
       this.unsetFile(file);
     }

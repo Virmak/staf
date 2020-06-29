@@ -32,6 +32,8 @@ import { SettingsModalComponent } from './settings-modal/settings-modal.componen
 import { TestDataComponent } from './test-data/test-data.component';
 import { CsvEditorComponent } from './csv-editor/csv-editor.component';
 import { NoFileComponent } from './no-file/no-file.component';
+import { HotTableModule } from '@handsontable/angular';
+
 
 @NgModule({
   declarations: [
@@ -67,6 +69,7 @@ import { NoFileComponent } from './no-file/no-file.component';
     MonacoEditorModule.forRoot(monacoConfig),
     HttpClientModule,
     ToastrModule.forRoot(),
+    HotTableModule,
     LogModule,
   ],
   providers: [],

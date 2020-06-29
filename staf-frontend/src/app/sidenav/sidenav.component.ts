@@ -62,7 +62,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
     this.testSuite.projectName = this.currentProject.getNormalizedProjectName();
 
     this.testSuiteService.createTestSuite(this.testSuite)
-      .subscribe(testSuiteRes => {debugger;
+      .subscribe(testSuiteRes => {
         if (testSuiteRes.result == 'ok') {
           let testSuiteContentDir: IDirectory = {
             name: testSuiteRes.name,

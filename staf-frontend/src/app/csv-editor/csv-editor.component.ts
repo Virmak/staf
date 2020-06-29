@@ -1,10 +1,12 @@
 import { CsvService } from './../csv.service';
 import { IFile } from "./../interfaces/ifile";
 import { StafProject } from "./../types/staf-project";
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ProjectService } from "../project.service";
 import { FileEditorService } from "../file-editor.service";
+import { HotTableComponent } from '@handsontable/angular';
+import Handsontable from 'handsontable';
 
 @Component({
   selector: "app-csv-editor",
@@ -15,9 +17,49 @@ export class CsvEditorComponent implements OnInit, OnDestroy {
   file: IFile;
   filePath;
   project: StafProject;
-  selectAllCheckbox = false;
-  selectedRows = [];
-  rowsCheckboxModels = [];
+  showEditColumnsModal = false;
+  newColName = '';
+  newColData = '';
+
+  @ViewChild("hot", { static: false }) hot: HotTableComponent;
+
+  private keyEventListener = e => {
+    if (this.file.content != this.file.originalContent) {
+      this.file.changed = true;
+    } else {
+      this.file.changed = false;
+    }
+
+    if (!(e.which == 83 && e.ctrlKey)) return true;
+    this.save();
+    event.preventDefault();
+    return false;
+  };
+
+
+  fileChanged = (hotInstance, changes, source) => {
+    if (changes == 'edit' && this.file) {
+      this.file.changed = true;
+    }
+  }
+
+  rowRemoved = () => {
+    this.file.changed = true;
+  }
+
+  rowCreated = () => {
+    this.file.changed = true;
+  }
+
+  settings:any = {
+    data: Handsontable.helper.createSpreadsheetData(10, 10),
+    colHeaders: true,
+    rowHeaders: true,
+    stretchH: 'all',
+    contextMenu: true,
+    licenseKey: 'non-commercial-and-evaluation'
+  }
+
 
   constructor(
     private router: Router,
@@ -30,10 +72,16 @@ export class CsvEditorComponent implements OnInit, OnDestroy {
     if (this.file) {
       this.csv.writeCsvFile(this.file);
     }
+    document.removeEventListener('keydown', this.keyEventListener);
   }
 
   ngOnInit(): void {
+    document.addEventListener('keydown', this.keyEventListener);
+    let init = true; // used to determine if last route was csv-editor
     this.route.paramMap.subscribe((paramMap) => {
+      if (!init && this.file && this.file.changed) {
+        this.csv.writeCsvFile(this.file);
+      }
       const projectName = this.route.snapshot.paramMap.get("project");
       this.filePath = this.route.snapshot.paramMap.get("path");
       this.project = this.projectService.getProjectByName(projectName);
@@ -42,51 +90,60 @@ export class CsvEditorComponent implements OnInit, OnDestroy {
         return;
       }
       this.file = this.fileEditor.getFile(this.filePath);
-      this.csv.readCsvFile(this.file);
-      this.rowsCheckboxModels = Array(this.csv.cellModels.length).fill(false);
+      this.file.originalContent = this.file.content as string;
+      this.csv.readCsvFile(this.file).then((result: any) => {
+        this.settings.data = this.csv.csvRecords;
+        this.settings.columns = result.meta.fields.map(f => {
+          return {data: f, title: f};
+        });
+        this.updateTable();
+      });
     });
+    init = false;
   }
 
-  newLine() {
-    const columnsCount = this.csv.csvRecords[0].length;
-    const newRow = Array(columnsCount).fill('');
-    this.csv.csvRecords.push(newRow);
-    this.csv.cellModels.push(Array(columnsCount).fill(''));
-    this.rowsCheckboxModels.push(false);
-    this.file.changed = true;
-  }
-
+  
   save() {
     this.csv.writeCsvFile(this.file);
     this.fileEditor.saveFile(this.file);
   }
 
-  deleteLines() {
-    let removedLines = 0;
-    this.rowsCheckboxModels.forEach((rowCheckBox, index)  => {
-      if (rowCheckBox) {
-        this.removeLine(index - removedLines);
-        removedLines++;
-      }
-    });
-    this.rowsCheckboxModels = this.rowsCheckboxModels.filter(rowCheckBox => !rowCheckBox);
-    if (removedLines > 0) {
-      this.file.changed = true;
+  selectModalColumn(col) {
+    this.newColData = col.data;
+    this.newColName = col.title;
+  }
+
+  saveColumn() {
+    console.log(this.settings.columns);
+    const col = this.settings.columns.find(col => col.data === this.newColData);
+    if (col) {
+      col.title = this.newColName;
+    } else {
+      this.settings.columns.push({
+        data: this.newColData,
+        title: this.newColName,
+      });
     }
-    
   }
 
-  removeLine(index) {
-    this.csv.csvRecords.splice(index, 1);
-    this.csv.cellModels.splice(index, 1);
+  newColumn() {
+    this.newColData = '';
+    this.newColName = '';
   }
 
-
-  fileChanged() {
-    this.file.changed = true;
+  closeColumnsModal() {
+    this.showEditColumnsModal = false;
+    this.updateTable();
   }
 
-  toggleSelectAllRows(e) {
-    this.rowsCheckboxModels = this.rowsCheckboxModels.map(cb => e.target.checked);
+  updateTable() {
+    this.hot.updateHotTable(this.settings);
+  }
+
+  removeColumn() {
+    const colIndex = this.settings.columns.findIndex(col => col.data === this.newColData);
+    if (colIndex > -1) {
+      this.settings.columns.splice(colIndex, 1);
+    }
   }
 }

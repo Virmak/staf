@@ -1,11 +1,17 @@
-input {
-    border: none;
-
-    height: 100%;
-    width: 100%;
-    outline: none;
+btn-group {
+    margin-bottom: 10px;
+}
+clr-modal table tr {
+    cursor: pointer;
+}
+clr-modal table tr:hover {
+    background-color: #eee;
 }
 
-.selectAll {
-    top: 5px;
+.add-col-btn {
+    margin-top: 32px;
+}
+
+.add-col-btn:last-child {
+    margin-right: 0;
 }

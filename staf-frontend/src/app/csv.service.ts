@@ -9,31 +9,30 @@ import { IFile } from './interfaces/ifile';
 export class CsvService {
 
   headers = [];
-  cellModels = [];
   csvRecords = [];
+  originalDataset;
 
   constructor(
     private papa: Papa) { }
 
   readCsvFile(file: IFile) {
-    file.originalContent = file.content as string;
-    this.papa.parse(file.content as string, {
-      complete: (result) => {
-        this.cellModels = [];
-
-        this.headers = result.data.slice(0, 1);
-        this.csvRecords = result.data.slice(1);
-        this.csvRecords.forEach(lines => {
-          this.cellModels.push([]);
-          lines.forEach(cell => this.cellModels[this.cellModels.length - 1].push(cell));
-        });
-      },
-      skipEmptyLines: true,
+    const promise = new Promise((resolve, reject) => {
+      file.originalContent = file.content as string;
+      this.papa.parse(file.content as string, {
+        complete: (result) => {
+          this.csvRecords = result.data;
+          this.headers = result.meta.fields;
+          resolve(result);
+        },
+        skipEmptyLines: true,
+        header: true,
+      });
     });
+    return promise;
   }
 
   writeCsvFile(file: IFile) {
-    const csvString = this.papa.unparse([...this.headers, ...this.cellModels], {header: true});
+    const csvString = this.papa.unparse(this.csvRecords, {header: true});
     file.content = csvString;
   }
 }
