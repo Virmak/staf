@@ -11,11 +11,10 @@ import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.ProjectType;
 import com.sparkit.staf.domain.TestSuite;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
+import java.io.*;
 import java.util.ArrayList;
 
 @Component
@@ -25,9 +24,12 @@ public class ProjectBuilder implements IProjectBuilder {
     @Value("${testDirectory}")
     private String testDir;
 
+    @Value("classpath:config_template.json")
+    private Resource templateProjectConfig;
+
     @Override
     public ProjectConfig buildProject(CreateProjectRequest createProjectRequest) throws IOException, ProjectNameAlreadyExist {
-        ProjectConfig config = getJsonResourceFile("config_template.json");
+        ProjectConfig config = getProjectConfigTemplate();
         config.setProject(createProjectRequest.getName());
         config.setDescription(createProjectRequest.getDescription());
         config.setLogDir(createProjectRequest.getLogDir());
@@ -94,10 +96,8 @@ public class ProjectBuilder implements IProjectBuilder {
         }
     }
 
-    private ProjectConfig getJsonResourceFile(String filename) throws IOException {
-        URL resource = getClass().getClassLoader().getResource(filename);
-        File file = new File(resource.getPath());
-        return mapper.readValue(file, ProjectConfig.class);
+    private ProjectConfig getProjectConfigTemplate() throws IOException {
+        return mapper.readValue(templateProjectConfig.getInputStream(), ProjectConfig.class);
     }
 
     private boolean createDir(String dirName) {

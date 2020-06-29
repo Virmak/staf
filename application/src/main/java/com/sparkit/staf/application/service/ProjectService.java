@@ -96,10 +96,6 @@ public class ProjectService {
             return "";
         }
         switch (fileExtension) {
-            /*case "png":
-            case "jpg":
-            case "jpeg":
-                return readImageBase64(f);*/
             case "staf":
             case "page":
             case "step":
