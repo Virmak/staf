@@ -3,6 +3,7 @@ package com.sparkit.staf.core.runtime.libs.builtin;
 import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.*;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
+import com.sparkit.staf.core.runtime.libs.annotations.Inject;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.ShouldBeEqualException;
@@ -91,6 +92,11 @@ public class StdLibrary extends AbstractStafLibrary {
         } catch (NumberFormatException e) {
             return defaultVal;
         }
+    }
+
+    @Keyword(name = "get session id", doc = "Get parallel session id")
+    public AbstractStafObject getSessionId(@Inject(name = "$__session__") StafInteger sessionId) {
+        return sessionId;
     }
 
     private String removeCurrency(String s) {

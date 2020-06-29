@@ -114,7 +114,6 @@ export class CsvEditorComponent implements OnInit, OnDestroy {
   }
 
   saveColumn() {
-    console.log(this.settings.columns);
     const col = this.settings.columns.find(col => col.data === this.newColData);
     if (col) {
       col.title = this.newColName;
@@ -123,6 +122,11 @@ export class CsvEditorComponent implements OnInit, OnDestroy {
         data: this.newColData,
         title: this.newColName,
       });
+    }
+    if (this.csv.csvRecords == null || this.csv.csvRecords.length == 0) {
+      const rowData = {};
+      this.settings.columns.forEach(col => rowData[col.data] = '');
+      this.csv.csvRecords.push(rowData);
     }
   }
 
@@ -138,12 +142,14 @@ export class CsvEditorComponent implements OnInit, OnDestroy {
 
   updateTable() {
     this.hot.updateHotTable(this.settings);
+    this.file.changed = true;
   }
 
   removeColumn() {
     const colIndex = this.settings.columns.findIndex(col => col.data === this.newColData);
     if (colIndex > -1) {
       this.settings.columns.splice(colIndex, 1);
+      this.updateTable();
     }
   }
 }

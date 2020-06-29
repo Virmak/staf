@@ -33,18 +33,6 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     private static final Logger logger = LoggerFactory.getLogger(SeleniumLibrary.class);
     @Autowired
     private WebDriverFactory webDriverFactory;
-    @Value("${webDriverAddress}")
-    String webDriverAddress;
-    @Value("${browserName}")
-    String browserName;
-    @Value("${browserVersion}")
-    String browserVersion;
-    @Value("${remote}")
-    String remote;
-    @Value("${enableVnc}")
-    String enableVnc;
-    @Value("${enableVideo}")
-    String enableVideo;
 
     private void setDefaultTimeout(WebDriver webDriver) {
         webDriver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
@@ -52,6 +40,12 @@ public class SeleniumLibrary extends AbstractStafLibrary {
 
     @Keyword(name = "open browser")
     public WebDriver openBrowser(AbstractStafObject browser) throws MalformedURLException {
+        String webDriverAddress = System.getProperty("webDriverAddress");
+        String browserName = System.getProperty("browserName");
+        String browserVersion = System.getProperty("browserVersion");
+        String remote = System.getProperty("remote");
+        String enableVnc = System.getProperty("enableVnc");
+        String enableVideo = System.getProperty("enableVideo");
         logger.info("{} browser instance started", browser.getValue());
         WebDriver webDriver = webDriverFactory.create(webDriverAddress, browserName, browserVersion, enableVnc, enableVideo, "true".equals(remote));
         setDefaultTimeout(webDriver);
