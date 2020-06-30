@@ -22,23 +22,21 @@ public class ImportsInterpreter implements IImportsInterpreter {
     public final String libsPackage = "com.sparkit.staf.core.runtime.libs.builtin";
     @Autowired
     private IStafScriptLoader scriptBuilder;
-    @Autowired
-    private KeywordLibrariesRepository keywordsRepository;
 
 
     /* Load imports */
-    public void loadImports(List<ImportStatement> importStatements, String currentDirectory, String testDirectory) throws Throwable {
+    public void loadImports(List<ImportStatement> importStatements, TestSuite testSuite, String currentDirectory, String testDirectory) throws Throwable {
         Map<String, Class<? extends AbstractStafLibrary>> librariesClassesMap = getBuiltinLibrariesClasses();
         for (ImportStatement statement : importStatements) {
             if (statement.getType() == ImportTypes.BUILT_IN_LIBRARY) {
                 String libClassName = statement.getPath().substring(0, 1).toUpperCase()
                         + statement.getPath().toLowerCase().substring(1) + "Library";
-                keywordsRepository.registerLibrary(librariesClassesMap.get(libClassName));
+                testSuite.getKeywordLibrariesRepository().registerLibrary(librariesClassesMap.get(libClassName));
             } else {
                 File directory = new File(currentDirectory);
                 File b = new File(directory, statement.getPath().replaceAll("[\"']", ""));
                 String absolute = b.getCanonicalPath(); // may throw IOException
-                scriptBuilder.load(absolute);
+                scriptBuilder.load(testSuite, absolute);
             }
         }
     }

@@ -37,15 +37,11 @@ public class TestController {
     @PostMapping("/runTest")
     public List<TestSuiteReport> runTest(@RequestBody RunTestRequest runTestRequest) throws ConfigFileNotFoundException,
             ProjectNotFoundException, TestDirectoryNotFound, SyntaxErrorException, TestSuiteMainScriptNotFoundException {
-        if (runTestRequest.getTestSuites().size() > 1) {
-            logger.error("Run 1 test suite at a given time");
-            return null;
-        }
         String project = runTestRequest.getProject().replaceAll("\\s+", "-").toLowerCase(); // normalize project name
         for (String projectName : projectService.getProjectsList()) {
             if (project.equals(projectName)) {
                 return testFacade.runProject(testDir, projectName, testDir + "/" + project + "/" + "config.json",
-                        runTestRequest.getTestSuites().get(0), runTestRequest.getWebDriverOptions(), runTestRequest.getWebDriverOptions().getSessionCount());
+                        runTestRequest.getTestSuites(), runTestRequest.getWebDriverOptions(), runTestRequest.getWebDriverOptions().getSessionCount());
             }
         }
         throw new ProjectNotFoundException();

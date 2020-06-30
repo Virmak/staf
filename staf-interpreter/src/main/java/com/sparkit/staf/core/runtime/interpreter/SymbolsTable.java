@@ -2,14 +2,12 @@ package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.ast.Assignment;
 import com.sparkit.staf.core.ast.types.StafInteger;
-import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.VariableAlreadyDefinedException;
-import org.springframework.stereotype.Component;
+import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Component("sharedGlobalSymbolsTable")
 public class SymbolsTable {
     private final Map<String, Object> symbolsMap;
 
@@ -21,16 +19,17 @@ public class SymbolsTable {
         this.symbolsMap = symbolsMap;
     }
 
-    public void addVariablesMap(Map<String, Assignment> assignmentMap) throws Throwable {
+    public void addVariablesMap(Map<String, Assignment> assignmentMap, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         for (Map.Entry<String, Assignment> assignmentEntry : assignmentMap.entrySet()) {
             if (symbolsMap.containsKey(assignmentEntry.getKey())) {
                 throw new VariableAlreadyDefinedException(assignmentEntry.getKey());
             }
-            symbolsMap.put(assignmentEntry.getKey(), assignmentEntry.getValue().execute(this, null));
+            symbolsMap.put(assignmentEntry.getKey(),
+                    assignmentEntry.getValue().execute(this, null, keywordLibrariesRepository));
         }
     }
 
-    public Object getSymbolValue(String symbol) throws UndefinedVariableException {
+    public Object getSymbolValue(String symbol) {
         return symbolsMap.get(symbol);
     }
 
@@ -48,6 +47,10 @@ public class SymbolsTable {
 
     public int getSessionId() {
         StafInteger session = (StafInteger) this.symbolsMap.get("$__session__");
-        return (int)session.getValue();
+        if (session != null) {
+            return (int) session.getValue();
+        } else {
+            return -1; // if $__session__ is null => still in VARS section initializing global shared symbols table
+        }
     }
 }

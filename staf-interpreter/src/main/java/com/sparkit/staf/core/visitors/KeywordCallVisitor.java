@@ -17,12 +17,10 @@ public class KeywordCallVisitor extends StafBaseVisitor<KeywordCall> {
     private StafFileVisitor stafFileVisitor;
     @Autowired
     private StatementBlockExecutor blockExecutor;
-    @Autowired
-    private KeywordLibrariesRepository keywordLibrariesRepository;
 
     @Override
     public KeywordCall visitKeyword_call(StafParser.Keyword_callContext ctx) {
-        KeywordCall keywordCall = new KeywordCall(blockExecutor, keywordLibrariesRepository);
+        KeywordCall keywordCall = new KeywordCall(blockExecutor);
         keywordCall.setFilePath(stafFileVisitor.getFilePath());
         keywordCall.setLineNumber(ctx.getStart().getLine());
         String keywordNameWithSpaces = ctx.keyword_name().IDENTIFIER().stream().map(ParseTree::getText)

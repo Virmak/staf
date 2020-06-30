@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.List;
-import java.util.Stack;
 
 @Component
 public class StatementBlockExecutor {
@@ -45,13 +44,12 @@ public class StatementBlockExecutor {
     public List<StatementReport> execute(IStatementBlock statementBlock,
                                          OnStatementFailed statementFailed,
                                          SymbolsTable globalSymbolsTable,
-                                         SymbolsTable localSymbolsTable,
-                                         KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+                                         SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         List<StatementReport> reports = new ArrayList<>();
         for (IStatement statement : statementBlock.getStatements()) {
             StatementReport statementReport = createStatementReport(statement, TestResult.Pass);
             try {
-                statement.execute(globalSymbolsTable, localSymbolsTable);
+                statement.execute(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
                 if (statement instanceof IReportableBlock) {
                     statementReport.setChildren(((IReportableBlock) statement).getStatementReports());
                 }
@@ -82,8 +80,7 @@ public class StatementBlockExecutor {
     // Execute loop statements
     public StatementReport executeIterable(IStafIterable iterable,
                                            SymbolsTable globalSymbolsTable,
-                                           SymbolsTable localSymbolsTable,
-                                           KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+                                           SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         StatementReport loopReport = createStatementReport((IStatement) iterable, null);
         loopReport.setChildren(new ArrayList<>());
         AbstractStafObject tmp = null;  // used to save variable with the same name as the loop variable if it currently
@@ -93,7 +90,7 @@ public class StatementBlockExecutor {
         } else {
             tmp = (AbstractStafObject) localSymbolsTable.getSymbolValue(iterable.getLoopVariable().getValue().toString());
         }
-        AbstractStafObject actualIterator = (AbstractStafObject) iterable.getIterator().evaluate(globalSymbolsTable, localSymbolsTable);
+        AbstractStafObject actualIterator = (AbstractStafObject) iterable.getIterator().evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
         if (actualIterator instanceof StafList) {
             int iteration = 0;
             for (AbstractStafObject item : ((StafList) actualIterator).getList()) {
@@ -104,12 +101,12 @@ public class StatementBlockExecutor {
                     StatementReport statementReport = new StatementReport();
                     localSymbolsTable.setSymbolValue(iterable.getLoopVariable().getValue().toString(), item);
                     try {
-                        statement.execute(globalSymbolsTable, localSymbolsTable);
+                        statement.execute(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
                         if (statement instanceof ExitLoopStatement) {
                             ExitLoopStatement exitLoopStatement = (ExitLoopStatement) statement;
                             if (exitLoopStatement.getCondition() != null) {
                                 StafBoolean conditionVal = (StafBoolean) (exitLoopStatement.getCondition()
-                                        .evaluate(globalSymbolsTable, localSymbolsTable));
+                                        .evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository));
                                 if ((boolean) conditionVal.getValue()) {
                                     loopExited = true;
                                     break;

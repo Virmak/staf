@@ -16,7 +16,6 @@ import java.util.List;
 
 public class KeywordCall extends AbstractStafObject implements IStatement, IReportableBlock {
     protected final StatementBlockExecutor blockExecutor;
-    protected final KeywordLibrariesRepository keywordLibrariesRepository;
     @Getter
     @Setter
     protected String keywordName;
@@ -34,31 +33,28 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
     @Setter
     protected List<StatementReport> statementReports;
 
-    public KeywordCall(StatementBlockExecutor blockExecutor, KeywordLibrariesRepository keywordLibrariesRepository,
-                       String keywordName, List<AbstractStafObject> argumentsList) {
+    public KeywordCall(StatementBlockExecutor blockExecutor, String keywordName, List<AbstractStafObject> argumentsList) {
         this.blockExecutor = blockExecutor;
-        this.keywordLibrariesRepository = keywordLibrariesRepository;
         this.keywordName = keywordName;
         this.argumentsList = argumentsList;
         this.type = StafTypes.KEYWORD_CALL;
     }
 
-    public KeywordCall(StatementBlockExecutor blockExecutor, KeywordLibrariesRepository keywordLibrariesRepository) {
+    public KeywordCall(StatementBlockExecutor blockExecutor) {
         this.blockExecutor = blockExecutor;
-        this.keywordLibrariesRepository = keywordLibrariesRepository;
         this.type = StafTypes.KEYWORD_CALL;
     }
 
     @Override
-    public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
-        return this.execute(globalSymbolsTable, localSymbolsTable);
+    public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+        return this.execute(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
     }
 
-    public Object[] evaluateArgumentsList(SymbolsTable globalSymTable, SymbolsTable localSymTable) throws Throwable {
+    public Object[] evaluateArgumentsList(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         Object[] params = new AbstractStafObject[argumentsList.size()];
         int i = 0;
         for (AbstractStafObject arg : argumentsList) {
-            Object val = arg.evaluate(globalSymTable, localSymTable);
+            Object val = arg.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
             params[i++] = val;
         }
         return params;
@@ -66,7 +62,7 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
 
     @Override
     public String toString() {
-        if (argumentsList != null && argumentsList.size() == 0) {
+        if (argumentsList != null && argumentsList.isEmpty()) {
             return keywordName;
         }
         StringBuilder args = new StringBuilder();
@@ -81,11 +77,12 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
     }
 
     @Override
-    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
+    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable,
+                          KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         blockExecutor.getCallStack().push(this, globalSymbolsTable.getSessionId());
         if (keywordLibrariesRepository.isKeywordDeclared(keywordName)) {
             Object[] params = evaluateArgumentsList(globalSymbolsTable,
-                    localSymbolsTable);
+                    localSymbolsTable, keywordLibrariesRepository);
             return keywordLibrariesRepository.invokeKeyword(globalSymbolsTable, this, params);
         } else {
             throw new UndefinedKeywordException(keywordName);

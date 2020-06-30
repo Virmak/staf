@@ -4,6 +4,7 @@ import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.ast.types.StafVariable;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import lombok.Getter;
@@ -37,10 +38,10 @@ public class Assignment implements IStatement, IReportableBlock {
     }
 
     @Override
-    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
+    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         if (value instanceof KeywordCall) {
             KeywordCall keywordCall = (KeywordCall) value;
-            Object returnObj = keywordCall.execute(globalSymbolsTable, localSymbolsTable);
+            Object returnObj = keywordCall.execute(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
             this.reports = keywordCall.getStatementReports();
             if (localSymbolsTable != null && localSymbolsTable.getSymbolsMap().containsKey(object.getValue().toString())) {
                 localSymbolsTable.getSymbolsMap().put(object.getValue().toString(), returnObj);
@@ -53,17 +54,17 @@ public class Assignment implements IStatement, IReportableBlock {
         }
         if (localSymbolsTable != null && localSymbolsTable.getSymbolsMap().containsKey(object.getValue().toString())) {
             localSymbolsTable.getSymbolsMap().put(object.getValue().toString(),
-                    value.evaluate(globalSymbolsTable, localSymbolsTable));
+                    value.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository));
         } else if (globalSymbolsTable.getSymbolsMap().containsKey(object.getValue().toString())) {
             globalSymbolsTable.getSymbolsMap().put(object.getValue().toString(),
-                    value.evaluate(globalSymbolsTable, localSymbolsTable));
+                    value.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository));
         } else if (localSymbolsTable != null) {
             localSymbolsTable.getSymbolsMap().put(object.getValue().toString(),
-                    value.evaluate(globalSymbolsTable, localSymbolsTable));
+                    value.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository));
         }
 
         if (value instanceof Expression || value instanceof StafVariable) {
-            return value.evaluate(globalSymbolsTable, localSymbolsTable);
+            return value.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
         }
         return (value);
     }

@@ -17,7 +17,11 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Component
 public class StafTestFacade {
@@ -29,7 +33,8 @@ public class StafTestFacade {
     @Autowired
     private ITestReportWriter jsonReportWriter;
 
-    public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, String testSuite, WebDriverOptions webDriverOptions,
+    public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, List<String> testSuites,
+                                            WebDriverOptions webDriverOptions,
                                             int sessionCount)
             throws ConfigFileNotFoundException, TestSuiteMainScriptNotFoundException, SyntaxErrorException {
         stafConfig.readConfigFile(projectDir, configFile);
@@ -47,10 +52,29 @@ public class StafTestFacade {
 
         logger.info("Running project '{}'", projectDir);
 
-        List<TestSuiteReport> testSuiteReport = loader.runTests(testSuite, sessionCount);
-        jsonReportWriter.write(Paths.get(testDir).toAbsolutePath() + "/" + stafConfig.getProjectDir()
-                + "/results/reports-" + getCurrentDateTime() + ".json", testSuiteReport);
-        return testSuiteReport;
+        List<CompletableFuture<List<TestSuiteReport>>> futureList = new ArrayList<>();
+        for (String testSuite : testSuites) {
+            futureList.add(getTestSuiteFuture(testSuite, sessionCount, testDir));
+        }
+
+        return futureList.stream().map(CompletableFuture::join)
+                .flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+    private CompletableFuture<List<TestSuiteReport>> getTestSuiteFuture(String testSuite, int sessionCount, String testDir) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<TestSuiteReport> testSuiteReport = null;
+            try {
+                testSuiteReport = loader.runTests(testSuite, sessionCount);
+            } catch (SyntaxErrorException e) {
+                e.printStackTrace();
+            } catch (TestSuiteMainScriptNotFoundException e) {
+                e.printStackTrace();
+            }
+            jsonReportWriter.write(Paths.get(testDir).toAbsolutePath() + "/" + stafConfig.getProjectDir()
+                    + "/results/" + testSuite + "-" + getCurrentDateTime() + ".json", testSuiteReport);
+            return testSuiteReport;
+        });
     }
 
     private String getCurrentDateTime() {

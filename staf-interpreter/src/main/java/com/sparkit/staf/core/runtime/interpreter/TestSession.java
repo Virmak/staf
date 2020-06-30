@@ -21,17 +21,17 @@ public class TestSession implements Runnable {
     private static int instanceCount = 0;
     private final StafFile mainStafFile;
     private final List<Map.Entry<String, TestCaseDeclaration>> testCasesEntryList;
-    private final String testSuite;
-    private final SymbolsTable sharedGlobalSymbolsTable;
+    private final TestSuite testSuite;
+    private final SymbolsTable testSuiteSharedSymbolsTable;
     private final TestCaseExecutor testCaseRunner;
     private final int sessionId;
     @Getter
     private final TestSuiteReport testSuiteReport = new TestSuiteReport();
     private boolean testTerminated = false;
 
-    public TestSession(SymbolsTable sharedGlobalSymbolsTable, TestCaseExecutor testCaseRunner, StafFile mainStafFile,
-                       List<Map.Entry<String, TestCaseDeclaration>> testCasesEntryList, String testSuite) {
-        this.sharedGlobalSymbolsTable = sharedGlobalSymbolsTable;
+    public TestSession(SymbolsTable testSuiteSharedSymbolsTable, TestCaseExecutor testCaseRunner, StafFile mainStafFile,
+                       List<Map.Entry<String, TestCaseDeclaration>> testCasesEntryList, TestSuite testSuite) {
+        this.testSuiteSharedSymbolsTable = testSuiteSharedSymbolsTable;
         this.testCaseRunner = testCaseRunner;
         this.mainStafFile = mainStafFile;
         this.testCasesEntryList = testCasesEntryList;
@@ -47,7 +47,7 @@ public class TestSession implements Runnable {
     public void run() {
         initTestSuiteReport();
         List<TestCaseReport> testCaseReportList = new ArrayList<>();
-        SymbolsTable sessionGlobalSymbolsTable = new SymbolsTable(new HashMap<>(sharedGlobalSymbolsTable.getSymbolsMap()));
+        SymbolsTable sessionGlobalSymbolsTable = new SymbolsTable(new HashMap<>(testSuiteSharedSymbolsTable.getSymbolsMap()));
         sessionGlobalSymbolsTable.setSymbolValue("$__session__", new StafInteger(sessionId));
         TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get("setup");
         TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get("teardown");
@@ -55,20 +55,21 @@ public class TestSession implements Runnable {
             testCaseReportList.add(testCaseRunner.executeTestCase(testSuite, "SETUP", setup, sessionGlobalSymbolsTable));
         }
         try {
-            for (Map.Entry<String, TestCaseDeclaration> testCase : testCasesEntryList) {
+            for (Map.Entry<String, TestCaseDeclaration> testCaseDeclarationEntry : testCasesEntryList) {
                 if (testTerminated) {
                     logger.warn("Test execution terminated by user");
                     testSuiteReport.setMessage("Test execution terminated by user");
                     testSuiteReport.setResult(TestResult.Fail);
                     break;
                 }
-                if (testCase.getKey().equalsIgnoreCase("setup") || testCase.getKey().equalsIgnoreCase("teardown")) {
+                if (testCaseDeclarationEntry.getKey().equalsIgnoreCase("setup")
+                        || testCaseDeclarationEntry.getKey().equalsIgnoreCase("teardown")) {
                     continue;
-                } else if (testCase.getValue().isIgnored()) {
-                    logger.info("Test case [{}] Ignored", testCase.getValue().getName());
+                } else if (testCaseDeclarationEntry.getValue().isIgnored()) {
+                    logger.info("Test case [{}] Ignored", testCaseDeclarationEntry.getValue().getName());
                     continue;
                 }
-                TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, testCase.getKey(), testCase.getValue(), sessionGlobalSymbolsTable);
+                TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, testCaseDeclarationEntry.getKey(), testCaseDeclarationEntry.getValue(), sessionGlobalSymbolsTable);
                 testCaseReportList.add(testCaseReport);
                 if (testCaseReport.getResult() == TestResult.Fail) {
                     testSuiteReport.setResult(TestResult.Fail);
@@ -92,7 +93,7 @@ public class TestSession implements Runnable {
 
     private void initTestSuiteReport() {
         testSuiteReport.setStart(LocalDateTime.now());
-        testSuiteReport.setTestSuite(testSuite);
+        testSuiteReport.setTestSuite(testSuite.getTestSuiteName());
         testSuiteReport.setTotal(testCasesEntryList.size());
         testSuiteReport.setResult(TestResult.Pass);
         testSuiteReport.setTestSessionId(sessionId);
