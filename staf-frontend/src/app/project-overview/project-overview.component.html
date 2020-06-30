@@ -14,15 +14,4 @@
 	</clr-textarea-container>
 </form>
 
-<clr-stack-view>
-	<clr-stack-header>Test suites</clr-stack-header>
-
-	<clr-stack-block *ngFor="let testSuite of project.testSuites" [clrStackViewLevel]="1" [clrStackViewSetsize]="3" [clrStackViewPosinset]="1">
-		<clr-stack-label>{{testSuite.name}}</clr-stack-label>
-		<clr-stack-content *ngIf="testSuite?.testCases?.length == 0">0 test cases</clr-stack-content>
-		<clr-stack-block *ngFor="let testCase of testSuite.testCases" [clrStackViewLevel]="2" [clrStackViewSetsize]="3" [clrStackViewPosinset]="1">
-			<clr-stack-label>Test case</clr-stack-label>
-			<clr-stack-content>{{testCase}}</clr-stack-content>
-		</clr-stack-block>
-	</clr-stack-block>
-</clr-stack-view>
+<app-test-suite-overview [project]="project"></app-test-suite-overview>

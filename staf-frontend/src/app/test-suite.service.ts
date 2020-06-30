@@ -4,18 +4,18 @@ import { ITestSuite } from './interfaces/itest-suite';
 import { ICreateTestSuite } from './interfaces/icreate-test-suite';
 import { Injectable } from '@angular/core';
 import { IDirectory } from './interfaces/idirectory';
-import { IFile, FileType} from './interfaces/ifile';
+import { FileType} from './interfaces/ifile';
 import { environment } from '../environments/environment';
 import { Observable } from 'rxjs';
 
 const baseUrl = environment.resolveApi();
+const LOGS_DIR = '/logs';
+const RESULTS_DIR = '/results';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TestSuiteService {
-
-
 
   constructor(private sequence: SequenceService, private http: HttpClient) { }
 
@@ -63,8 +63,8 @@ export class TestSuiteService {
   }
 
   extractTestSuitesFromProject(project): ITestSuite[] {
-
-    return project.folders.map(folder => {
+    return project.folders.filter(folder => !folder.name.endsWith(LOGS_DIR) && !folder.name.endsWith(RESULTS_DIR))
+    .map(folder => {
       const testSuiteName = folder.name.substring(folder.name.lastIndexOf('/') + 1);
       let testSuiteContentDir: IDirectory = {
         name: testSuiteName,
@@ -121,7 +121,11 @@ export class TestSuiteService {
   }
 
   isStafScript(extension) {
-    return extension == 'staf' || extension == 'page' 
+    return extension == 'staf' || extension == 'page'
       || extension == 'steps';
+  }
+
+  getTestSuiteDetails(project, testSuite) {
+    return this.http.get(environment.resolveApi() + '/testSuite/' + project + '/' + testSuite);
   }
 }

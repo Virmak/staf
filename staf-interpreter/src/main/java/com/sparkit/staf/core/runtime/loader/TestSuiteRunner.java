@@ -32,8 +32,6 @@ public class TestSuiteRunner {
     @Autowired
     private IStafCompiler stafCompiler;
     @Autowired
-    private TestContainer testContainer;
-    @Autowired
     private StafScriptInterpreter interpreter;
 
     @Value("${testDirectory}")
@@ -54,7 +52,6 @@ public class TestSuiteRunner {
             throws TestSuiteMainScriptNotFoundException, SyntaxErrorException {
         logger.info("Running test suite : {}", testSuiteName);
         TestSuite testSuite = new TestSuite(testSuiteName, testDirectory, new SymbolsTable(), keywordLibrariesRepository());
-        testContainer.setTestSuite(testSuite);
 
         String fullPath = getFilePath(testDirectory, config.getProjectDir(), mainFilePath);
         StafFile scriptAST;

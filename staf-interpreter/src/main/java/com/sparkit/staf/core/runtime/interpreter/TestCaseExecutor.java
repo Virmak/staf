@@ -32,7 +32,7 @@ public class TestCaseExecutor {
     @Autowired
     private IStafConfig config;
 
-    @Value("#{systemProperties['testDirectory']}")
+    @Value("${testDirectory}")
     private String testDirectory;
 
 

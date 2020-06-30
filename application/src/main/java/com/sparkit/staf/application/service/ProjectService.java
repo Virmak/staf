@@ -162,7 +162,7 @@ public class ProjectService {
     public GetProjectReportsResponse getProjectReports(String projectName) {
         GetProjectReportsResponse response = new GetProjectReportsResponse();
         response.setProjectName(projectName);
-        String reportsDirectoryPath = testDir + "/" + normalizeProjectName(projectName) + "/results";
+        String reportsDirectoryPath = testDir + '/' + normalizeProjectName(projectName) + "/results";
         File reportsDirectory = new File(reportsDirectoryPath);
         response.setReportsFileNameList(
                 Arrays.stream(Objects.requireNonNull(reportsDirectory.listFiles()))
@@ -172,7 +172,7 @@ public class ProjectService {
 
     public DeleteTestSuiteResponse deleteTestSuite(String project, String testSuite) {
         DeleteTestSuiteResponse response = new DeleteTestSuiteResponse();
-        String testSuitePath = testDir + "/" + project + "/" + testSuite;
+        String testSuitePath = testDir + '/' + project + '/' + testSuite;
         try {
             FileUtils.deleteDirectory(new File(testSuitePath));
             response.setResult("ok");

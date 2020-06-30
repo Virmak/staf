@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 public class TestCaseDeclarationVisitor extends StafBaseVisitor<TestCaseDeclaration> {
     @Autowired
     private TestCaseBodyVisitor testCaseBodyVisitor;
+    @Autowired
+    private StafFileVisitor stafFileVisitor;
     private int testCaseDefaultOrder = 100;
     @Override
     public TestCaseDeclaration visitTest_case_declaration(StafParser.Test_case_declarationContext ctx) {
@@ -34,6 +36,7 @@ public class TestCaseDeclarationVisitor extends StafBaseVisitor<TestCaseDeclarat
         testCaseDeclaration.setName(testCaseNameWithSpaces);
         StafParser.Test_case_bodyContext bodyContext = ctx.test_case_body();
         testCaseDeclaration.setStatements(testCaseBodyVisitor.visitTest_case_body(bodyContext));
+        testCaseDeclaration.setFilePath(stafFileVisitor.getFilePath());
         return testCaseDeclaration;
     }
 }

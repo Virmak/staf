@@ -1,9 +1,6 @@
 package com.sparkit.staf.core.runtime.loader;
 
-import com.sparkit.staf.core.ast.Assignment;
-import com.sparkit.staf.core.ast.ImportStatement;
-import com.sparkit.staf.core.ast.KeywordDeclaration;
-import com.sparkit.staf.core.ast.StafFile;
+import com.sparkit.staf.core.ast.*;
 import com.sparkit.staf.core.runtime.interpreter.ImportsInterpreter;
 import com.sparkit.staf.core.runtime.interpreter.TestSuite;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +26,7 @@ public class StafScriptLoader implements IStafScriptLoader {
 
     @Override
     public void load(TestSuite testSuite, String filePath) throws Throwable {
-        String currentDirectory = filePath.substring(0, filePath.lastIndexOf("/"));
+        String currentDirectory = filePath.substring(0, filePath.lastIndexOf('/'));
         if (testSuite.getLoadedFilesList().contains(filePath)) {
             return;
         }
@@ -38,6 +35,7 @@ public class StafScriptLoader implements IStafScriptLoader {
         List<ImportStatement> imports = stafFileAST.getImports();
         Map<String, Assignment> varsMap = stafFileAST.getVariableDeclarationMap();
         Map<String, KeywordDeclaration> keywordsMap = stafFileAST.getKeywordDeclarationMap();
+        testSuite.setTestCaseDeclarationMap(stafFileAST.getTestCaseDeclarationMap());
         if (imports != null) {
             importsInterpreter.loadImports(imports, testSuite, currentDirectory, testDirectory);
         }

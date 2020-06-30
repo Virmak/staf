@@ -36,7 +36,7 @@ public class StafTestFacade {
     public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, List<String> testSuites,
                                             WebDriverOptions webDriverOptions,
                                             int sessionCount)
-            throws ConfigFileNotFoundException, TestSuiteMainScriptNotFoundException, SyntaxErrorException {
+            throws ConfigFileNotFoundException {
         stafConfig.readConfigFile(projectDir, configFile);
         String logFilePath = getLogFilePath(stafConfig.getLogDirectory());
         System.setProperty("logging.file", logFilePath);
@@ -57,8 +57,9 @@ public class StafTestFacade {
             futureList.add(getTestSuiteFuture(testSuite, sessionCount, testDir));
         }
 
-        return futureList.stream().map(CompletableFuture::join)
+        List<TestSuiteReport> collect = futureList.stream().map(CompletableFuture::join)
                 .flatMap(Collection::stream).collect(Collectors.toList());
+        return collect;
     }
 
     private CompletableFuture<List<TestSuiteReport>> getTestSuiteFuture(String testSuite, int sessionCount, String testDir) {

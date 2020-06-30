@@ -4,7 +4,6 @@ import com.sparkit.staf.core.ast.Assignment;
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.ast.TestCaseDeclaration;
-import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,13 +52,11 @@ public class StafScriptInterpreter {
             if (keywordsMap != null) {
                 testSuite.getKeywordLibrariesRepository().addUserDefinedKeywords(keywordsMap);
             }
-            List<Map.Entry<String, TestCaseDeclaration>> entryList = new ArrayList<>(mainStafFile.getTestCaseDeclarationMap().entrySet());
-
-            entryList.sort(Comparator.comparingInt(t -> t.getValue().getOrder()));
+            testSuite.setTestCaseDeclarationMap(mainStafFile.getTestCaseDeclarationMap());
             TestSession.initSessionCount();
             ExecutorService es = Executors.newCachedThreadPool();
             for (int i = 0; i < sessionCount; i++) {
-                TestSession testSession = testSession(testSuite, mainStafFile, entryList);
+                TestSession testSession = testSession(testSuite, mainStafFile);
                 testSessionList.add(testSession);
                 es.execute(testSession);
             }
@@ -81,8 +78,8 @@ public class StafScriptInterpreter {
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    private TestSession testSession(TestSuite testSuite, StafFile mainStafFile, List<Map.Entry<String, TestCaseDeclaration>> testCasesEntryList) {
-        return new TestSession(testSuite.getGlobalSharedSymbolsTable(), testCaseRunner, mainStafFile, testCasesEntryList, testSuite);
+    private TestSession testSession(TestSuite testSuite, StafFile mainStafFile) {
+        return new TestSession(testSuite.getGlobalSharedSymbolsTable(), testCaseRunner, mainStafFile, testSuite);
     }
 
 }
