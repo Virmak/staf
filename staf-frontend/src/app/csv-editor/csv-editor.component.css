@@ -1,0 +1,17 @@
+btn-group {
+    margin-bottom: 10px;
+}
+clr-modal table tr {
+    cursor: pointer;
+}
+clr-modal table tr:hover {
+    background-color: #eee;
+}
+
+.add-col-btn {
+    margin-top: 32px;
+}
+
+.add-col-btn:last-child {
+    margin-right: 0;
+}

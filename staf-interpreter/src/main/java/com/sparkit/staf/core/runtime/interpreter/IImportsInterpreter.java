@@ -5,5 +5,5 @@ import com.sparkit.staf.core.ast.ImportStatement;
 import java.util.List;
 
 public interface IImportsInterpreter {
-    void loadImports(List<ImportStatement> importStatements, String currentDirectory, String testDirectory) throws Throwable;
+    void loadImports(List<ImportStatement> importStatements, TestSuite testSuite, String currentDirectory, String testDirectory) throws Throwable;
 }

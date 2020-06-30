@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.ast;
 
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import lombok.Data;
 
 @Data
@@ -27,7 +28,7 @@ public class ImportStatement implements IStatement {
     }
 
     @Override
-    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
+    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         return null;
     }
 }

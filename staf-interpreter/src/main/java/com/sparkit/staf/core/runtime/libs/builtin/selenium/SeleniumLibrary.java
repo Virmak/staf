@@ -19,7 +19,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,18 +30,6 @@ import java.util.concurrent.TimeUnit;
 public class SeleniumLibrary extends AbstractStafLibrary {
     public static final int DEFAULT_TIMEOUT = 5;
     private static final Logger logger = LoggerFactory.getLogger(SeleniumLibrary.class);
-    @Value("${webDriverAddress}")
-    String webDriverAddress;
-    @Value("${browserName}")
-    String browserName;
-    @Value("${browserVersion}")
-    String browserVersion;
-    @Value("${remote}")
-    String remote;
-    @Value("${enableVnc}")
-    String enableVnc;
-    @Value("${enableVideo}")
-    String enableVideo;
     @Autowired
     private WebDriverFactory webDriverFactory;
 
@@ -52,6 +39,12 @@ public class SeleniumLibrary extends AbstractStafLibrary {
 
     @Keyword(name = "open browser")
     public WebDriver openBrowser(AbstractStafObject browser) throws MalformedURLException {
+        String webDriverAddress = System.getProperty("webDriverAddress");
+        String browserName = System.getProperty("browserName");
+        String browserVersion = System.getProperty("browserVersion");
+        String remote = System.getProperty("remote");
+        String enableVnc = System.getProperty("enableVnc");
+        String enableVideo = System.getProperty("enableVideo");
         logger.info("{} browser instance started", browser.getValue());
         WebDriver webDriver = webDriverFactory.create(webDriverAddress, browserName, browserVersion, enableVnc, enableVideo, "true".equals(remote));
         setDefaultTimeout(webDriver);

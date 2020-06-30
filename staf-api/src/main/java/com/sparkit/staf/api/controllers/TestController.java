@@ -5,10 +5,8 @@ import com.sparkit.staf.application.exception.TestDirectoryNotFound;
 import com.sparkit.staf.application.models.request.RunTestRequest;
 import com.sparkit.staf.application.service.ProjectService;
 import com.sparkit.staf.core.StafTestFacade;
-import com.sparkit.staf.core.parser.SyntaxErrorException;
 import com.sparkit.staf.core.runtime.interpreter.StafScriptInterpreter;
 import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
-import com.sparkit.staf.core.runtime.loader.exceptions.TestSuiteMainScriptNotFoundException;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,16 +34,12 @@ public class TestController {
     @CrossOrigin("*")
     @PostMapping("/runTest")
     public List<TestSuiteReport> runTest(@RequestBody RunTestRequest runTestRequest) throws ConfigFileNotFoundException,
-            ProjectNotFoundException, TestDirectoryNotFound, SyntaxErrorException, TestSuiteMainScriptNotFoundException {
-        if (runTestRequest.getTestSuites().size() > 1) {
-            logger.error("Run 1 test suite at a given time");
-            return null;
-        }
+            ProjectNotFoundException, TestDirectoryNotFound {
         String project = runTestRequest.getProject().replaceAll("\\s+", "-").toLowerCase(); // normalize project name
         for (String projectName : projectService.getProjectsList()) {
             if (project.equals(projectName)) {
                 return testFacade.runProject(testDir, projectName, testDir + "/" + project + "/" + "config.json",
-                        runTestRequest.getTestSuites().get(0), runTestRequest.getWebDriverOptions(), runTestRequest.getWebDriverOptions().getSessionCount());
+                        runTestRequest.getTestSuites(), runTestRequest.getWebDriverOptions(), runTestRequest.getWebDriverOptions().getSessionCount());
             }
         }
         throw new ProjectNotFoundException();

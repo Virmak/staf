@@ -17,16 +17,13 @@ import java.util.List;
 public class ForStatement implements IStatement, IStatementBlock, IStafIterable {
     @JsonIgnore
     private final StatementBlockExecutor blockExecutor;
-    @JsonIgnore
-    private final KeywordLibrariesRepository keywordLibrariesRepository;
     private StafVariable loopVariable;
     private AbstractStafObject iterator;
     private List<IStatement> statementList;
     private List<StatementReport> statementReports;
 
-    public ForStatement(StatementBlockExecutor blockExecutor, KeywordLibrariesRepository keywordLibrariesRepository) {
+    public ForStatement(StatementBlockExecutor blockExecutor) {
         this.blockExecutor = blockExecutor;
-        this.keywordLibrariesRepository = keywordLibrariesRepository;
     }
 
     @Override
@@ -35,7 +32,7 @@ public class ForStatement implements IStatement, IStatementBlock, IStafIterable 
     }
 
     @Override
-    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
+    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         return blockExecutor.executeIterable(this, globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
     }
 }

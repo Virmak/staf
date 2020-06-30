@@ -8,30 +8,27 @@ import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableExc
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
-import com.sparkit.staf.core.runtime.loader.TestContainer;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-@Component
 public class KeywordLibrariesRepository {
     private static final Logger logger = LoggerFactory.getLogger(KeywordLibrariesRepository.class);
     private final Map<String, BuiltInLibraryKeywordWrapper> builtinKeywordMap = new HashMap<>();
     private final Map<String, AbstractStafLibrary> libsInstancesMap = new HashMap<>();
     /* Map keyword to library method */
     private final Map<String, KeywordDeclaration> userDefinedKeywords = new HashMap<>();
-    @Autowired
-    private LibraryFactory libraryFactory;
-    @Autowired
-    private StatementBlockExecutor statementBlockExecutor;
-    @Autowired
-    private TestContainer dependencyContainer;
+    private final LibraryFactory libraryFactory;
+    private final StatementBlockExecutor statementBlockExecutor;
+
+    public KeywordLibrariesRepository(LibraryFactory libraryFactory, StatementBlockExecutor statementBlockExecutor) {
+        this.libraryFactory = libraryFactory;
+        this.statementBlockExecutor = statementBlockExecutor;
+    }
 
     public Map<String, KeywordDeclaration> getUserDefinedKeywords() {
         return userDefinedKeywords;
@@ -109,7 +106,7 @@ public class KeywordLibrariesRepository {
     }
 
     private List<Object> injectKeywordDependencies(SymbolsTable symbolsTable, KeywordCall keywordCall, BuiltInLibraryKeywordWrapper keywordWrapper)
-            throws UndefinedVariableException {
+            throws UndefinedVariableException { // Fetch variables requested using keyword method @Inject annotation from globalSymbolsTable
         List<Object> keywordDependencies = new ArrayList<>();
         symbolsTable.setSymbolValue("__keyword__", keywordCall);
         for (String dep : keywordWrapper.getInjectAnnotatedParams()) {

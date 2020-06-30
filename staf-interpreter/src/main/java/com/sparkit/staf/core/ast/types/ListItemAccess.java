@@ -2,6 +2,7 @@ package com.sparkit.staf.core.ast.types;
 
 import com.sparkit.staf.core.ast.StafTypes;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 
 public class ListItemAccess extends AbstractStafObject {
     protected AbstractStafObject listVariable;
@@ -30,9 +31,9 @@ public class ListItemAccess extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Throwable {
-        StafList actualList = (StafList) listVariable.evaluate(globalSymbolsTable, localSymbolsTable);
-        AbstractStafObject actualIndexObject = (AbstractStafObject) indexObject.evaluate(globalSymbolsTable, localSymbolsTable);
+    public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+        StafList actualList = (StafList) listVariable.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
+        AbstractStafObject actualIndexObject = (AbstractStafObject) indexObject.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
         return actualList.getList().get((Integer) actualIndexObject.getValue());
     }
 }

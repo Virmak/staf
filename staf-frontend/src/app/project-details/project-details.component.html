@@ -7,6 +7,12 @@
         </clr-tab-content>
     </clr-tab>
     <clr-tab>
+        <button clrTabLink>Test data</button>
+        <clr-tab-content *clrIfActive>
+            <app-test-data  [project]="project"></app-test-data>
+        </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
         <button clrTabLink>Run tests</button>
         <clr-tab-content *clrIfActive>
         <app-run-test [project]="project" (testCompleted)="onTestCompleted($event)"></app-run-test>

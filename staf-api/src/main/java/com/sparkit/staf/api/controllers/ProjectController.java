@@ -31,6 +31,7 @@ public class ProjectController {
         } catch (IOException | ProjectNameAlreadyExist e) {
             Map<String, Object> res = new HashMap<>();
             res.put("error", "Project name already exists");
+            e.printStackTrace();
             return ResponseEntity.ok(res);
         }
         return ResponseEntity.ok(projectService.readProjectContent(createProjectRequest.getName()));

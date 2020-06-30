@@ -20,12 +20,10 @@ public class ForStatementVisitor extends StafBaseVisitor<ForStatement> {
     private ForStatementBodyVisitor forStatementBodyVisitor;
     @Autowired
     private StatementBlockExecutor blockExecutor;
-    @Autowired
-    private KeywordLibrariesRepository keywordLibrariesRepository;
 
     @Override
     public ForStatement visitFor_stat(StafParser.For_statContext ctx) {
-        ForStatement forStatement = new ForStatement(blockExecutor, keywordLibrariesRepository);
+        ForStatement forStatement = new ForStatement(blockExecutor);
         forStatement.setLoopVariable(new StafVariable(ctx.variable().getText()));
 
         StafParser.Complex_objectContext complexObjectContext = ctx.complex_object();

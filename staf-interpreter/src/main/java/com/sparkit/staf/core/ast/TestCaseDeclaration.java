@@ -14,6 +14,8 @@ public class TestCaseDeclaration implements IStatementBlock {
     private int order;
     private static int instanceCount;
     private boolean ignored = false;
+    private String filePath;
+
 
     public TestCaseDeclaration(String name, List<IStatement> statements) {
         this.name = name;

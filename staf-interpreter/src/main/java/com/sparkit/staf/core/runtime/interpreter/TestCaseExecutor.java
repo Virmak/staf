@@ -5,7 +5,6 @@ import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.ast.types.StafString;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.FatalErrorException;
-import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.loader.IStafConfig;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
@@ -31,27 +30,25 @@ public class TestCaseExecutor {
     @Autowired
     private StatementBlockExecutor statementBlockExecutor;
     @Autowired
-    private KeywordLibrariesRepository keywordLibrariesRepository;
-    @Autowired
     private IStafConfig config;
 
-    @Value("#{systemProperties['testDirectory']}")
+    @Value("${testDirectory}")
     private String testDirectory;
 
 
-    public TestCaseReport executeTestCase(String testSuite, String testCaseName, TestCaseDeclaration testCaseDeclaration,
+    public TestCaseReport executeTestCase(TestSuite testSuite, String testCaseName, TestCaseDeclaration testCaseDeclaration,
                                           SymbolsTable globalSymTable) {
         TestCaseReport testCaseReport = new TestCaseReport();
-        testCaseReport.setTestSuite(testSuite);
+        testCaseReport.setTestSuite(testSuite.getTestSuiteName());
         testCaseReport.setTestCase(testCaseName);
         testCaseReport.setStart(LocalDateTime.now());
         testCaseReport.setResult(TestResult.Pass);
         testCaseReport.setStatementReports(new ArrayList<>());
         String lastErrorMessage = null;
         logger.info("Started executing test case : [{}]", testCaseDeclaration.getName());
-        OnStatementFailed statementFailed = (statementReport) -> {
+        OnStatementFailed statementFailed = statementReport -> {
             testCaseReport.setResult(TestResult.Fail);
-            if (!keywordLibrariesRepository.isKeywordDeclared("capturescreenshot")) {
+            if (!testSuite.getKeywordLibrariesRepository().isKeywordDeclared("capturescreenshot")) {
                 return;
             }
             StafString screenShotPath = new StafString(testDirectory + "/" + config.getProjectDir() + "/"
@@ -59,9 +56,9 @@ public class TestCaseExecutor {
                     + "/screenshot-" + testSuite + "-" + testCaseName.replaceAll("\\s*", "")
                     + "-" + new Date().getTime() + ".png");
             try {
-                KeywordCall captureScreenshotKeyword = new KeywordCall(statementBlockExecutor, keywordLibrariesRepository,
+                KeywordCall captureScreenshotKeyword = new KeywordCall(statementBlockExecutor,
                         "capturescreenshot", Arrays.asList(new AbstractStafObject[]{screenShotPath}));
-                captureScreenshotKeyword.execute(globalSymTable, null);
+                captureScreenshotKeyword.execute(globalSymTable, null, testSuite.getKeywordLibrariesRepository());
             } catch (EmptyStackException e) {
                 logger.error("No browser open");
                 statementReport.setErrorMessage("No browser open");
@@ -76,7 +73,7 @@ public class TestCaseExecutor {
             autowireCapableBeanFactory.autowireBean(localSymTable);
             testCaseReport.setStatementReports(
                     statementBlockExecutor.execute(testCaseDeclaration, statementFailed, globalSymTable,
-                            localSymTable, keywordLibrariesRepository));
+                            localSymTable, testSuite.getKeywordLibrariesRepository()));
             if (!testCasePass(testCaseReport)) {
                 testCaseReport.setResult(TestResult.Fail);
             }

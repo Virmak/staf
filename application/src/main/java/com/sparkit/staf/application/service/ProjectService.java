@@ -11,9 +11,10 @@ import com.sparkit.staf.application.models.response.GetProjectReportsResponse;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestSuite;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -27,9 +28,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
+    private static final Logger logger = LoggerFactory.getLogger(ProjectService.class);
+    private static final String USER_DIR = "user.dir";
     @Autowired
     private IProjectBuilder projectBuilder;
-
     @Value("${testDirectory}")
     private String testDir;
 
@@ -39,13 +41,13 @@ public class ProjectService {
 
     public Map<String, Object> readProjectContent(String projectName) throws IOException {
         File projectDir = new File(testDir, ProjectService.normalizeProjectName(projectName));
-        String currentDir = System.getProperty("user.dir");
+        String currentDir = System.getProperty(USER_DIR);
         String absoluteTestDir = currentDir + "/" + testDir;
         return listDirectory(projectDir, absoluteTestDir);
     }
 
     public List<String> getProjectsList() throws TestDirectoryNotFound {
-        File currentDir = new File(System.getProperty("user.dir"));
+        File currentDir = new File(System.getProperty(USER_DIR));
         File projectsDir = new File(currentDir, testDir);
         File[] files = projectsDir.listFiles();
         if (files != null) {
@@ -94,10 +96,6 @@ public class ProjectService {
             return "";
         }
         switch (fileExtension) {
-            /*case "png":
-            case "jpg":
-            case "jpeg":
-                return readImageBase64(f);*/
             case "staf":
             case "page":
             case "step":
@@ -105,6 +103,7 @@ public class ProjectService {
             case "txt":
             case "json":
             case "log":
+            case "csv":
                 return readTextFile(f);
             default:
                 return "Error : Unsupported file format!";
@@ -114,18 +113,19 @@ public class ProjectService {
     public String readImageBase64(File f) {
         String encodedFile = null;
         FileInputStream fileInputStreamReader = null;
+        String readingFileError = "Error reading file";
         try {
             fileInputStreamReader = new FileInputStream(f);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return "Error reading file";
+            return readingFileError;
         }
         byte[] bytes = new byte[(int) f.length()];
         try {
             fileInputStreamReader.read(bytes);
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error reading file";
+            return readingFileError;
         }
         encodedFile = Base64.getEncoder().encodeToString(bytes);
         return encodedFile;
@@ -162,17 +162,17 @@ public class ProjectService {
     public GetProjectReportsResponse getProjectReports(String projectName) {
         GetProjectReportsResponse response = new GetProjectReportsResponse();
         response.setProjectName(projectName);
-        String reportsDirectoryPath = testDir + "/" + normalizeProjectName(projectName) + "/results";
+        String reportsDirectoryPath = testDir + '/' + normalizeProjectName(projectName) + "/results";
         File reportsDirectory = new File(reportsDirectoryPath);
         response.setReportsFileNameList(
                 Arrays.stream(Objects.requireNonNull(reportsDirectory.listFiles()))
-                .map(File::getName).collect(Collectors.toList()));
+                        .map(File::getName).collect(Collectors.toList()));
         return response;
     }
 
     public DeleteTestSuiteResponse deleteTestSuite(String project, String testSuite) {
         DeleteTestSuiteResponse response = new DeleteTestSuiteResponse();
-        String testSuitePath = testDir + "/" + project + "/" + testSuite;
+        String testSuitePath = testDir + '/' + project + '/' + testSuite;
         try {
             FileUtils.deleteDirectory(new File(testSuitePath));
             response.setResult("ok");

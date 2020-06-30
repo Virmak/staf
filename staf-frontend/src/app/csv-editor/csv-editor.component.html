@@ -1,0 +1,95 @@
+<div class="btn-group btn-outline-primary btn-sm">
+  <button class="btn" (click)="save()">
+    <clr-icon shape="floppy"></clr-icon> Save
+  </button>
+  <button class="btn" (click)="showEditColumnsModal = true">
+    <clr-icon shape="pencil"></clr-icon> Edit columns
+  </button>
+</div>
+
+<hot-table
+  #hot
+  [afterChange]="fileChanged"
+  [afterRemoveRow]="rowRemoved"
+  [afterCreateRow]="rowCreated"
+  [settings]="settings"
+  licenseKey="non-commercial-and-evaluation"
+>
+  <hot-column
+    *ngFor="let col of csv.csvRecords[0] | keyvalue"
+    [data]="col.key"
+    [title]="col.key"
+  ></hot-column>
+</hot-table>
+
+<clr-modal [(clrModalOpen)]="showEditColumnsModal" [clrModalSize]="'lg'" >
+  <h3 class="modal-title">Edit columns</h3>
+  <div class="modal-body">
+    <form clrForm clrLabelSize="6" clrLayout="vertical" class="clr-row">
+      <clr-input-container class="clr-col-4">
+        <label>Column data</label>
+        <input
+          clrInput
+          type="text"
+          [(ngModel)]="newColData"
+          name="colName"
+          required
+        />
+      </clr-input-container>
+      <clr-input-container class="clr-col-4">
+        <label>Column title</label>
+        <input
+          clrInput
+          type="text"
+          [(ngModel)]="newColName"
+          name="colData"
+          required
+        />
+      </clr-input-container>
+
+      <div class="clr-col-4">
+        <button (click)="newColumn()" class="btn btn-icon btn-primary add-col-btn"> 
+          <clr-icon shape="plus"></clr-icon></button>
+          <button (click)="removeColumn()" class="btn btn-icon btn-danger add-col-btn"> 
+              <clr-icon shape="trash"></clr-icon></button>
+        <button (click)="saveColumn()" class="btn btn-icon btn-success add-col-btn"> 
+            <clr-icon shape="floppy"></clr-icon></button>
+      </div>
+    </form>
+
+    <h6>Columns</h6>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Data field</th>
+          <th>Column title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let col of settings.columns"
+          (click)="selectModalColumn(col)"
+        >
+          <td>{{ col.data }}</td>
+          <td>{{ col.title }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline"
+      (click)="showEditColumnsModal = false"
+    >
+      Cancel
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="closeColumnsModal()"
+    >
+      Ok
+    </button>
+  </div>
+</clr-modal>

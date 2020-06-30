@@ -3,6 +3,7 @@ package com.sparkit.staf.core.ast.types;
 import com.sparkit.staf.core.ast.KeyValuePair;
 import com.sparkit.staf.core.ast.StafTypes;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import org.json.simple.JSONObject;
 
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class StafDictionary extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable) throws Exception {
+    public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
         return this;
     }
 

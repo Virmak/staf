@@ -1,3 +1,4 @@
+import { CsvService } from './csv.service';
 import { ToastrService } from 'ngx-toastr';
 import { StafProject } from './types/staf-project';
 import { Router } from '@angular/router';
@@ -15,7 +16,8 @@ export class FileEditorService {
   constructor(
     private projectService: ProjectService,
     private router: Router,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    private csv: CsvService) { }
 
   setFile(file: IFile) {
     this.openedFiles.forEach(f => f.active = false);
@@ -23,17 +25,35 @@ export class FileEditorService {
     file.active = true;
   }
 
+  unsetFile(file: IFile) {
+    file.active = false;
+    file.changed = false;
+    this.openedFiles.delete(file.path);
+    if (this.openedFiles.size == 0) {
+      this.router.navigate(['noFile']);
+    } else {
+      let nextFile: any = this.openedFiles.values().next().value;
+      this.openFile(nextFile, nextFile.project);
+    }
+  }
+
   closeFile(file: IFile, key: string, save: boolean) {
     if (save) {
+      if (this.isCsvFile(file)) {
+        this.csv.writeCsvFile(file);
+      }
       this.projectService.saveFile(file).subscribe(res => {
         this.toastr.success('File saved', 'Success');
         file.changed = false;
         file.originalContent = file.content as string;
-        this.openedFiles.delete(key);
+        this.unsetFile(file);
       }, err => this.toastr.error('Cannot save file', 'Error'));
     } else {
       file.content = file.originalContent;
-      this.openedFiles.delete(key);
+      if (this.isCsvFile(file)) {
+        this.csv.readCsvFile(file).then(r => {});
+      }
+      this.unsetFile(file);
     }
   }
 
@@ -57,6 +77,9 @@ export class FileEditorService {
       if (item.project == undefined) { item.project = project; }
       this.setFile(item);
       this.router.navigate(['editFile', project.getNormalizedProjectName(), item.name, item.path]);
+    } else if (this.isCsvFile(item)) {
+      this.setFile(item);
+      this.router.navigate(['csvEditor', item.project.getNormalizedProjectName(), item.path]);
     } else if (this.isImageFile(item)) {
       this.setFile(item);
       this.router.navigate(['viewImage', project.getNormalizedProjectName(), item.name, item.path]);
@@ -70,6 +93,10 @@ export class FileEditorService {
       || file.extension == "page"
       || file.extension == "steps"
       || file.extension == "step"
+  }
+
+  isCsvFile(file) {
+    return file.extension == 'csv';
   }
 
   isImageFile(item) {

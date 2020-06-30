@@ -29,6 +29,12 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { ItemTypePipe } from './item-type.pipe';
 import { LogConsoleComponent } from './log-console/log-console.component';
 import { SettingsModalComponent } from './settings-modal/settings-modal.component';
+import { TestDataComponent } from './test-data/test-data.component';
+import { CsvEditorComponent } from './csv-editor/csv-editor.component';
+import { NoFileComponent } from './no-file/no-file.component';
+import { HotTableModule } from '@handsontable/angular';
+import { TestSuiteOverviewComponent } from './test-suite-overview/test-suite-overview.component';
+
 
 @NgModule({
   declarations: [
@@ -50,6 +56,10 @@ import { SettingsModalComponent } from './settings-modal/settings-modal.componen
     ItemTypePipe,
     LogConsoleComponent,
     SettingsModalComponent,
+    TestDataComponent,
+    CsvEditorComponent,
+    NoFileComponent,
+    TestSuiteOverviewComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,6 +71,7 @@ import { SettingsModalComponent } from './settings-modal/settings-modal.componen
     MonacoEditorModule.forRoot(monacoConfig),
     HttpClientModule,
     ToastrModule.forRoot(),
+    HotTableModule,
     LogModule,
   ],
   providers: [],

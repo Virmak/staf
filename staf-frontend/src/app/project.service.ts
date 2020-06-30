@@ -249,4 +249,26 @@ export class ProjectService {
   getTestReport(projectName: string, fileName: string) {
     return this.http.get(baseUrl + '/testReport/' + projectName + '/' + fileName);
   }
+
+  searchFilesByExtension(project: StafProject, extension: string) {
+    let foundFiles = [];
+    project.testSuites.forEach(testSuite => {
+      foundFiles = foundFiles.concat(this.searchDirectory(testSuite.content, (f: IFile) => f.extension == 'csv'));
+    });
+    return foundFiles;
+  }
+
+  searchDirectory(directory: IDirectory, filter: Function) {
+    let foundFiles = [];
+    directory.content.forEach(f => {
+      if (f.type == FileType.Directory) {
+        foundFiles = foundFiles.concat(this.searchDirectory(f as IDirectory, filter));
+      } else if (f.type == FileType.File) {
+        if (filter(f)) {
+          foundFiles.push(f);
+        }
+      }
+    });
+    return foundFiles;
+  }
 }

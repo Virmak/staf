@@ -1,6 +1,14 @@
 <div class="container">
-    <div class="toggle" (click)="toggleConsoleLog()">
-        <clr-icon shape="angle" [dir]="showConsole ? 'down' : 'up'"></clr-icon>
+    <div class="flex">
+
+        <div class="consoleTitle">Logs console</div>
+        <div class="toggle" (click)="toggleConsoleLog()">
+            <clr-icon shape="angle" [dir]="showConsole ? 'down' : 'up'"></clr-icon>
+        </div>
+        <div class="toggle" (click)="toggleConsoleLog()">
+            {{showConsole ? 'Hide' : 'Show'}}
+        </div>
+
     </div>
     <div #logConsole *ngIf="showConsole" class="log-console" [innerHtml]="logService.logContent">
         <span>Log</span>
