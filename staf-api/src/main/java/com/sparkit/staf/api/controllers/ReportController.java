@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ReportController {
-
     @GetMapping("/reports")
     public String report(Model model) {
         return "report";
