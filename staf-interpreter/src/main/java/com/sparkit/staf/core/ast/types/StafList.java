@@ -3,21 +3,23 @@ package com.sparkit.staf.core.ast.types;
 import com.sparkit.staf.core.ast.StafTypes;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import lombok.Getter;
 import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StafList extends AbstractStafObject {
-    protected List<AbstractStafObject> value;
+    @Getter
+    private final List<AbstractStafObject> stafList;
 
     public StafList() {
-        value = new ArrayList<>();
+        stafList = new ArrayList<>();
         this.type = StafTypes.LIST;
     }
 
     public StafList(List<AbstractStafObject> items) {
-        this.value = items;
+        this.stafList = items;
         this.type = StafTypes.LIST;
     }
 
@@ -34,37 +36,14 @@ public class StafList extends AbstractStafObject {
         return this;
     }
 
-    public List<AbstractStafObject> getList() {
-        return value;
-    }
-
-    public void setList(List<AbstractStafObject> object) {
-        this.value = object;
-    }
-
-    public List<Object> getEvaluatedList() {
-        List<Object> objectList = new ArrayList<>();
-        for (AbstractStafObject object : value) {
-            objectList.add(object.getValue());
-        }
-        return objectList;
-    }
-
     public void addListItem(AbstractStafObject item) {
-        value.add(item);
+        stafList.add(item);
     }
 
-    public void setItemAt(int index, AbstractStafObject item) {
-        value.set(index, item);
-    }
-
-    public void removeItemAt(int index) {
-        value.remove(index);
-    }
-
+    @Override
     public JSONArray toJSON() {
         JSONArray array = new JSONArray();
-        for (AbstractStafObject stafObject : value) {
+        for (AbstractStafObject stafObject : stafList) {
             array.add((stafObject).toJSON());
         }
         return array;

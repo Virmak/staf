@@ -18,9 +18,9 @@ import java.util.Map;
 
 @RestController
 public class ProjectController {
+    private final ProjectService projectService;
     @Value("${testDirectory}")
     String testDir;
-    private final ProjectService projectService;
 
     @Autowired
     public ProjectController(ProjectService projectService) {
@@ -43,7 +43,7 @@ public class ProjectController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/projects")
-    public Map<String, Object> getProjects() throws IOException {
+    public Map<String, Object> getProjects() {
         String currentDir = System.getProperty("user.dir");
         String absoluteTestDir = currentDir + "/" + testDir;
         File projectsDir = new File(testDir);

@@ -76,7 +76,7 @@ public class StdLibrary extends AbstractStafLibrary {
         }
         StafList list = new StafList();
         for (; start <= end; start++) {
-            list.getList().add(new StafInteger(start));
+            list.getStafList().add(new StafInteger(start));
         }
         return list;
     }
