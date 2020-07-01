@@ -32,4 +32,8 @@ export class LogConsoleComponent implements OnInit, OnDestroy {
     this.showConsole = !this.showConsole;
   }
 
+  clearConsole() {
+    this.logService.logContent = '';
+  }
+
 }

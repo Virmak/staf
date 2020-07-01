@@ -1,7 +1,8 @@
 package com.sparkit.staf.core;
 
+import com.sparkit.staf.core.models.RunTestRequest;
+import com.sparkit.staf.core.models.RunTestSuite;
 import com.sparkit.staf.core.parser.SyntaxErrorException;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.WebDriverOptions;
 import com.sparkit.staf.core.runtime.loader.IStafConfig;
 import com.sparkit.staf.core.runtime.loader.TestSuiteRunner;
 import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
@@ -33,46 +34,44 @@ public class StafTestFacade {
     @Autowired
     private ITestReportWriter jsonReportWriter;
 
-    public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, List<String> testSuites,
-                                            WebDriverOptions webDriverOptions,
-                                            int sessionCount)
+    public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, RunTestRequest request)
             throws ConfigFileNotFoundException {
         stafConfig.readConfigFile(projectDir, configFile);
         String logFilePath = getLogFilePath(stafConfig.getLogDirectory());
         System.setProperty("logging.file", logFilePath);
         System.setProperty("testDirectory", testDir);
-        if (webDriverOptions != null) {
-            System.setProperty("webDriverAddress", webDriverOptions.getWebDriverAddress());
-            System.setProperty("remote", String.valueOf(webDriverOptions.isRemote()));
-            System.setProperty("browserName", webDriverOptions.getBrowserName());
-            System.setProperty("browserVersion", webDriverOptions.getBrowserVersion());
-            System.setProperty("enableVnc", String.valueOf(webDriverOptions.isEnableVnc()));
-            System.setProperty("enableVideo", String.valueOf(webDriverOptions.isEnableVideo()));
+        if (request.getWebDriverOptions() != null) {
+            System.setProperty("webDriverAddress", request.getWebDriverOptions().getWebDriverAddress());
+            System.setProperty("remote", String.valueOf(request.getWebDriverOptions().isRemote()));
+            System.setProperty("browserName", request.getWebDriverOptions().getBrowserName());
+            System.setProperty("browserVersion", request.getWebDriverOptions().getBrowserVersion());
+            System.setProperty("enableVnc", String.valueOf(request.getWebDriverOptions().isEnableVnc()));
+            System.setProperty("enableVideo", String.valueOf(request.getWebDriverOptions().isEnableVideo()));
         }
 
         logger.info("Running project '{}'", projectDir);
 
         List<CompletableFuture<List<TestSuiteReport>>> futureList = new ArrayList<>();
-        for (String testSuite : testSuites) {
-            futureList.add(getTestSuiteFuture(testSuite, sessionCount, testDir));
+        for (RunTestSuite testSuite : request.getTestSuites()) {
+            futureList.add(getTestSuiteFuture(testSuite, request.getWebDriverOptions().getSessionCount(), testDir));
         }
 
         return futureList.stream().map(CompletableFuture::join)
                 .flatMap(Collection::stream).collect(Collectors.toList());
     }
 
-    private CompletableFuture<List<TestSuiteReport>> getTestSuiteFuture(String testSuite, int sessionCount, String testDir) {
+    private CompletableFuture<List<TestSuiteReport>> getTestSuiteFuture(RunTestSuite runTestSuiteRequest, int sessionCount, String testDir) {
         return CompletableFuture.supplyAsync(() -> {
             List<TestSuiteReport> testSuiteReport = null;
             try {
-                testSuiteReport = loader.runTests(testSuite, sessionCount);
+                testSuiteReport = loader.runTests(runTestSuiteRequest, sessionCount);
             } catch (SyntaxErrorException e) {
                 e.printStackTrace();
             } catch (TestSuiteMainScriptNotFoundException e) {
                 e.printStackTrace();
             }
             jsonReportWriter.write(Paths.get(testDir).toAbsolutePath() + "/" + stafConfig.getProjectDir()
-                    + "/results/" + testSuite + "-" + getCurrentDateTime() + ".json", testSuiteReport);
+                    + "/results/" + runTestSuiteRequest.getName() + "-" + getCurrentDateTime() + ".json", testSuiteReport);
             return testSuiteReport;
         });
     }

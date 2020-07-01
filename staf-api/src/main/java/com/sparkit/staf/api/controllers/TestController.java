@@ -2,8 +2,8 @@ package com.sparkit.staf.api.controllers;
 
 import com.sparkit.staf.application.exception.ProjectNotFoundException;
 import com.sparkit.staf.application.exception.TestDirectoryNotFound;
-import com.sparkit.staf.application.models.request.RunTestRequest;
 import com.sparkit.staf.application.service.ProjectService;
+import com.sparkit.staf.core.models.RunTestRequest;
 import com.sparkit.staf.core.StafTestFacade;
 import com.sparkit.staf.core.runtime.interpreter.StafScriptInterpreter;
 import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
@@ -38,8 +38,7 @@ public class TestController {
         String project = runTestRequest.getProject().replaceAll("\\s+", "-").toLowerCase(); // normalize project name
         for (String projectName : projectService.getProjectsList()) {
             if (project.equals(projectName)) {
-                return testFacade.runProject(testDir, projectName, testDir + "/" + project + "/" + "config.json",
-                        runTestRequest.getTestSuites(), runTestRequest.getWebDriverOptions(), runTestRequest.getWebDriverOptions().getSessionCount());
+                return testFacade.runProject(testDir, projectName, testDir + "/" + project + "/" + "config.json", runTestRequest);
             }
         }
         throw new ProjectNotFoundException();

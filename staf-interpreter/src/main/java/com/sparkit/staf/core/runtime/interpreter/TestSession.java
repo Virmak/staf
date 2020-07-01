@@ -49,8 +49,9 @@ public class TestSession implements Runnable {
         sessionGlobalSymbolsTable.setSymbolValue("$__session__", new StafInteger(sessionId));
         TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get("setup");
         TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get("teardown");
-        if (setup != null) {
-            testCaseReportList.add(testCaseRunner.executeTestCase(testSuite, "SETUP", setup, sessionGlobalSymbolsTable));
+        if (setup != null && isTestCaseEnabled("SETUP", testSuite)) {
+            TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, "SETUP", setup, sessionGlobalSymbolsTable);
+            testCaseReportList.add(testCaseReport);
         }
         try {
             for (Map.Entry<String, TestCaseDeclaration> testCaseDeclarationEntry : testSuite.getSortedTestCases()) {
@@ -66,6 +67,8 @@ public class TestSession implements Runnable {
                 } else if (testCaseDeclarationEntry.getValue().isIgnored()) {
                     logger.info("Test case [{}] Ignored", testCaseDeclarationEntry.getValue().getName());
                     continue;
+                } else if (!isTestCaseEnabled(testCaseDeclarationEntry.getKey(), testSuite)) {
+                    continue;
                 }
                 TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, testCaseDeclarationEntry.getKey(),
                         testCaseDeclarationEntry.getValue(), sessionGlobalSymbolsTable);
@@ -78,7 +81,7 @@ public class TestSession implements Runnable {
             e.printStackTrace();
             testSuiteReport.setResult(TestResult.Fail);
         } finally {
-            if (tearDown != null) {
+            if (tearDown != null && isTestCaseEnabled("TEARDOWN", testSuite)) {
                 testCaseReportList.add(testCaseRunner.executeTestCase(testSuite, "TEARDOWN", tearDown, sessionGlobalSymbolsTable));
             }
         }
@@ -96,6 +99,13 @@ public class TestSession implements Runnable {
         testSuiteReport.setTotal(testSuite.getTestCaseDeclarationMap().size());
         testSuiteReport.setResult(TestResult.Pass);
         testSuiteReport.setTestSessionId(sessionId);
+    }
+
+    private boolean isTestCaseEnabled(String testCaseName, TestSuite testSuite) {
+        if (testSuite.getSelectedTestCaseMap().containsKey(testCaseName)) {
+            return testSuite.getSelectedTestCaseMap().get(testCaseName).isEnabled();
+        }
+        return false;
     }
 
 }

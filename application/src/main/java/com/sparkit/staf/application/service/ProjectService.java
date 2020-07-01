@@ -140,7 +140,7 @@ public class ProjectService {
     }
 
     private String getFileExtension(File f) {
-        return f.getName().substring(f.getName().lastIndexOf(".") + 1);
+        return f.getName().substring(f.getName().lastIndexOf('.') + 1);
     }
 
     public CreateTestSuiteResponse createTestSuite(CreateTestSuiteRequest request) {

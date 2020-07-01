@@ -27,6 +27,11 @@ public class TestSuiteService {
     @Autowired
     private IStafScriptLoader scriptBuilder;
 
+    private static boolean isChild(Path child, String parentText) {
+        Path parent = Paths.get(parentText).toAbsolutePath();
+        return child.startsWith(parent);
+    }
+
     public GetTestSuiteDetailsResponse getTestSuiteDetails(String project, String testSuiteName) throws IOException, SyntaxErrorException {
         String testSuiteDirectory = getTestSuiteDirectory(project, testSuiteName).getParentFile().getAbsolutePath();
         GetTestSuiteDetailsResponse response = new GetTestSuiteDetailsResponse();
@@ -34,11 +39,14 @@ public class TestSuiteService {
         response.setProject(project);
         response.setTestCases(new ArrayList<>());
         compileTestSuite(project, testSuiteName).values().stream()
-                .filter(ast ->  Objects.nonNull(ast.getTestCaseDeclarationMap()) && isChild(Paths.get( ast.getFilePath()), testSuiteDirectory))
+                .filter(ast -> Objects.nonNull(ast.getTestCaseDeclarationMap()) && isChild(Paths.get(ast.getFilePath()), testSuiteDirectory))
                 .map(ast -> ast.getTestCaseDeclarationMap().values())
                 .flatMap(Collection::stream)
                 .forEach(testCaseDeclaration -> response.getTestCases().add(
-                        response.new TestCase(testCaseDeclaration.getName(), testCaseDeclaration.getFilePath(), testCaseDeclaration.isIgnored(), testCaseDeclaration.getOrder())));
+                        response.new TestCase(testCaseDeclaration.getName(),
+                                testCaseDeclaration.getFilePath(),
+                                testCaseDeclaration.isIgnored(),
+                                !testCaseDeclaration.isDefaultOrder() ? String.valueOf(testCaseDeclaration.getOrder()) : "N/A")));
         return response;
     }
 
@@ -77,11 +85,6 @@ public class TestSuiteService {
         File projectDir = new File(testDir, ProjectService.normalizeProjectName(project));
         File testSuiteDir = new File(projectDir, testSuiteName);
         return new File(testSuiteDir, TEST_SUITE_MAIN_FILE);
-    }
-
-    private static boolean isChild(Path child, String parentText) {
-        Path parent = Paths.get(parentText).toAbsolutePath();
-        return child.startsWith(parent);
     }
 
 }

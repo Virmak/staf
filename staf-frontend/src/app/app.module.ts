@@ -34,6 +34,7 @@ import { CsvEditorComponent } from './csv-editor/csv-editor.component';
 import { NoFileComponent } from './no-file/no-file.component';
 import { HotTableModule } from '@handsontable/angular';
 import { TestSuiteOverviewComponent } from './test-suite-overview/test-suite-overview.component';
+import { TestSuiteRowDetailsComponent } from './test-suite-row-details/test-suite-row-details.component';
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { TestSuiteOverviewComponent } from './test-suite-overview/test-suite-ove
     CsvEditorComponent,
     NoFileComponent,
     TestSuiteOverviewComponent,
+    TestSuiteRowDetailsComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,6 @@
 import { IStafProject, ProjectType } from '../interfaces/istaf-project';
 import { ITestSuite } from '../interfaces/itest-suite';
+import { TestSuiteReport } from './test-suite-report';
 
 export class StafProject implements IStafProject {
     id: number;
@@ -11,7 +12,8 @@ export class StafProject implements IStafProject {
     testSuites: ITestSuite[] = [];
     type: ProjectType;
     expanded: boolean;
-
+    reports?: TestSuiteReport[];
+    
     getNormalizedProjectName() {
         return StafProject.getNormalizedProjectName(this.name);
     }

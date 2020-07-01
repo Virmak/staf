@@ -1,6 +1,8 @@
 package com.sparkit.staf.core.runtime.loader;
 
 import com.sparkit.staf.core.ast.StafFile;
+import com.sparkit.staf.core.models.RunTestCase;
+import com.sparkit.staf.core.models.RunTestSuite;
 import com.sparkit.staf.core.parser.SyntaxErrorException;
 import com.sparkit.staf.core.runtime.interpreter.StafScriptInterpreter;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
@@ -22,7 +24,9 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class TestSuiteRunner {
@@ -41,24 +45,26 @@ public class TestSuiteRunner {
     @Autowired
     private StatementBlockExecutor statementBlockExecutor;
 
-    public List<TestSuiteReport> runTests(String testSuite, int sessionCount) throws SyntaxErrorException, TestSuiteMainScriptNotFoundException {
+    public List<TestSuiteReport> runTests(RunTestSuite runTestSuiteRequest, int sessionCount) throws SyntaxErrorException, TestSuiteMainScriptNotFoundException {
         logger.info("Started running tests at {}", LocalDateTime.now());
-        List<TestSuiteReport> testSuiteReport = runTestScript(testSuite + "/main.staf", testSuite, testDirectory, sessionCount);
+        List<TestSuiteReport> testSuiteReport = runTestScript(runTestSuiteRequest.getName() + "/main.staf", runTestSuiteRequest, testDirectory, sessionCount);
         logger.info("Finished running tests at {}", LocalDateTime.now());
         return testSuiteReport;
     }
 
-    public List<TestSuiteReport> runTestScript(String mainFilePath, String testSuiteName, String testDirectory, int sessionCount)
+    public List<TestSuiteReport> runTestScript(String mainFilePath, RunTestSuite runTestSuiteRequest, String testDirectory, int sessionCount)
             throws TestSuiteMainScriptNotFoundException, SyntaxErrorException {
-        logger.info("Running test suite : {}", testSuiteName);
-        TestSuite testSuite = new TestSuite(testSuiteName, testDirectory, new SymbolsTable(), keywordLibrariesRepository());
+        logger.info("Running test suite : {}", runTestSuiteRequest.getName());
+        Map<String, RunTestCase> selectedTestCaseMap = new HashMap<>();
+        runTestSuiteRequest.getTestCases().forEach(testCase -> selectedTestCaseMap.put(testCase.getName().toLowerCase(), testCase));
+        TestSuite testSuite = new TestSuite(runTestSuiteRequest.getName(), testDirectory, new SymbolsTable(), keywordLibrariesRepository(), selectedTestCaseMap);
 
         String fullPath = getFilePath(testDirectory, config.getProjectDir(), mainFilePath);
         StafFile scriptAST;
         try {
             scriptAST = stafCompiler.compile(fullPath);
         } catch (IOException e) {
-            throw new TestSuiteMainScriptNotFoundException(testSuiteName);
+            throw new TestSuiteMainScriptNotFoundException(runTestSuiteRequest.getName());
         }
         return interpreter.run(testSuite, scriptAST, sessionCount);
     }

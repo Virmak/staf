@@ -1,28 +1,70 @@
-<div  *ngIf="progress">
-  <span><clr-icon shape="info-circle" class="is-solid"></clr-icon> Executing test case : {{logService.currentTestCaseIndex}} / {{logService.totalTestCases}} {{logService.currentTestCase?.name}}</span>
+<div *ngIf="progress">
+  <span
+    ><clr-icon shape="info-circle" class="is-solid"></clr-icon> Executing test
+    case : {{ logService.currentTestCaseIndex }} /
+    {{ logService.totalTestCases }} {{ logService.currentTestCase?.name }}</span
+  >
 
-<clr-progress-bar [clrLabeled]="true"
-[clrMax]="logService.totalTestCases" [clrValue]="logService.currentTestCaseIndex"
-[clrDisplayval]="logService.currentProgress + '%'" ></clr-progress-bar>
-
+  <clr-progress-bar
+    [clrLabeled]="true"
+    [clrMax]="logService.totalTestCases"
+    [clrValue]="logService.currentTestCaseIndex"
+    [clrDisplayval]="logService.currentProgress + '%'"
+  ></clr-progress-bar>
 </div>
-<br>
+<br />
+
+<h4>Test suite</h4>
 
 <div class="flex">
   <div class="btn-group btn-primary">
-    <button (click)="runSelectedTests()" [disabled]="runBtnDisabled" class="btn btn-sm"><clr-icon shape="play" class="is-solid"></clr-icon> Run</button>
-    <button (click)="runAllTests()" [disabled]="runAllBtnDisabled" class="btn btn-sm"><clr-icon shape="fast-forward" class="is-solid"></clr-icon> Run All</button>
-    <button (click)="stopTests()" [disabled]="stopBtnDisabled" class="btn btn-sm"><clr-icon shape="stop" class="is-solid"></clr-icon> Stop</button>
+    <button
+      (click)="runSelectedTests()"
+      [disabled]="selectedTestSuites.length == 0"
+      class="btn btn-sm"
+    >
+      <clr-icon shape="play" class="is-solid"></clr-icon> Run
+    </button>
+    <button
+      (click)="runAllTests()"
+      [disabled]="runAllBtnDisabled"
+      class="btn btn-sm"
+    >
+      <clr-icon shape="fast-forward" class="is-solid"></clr-icon> Run All
+    </button>
+    <button
+      (click)="stopTests()"
+      [disabled]="stopBtnDisabled"
+      class="btn btn-sm"
+    >
+      <clr-icon shape="stop" class="is-solid"></clr-icon> Stop
+    </button>
   </div>
-
 </div>
 
-<form clrForm clrLayout="horizontal">
-<h4>Test suite</h4>
-<div class="flex" >
-  <clr-checkbox-wrapper  *ngFor="let testSuite of _testSuites" >
-    <input type="checkbox" clrCheckbox (change)="testSuiteCheck($event, testSuite)" [value]="testSuite.name" [checked]="testSuite.checked" />
-    <label>{{testSuite.name | titlecase}}</label>
-  </clr-checkbox-wrapper>
-</div>
-</form>
+<clr-datagrid [(clrDgSelected)]="selectedTestSuites" [clrDgRowSelection]="true">
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Test cases count</clr-dg-column>
+
+  <clr-dg-row
+    *clrDgItems="let testSuite of _testSuites"
+    [clrDgItem]="testSuite"
+  >
+    <clr-dg-cell>{{ testSuite.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ testSuite.testCases?.length }}</clr-dg-cell>
+
+    <app-test-suite-row-details
+      *clrIfExpanded
+      ngProjectAs="clr-dg-row-detail"
+      [testSuite]="testSuite"
+      [project]="project"
+    ></app-test-suite-row-details>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ _testSuites.length }} test suites</clr-dg-footer>
+</clr-datagrid>
+
+Selected test suites:
+<span *ngFor="let testSuite of selectedTestSuites" class="label">{{
+  testSuite.name
+}}</span>

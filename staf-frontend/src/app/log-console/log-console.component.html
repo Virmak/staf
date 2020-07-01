@@ -5,8 +5,11 @@
         <div class="toggle" (click)="toggleConsoleLog()">
             <clr-icon shape="angle" [dir]="showConsole ? 'down' : 'up'"></clr-icon>
         </div>
-        <div class="toggle" (click)="toggleConsoleLog()">
+        <div class="toggle flex">
+            <div *ngIf="showConsole" class="clear" (click)="clearConsole()">Clear</div>
+            <div (click)="toggleConsoleLog()">
             {{showConsole ? 'Hide' : 'Show'}}
+            </div>
         </div>
 
     </div>

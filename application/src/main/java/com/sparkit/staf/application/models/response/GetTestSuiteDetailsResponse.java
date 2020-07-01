@@ -15,8 +15,8 @@ public class GetTestSuiteDetailsResponse {
         private String name;
         private String path;
         private boolean ignored;
-        private int order;
-        public TestCase(String testCaseName, String declarationPath, boolean ignored, int order) {
+        private String order;
+        public TestCase(String testCaseName, String declarationPath, boolean ignored, String order) {
             this.name = testCaseName;
             this.path = declarationPath;
             this.ignored = ignored;
