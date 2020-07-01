@@ -20,6 +20,13 @@ export class SidenavComponent implements OnInit, AfterViewInit {
   @ViewChild(ContextMenuComponent,  { static: true }) public basicMenu: ContextMenuComponent;
 
 
+  supportedExtensions = {
+    staf: 'Test file',
+    page: 'Page test file',
+    csv: 'CSV data file',
+  };
+
+
   createTestSuiteModal = false;
   testSuite: ICreateTestSuite = {
     name: '',
@@ -31,6 +38,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
 
   newFile = {
     name: '',
+    extension: 'staf',
   }
   createFileModal = false;
 
@@ -96,7 +104,10 @@ export class SidenavComponent implements OnInit, AfterViewInit {
 
   createFile() {debugger;
     this.current.testSuite.content.path = this.current.project.getNormalizedProjectName() + '/' + this.current.testSuite.name;
-    this.projectService.createFile(this.current.testSuite.content, this.current.project, this.newFile.name, this.current.type);
+    this.projectService.createFile(this.current.testSuite.content,
+      this.current.project, 
+      this.newFile.name + '.' + this.newFile.extension,
+      this.current.type);
     this.createFileModal = false;
   }
 

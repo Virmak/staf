@@ -50,13 +50,19 @@
 
 
 <clr-modal [(clrModalOpen)]="createFileModal">
-	<h3 class="modal-title">Create</h3>
+	<h3 class="modal-title">Create file</h3>
 	<div class="modal-body">
 		<form clrForm>
 			<clr-input-container>
 				<label>Name</label>
 				<input clrInput type="text" name="fileName" [(ngModel)]="newFile.name" required/>
 			</clr-input-container>
+			<clr-select-container>
+				<label>File type</label>
+				<select clrSelect name="extension" [(ngModel)]="newFile.extension">
+				  <option *ngFor="let ext of supportedExtensions | keyvalue" [value]="ext.key" >{{ext.value}}</option>
+				</select>
+			  </clr-select-container>
 		</form>
 
 	</div>

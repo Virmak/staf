@@ -20,14 +20,22 @@ export class SidenavDirectoryComponent implements OnInit {
   @Input() project: StafProject;
   @Input() testSuite: ITestSuite;
   @ViewChild(ContextMenuComponent) public basicMenu: ContextMenuComponent;
-
+  
+  supportedExtensions = {
+    staf: 'Test file',
+    page: 'Page test file',
+    csv: 'CSV data file',
+  };
 
   newFile = {
     name: '',
+    extension: 'staf',
   }
   createFileModal = false;
 
   current: any = {};
+
+  
   constructor(
     private router: Router,
     private fileEditorService: FileEditorService,
@@ -44,7 +52,7 @@ export class SidenavDirectoryComponent implements OnInit {
   }
 
   createFile() {
-    this.projectService.createFile(this.current.item, this.project, this.newFile.name, this.current.type);
+    this.projectService.createFile(this.current.item, this.project, this.newFile.name + '.' + this.newFile.extension, this.current.type);
     this.createFileModal = false;
   }
 
