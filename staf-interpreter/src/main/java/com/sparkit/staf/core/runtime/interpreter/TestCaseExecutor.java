@@ -25,6 +25,7 @@ import java.util.EmptyStackException;
 @Component
 public class TestCaseExecutor {
     private static final Logger logger = LoggerFactory.getLogger(TestCaseExecutor.class);
+    private static final String CAPTURE_SCREENSHOT_KEYWORD_NAME = "capturescreenshot";
     @Autowired
     private AutowireCapableBeanFactory autowireCapableBeanFactory;
     @Autowired
@@ -48,7 +49,7 @@ public class TestCaseExecutor {
         logger.info("Started executing test case : [{}]", testCaseDeclaration.getName());
         OnStatementFailed statementFailed = statementReport -> {
             testCaseReport.setResult(TestResult.Fail);
-            if (!testSuite.getKeywordLibrariesRepository().isKeywordDeclared("capturescreenshot")) {
+            if (!testSuite.getKeywordLibrariesRepository().isKeywordDeclared(CAPTURE_SCREENSHOT_KEYWORD_NAME)) {
                 return;
             }
             StafString screenShotPath = new StafString(testDirectory + "/" + config.getProjectDir() + "/"

@@ -52,14 +52,14 @@ public class StafScriptInterpreter {
             }
             testSuite.getTestCaseDeclarationMap().putAll(mainStafFile.getTestCaseDeclarationMap());
             TestSession.initSessionCount();
-            ExecutorService es = Executors.newCachedThreadPool();
+            ExecutorService executorService = Executors.newCachedThreadPool();
             for (int i = 0; i < sessionCount; i++) {
                 TestSession testSession = testSession(testSuite, mainStafFile);
                 testSessionList.add(testSession);
-                es.execute(testSession);
+                executorService.execute(testSession);
             }
-            es.shutdown();
-            boolean finished = es.awaitTermination(MAX_TEST_AWAIT_MINUTES, TimeUnit.MINUTES);
+            executorService.shutdown();
+            executorService.awaitTermination(MAX_TEST_AWAIT_MINUTES, TimeUnit.MINUTES);
         } catch (Throwable e) {
             logger.error("Script execution stopped");
             logger.error(e.getClass().getName());
