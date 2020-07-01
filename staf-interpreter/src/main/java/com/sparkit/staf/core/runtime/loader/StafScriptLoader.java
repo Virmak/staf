@@ -35,7 +35,7 @@ public class StafScriptLoader implements IStafScriptLoader {
         List<ImportStatement> imports = stafFileAST.getImports();
         Map<String, Assignment> varsMap = stafFileAST.getVariableDeclarationMap();
         Map<String, KeywordDeclaration> keywordsMap = stafFileAST.getKeywordDeclarationMap();
-        testSuite.setTestCaseDeclarationMap(stafFileAST.getTestCaseDeclarationMap());
+        testSuite.getTestCaseDeclarationMap().putAll(stafFileAST.getTestCaseDeclarationMap());
         if (imports != null) {
             importsInterpreter.loadImports(imports, testSuite, currentDirectory, testDirectory);
         }

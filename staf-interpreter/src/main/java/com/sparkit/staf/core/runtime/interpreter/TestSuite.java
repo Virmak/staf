@@ -5,10 +5,7 @@ import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TestSuite {
     @Getter
@@ -24,7 +21,7 @@ public class TestSuite {
     private final List<String> loadedFilesList = new ArrayList<>();
     @Getter
     @Setter
-    private Map<String, TestCaseDeclaration> testCaseDeclarationMap;
+    private Map<String, TestCaseDeclaration> testCaseDeclarationMap = new HashMap<>();
 
     public TestSuite(String testSuiteName, String testDirectory, SymbolsTable symbolsTable,
                      KeywordLibrariesRepository keywordLibrariesRepository) {

@@ -57,9 +57,8 @@ public class StafTestFacade {
             futureList.add(getTestSuiteFuture(testSuite, sessionCount, testDir));
         }
 
-        List<TestSuiteReport> collect = futureList.stream().map(CompletableFuture::join)
+        return futureList.stream().map(CompletableFuture::join)
                 .flatMap(Collection::stream).collect(Collectors.toList());
-        return collect;
     }
 
     private CompletableFuture<List<TestSuiteReport>> getTestSuiteFuture(String testSuite, int sessionCount, String testDir) {

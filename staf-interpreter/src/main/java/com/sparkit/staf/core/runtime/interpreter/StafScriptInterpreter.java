@@ -3,7 +3,6 @@ package com.sparkit.staf.core.runtime.interpreter;
 import com.sparkit.staf.core.ast.Assignment;
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.ast.StafFile;
-import com.sparkit.staf.core.ast.TestCaseDeclaration;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -52,7 +50,7 @@ public class StafScriptInterpreter {
             if (keywordsMap != null) {
                 testSuite.getKeywordLibrariesRepository().addUserDefinedKeywords(keywordsMap);
             }
-            testSuite.setTestCaseDeclarationMap(mainStafFile.getTestCaseDeclarationMap());
+            testSuite.getTestCaseDeclarationMap().putAll(mainStafFile.getTestCaseDeclarationMap());
             TestSession.initSessionCount();
             ExecutorService es = Executors.newCachedThreadPool();
             for (int i = 0; i < sessionCount; i++) {

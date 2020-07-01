@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Component
 public class ImportsInterpreter implements IImportsInterpreter {
-    public final String libsPackage = "com.sparkit.staf.core.runtime.libs.builtin";
+    public static final String LIBS_PACKAGE = "com.sparkit.staf.core.runtime.libs.builtin";
     @Autowired
     private IStafScriptLoader scriptBuilder;
 
@@ -43,7 +43,7 @@ public class ImportsInterpreter implements IImportsInterpreter {
     /* Search for builtin library classes using reflections */
     private Map<String, Class<? extends AbstractStafLibrary>> getBuiltinLibrariesClasses() {
         try (ScanResult result = new ClassGraph().enableClassInfo().enableAnnotationInfo()
-                .whitelistPackages(libsPackage).scan()) {
+                .whitelistPackages(LIBS_PACKAGE).scan()) {
 
             ClassInfoList classInfos = result.getClassesWithAnnotation(StafLibrary.class.getName());
             List<Class<?>> librariesClasses = classInfos.loadClasses();
