@@ -11,8 +11,6 @@ import com.sparkit.staf.application.models.response.GetProjectReportsResponse;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestSuite;
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,7 +26,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
-    private static final Logger logger = LoggerFactory.getLogger(ProjectService.class);
     private static final String USER_DIR = "user.dir";
     @Autowired
     private IProjectBuilder projectBuilder;
@@ -61,7 +58,7 @@ public class ProjectService {
         return projectBuilder.buildProject(createProjectRequest);
     }
 
-    public Map<String, Object> listDirectory(File dir, String testDir) throws IOException {
+    public Map<String, Object> listDirectory(File dir, String testDir) {
         File[] content = dir.listFiles();
 
         List<Map<String, com.sparkit.staf.domain.File>> files = new LinkedList<>();
