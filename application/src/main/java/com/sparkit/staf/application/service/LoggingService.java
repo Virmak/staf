@@ -10,10 +10,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoggingService implements LogObserver {
     private static final String WS_MESSAGE_TRANSFER_DESTINATION = "/staf/logs";
-    @Autowired
-    private SimpMessagingTemplate simpleMessageTemplate;
+    private final SimpMessagingTemplate simpleMessageTemplate;
 
-    public LoggingService() {
+    @Autowired
+    public LoggingService(SimpMessagingTemplate simpleMessageTemplate) {
+        this.simpleMessageTemplate = simpleMessageTemplate;
         SubscriptionAppender.getInstance().subscribe(this);
     }
 

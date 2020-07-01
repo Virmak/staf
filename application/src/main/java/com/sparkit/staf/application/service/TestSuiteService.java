@@ -6,7 +6,6 @@ import com.sparkit.staf.core.ast.ImportTypes;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.parser.SyntaxErrorException;
 import com.sparkit.staf.core.runtime.loader.IStafCompiler;
-import com.sparkit.staf.core.runtime.loader.IStafScriptLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,12 +19,14 @@ import java.util.*;
 @Service
 public class TestSuiteService {
     private static final String TEST_SUITE_MAIN_FILE = "main.staf";
+    private final IStafCompiler stafCompiler;
     @Value("${testDirectory}")
     String testDirectory;
+
     @Autowired
-    private IStafCompiler stafCompiler;
-    @Autowired
-    private IStafScriptLoader scriptBuilder;
+    public TestSuiteService(IStafCompiler stafCompiler) {
+        this.stafCompiler = stafCompiler;
+    }
 
     private static boolean isChild(Path child, String parentText) {
         Path parent = Paths.get(parentText).toAbsolutePath();

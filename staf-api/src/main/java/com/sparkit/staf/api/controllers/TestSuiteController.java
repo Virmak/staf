@@ -14,10 +14,14 @@ import java.io.IOException;
 
 @RestController
 public class TestSuiteController {
+    private final ProjectService projectService;
+    private final TestSuiteService testSuiteService;
+
     @Autowired
-    private ProjectService projectService;
-    @Autowired
-    private TestSuiteService testSuiteService;
+    public TestSuiteController(ProjectService projectService, TestSuiteService testSuiteService) {
+        this.projectService = projectService;
+        this.testSuiteService = testSuiteService;
+    }
 
     @CrossOrigin
     @PostMapping("/testSuite")

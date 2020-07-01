@@ -27,10 +27,14 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectService {
     private static final String USER_DIR = "user.dir";
-    @Autowired
-    private IProjectBuilder projectBuilder;
+    private final IProjectBuilder projectBuilder;
     @Value("${testDirectory}")
     private String testDir;
+
+    @Autowired
+    public ProjectService(IProjectBuilder projectBuilder) {
+        this.projectBuilder = projectBuilder;
+    }
 
     public static String normalizeProjectName(String name) {
         return name.toLowerCase().replaceAll("\\s+", "-");

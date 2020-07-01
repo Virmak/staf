@@ -20,8 +20,12 @@ import java.util.Map;
 public class ProjectController {
     @Value("${testDirectory}")
     String testDir;
+    private final ProjectService projectService;
+
     @Autowired
-    private ProjectService projectService;
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
+    }
 
     @CrossOrigin(origins = "*")
     @PostMapping("/projects")

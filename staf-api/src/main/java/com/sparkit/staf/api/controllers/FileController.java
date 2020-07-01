@@ -9,18 +9,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
 
 @RestController
 public class FileController {
-    @Autowired
-    private FileService fileService;
-    @Autowired
-    private ProjectService projectService;
+    private final FileService fileService;
+    private final ProjectService projectService;
     @Value("${testDirectory}")
-    String testDir;
+    private String testDir;
+
+    @Autowired
+    public FileController(FileService fileService, ProjectService projectService) {
+        this.fileService = fileService;
+        this.projectService = projectService;
+    }
 
     @CrossOrigin("*")
     @PostMapping("/saveFile")
@@ -33,7 +35,7 @@ public class FileController {
     @CrossOrigin("*")
     @DeleteMapping("/deleteFile/{path}")
     public String deleteFile(@PathVariable String path) {
-        path = path.replace("<sep>","/");
+        path = path.replace("<sep>", "/");
         if (fileService.removeFile(path)) {
             return "{\"result\":\"ok\"}";
         }

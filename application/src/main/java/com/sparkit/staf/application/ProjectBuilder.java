@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 @Component
 public class ProjectBuilder implements IProjectBuilder {
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Value("${testDirectory}")
     private String testDir;
