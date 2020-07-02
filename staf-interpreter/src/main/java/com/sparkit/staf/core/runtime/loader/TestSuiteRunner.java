@@ -57,7 +57,7 @@ public class TestSuiteRunner {
         logger.info("Running test suite : {}", runTestSuiteRequest.getName());
         Map<String, RunTestCase> selectedTestCaseMap = new HashMap<>();
         runTestSuiteRequest.getTestCases().forEach(testCase -> selectedTestCaseMap.put(testCase.getName().toLowerCase(), testCase));
-        TestSuite testSuite = new TestSuite(runTestSuiteRequest.getName(), testDirectory, new SymbolsTable(), keywordLibrariesRepository(), selectedTestCaseMap);
+        TestSuite testSuite = new TestSuite(runTestSuiteRequest.getName(), testDirectory, symbolsTable(), keywordLibrariesRepository(), selectedTestCaseMap);
 
         String fullPath = getFilePath(testDirectory, config.getProjectDir(), mainFilePath);
         StafFile scriptAST;
@@ -79,5 +79,11 @@ public class TestSuiteRunner {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public KeywordLibrariesRepository keywordLibrariesRepository() {
         return new KeywordLibrariesRepository(libraryFactory, statementBlockExecutor);
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public SymbolsTable symbolsTable() {
+        return new SymbolsTable();
     }
 }

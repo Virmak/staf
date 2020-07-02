@@ -1,9 +1,6 @@
 package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.ast.TestCaseDeclaration;
-import com.sparkit.staf.core.ast.types.AbstractStafObject;
-import com.sparkit.staf.core.ast.types.KeywordCall;
-import com.sparkit.staf.core.ast.types.StafString;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.FatalErrorException;
 import com.sparkit.staf.core.runtime.loader.IStafConfig;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
@@ -14,18 +11,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.EmptyStackException;
 
 @Component
 public class TestCaseExecutor {
     private static final Logger logger = LoggerFactory.getLogger(TestCaseExecutor.class);
-    private static final String CAPTURE_SCREENSHOT_KEYWORD_NAME = "capturescreenshot";
     @Autowired
     private AutowireCapableBeanFactory autowireCapableBeanFactory;
     @Autowired
@@ -39,35 +35,10 @@ public class TestCaseExecutor {
 
     public TestCaseReport executeTestCase(TestSuite testSuite, String testCaseName, TestCaseDeclaration testCaseDeclaration,
                                           SymbolsTable globalSymTable) {
-        TestCaseReport testCaseReport = new TestCaseReport();
-        testCaseReport.setTestSuite(testSuite.getTestSuiteName());
-        testCaseReport.setTestCase(testCaseName);
-        testCaseReport.setStart(LocalDateTime.now());
-        testCaseReport.setResult(TestResult.Pass);
-        testCaseReport.setStatementReports(new ArrayList<>());
+        TestCaseReport testCaseReport = createTestCaseReport(testSuite.getTestSuiteName(), testCaseName);
         String lastErrorMessage = null;
         logger.info("Started executing test case : [{}]", testCaseDeclaration.getName());
-        OnStatementFailed statementFailed = statementReport -> {
-            testCaseReport.setResult(TestResult.Fail);
-            if (!testSuite.getKeywordLibrariesRepository().isKeywordDeclared(CAPTURE_SCREENSHOT_KEYWORD_NAME)) {
-                return;
-            }
-            StafString screenShotPath = new StafString(testDirectory + "/" + config.getProjectDir() + "/"
-                    + testSuite + "/" + config.getReportingDirectory()
-                    + "/screenshot-" + testSuite + "-" + testCaseName.replaceAll("\\s*", "")
-                    + "-" + new Date().getTime() + ".png");
-            try {
-                KeywordCall captureScreenshotKeyword = new KeywordCall(statementBlockExecutor,
-                        "capturescreenshot", Arrays.asList(new AbstractStafObject[]{screenShotPath}));
-                captureScreenshotKeyword.execute(globalSymTable, null, testSuite.getKeywordLibrariesRepository());
-            } catch (EmptyStackException e) {
-                logger.error("No browser open");
-                statementReport.setErrorMessage("No browser open");
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-            }
-            statementReport.setScreenShot(screenShotPath.getValue().toString());
-        };
+        OnStatementFailed statementFailed = takeScreenshot(testCaseReport, testSuite, globalSymTable, testCaseName);
         statementBlockExecutor.setStatementFailed(statementFailed);
         try {
             SymbolsTable localSymTable = new SymbolsTable();
@@ -101,5 +72,21 @@ public class TestCaseExecutor {
             }
         }
         return true;
+    }
+
+    private TestCaseReport createTestCaseReport(String testSuiteName, String testCaseName) {
+        TestCaseReport testCaseReport = new TestCaseReport();
+        testCaseReport.setTestSuite(testSuiteName);
+        testCaseReport.setTestCase(testCaseName);
+        testCaseReport.setStart(LocalDateTime.now());
+        testCaseReport.setResult(TestResult.Pass);
+        testCaseReport.setStatementReports(new ArrayList<>());
+        return testCaseReport;
+    }
+
+    @Bean()
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public OnStatementFailed takeScreenshot(TestCaseReport testCaseReport, TestSuite testSuite, SymbolsTable sessionSymbolsTable, String testCaseName) {
+        return new TakeScreenshot(testCaseReport, testSuite, config, statementBlockExecutor, sessionSymbolsTable, testDirectory, testCaseName);
     }
 }

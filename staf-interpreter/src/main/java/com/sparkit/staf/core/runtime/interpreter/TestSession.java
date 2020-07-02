@@ -18,6 +18,9 @@ import java.util.Map;
 
 public class TestSession implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(TestSession.class);
+    private static final String SETUP_TEST_CASE = "setup";
+    private static final String TEARDOWN_TEST_CASE = "teardown";
+    private static final String SESSION_ID_VAR_NAME = "$__session__";
     private static int instanceCount = 0;
     private final StafFile mainStafFile;
     private final TestSuite testSuite;
@@ -46,11 +49,11 @@ public class TestSession implements Runnable {
         initTestSuiteReport();
         List<TestCaseReport> testCaseReportList = new ArrayList<>();
         SymbolsTable sessionGlobalSymbolsTable = new SymbolsTable(new HashMap<>(testSuiteSharedSymbolsTable.getSymbolsMap()));
-        sessionGlobalSymbolsTable.setSymbolValue("$__session__", new StafInteger(sessionId));
-        TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get("setup");
-        TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get("teardown");
-        if (setup != null && isTestCaseEnabled("SETUP", testSuite)) {
-            TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, "SETUP", setup, sessionGlobalSymbolsTable);
+        sessionGlobalSymbolsTable.setSymbolValue(SESSION_ID_VAR_NAME, new StafInteger(sessionId));
+        TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get(SETUP_TEST_CASE);
+        TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get(TEARDOWN_TEST_CASE);
+        if (setup != null && isTestCaseEnabled(SETUP_TEST_CASE, testSuite)) {
+            TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, SETUP_TEST_CASE, setup, sessionGlobalSymbolsTable);
             testCaseReportList.add(testCaseReport);
         }
         try {
@@ -61,8 +64,8 @@ public class TestSession implements Runnable {
                     testSuiteReport.setResult(TestResult.Fail);
                     break;
                 }
-                if (testCaseDeclarationEntry.getKey().equalsIgnoreCase("setup")
-                        || testCaseDeclarationEntry.getKey().equalsIgnoreCase("teardown")) {
+                if (testCaseDeclarationEntry.getKey().equalsIgnoreCase(SETUP_TEST_CASE)
+                        || testCaseDeclarationEntry.getKey().equalsIgnoreCase(TEARDOWN_TEST_CASE)) {
                     continue;
                 } else if (testCaseDeclarationEntry.getValue().isIgnored()) {
                     logger.info("Test case [{}] Ignored", testCaseDeclarationEntry.getValue().getName());
@@ -81,8 +84,8 @@ public class TestSession implements Runnable {
             e.printStackTrace();
             testSuiteReport.setResult(TestResult.Fail);
         } finally {
-            if (tearDown != null && isTestCaseEnabled("TEARDOWN", testSuite)) {
-                testCaseReportList.add(testCaseRunner.executeTestCase(testSuite, "TEARDOWN", tearDown, sessionGlobalSymbolsTable));
+            if (tearDown != null && isTestCaseEnabled(TEARDOWN_TEST_CASE, testSuite)) {
+                testCaseReportList.add(testCaseRunner.executeTestCase(testSuite, TEARDOWN_TEST_CASE, tearDown, sessionGlobalSymbolsTable));
             }
         }
         testSuiteReport.setTestCaseReports(testCaseReportList);
