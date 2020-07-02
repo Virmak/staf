@@ -1,3 +1,4 @@
+import { FileType } from './../interfaces/ifile';
 import { ProjectService } from './../project.service';
 import { SequenceService } from './../sequence.service';
 import { ICreateTestSuite } from './../interfaces/icreate-test-suite';
@@ -19,12 +20,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
   @Input() projects: StafProject[] = [];
   @ViewChild(ContextMenuComponent,  { static: true }) public basicMenu: ContextMenuComponent;
 
-
-  supportedExtensions = {
-    staf: 'Test file',
-    page: 'Page test file',
-    csv: 'CSV data file',
-  };
+  fileTypes = FileType;
 
 
   createTestSuiteModal = false;
@@ -35,11 +31,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
     projectName: '',
   };
   currentProject: StafProject;
-
-  newFile = {
-    name: '',
-    extension: 'staf',
-  }
+  
   createFileModal = false;
 
   current: any = {};
@@ -100,15 +92,6 @@ export class SidenavComponent implements OnInit, AfterViewInit {
     this.current = {
       testSuite, project, type
     }
-  }
-
-  createFile() {debugger;
-    this.current.testSuite.content.path = this.current.project.getNormalizedProjectName() + '/' + this.current.testSuite.name;
-    this.projectService.createFile(this.current.testSuite.content,
-      this.current.project, 
-      this.newFile.name + '.' + this.newFile.extension,
-      this.current.type);
-    this.createFileModal = false;
   }
 
   openFile(e) {

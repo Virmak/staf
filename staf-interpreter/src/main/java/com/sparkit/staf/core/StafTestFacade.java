@@ -38,15 +38,15 @@ public class StafTestFacade {
             throws ConfigFileNotFoundException {
         stafConfig.readConfigFile(projectDir, configFile);
         String logFilePath = getLogFilePath(stafConfig.getLogDirectory());
-        System.setProperty("logging.file", logFilePath);
-        System.setProperty("testDirectory", testDir);
+        System.setProperty(AppConfig.LOGGING_FILE, logFilePath);
+        System.setProperty(AppConfig.TEST_DIRECTORY, testDir);
         if (request.getWebDriverOptions() != null) {
-            System.setProperty("webDriverAddress", request.getWebDriverOptions().getWebDriverAddress());
-            System.setProperty("remote", String.valueOf(request.getWebDriverOptions().isRemote()));
-            System.setProperty("browserName", request.getWebDriverOptions().getBrowserName());
-            System.setProperty("browserVersion", request.getWebDriverOptions().getBrowserVersion());
-            System.setProperty("enableVnc", String.valueOf(request.getWebDriverOptions().isEnableVnc()));
-            System.setProperty("enableVideo", String.valueOf(request.getWebDriverOptions().isEnableVideo()));
+            System.setProperty(AppConfig.WEB_DRIVER_ADDRESS, request.getWebDriverOptions().getWebDriverAddress());
+            System.setProperty(AppConfig.REMOTE_WEB_DRIVER, String.valueOf(request.getWebDriverOptions().isRemote()));
+            System.setProperty(AppConfig.BROWSER_NAME, request.getWebDriverOptions().getBrowserName());
+            System.setProperty(AppConfig.BROWSER_VERSION, request.getWebDriverOptions().getBrowserVersion());
+            System.setProperty(AppConfig.ENABLE_VNC, String.valueOf(request.getWebDriverOptions().isEnableVnc()));
+            System.setProperty(AppConfig.ENABLE_VIDEO, String.valueOf(request.getWebDriverOptions().isEnableVideo()));
         }
 
         logger.info("Running project '{}'", projectDir);

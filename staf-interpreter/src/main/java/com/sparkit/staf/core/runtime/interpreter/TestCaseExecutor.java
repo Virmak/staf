@@ -87,6 +87,6 @@ public class TestCaseExecutor {
     @Bean()
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public OnStatementFailed takeScreenshot(TestCaseReport testCaseReport, TestSuite testSuite, SymbolsTable sessionSymbolsTable, String testCaseName) {
-        return new TakeScreenshot(testCaseReport, testSuite, config, statementBlockExecutor, sessionSymbolsTable, testDirectory, testCaseName);
+        return new StatementFailedScreenshot(testCaseReport, testSuite, config, statementBlockExecutor, sessionSymbolsTable, testDirectory, testCaseName);
     }
 }

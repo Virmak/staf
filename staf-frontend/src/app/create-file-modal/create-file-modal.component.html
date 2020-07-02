@@ -1,0 +1,22 @@
+<clr-modal [clrModalOpen]="createFileModalOpened" (clrModalOpenChange)="openChanged($event)">
+	<h3 class="modal-title">Create {{type == fileTypes.File ? 'file' : 'directory'}}</h3>
+	<div class="modal-body">
+		<form clrForm>
+			<clr-input-container>
+				<label>Name</label>
+				<input clrInput type="text" name="fileName" [(ngModel)]="name" required/>
+			</clr-input-container>
+			<clr-select-container *ngIf="type == fileTypes.File">
+				<label>File type</label>
+				<select clrSelect name="extension" [(ngModel)]="extension">
+				  <option *ngFor="let ext of supportedExtensions | keyvalue" [value]="ext.key" >{{ext.value}}</option>
+				</select>
+			  </clr-select-container>
+		</form>
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline" (click)="createFileModalOpened = false">Cancel</button>
+		<button type="button" class="btn btn-primary" (click)="createFile()">Ok</button>
+	</div>
+</clr-modal>

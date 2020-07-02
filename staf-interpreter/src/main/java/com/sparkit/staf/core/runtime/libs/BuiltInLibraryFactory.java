@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.InvocationTargetException;
 
 @Service
-public class LibraryFactory {
+public class BuiltInLibraryFactory {
     @Autowired
     private AutowireCapableBeanFactory autowireCapableBeanFactory;
 

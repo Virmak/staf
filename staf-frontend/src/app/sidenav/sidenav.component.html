@@ -71,10 +71,10 @@
 		New
 	</ng-template>
 	<context-menu #subMenuNew>
-		<ng-template contextMenuItem (execute)="createNewFileSystemItem($event.item.testSuite, $event.item.project, 'scroll')">
+		<ng-template contextMenuItem (execute)="createNewFileSystemItem($event.item.testSuite, $event.item.project, fileTypes.File)">
 			New file
 		</ng-template>
-		<ng-template contextMenuItem (execute)="createNewFileSystemItem($event.item.testSuite, $event.item.project, 'folder')">
+		<ng-template contextMenuItem (execute)="createNewFileSystemItem($event.item.testSuite, $event.item.project, fileTypes.Directory)">
 			New folder
 		</ng-template>
 
@@ -100,25 +100,5 @@
 </context-menu>
 
 
-<clr-modal [(clrModalOpen)]="createFileModal">
-	<h3 class="modal-title">Create</h3>
-	<div class="modal-body">
-		<form clrForm>
-			<clr-input-container>
-				<label>Name</label>
-				<input clrInput type="text" name="fileName" [(ngModel)]="newFile.name" required/>
-			</clr-input-container>
-			<clr-select-container>
-				<label>File type</label>
-				<select clrSelect name="extension" [(ngModel)]="newFile.extension">
-				  <option *ngFor="let ext of supportedExtensions | keyvalue" [value]="ext.key" >{{ext.value}}</option>
-				</select>
-			  </clr-select-container>
-		</form>
 
-	</div>
-	<div class="modal-footer">
-		<button type="button" class="btn btn-outline" (click)="createFileModal = false">Cancel</button>
-		<button type="button" class="btn btn-primary" (click)="createFile()">Ok</button>
-	</div>
-</clr-modal>
+<app-create-file-modal [createFileModalOpened]="createFileModal" [testSuite]="current.testSuite" [project]="current.project" [type]="current.type" (modalOpenChanged)="createFileModal = $event"></app-create-file-modal>

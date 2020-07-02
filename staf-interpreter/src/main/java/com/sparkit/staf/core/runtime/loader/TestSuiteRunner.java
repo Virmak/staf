@@ -9,7 +9,7 @@ import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.interpreter.TestSuite;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
-import com.sparkit.staf.core.runtime.libs.LibraryFactory;
+import com.sparkit.staf.core.runtime.libs.BuiltInLibraryFactory;
 import com.sparkit.staf.core.runtime.loader.exceptions.TestSuiteMainScriptNotFoundException;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
 import org.slf4j.Logger;
@@ -41,7 +41,7 @@ public class TestSuiteRunner {
     @Value("${testDirectory}")
     private String testDirectory;
     @Autowired
-    private LibraryFactory libraryFactory;
+    private BuiltInLibraryFactory libraryFactory;
     @Autowired
     private StatementBlockExecutor statementBlockExecutor;
 

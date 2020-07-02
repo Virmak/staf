@@ -35,6 +35,7 @@ import { NoFileComponent } from './no-file/no-file.component';
 import { HotTableModule } from '@handsontable/angular';
 import { TestSuiteOverviewComponent } from './test-suite-overview/test-suite-overview.component';
 import { TestSuiteRowDetailsComponent } from './test-suite-row-details/test-suite-row-details.component';
+import { CreateFileModalComponent } from './create-file-modal/create-file-modal.component';
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import { TestSuiteRowDetailsComponent } from './test-suite-row-details/test-suit
     NoFileComponent,
     TestSuiteOverviewComponent,
     TestSuiteRowDetailsComponent,
+    CreateFileModalComponent,
   ],
   imports: [
     BrowserModule,

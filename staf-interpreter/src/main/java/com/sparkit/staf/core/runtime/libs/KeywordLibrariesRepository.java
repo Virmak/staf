@@ -4,8 +4,8 @@ import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
-import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
+import com.sparkit.staf.core.runtime.libs.builtin.selenium.SeleniumLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
 import org.openqa.selenium.WebDriver;
@@ -22,11 +22,11 @@ public class KeywordLibrariesRepository {
     private final Map<String, AbstractStafLibrary> libsInstancesMap = new HashMap<>();
     /* Map keyword to library method */
     private final Map<String, KeywordDeclaration> userDefinedKeywords = new HashMap<>();
-    private final LibraryFactory libraryFactory;
+    private final BuiltInLibraryFactory builtInLibraryFactory;
     private final StatementBlockExecutor statementBlockExecutor;
 
-    public KeywordLibrariesRepository(LibraryFactory libraryFactory, StatementBlockExecutor statementBlockExecutor) {
-        this.libraryFactory = libraryFactory;
+    public KeywordLibrariesRepository(BuiltInLibraryFactory libraryFactory, StatementBlockExecutor statementBlockExecutor) {
+        this.builtInLibraryFactory = libraryFactory;
         this.statementBlockExecutor = statementBlockExecutor;
     }
 
@@ -35,9 +35,9 @@ public class KeywordLibrariesRepository {
     }
 
     public void registerLibrary(Class<? extends AbstractStafLibrary> libClass)
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+            throws InvocationTargetException, InstantiationException, IllegalAccessException {
 
-        AbstractStafLibrary libInstance = libraryFactory.build(libClass);
+        AbstractStafLibrary libInstance = builtInLibraryFactory.build(libClass);
         if (libsInstancesMap.containsKey(libClass.getName())) {
             return;
         }
@@ -81,7 +81,7 @@ public class KeywordLibrariesRepository {
                 ret = builtinKeywordMap.get(normalizedKeywordName).invoke(dependencies);
                 statementBlockExecutor.getCallStack().pop(globalSymbolsTable.getSessionId());
                 if (ret instanceof WebDriver) { // this is used by selenium library (open browser) keyword to save an instance of web driver in global sym table
-                    globalSymbolsTable.setSymbolValue("__web_driver__", ret);
+                    globalSymbolsTable.setSymbolValue(SeleniumLibrary.WEB_DRIVER_KEY, ret);
                     return null;
                 }
                 return ret;
@@ -96,6 +96,10 @@ public class KeywordLibrariesRepository {
         }
     }
 
+    public boolean hasLibrary(Class<?> libraryClassName) {
+        return libsInstancesMap.containsKey(libraryClassName.getName());
+    }
+
     public boolean isKeywordDeclared(String keyword) {
         String normalized = normalizeKeywordName(keyword);
         return builtinKeywordMap.containsKey(normalized) || userDefinedKeywords.containsKey(normalized);
@@ -105,8 +109,7 @@ public class KeywordLibrariesRepository {
         return keyword.toLowerCase().replaceAll("\\s*", "");
     }
 
-    private List<Object> injectKeywordDependencies(SymbolsTable symbolsTable, KeywordCall keywordCall, BuiltInLibraryKeywordWrapper keywordWrapper)
-            throws UndefinedVariableException { // Fetch variables requested using keyword method @Inject annotation from globalSymbolsTable
+    private List<Object> injectKeywordDependencies(SymbolsTable symbolsTable, KeywordCall keywordCall, BuiltInLibraryKeywordWrapper keywordWrapper) { // Fetch variables requested using keyword method @Inject annotation from globalSymbolsTable
         List<Object> keywordDependencies = new ArrayList<>();
         symbolsTable.setSymbolValue("__keyword__", keywordCall);
         for (String dep : keywordWrapper.getInjectAnnotatedParams()) {
