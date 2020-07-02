@@ -1,14 +1,13 @@
+import { StafProject } from './../types/staf-project';
+import { ITestSuite } from './../interfaces/itest-suite';
 import { FileType } from './../interfaces/ifile';
 import { ProjectService } from './../project.service';
 import { SequenceService } from './../sequence.service';
 import { ICreateTestSuite } from './../interfaces/icreate-test-suite';
 import { TestSuiteService } from './../test-suite.service';
-import { StafProject } from '../types/staf-project';
 import { Component, OnInit, Input, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContextMenuComponent } from 'ngx-contextmenu';
-import { ITestSuite } from '../interfaces/itest-suite';
-import { FileType } from '../interfaces/ifile';
 import { IDirectory } from '../interfaces/idirectory';
 
 @Component({
@@ -33,8 +32,11 @@ export class SidenavComponent implements OnInit, AfterViewInit {
   currentProject: StafProject;
   
   createFileModal = false;
-
-  current: any = {};
+  renameModalOpened = false;
+  
+  selectedTestSuite: ITestSuite;
+  selectedProject: StafProject;
+  selectedType: FileType;
 
   constructor(private router: Router,
     private testSuiteService: TestSuiteService,
@@ -87,11 +89,12 @@ export class SidenavComponent implements OnInit, AfterViewInit {
     this.createTestSuiteModal = false;
   }
 
-  createNewFileSystemItem(testSuite: ITestSuite, project: StafProject, type: string) {
+  createNewFileSystemItem(testSuite: ITestSuite, project: StafProject, type: FileType) {
     this.createFileModal = true;
-    this.current = {
-      testSuite, project, type
-    }
+
+    this.selectedTestSuite = testSuite;
+    this.selectedProject = project;
+    this.selectedType = type;
   }
 
   openFile(e) {
@@ -100,6 +103,13 @@ export class SidenavComponent implements OnInit, AfterViewInit {
 
   deleteFile(item, parent) {
     this.projectService.showDeleteTestSuiteDialog(item, parent);
+  }
+
+  renameTestSuite(testSuite: ITestSuite, project: StafProject) {
+    this.renameModalOpened = true;
+
+    this.selectedTestSuite = testSuite;
+    this.selectedProject = project;
   }
 
 }

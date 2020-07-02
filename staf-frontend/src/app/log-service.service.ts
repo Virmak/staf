@@ -19,6 +19,9 @@ export class LogServiceService {
   constructor() { }
 
   addMessage(message) {
+    if (message.startsWith('[INFO] WebSocketSession[1 current WS')) { //ignore websocket session log
+      return;
+    }
     if (message.indexOf('ERROR') > -1) {
       message = '<span class="log-error">' + message + '</span>';
     }

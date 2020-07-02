@@ -5,6 +5,7 @@ import com.sparkit.staf.core.ast.TestCaseDeclaration;
 import com.sparkit.staf.core.ast.types.StafInteger;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
+import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestResult;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ public class TestSession implements Runnable {
     private static int instanceCount = 0;
     private final StafFile mainStafFile;
     private final TestSuite testSuite;
+    private final ProjectConfig projectConfig;
     private final SymbolsTable testSuiteSharedSymbolsTable;
     private final TestCaseExecutor testCaseRunner;
     private final int sessionId;
@@ -32,11 +34,12 @@ public class TestSession implements Runnable {
     private boolean testTerminated = false;
 
     public TestSession(SymbolsTable testSuiteSharedSymbolsTable, TestCaseExecutor testCaseRunner, StafFile mainStafFile,
-                       TestSuite testSuite) {
+                       TestSuite testSuite, ProjectConfig projectConfig) {
         this.testSuiteSharedSymbolsTable = testSuiteSharedSymbolsTable;
         this.testCaseRunner = testCaseRunner;
         this.mainStafFile = mainStafFile;
         this.testSuite = testSuite;
+        this.projectConfig = projectConfig;
         this.sessionId = instanceCount++;
     }
 
@@ -53,7 +56,7 @@ public class TestSession implements Runnable {
         TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get(SETUP_TEST_CASE);
         TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get(TEARDOWN_TEST_CASE);
         if (setup != null && isTestCaseEnabled(SETUP_TEST_CASE, testSuite)) {
-            TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, SETUP_TEST_CASE, setup, sessionGlobalSymbolsTable);
+            TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, SETUP_TEST_CASE, setup, sessionGlobalSymbolsTable, projectConfig);
             testCaseReportList.add(testCaseReport);
         }
         try {
@@ -74,7 +77,7 @@ public class TestSession implements Runnable {
                     continue;
                 }
                 TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, testCaseDeclarationEntry.getKey(),
-                        testCaseDeclarationEntry.getValue(), sessionGlobalSymbolsTable);
+                        testCaseDeclarationEntry.getValue(), sessionGlobalSymbolsTable, projectConfig);
                 testCaseReportList.add(testCaseReport);
                 if (testCaseReport.getResult() == TestResult.Fail) {
                     testSuiteReport.setResult(TestResult.Fail);
@@ -85,7 +88,7 @@ public class TestSession implements Runnable {
             testSuiteReport.setResult(TestResult.Fail);
         } finally {
             if (tearDown != null && isTestCaseEnabled(TEARDOWN_TEST_CASE, testSuite)) {
-                testCaseReportList.add(testCaseRunner.executeTestCase(testSuite, TEARDOWN_TEST_CASE, tearDown, sessionGlobalSymbolsTable));
+                testCaseReportList.add(testCaseRunner.executeTestCase(testSuite, TEARDOWN_TEST_CASE, tearDown, sessionGlobalSymbolsTable, projectConfig));
             }
         }
         testSuiteReport.setTestCaseReports(testCaseReportList);

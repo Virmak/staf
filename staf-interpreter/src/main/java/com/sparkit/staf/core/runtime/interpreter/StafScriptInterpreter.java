@@ -4,6 +4,7 @@ import com.sparkit.staf.core.ast.Assignment;
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
+import com.sparkit.staf.domain.ProjectConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class StafScriptInterpreter {
     @Value("#{systemProperties['testDirectory']}")
     private String testDirectory;
 
-    public List<TestSuiteReport> run(TestSuite testSuite, StafFile mainStafFile, int sessionCount) {
+    public List<TestSuiteReport> run(ProjectConfig projectConfig, TestSuite testSuite, StafFile mainStafFile, int sessionCount) {
         testSessionList = new ArrayList<>();
         testDirectory = System.getProperty("testDirectory");
         logger.info("Started executing test suite : [{}] {} Test cases found", testSuite.getTestSuiteName(), mainStafFile.getTestCaseDeclarationMap().size());
@@ -54,7 +55,7 @@ public class StafScriptInterpreter {
             TestSession.initSessionCount();
             ExecutorService executorService = Executors.newCachedThreadPool();
             for (int i = 0; i < sessionCount; i++) {
-                TestSession testSession = testSession(testSuite, mainStafFile);
+                TestSession testSession = testSession(projectConfig, testSuite, mainStafFile);
                 testSessionList.add(testSession);
                 executorService.execute(testSession);
             }
@@ -76,8 +77,8 @@ public class StafScriptInterpreter {
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    private TestSession testSession(TestSuite testSuite, StafFile mainStafFile) {
-        return new TestSession(testSuite.getGlobalSharedSymbolsTable(), testCaseRunner, mainStafFile, testSuite);
+    private TestSession testSession(ProjectConfig projectConfig, TestSuite testSuite, StafFile mainStafFile) {
+        return new TestSession(testSuite.getGlobalSharedSymbolsTable(), testCaseRunner, mainStafFile, testSuite, projectConfig);
     }
 
 }

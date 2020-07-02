@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
     (<any>window).userKeywords = {};
-    this.projectService.fetchProjects(err => {this.serverError = true});
+    this.projectService.fetchAllProjects(err => {this.serverError = true});
     this.projectService.getProjectsSubject().subscribe(projects => {
       setTimeout(() => {
 

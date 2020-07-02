@@ -13,7 +13,7 @@
         <input type="checkbox" clrCheckbox [(ngModel)]="testCase.enabled" />
       </td>
       <td>
-        <input class="testCaseOrder" type="text" [(ngModel)]="testCase.order" [disabled]="testCase.name=='SETUP'||testCase.name=='TEARDOWN'" />
+        <input class="testCaseOrder" type="text" [(ngModel)]="testCase.order" disabled/>
       </td>
       <td>
         {{ testCase.name }}

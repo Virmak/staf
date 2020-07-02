@@ -2,9 +2,10 @@ package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.ast.TestCaseDeclaration;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.FatalErrorException;
-import com.sparkit.staf.core.runtime.loader.IStafConfig;
+import com.sparkit.staf.core.runtime.loader.IStafProjectConfigReader;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
+import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,19 +27,17 @@ public class TestCaseExecutor {
     private AutowireCapableBeanFactory autowireCapableBeanFactory;
     @Autowired
     private StatementBlockExecutor statementBlockExecutor;
-    @Autowired
-    private IStafConfig config;
 
     @Value("${testDirectory}")
     private String testDirectory;
 
 
     public TestCaseReport executeTestCase(TestSuite testSuite, String testCaseName, TestCaseDeclaration testCaseDeclaration,
-                                          SymbolsTable globalSymTable) {
+                                          SymbolsTable globalSymTable, ProjectConfig projectConfig) {
         TestCaseReport testCaseReport = createTestCaseReport(testSuite.getTestSuiteName(), testCaseName);
         String lastErrorMessage = null;
         logger.info("Started executing test case : [{}]", testCaseDeclaration.getName());
-        OnStatementFailed statementFailed = takeScreenshot(testCaseReport, testSuite, globalSymTable, testCaseName);
+        OnStatementFailed statementFailed = takeScreenshot(testCaseReport, testSuite, globalSymTable, projectConfig, testCaseName);
         statementBlockExecutor.setStatementFailed(statementFailed);
         try {
             SymbolsTable localSymTable = new SymbolsTable();
@@ -86,7 +85,8 @@ public class TestCaseExecutor {
 
     @Bean()
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public OnStatementFailed takeScreenshot(TestCaseReport testCaseReport, TestSuite testSuite, SymbolsTable sessionSymbolsTable, String testCaseName) {
-        return new StatementFailedScreenshot(testCaseReport, testSuite, config, statementBlockExecutor, sessionSymbolsTable, testDirectory, testCaseName);
+    public OnStatementFailed takeScreenshot(TestCaseReport testCaseReport, TestSuite testSuite, SymbolsTable sessionSymbolsTable,
+                                            ProjectConfig projectConfig, String testCaseName) {
+        return new StatementFailedScreenshot(testCaseReport, testSuite, projectConfig, statementBlockExecutor, sessionSymbolsTable, testDirectory, testCaseName);
     }
 }

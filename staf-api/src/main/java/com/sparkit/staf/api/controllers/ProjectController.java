@@ -2,7 +2,9 @@ package com.sparkit.staf.api.controllers;
 
 import com.sparkit.staf.application.exception.ProjectNameAlreadyExist;
 import com.sparkit.staf.application.models.request.CreateProjectRequest;
+import com.sparkit.staf.application.models.request.UpdateProjectRequest;
 import com.sparkit.staf.application.models.response.GetProjectReportsResponse;
+import com.sparkit.staf.application.models.response.UpdateProjectResponse;
 import com.sparkit.staf.application.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +44,16 @@ public class ProjectController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("/projects/{projectName}")
+    public Map<String, Object> getProject(@PathVariable("projectName") String projectName) {
+        String currentDir = System.getProperty("user.dir");
+        String absoluteTestDir = currentDir + "/" + testDir;
+        File testDirectoryFile = new File(testDir);
+        File projectDirectoryFile = new File(testDirectoryFile, ProjectService.normalizeProjectName(projectName));
+        return projectService.listDirectory(projectDirectoryFile, absoluteTestDir);
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("/projects")
     public Map<String, Object> getProjects() {
         String currentDir = System.getProperty("user.dir");
@@ -62,5 +74,11 @@ public class ProjectController {
     @GetMapping("/projectReports/{project}")
     public GetProjectReportsResponse getProjectReports(@PathVariable(name = "project") String project) {
         return projectService.getProjectReports(project);
+    }
+
+    @CrossOrigin
+    @PutMapping("/projects")
+    public UpdateProjectResponse updateProject(@RequestBody UpdateProjectRequest request) {
+        return projectService.renameProject(request);
     }
 }

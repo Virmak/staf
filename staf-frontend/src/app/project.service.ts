@@ -52,13 +52,27 @@ export class ProjectService {
     }
   }
 
-  fetchProjects(errCallback = null) {
+  fetchAllProjects(errCallback = null) {
+    this.toastr.info('Loading projects');
     this.http.get(baseUrl + '/projects').subscribe((projects: any) => {
       this.testDirectory = projects.name;
       this.projects = projects.folders.map(this.createProject.bind(this))
         .filter(p => p != null);
       this.next();
+
+      this.toastr.success('Projects loaded successfully');
     }, errCallback);
+  }
+
+  fetchProject(project: StafProject) {
+    this.http.get(baseUrl + '/projects/' + project.getNormalizedProjectName())
+      .subscribe((projectDirectory: any) => {
+        const project = this.createProject(projectDirectory);
+        const projectIndex = this.projects.findIndex(p => p.name === project.name);
+        this.projects[projectIndex] = project;
+        this.next();
+        this.toastr.success('Project loaded');
+      });
   }
 
   next() {
@@ -253,7 +267,7 @@ export class ProjectService {
   searchFilesByExtension(project: StafProject, extension: string) {
     let foundFiles = [];
     project.testSuites.forEach(testSuite => {
-      foundFiles = foundFiles.concat(this.searchDirectory(testSuite.content, (f: IFile) => f.extension == 'csv'));
+      foundFiles = foundFiles.concat(this.searchDirectory(testSuite.content, (f: IFile) => f.extension === extension));
     });
     return foundFiles;
   }
@@ -270,5 +284,14 @@ export class ProjectService {
       }
     });
     return foundFiles;
+  }
+
+  renameTestSuite(project: StafProject, testSuite: ITestSuite, newName: string) {
+    const payload = {
+      projectName: project.getNormalizedProjectName(),
+      oldTestSuiteName: testSuite.name,
+      newTesSuiteName: newName
+    }
+    return this.http.put(baseUrl + '/testSuite', payload);
   }
 }

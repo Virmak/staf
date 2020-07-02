@@ -86,14 +86,12 @@
 	</ng-template>
 	<ng-template contextMenuItem divider="true"></ng-template>
 
+	<ng-template contextMenuItem (execute)="renameTestSuite($event.item.testSuite, $event.item.project)">
+		Rename
+	</ng-template>
+
 	<ng-template contextMenuItem (execute)="deleteFile($event.item.testSuite, $event.item.project)">
 		Delete
-	</ng-template>
-	<ng-template contextMenuItem>
-		Copy
-	</ng-template>
-	<ng-template contextMenuItem>
-		Paste
 	</ng-template>
 
 
@@ -101,4 +99,6 @@
 
 
 
-<app-create-file-modal [createFileModalOpened]="createFileModal" [testSuite]="current.testSuite" [project]="current.project" [type]="current.type" (modalOpenChanged)="createFileModal = $event"></app-create-file-modal>
+<app-create-file-modal [createFileModalOpened]="createFileModal" [testSuite]="selectedTestSuite" [project]="selectedProject" [type]="selectedType" (modalOpenChanged)="createFileModal = $event"></app-create-file-modal>
+
+<app-rename-test-suite *ngIf="renameModalOpened" [renameModalOpened]="renameModalOpened" [testSuite]="selectedTestSuite" [project]="selectedProject" (modalOpenChanged)="renameModalOpened = $event"></app-rename-test-suite>

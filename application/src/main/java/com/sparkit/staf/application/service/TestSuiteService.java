@@ -1,6 +1,8 @@
 package com.sparkit.staf.application.service;
 
+import com.sparkit.staf.application.models.request.RenameTestSuiteRequest;
 import com.sparkit.staf.application.models.response.GetTestSuiteDetailsResponse;
+import com.sparkit.staf.application.models.response.RenameTestSuiteResponse;
 import com.sparkit.staf.core.ast.ImportStatement;
 import com.sparkit.staf.core.ast.ImportTypes;
 import com.sparkit.staf.core.ast.StafFile;
@@ -34,7 +36,7 @@ public class TestSuiteService {
     }
 
     public GetTestSuiteDetailsResponse getTestSuiteDetails(String project, String testSuiteName) throws IOException, SyntaxErrorException {
-        String testSuiteDirectory = getTestSuiteDirectory(project, testSuiteName).getParentFile().getAbsolutePath();
+        String testSuiteDirectory = getTestSuiteMainFile(project, testSuiteName).getParentFile().getAbsolutePath();
         GetTestSuiteDetailsResponse response = new GetTestSuiteDetailsResponse();
         response.setTestSuite(testSuiteName);
         response.setProject(project);
@@ -52,7 +54,7 @@ public class TestSuiteService {
     }
 
     public Map<String, StafFile> compileTestSuite(String project, String testSuiteName) throws IOException, SyntaxErrorException {
-        String testSuiteMainFilePath = getTestSuiteDirectory(project, testSuiteName).getAbsolutePath();
+        String testSuiteMainFilePath = getTestSuiteMainFile(project, testSuiteName).getAbsolutePath();
         StafFile mainScriptAST = stafCompiler.compile(testSuiteMainFilePath);
         Map<String, StafFile> testSuiteImportedFilesAST = new HashMap<>();
         testSuiteImportedFilesAST.put(testSuiteMainFilePath, mainScriptAST);
@@ -81,11 +83,29 @@ public class TestSuiteService {
         }
     }
 
+    public RenameTestSuiteResponse renameTestSuite(RenameTestSuiteRequest renameRequest) {
+        RenameTestSuiteResponse  response = new RenameTestSuiteResponse();
+        String normalizedProjectName = ProjectService.normalizeProjectName(renameRequest.getProjectName());
+        File testSuiteDirectory = getTestSuiteDirectory(normalizedProjectName,
+                renameRequest.getOldTestSuiteName());
+        boolean renameToResult = testSuiteDirectory.renameTo(getTestSuiteDirectory(normalizedProjectName, renameRequest.getNewTesSuiteName()));
+        if (renameToResult) {
+            response.setResult("ok");
+        } else {
+            response.setResult("error");
+        }
+        return response;
+    }
+
+    private File getTestSuiteMainFile(String project, String testSuiteName) {
+        File testSuiteDir = getTestSuiteDirectory(project, testSuiteName);
+        return new File(testSuiteDir, TEST_SUITE_MAIN_FILE);
+    }
+
     private File getTestSuiteDirectory(String project, String testSuiteName) {
         File testDir = new File(testDirectory);
         File projectDir = new File(testDir, ProjectService.normalizeProjectName(project));
-        File testSuiteDir = new File(projectDir, testSuiteName);
-        return new File(testSuiteDir, TEST_SUITE_MAIN_FILE);
+        return new File(projectDir, testSuiteName);
     }
 
 }

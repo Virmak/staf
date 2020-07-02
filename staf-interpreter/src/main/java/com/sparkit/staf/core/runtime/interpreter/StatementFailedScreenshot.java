@@ -4,9 +4,9 @@ import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.ast.types.StafString;
 import com.sparkit.staf.core.runtime.libs.builtin.selenium.SeleniumLibrary;
-import com.sparkit.staf.core.runtime.loader.IStafConfig;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
+import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +20,15 @@ public class StatementFailedScreenshot implements OnStatementFailed {
     private static final String CAPTURE_SCREENSHOT_KEYWORD_NAME = "capturescreenshot";
     private final TestCaseReport testCaseReport;
     private final TestSuite testSuite;
-    private final IStafConfig config;
+    private final ProjectConfig config;
     private final StatementBlockExecutor statementBlockExecutor;
     private final SymbolsTable sessionGlobalSymbolsTable;
     private final String testDirectory;
     private final String testCaseName;
 
-    public StatementFailedScreenshot(TestCaseReport testCaseReport, TestSuite testSuite, IStafConfig config, StatementBlockExecutor statementBlockExecutor, SymbolsTable sessionGlobalSymbolsTable, String testDirectory, String testCaseName) {
+    public StatementFailedScreenshot(TestCaseReport testCaseReport, TestSuite testSuite, ProjectConfig config,
+                                     StatementBlockExecutor statementBlockExecutor, SymbolsTable sessionGlobalSymbolsTable,
+                                     String testDirectory, String testCaseName) {
         this.testCaseReport = testCaseReport;
         this.testSuite = testSuite;
         this.config = config;
@@ -57,9 +59,10 @@ public class StatementFailedScreenshot implements OnStatementFailed {
     }
 
     private String getScreenshotPath() {
-        return testDirectory + "/" + config.getProjectDir() + "/"
-                + testSuite + "/" + config.getReportingDirectory()
-                + "/screenshot-" + testSuite.getTestSuiteName() + "-" + testCaseName.replaceAll("\\s*", "")
+        return testDirectory + "/" + config.getRootPath()
+                + "/" + testSuite + "/" + config.getReportsDir()
+                + "/screenshot-" + testSuite.getTestSuiteName()
+                + "-" + testCaseName.replaceAll("\\s*", "")
                 + "-" + new Date().getTime() + ".png";
     }
 }
