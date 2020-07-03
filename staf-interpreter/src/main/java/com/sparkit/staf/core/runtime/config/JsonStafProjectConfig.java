@@ -22,8 +22,7 @@ public class JsonStafProjectConfig implements IStafProjectConfigReader {
         this.mapper = mapper;
     }
 
-
-    public ProjectConfig readConfigFile(String configFilePath) throws IOException {
-        return mapper.readValue(new File(configFilePath), ProjectConfig.class);
+    public ProjectConfig readConfigFile(File configFilePath) throws IOException {
+        return mapper.readValue(configFilePath, ProjectConfig.class);
     }
 }

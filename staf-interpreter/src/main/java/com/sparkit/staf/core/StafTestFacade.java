@@ -36,7 +36,7 @@ public class StafTestFacade {
     private ITestReportWriter jsonReportWriter;
 
     public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, RunTestRequest request) throws IOException {
-        ProjectConfig projectConfig = projectConfigReader.readConfigFile(configFile);
+        ProjectConfig projectConfig = projectConfigReader.readConfigFile(new File(configFile));
         String logFilePath = getLogFilePath(projectConfig.getLogDir());
         System.setProperty(AppConfig.LOGGING_FILE, logFilePath);
         System.setProperty(AppConfig.TEST_DIRECTORY, testDir);
@@ -66,13 +66,11 @@ public class StafTestFacade {
             List<TestSuiteReport> testSuiteReport = null;
             try {
                 testSuiteReport = loader.runTests(runTestSuiteRequest, sessionCount, projectConfig);
-            } catch (SyntaxErrorException e) {
-                e.printStackTrace();
-            } catch (TestSuiteMainScriptNotFoundException e) {
+            } catch (SyntaxErrorException | TestSuiteMainScriptNotFoundException e) {
                 e.printStackTrace();
             }
-            jsonReportWriter.write(Paths.get(testDir).toAbsolutePath() + "/" + projectConfig.getRootPath()
-                    + "/results/" + runTestSuiteRequest.getName() + "-" + getCurrentDateTime() + ".json", testSuiteReport);
+            jsonReportWriter.write(Paths.get(testDir).toAbsolutePath() + "/" + projectConfig.getLocation()
+                    + "/" + projectConfig.getReportsDir()  + "/" + runTestSuiteRequest.getName() + "-" + getCurrentDateTime() + ".json", testSuiteReport);
             return testSuiteReport;
         });
     }

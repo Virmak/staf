@@ -59,7 +59,9 @@ public class TestSuiteService {
         Map<String, StafFile> testSuiteImportedFilesAST = new HashMap<>();
         testSuiteImportedFilesAST.put(testSuiteMainFilePath, mainScriptAST);
         String currentDirectoryPath = mainScriptAST.getFilePath().substring(0, mainScriptAST.getFilePath().lastIndexOf('/'));
-        loadImports(currentDirectoryPath, mainScriptAST.getImports(), testSuiteImportedFilesAST);
+        if (mainScriptAST.getImports() != null) {
+            loadImports(currentDirectoryPath, mainScriptAST.getImports(), testSuiteImportedFilesAST);
+        }
         return testSuiteImportedFilesAST;
     }
 

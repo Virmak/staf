@@ -59,8 +59,8 @@ public class StatementFailedScreenshot implements OnStatementFailed {
     }
 
     private String getScreenshotPath() {
-        return testDirectory + "/" + config.getRootPath()
-                + "/" + testSuite + "/" + config.getReportsDir()
+        return testDirectory + "/" + config.getLocation()
+                + "/" + testSuite.getTestSuiteName() + "/" + config.getReportsDir()
                 + "/screenshot-" + testSuite.getTestSuiteName()
                 + "-" + testCaseName.replaceAll("\\s*", "")
                 + "-" + new Date().getTime() + ".png";

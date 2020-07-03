@@ -37,6 +37,7 @@ import { TestSuiteOverviewComponent } from './test-suite-overview/test-suite-ove
 import { TestSuiteRowDetailsComponent } from './test-suite-row-details/test-suite-row-details.component';
 import { CreateFileModalComponent } from './create-file-modal/create-file-modal.component';
 import { RenameTestSuiteComponent } from './rename-test-suite/rename-test-suite.component';
+import { ProjectConfigComponent } from './project-config/project-config.component';
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import { RenameTestSuiteComponent } from './rename-test-suite/rename-test-suite.
     TestSuiteRowDetailsComponent,
     CreateFileModalComponent,
     RenameTestSuiteComponent,
+    ProjectConfigComponent,
   ],
   imports: [
     BrowserModule,

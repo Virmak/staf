@@ -61,7 +61,7 @@ public class TestSuiteRunner {
         runTestSuiteRequest.getTestCases().forEach(testCase -> selectedTestCaseMap.put(testCase.getName().toLowerCase(), testCase));
         TestSuite testSuite = new TestSuite(runTestSuiteRequest.getName(), testDirectory, symbolsTable(), keywordLibrariesRepository(), selectedTestCaseMap);
 
-        String fullPath = getFilePath(testDirectory, projectConfig.getRootPath(), mainFilePath);
+        String fullPath = getFilePath(testDirectory, projectConfig.getLocation(), mainFilePath);
         StafFile scriptAST;
         try {
             scriptAST = stafCompiler.compile(fullPath);

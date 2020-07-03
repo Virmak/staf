@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 
 const baseUrl = environment.resolveApi();
 const LOGS_DIR = '/logs';
-const RESULTS_DIR = '/results';
+const RESULTS_DIR = '/reports';
 
 @Injectable({
   providedIn: 'root'

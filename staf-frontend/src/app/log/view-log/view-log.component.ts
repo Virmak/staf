@@ -40,7 +40,7 @@ export class ViewLogComponent implements OnInit {
   }
 
   loadTestReport() {
-    this.projectService.getTestReport(this.project.name, this.selectedTestReport)
+    this.projectService.getTestReport(this.project.location, this.selectedTestReport)
     .subscribe((res: any) => {
       this.reports = res;
     }, err => {

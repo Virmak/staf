@@ -11,12 +11,9 @@ public class ProjectConfig {
     private int id;
     private String project;
     private String description;
+    private String location;
     private String logDir;
     private String reportsDir;
     private ProjectType type;
     private List<String> testSuites;
-
-    public String getRootPath() {
-        return project.toLowerCase().replaceAll("\\s+", "-");
-    }
 }

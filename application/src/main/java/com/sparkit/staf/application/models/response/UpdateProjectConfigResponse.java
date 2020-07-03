@@ -3,6 +3,6 @@ package com.sparkit.staf.application.models.response;
 import lombok.Data;
 
 @Data
-public class UpdateProjectResponse {
+public class UpdateProjectConfigResponse {
     private String result;
 }

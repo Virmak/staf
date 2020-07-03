@@ -42,16 +42,7 @@ export class RenameTestSuiteComponent implements OnInit {
   }
 
   renameTestSuite() {
-    this.projectService.renameTestSuite(this.project, this.testSuite, this.newName)
-      .subscribe((response: IGenericResponse) => {
-        if (response.result == GenericResponse.Ok) {
-          this.toastr.success('Test suite renamed successfully');
-          this.toastr.info('Reloading project files');
-          this.projectService.fetchProject(this.project);
-        } else {
-          this.toastr.error('Error renaming test suite');
-        }
-      });
+    this.projectService.renameTestSuite(this.project, this.testSuite, this.newName);
     this.renameModalOpened = false;
   }
 

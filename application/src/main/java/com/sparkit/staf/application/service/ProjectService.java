@@ -5,11 +5,8 @@ import com.sparkit.staf.application.exception.ProjectNameAlreadyExist;
 import com.sparkit.staf.application.exception.TestDirectoryNotFound;
 import com.sparkit.staf.application.models.request.CreateProjectRequest;
 import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
-import com.sparkit.staf.application.models.request.UpdateProjectRequest;
-import com.sparkit.staf.application.models.response.CreateTestSuiteResponse;
-import com.sparkit.staf.application.models.response.DeleteTestSuiteResponse;
-import com.sparkit.staf.application.models.response.GetProjectReportsResponse;
-import com.sparkit.staf.application.models.response.UpdateProjectResponse;
+import com.sparkit.staf.application.models.response.*;
+import com.sparkit.staf.core.runtime.config.JsonStafProjectConfig;
 import com.sparkit.staf.core.runtime.loader.IStafProjectConfigReader;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestSuite;
@@ -20,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -33,15 +29,16 @@ public class ProjectService {
     private static final String PROJECT_ROOT_PLACEHOLDER = "$projectRoot";
     private static final String ERROR_RESULT_STRING = "error";
     private static final String OK_RESULT_STRING = "ok";
+    private static final String READING_FILE_ERROR = "Error reading file";
     private final IProjectBuilder projectBuilder;
-    private final IStafProjectConfigReader projectConfig;
+    private final IStafProjectConfigReader configReader;
     @Value("${testDirectory}")
     private String testDir;
 
     @Autowired
-    public ProjectService(IProjectBuilder projectBuilder, IStafProjectConfigReader projectConfig) {
+    public ProjectService(IProjectBuilder projectBuilder, IStafProjectConfigReader configReader) {
         this.projectBuilder = projectBuilder;
-        this.projectConfig = projectConfig;
+        this.configReader = configReader;
     }
 
     public static String normalizeProjectName(String name) {
@@ -120,31 +117,22 @@ public class ProjectService {
     }
 
     public String readImageBase64(File f) {
-        String encodedFile = null;
-        FileInputStream fileInputStreamReader = null;
-        String readingFileError = "Error reading file";
-        try {
-            fileInputStreamReader = new FileInputStream(f);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return readingFileError;
-        }
-        byte[] bytes = new byte[(int) f.length()];
-        try {
-            fileInputStreamReader.read(bytes);
+
+        try (FileInputStream fileInputStream = new FileInputStream(f)) {
+            byte[] bytes = new byte[(int) f.length()];
+            fileInputStream.read(bytes);
+            return Base64.getEncoder().encodeToString(bytes);
         } catch (IOException e) {
             e.printStackTrace();
-            return readingFileError;
+            return READING_FILE_ERROR;
         }
-        encodedFile = Base64.getEncoder().encodeToString(bytes);
-        return encodedFile;
     }
 
     private String readTextFile(File f) {
         try {
             return new String(Files.readAllBytes(Paths.get(f.getPath())));
         } catch (IOException e) {
-            return "Error reading file";
+            return READING_FILE_ERROR;
         }
     }
 
@@ -168,11 +156,12 @@ public class ProjectService {
         return response;
     }
 
-    public GetProjectReportsResponse getProjectReports(String projectName) {
+    public GetProjectReportsResponse getProjectReports(String projectName) throws IOException {
         GetProjectReportsResponse response = new GetProjectReportsResponse();
         response.setProjectName(projectName);
         File projectDirectoryFile = getProjectDirectoryFile(projectName);
-        File reportsDirectory = new File(projectDirectoryFile, "results");
+        ProjectConfig projectConfig = getProjectConfig(projectName);
+        File reportsDirectory = new File(projectDirectoryFile, projectConfig.getReportsDir());
         response.setReportsFileNameList(
                 Arrays.stream(Objects.requireNonNull(reportsDirectory.listFiles()))
                         .map(File::getName).collect(Collectors.toList()));
@@ -192,23 +181,51 @@ public class ProjectService {
         return response;
     }
 
-    public UpdateProjectResponse renameProject(UpdateProjectRequest renameProjectRequest) {
-        UpdateProjectResponse response = new UpdateProjectResponse();
-
-
-        File projectDirectoryFile = getProjectDirectoryFile(normalizeProjectName(renameProjectRequest.getOldProjectName()));
-        File newProjectDirectoryFile = getProjectDirectoryFile(normalizeProjectName(renameProjectRequest.getNewProjectName()));
-
-        if (projectDirectoryFile.renameTo(newProjectDirectoryFile)) {
-            response.setResult(OK_RESULT_STRING);
-        } else {
-            response.setResult(ERROR_RESULT_STRING);
-        }
-        return response;
+    public boolean updateProjectLocation(String oldProjectLocation, String newProjectLocation) {
+        File projectDirectoryFile = getProjectDirectoryFile(normalizeProjectName(oldProjectLocation));
+        File newProjectDirectoryFile = getProjectDirectoryFile(normalizeProjectName(newProjectLocation));
+        return projectDirectoryFile.renameTo(newProjectDirectoryFile);
     }
 
     public File getProjectDirectoryFile(String projectName) {
         File testDirectoryFile = new File(testDir);
         return new File(testDirectoryFile, normalizeProjectName(projectName));
+    }
+
+    public UpdateProjectConfigResponse updateProjectConfig(String projectLocation, ProjectConfig updateConfigRequest) {
+        UpdateProjectConfigResponse response = new UpdateProjectConfigResponse();
+        try {
+            ProjectConfig originalConfig = getProjectConfig(projectLocation);
+            originalConfig.setProject(updateConfigRequest.getProject());
+            originalConfig.setDescription(updateConfigRequest.getDescription());
+            originalConfig.setLogDir(updateConfigRequest.getLogDir());
+            originalConfig.setReportsDir(updateConfigRequest.getReportsDir());
+            if (!originalConfig.getLocation().equals(updateConfigRequest.getLocation())) {
+                if (!updateProjectLocation(originalConfig.getLocation(), updateConfigRequest.getLocation())) {
+                    throw new IOException("Cannot rename project");
+                }
+                originalConfig.setLocation(updateConfigRequest.getLocation());
+            }
+            projectBuilder.writeConfigFile(originalConfig, getProjectDirectoryFile(updateConfigRequest.getLocation()));
+            response.setResult(OK_RESULT_STRING);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setResult(ERROR_RESULT_STRING);
+        }
+        return response;
+    }
+
+    public String readTestReport(String projectName, String fileName) throws IOException {
+        ProjectConfig projectConfig = getProjectConfig(projectName);
+        File projectDirectoryFile = getProjectDirectoryFile(normalizeProjectName(projectName));
+        File reportsDirectory = new File(projectDirectoryFile, projectConfig.getReportsDir());
+        File reportFile = new File(reportsDirectory, fileName);
+        return new String(Files.readAllBytes(Paths.get(reportFile.getAbsolutePath())));
+    }
+
+    private ProjectConfig getProjectConfig(String projectLocation) throws IOException {
+        File projectDirectoryFile = getProjectDirectoryFile(normalizeProjectName(projectLocation));
+        File configFile = new File(projectDirectoryFile, JsonStafProjectConfig.DEFAULT_PROJECT_CONFIG_NAME);
+        return configReader.readConfigFile(configFile);
     }
 }

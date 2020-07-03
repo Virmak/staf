@@ -10,6 +10,7 @@ import { IDirectory } from './interfaces/idirectory';
 import { Subject, config } from 'rxjs';
 import { IFile, FileType } from './interfaces/ifile';
 import { HttpClient } from '@angular/common/http';
+import { IGenericResponse, GenericResponse } from './interfaces/igeneric-response';
 
 const defaultProjectsLocation = '~/tests';
 const baseUrl = environment.resolveApi();
@@ -65,7 +66,7 @@ export class ProjectService {
   }
 
   fetchProject(project: StafProject) {
-    this.http.get(baseUrl + '/projects/' + project.getNormalizedProjectName())
+    this.http.get(baseUrl + '/projects/' + project.location)
       .subscribe((projectDirectory: any) => {
         const project = this.createProject(projectDirectory);
         const projectIndex = this.projects.findIndex(p => p.name === project.name);
@@ -189,7 +190,7 @@ export class ProjectService {
         id: this.sequence.getNext('project'),
         name: config.project,
         description: config.description,
-        location: '',
+        location: project.path.substr(project.path.lastIndexOf('/') + 1),
         testSuites: this.testSuiteService.extractTestSuitesFromProject(project),
         logDir: config.logDir,
         reportsDir: config.reportsDir,
@@ -224,6 +225,10 @@ export class ProjectService {
 
   getProjectByName(name: string): StafProject {
     return this.projects.find(p => p.getNormalizedProjectName() == name);
+  }
+
+  getProjectByLocation(location: string): StafProject {
+    return this.projects.find(p => p.location == location);
   }
 
   getEmptyProject(): IStafProject {
@@ -292,6 +297,64 @@ export class ProjectService {
       oldTestSuiteName: testSuite.name,
       newTesSuiteName: newName
     }
-    return this.http.put(baseUrl + '/testSuite', payload);
+    return this.http.put(baseUrl + '/testSuite', payload)
+      .subscribe((response: IGenericResponse) => {
+        if (response.result == GenericResponse.Ok) {
+          this.toastr.success('Test suite renamed successfully');
+          this.reloadProject(project);
+        } else {
+          this.toastr.error('Error renaming test suite');
+        }
+      });
+  }
+
+  updateProjectData(project:StafProject, newName: string, description: string) {
+    const payload = {
+      oldProjectName: project.name,
+      newProjectName: newName,
+      description
+    }
+    this.http.put(baseUrl + '/projects', payload)
+    .subscribe((response: IGenericResponse) => {
+      if (response.result == GenericResponse.Ok) {
+        this.toastr.success('Project updated successfully');
+        this.reloadProject(project);
+      } else {
+        this.toastr.error('Error updating project');
+      }
+    });
+  }
+
+  updateProjectConfig(project: StafProject, projectName: string, description: string, 
+    logDirectory: string, reportDirectory: string, location: string, 
+    originalLocation: string, reloadProject: boolean) {
+    const payload = {
+      project: projectName, 
+      description,
+      location,
+      logDir: logDirectory,
+      reportsDir: reportDirectory,
+    };
+    this.http.put(baseUrl + '/projects/config/' + originalLocation, payload)
+    .subscribe((response: IGenericResponse) => {
+      if (response.result == GenericResponse.Ok) {
+        this.toastr.success('Project config updated successfully');
+        project.location = location;
+        project.description = description;
+        project.name = projectName;
+        project.logDir = logDirectory;
+        project.reportsDir = reportDirectory;
+        if (reloadProject) {
+          this.reloadProject(project);
+        }
+      } else {
+        this.toastr.error('Error updating project');
+      }
+    });
+  }
+
+  reloadProject(project: StafProject) {
+    this.toastr.info('Reloading project files');
+    this.fetchProject(project);
   }
 }
