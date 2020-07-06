@@ -36,8 +36,7 @@ public class FileService {
         if (file.exists()) {
             response.setResult(ProjectService.ERROR_RESULT_STRING);
             response.setError("File already exists");
-        }
-        else if (createFileRequest.getType() == FileType.FILE) {
+        } else if (createFileRequest.getType() == FileType.FILE) {
             try {
                 FileUtils.writeStringToFile(file, "", "UTF-8");
                 response.setResult(ProjectService.OK_RESULT_STRING);
@@ -57,8 +56,9 @@ public class FileService {
     }
 
     public RenameFileResponse renameFile(RenameFileRequest renameFileRequest) {
+        String actualFilePath = renameFileRequest.getFilePath().replace(testDir, "");
         RenameFileResponse response = new RenameFileResponse();
-        File fileToRename = new File(renameFileRequest.getFilePath());
+        File fileToRename = new File(testDir, actualFilePath);
         File newFile = new File(fileToRename.getParentFile(), renameFileRequest.getNewName());
         if (fileToRename.renameTo(newFile)) {
             response.setResult(ProjectService.OK_RESULT_STRING);

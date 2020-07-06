@@ -148,7 +148,8 @@ export class ProjectService {
     this.http.delete(baseUrl + '/deleteFile/' + file.path.replace(/\//g, '<sep>'))
       .subscribe((res: any) => {
         if (res.result == 'ok') {
-          parent.content.delete(file.path);
+          const fileKey = file.type === FileType.File ? file.path : file.name;
+          parent.content.delete(fileKey);
           this.toastr.info('File deleted', 'Success');
         } else {
           errorToastr();
