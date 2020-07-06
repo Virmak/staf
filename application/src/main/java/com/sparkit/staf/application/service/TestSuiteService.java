@@ -53,9 +53,22 @@ public class TestSuiteService {
         return response;
     }
 
-    public Map<String, StafFile> compileTestSuite(String project, String testSuiteName) throws IOException, SyntaxErrorException {
+    public Map<String, StafFile> compileWithErrors(String project, String testSuiteName) throws IOException {
         String testSuiteMainFilePath = getTestSuiteMainFile(project, testSuiteName).getAbsolutePath();
-        StafFile mainScriptAST = stafCompiler.compile(testSuiteMainFilePath);
+        StafFile mainScriptAST = null;
+        mainScriptAST = stafCompiler.compileWithErrors(testSuiteMainFilePath);
+        Map<String, StafFile> testSuiteImportedFilesAST = new HashMap<>();
+        testSuiteImportedFilesAST.put(toRelativePath(testSuiteMainFilePath), mainScriptAST);
+        String currentDirectoryPath = mainScriptAST.getFilePath().substring(0, mainScriptAST.getFilePath().lastIndexOf('/'));
+        if (mainScriptAST.getImports() != null) {
+            loadImports(currentDirectoryPath, mainScriptAST.getImports(), testSuiteImportedFilesAST);
+        }
+        return testSuiteImportedFilesAST;
+    }
+
+    public Map<String, StafFile> compileTestSuite(String project, String testSuiteName) throws IOException {
+        String testSuiteMainFilePath = getTestSuiteMainFile(project, testSuiteName).getAbsolutePath();
+        StafFile mainScriptAST = stafCompiler.compileWithErrors(testSuiteMainFilePath);
         Map<String, StafFile> testSuiteImportedFilesAST = new HashMap<>();
         testSuiteImportedFilesAST.put(testSuiteMainFilePath, mainScriptAST);
         String currentDirectoryPath = mainScriptAST.getFilePath().substring(0, mainScriptAST.getFilePath().lastIndexOf('/'));
@@ -66,7 +79,7 @@ public class TestSuiteService {
     }
 
     public void loadImports(String currentDirectory, List<ImportStatement> importStatements, Map<String, StafFile> testSuiteFilesAST)
-            throws IOException, SyntaxErrorException {
+            throws IOException {
         for (ImportStatement statement : importStatements) {
             if (statement.getType() == ImportTypes.BUILT_IN_LIBRARY) {
                 continue;
@@ -75,18 +88,17 @@ public class TestSuiteService {
             File importedFile = new File(directory, statement.getPath().replaceAll("[\"']", ""));
             String importedFileAbsolutePath = importedFile.getCanonicalPath();
             if (!testSuiteFilesAST.containsKey(importedFileAbsolutePath)) {
-                StafFile scriptAST = stafCompiler.compile(importedFileAbsolutePath);
-                testSuiteFilesAST.put(importedFileAbsolutePath, scriptAST);
+                StafFile scriptAST = stafCompiler.compileWithErrors(importedFileAbsolutePath);
+                testSuiteFilesAST.put(toRelativePath(importedFileAbsolutePath), scriptAST);
                 if (scriptAST.getImports() != null) {
                     loadImports(importedFile.getParentFile().getAbsolutePath(), scriptAST.getImports(), testSuiteFilesAST);
                 }
             }
-
         }
     }
 
     public RenameTestSuiteResponse renameTestSuite(RenameTestSuiteRequest renameRequest) {
-        RenameTestSuiteResponse  response = new RenameTestSuiteResponse();
+        RenameTestSuiteResponse response = new RenameTestSuiteResponse();
         String normalizedProjectName = ProjectService.normalizeProjectName(renameRequest.getProjectName());
         File testSuiteDirectory = getTestSuiteDirectory(normalizedProjectName,
                 renameRequest.getOldTestSuiteName());
@@ -99,7 +111,7 @@ public class TestSuiteService {
         return response;
     }
 
-    private File getTestSuiteMainFile(String project, String testSuiteName) {
+    public File getTestSuiteMainFile(String project, String testSuiteName) {
         File testSuiteDir = getTestSuiteDirectory(project, testSuiteName);
         return new File(testSuiteDir, TEST_SUITE_MAIN_FILE);
     }
@@ -108,6 +120,10 @@ public class TestSuiteService {
         File testDir = new File(testDirectory);
         File projectDir = new File(testDir, ProjectService.normalizeProjectName(project));
         return new File(projectDir, testSuiteName);
+    }
+
+    private String toRelativePath(String path) {
+        return path.substring(path.indexOf(testDirectory));
     }
 
 }

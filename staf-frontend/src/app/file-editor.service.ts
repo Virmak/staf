@@ -57,11 +57,14 @@ export class FileEditorService {
     }
   }
 
-  saveFile(file) {
+  saveFile(file, completeCallback = null) {
     this.projectService.saveFile(file).subscribe(res => {
       this.toastr.success('File saved', 'Success');
       file.changed = false;
       file.originalContent = file.content as string;
+      if (completeCallback) {
+        completeCallback();
+      }
     }, err => this.toastr.error('Cannot save file', 'Error'));
   }
 

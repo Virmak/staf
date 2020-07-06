@@ -1,3 +1,4 @@
+import { StafProject } from './types/staf-project';
 import { HttpClient } from "@angular/common/http";
 import { SequenceService } from "./sequence.service";
 import { ITestSuite } from "./interfaces/itest-suite";
@@ -95,5 +96,9 @@ export class TestSuiteService {
     return this.http.get(
       environment.resolveApi() + "/testSuite/" + project + "/" + testSuite
     );
+  }
+
+  compileTestSuite(project: StafProject, testSuiteName) {
+    return this.http.get(baseUrl + '/compileTestSuite/' + project.location + '/' + testSuiteName);
   }
 }

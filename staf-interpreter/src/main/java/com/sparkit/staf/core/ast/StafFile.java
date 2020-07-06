@@ -1,5 +1,6 @@
 package com.sparkit.staf.core.ast;
 
+import com.sparkit.staf.core.parser.SyntaxError;
 import lombok.Data;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public class StafFile {
     private Map<String, Assignment> variableDeclarationMap;
     private Map<String, KeywordDeclaration> keywordDeclarationMap;
     private Map<String, TestCaseDeclaration> testCaseDeclarationMap;
+    private List<SyntaxError> syntaxErrors;
 }

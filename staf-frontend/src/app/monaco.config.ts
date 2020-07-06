@@ -65,6 +65,25 @@ export const monacoConfig: NgxMonacoEditorConfig = {
                 };              
             }
         });
+        let model = monaco.editor.createModel(    'This line is okay.\nThis line has a warning.\nThis line has an error.' , 'staf');
+        monaco.editor.setModelMarkers(model, "owner", [
+            {
+                startLineNumber: 2,
+                startColumn: 17,
+                endLineNumber: 2,
+                endColumn: 24,
+                message: 'Warning!',
+                severity: monaco.MarkerSeverity.Warning
+            },
+            {
+                startLineNumber: 3,
+                startColumn: 18,
+                endLineNumber: 3,
+                endColumn: 23,
+                message: 'Erorr!',
+                severity: monaco.MarkerSeverity.Error
+            }
+        ]);
         /*
         monaco.languages.registerHoverProvider('staf', {
             provideHover: function (model, position) {
