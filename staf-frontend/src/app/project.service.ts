@@ -7,12 +7,11 @@ import { ITestSuite } from './interfaces/itest-suite';
 import { Injectable } from '@angular/core';
 import { IStafProject, ProjectType } from './interfaces/istaf-project';
 import { IDirectory } from './interfaces/idirectory';
-import { Subject, config } from 'rxjs';
+import { Subject } from 'rxjs';
 import { IFile, FileType } from './interfaces/ifile';
 import { HttpClient } from '@angular/common/http';
 import { IGenericResponse, GenericResponse } from './interfaces/igeneric-response';
 
-const defaultProjectsLocation = '~/tests';
 const baseUrl = environment.resolveApi();
 
 @Injectable({
@@ -41,23 +40,14 @@ export class ProjectService {
   }
 
   private getProjectConfig(project) {
-    for (let i = 0; i < project.files.length; i++) {
-      const keys = Object.keys(project.files[i]); // filenames are the object keys
-      const fileNames = keys.map(fn => fn.substring(fn.lastIndexOf('/') + 1));
-      const configFileIndex = fileNames.indexOf('config.json');
-      if (configFileIndex == -1) { // error config file not found
-        return null;
-      } else {
-        return project.files[i][keys[configFileIndex]];
-      }
-    }
+    return project.content.find(file => file.type === FileType.File && file.name === 'config.json');  
   }
 
   fetchAllProjects(errCallback = null) {
     this.toastr.info('Loading projects');
     this.http.get(baseUrl + '/projects').subscribe((projects: any) => {
       this.testDirectory = projects.name;
-      this.projects = projects.folders.map(this.createProject.bind(this))
+      this.projects = projects.content.map(this.createProject.bind(this))
         .filter(p => p != null);
       this.next();
 
@@ -103,11 +93,11 @@ export class ProjectService {
       } else {
         parent.content.set(filePath, file);
       }
-      this.saveFile(file).subscribe((res: any) => {
-        if (res.result == 'ok') {
+      this.createNewFile(file).subscribe((res: any) => {
+        if (res.result == GenericResponse.Ok) {
           this.toastr.success('File created', 'Success');
         } else {
-          this.toastr.error('Error creating file', 'Error');
+          this.toastr.error(res.error, 'Error');
         }
       });;
     } else {
@@ -122,18 +112,22 @@ export class ProjectService {
       } else {
         parent.content.set(filename, dir);
       }
-      this.saveDirectory(dir);
+      this.createNewDirectory(dir);
     }
   }
 
-  saveDirectory(directory: IDirectory) {
-    this.saveFile(directory).subscribe((res: any) => {
-      if (res.result == 'ok') {
+  createNewDirectory(directory: IDirectory) {
+    this.createNewFile(directory).subscribe((res: any) => {
+      if (res.result == GenericResponse.Ok) {
         this.toastr.success('Directory created', 'Success');
       } else {
-        this.toastr.error('Error creating directory', 'Error');
+        this.toastr.error(res.error, 'Error');
       }
     });
+  }
+
+  createNewFile(file: IFile) {
+    return this.http.post(baseUrl + '/createFile', file);
   }
 
   showDeleteFileDialog(file: IFile, parent) {
@@ -236,7 +230,7 @@ export class ProjectService {
       id: 0,
       name: '',
       description: '',
-      location: defaultProjectsLocation + '/',
+      location: '',
       logDir: 'logs',
       reportsDir: 'reports',
       testSuites: [],
@@ -356,5 +350,43 @@ export class ProjectService {
   reloadProject(project: StafProject) {
     this.toastr.info('Reloading project files');
     this.fetchProject(project);
+  }
+
+  renameFile(file: IFile, parent: IDirectory, newName: string) {
+    const payload = {
+      filePath: file.path,
+      newName
+    };
+    this.http.put(baseUrl + '/renameFile', payload).subscribe((res: any) => {
+      if (res.result == GenericResponse.Ok) {
+        this.toastr.success('File renamed', 'Success');
+        const originalName = file.name;
+        file.name = newName;
+        file.path = file.path.replace(/\/[^\/]*$/, '') + '/' + file.name;
+        if (file.type === FileType.Directory) {
+          this.fetchDirectory(file as IDirectory, parent, originalName);
+        }
+
+      } else {
+        this.toastr.error('Cannot rename file', 'Error');
+      }
+    });
+  }
+
+  fetchDirectory(directory: IDirectory, parent: IDirectory, originalName: string) {
+    this.http.get(baseUrl + '/directory?path=' + directory.path)
+      .subscribe((res: any) => {
+        const newDirectoryContent = this.testSuiteService.readDirectory(res);
+        directory.content = newDirectoryContent;
+        parent.content.delete(originalName);
+        parent.content.set(res.name, directory); 
+      });
+  }
+
+  updateDirectoryName(parent: IDirectory, directory: IDirectory, newName: string) {
+    parent.content.delete(directory.name);
+    parent.content.set(newName, directory);
+    directory.name = newName;
+    directory.content
   }
 }

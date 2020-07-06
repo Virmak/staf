@@ -5,6 +5,7 @@ import com.sparkit.staf.application.models.request.CreateProjectRequest;
 import com.sparkit.staf.application.models.response.GetProjectReportsResponse;
 import com.sparkit.staf.application.models.response.UpdateProjectConfigResponse;
 import com.sparkit.staf.application.service.ProjectService;
+import com.sparkit.staf.domain.Directory;
 import com.sparkit.staf.domain.ProjectConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,35 +30,31 @@ public class ProjectController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/projects")
-    public ResponseEntity<Map<String, Object>> createProject(@RequestBody CreateProjectRequest createProjectRequest) throws IOException {
+    public ResponseEntity<Directory> createProject(@RequestBody CreateProjectRequest createProjectRequest) throws IOException {
         try {
             projectService.createProject(createProjectRequest);
         } catch (IOException | ProjectNameAlreadyExist e) {
             Map<String, Object> res = new HashMap<>();
             res.put("error", "Project name already exists");
             e.printStackTrace();
-            return ResponseEntity.ok(res);
+            return ResponseEntity.ok(new Directory());
         }
         return ResponseEntity.ok(projectService.readProjectContent(createProjectRequest.getName()));
     }
 
     @CrossOrigin(origins = "*")
-    @GetMapping("/projects/{projectName}")
-    public Map<String, Object> getProject(@PathVariable("projectName") String projectName) {
-        String currentDir = System.getProperty("user.dir");
-        String absoluteTestDir = currentDir + "/" + testDir;
+    @GetMapping("/projects/{projectLocation}")
+    public Directory getProject(@PathVariable("projectLocation") String projectLocation) {
         File testDirectoryFile = new File(testDir);
-        File projectDirectoryFile = new File(testDirectoryFile, ProjectService.normalizeProjectName(projectName));
-        return projectService.listDirectory(projectDirectoryFile, absoluteTestDir);
+        File projectDirectoryFile = new File(testDirectoryFile, projectLocation);
+        return projectService.readDirectory(projectDirectoryFile);
     }
 
     @CrossOrigin(origins = "*")
     @GetMapping("/projects")
-    public Map<String, Object> getProjects() {
-        String currentDir = System.getProperty("user.dir");
-        String absoluteTestDir = currentDir + "/" + testDir;
+    public Directory getProjects() {
         File projectsDir = new File(testDir);
-        return projectService.listDirectory(projectsDir, absoluteTestDir);
+        return projectService.readDirectory(projectsDir);
     }
 
     @CrossOrigin("*")

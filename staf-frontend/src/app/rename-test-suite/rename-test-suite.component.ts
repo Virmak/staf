@@ -23,7 +23,6 @@ export class RenameTestSuiteComponent implements OnInit {
 
   constructor(
     private projectService: ProjectService,
-    private toastr: ToastrService,
     private fileEditor: FileEditorService) { }
 
   ngOnInit(): void {

@@ -5,9 +5,14 @@ import com.sparkit.staf.application.exception.ProjectNameAlreadyExist;
 import com.sparkit.staf.application.exception.TestDirectoryNotFound;
 import com.sparkit.staf.application.models.request.CreateProjectRequest;
 import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
-import com.sparkit.staf.application.models.response.*;
+import com.sparkit.staf.application.models.response.CreateTestSuiteResponse;
+import com.sparkit.staf.application.models.response.DeleteTestSuiteResponse;
+import com.sparkit.staf.application.models.response.GetProjectReportsResponse;
+import com.sparkit.staf.application.models.response.UpdateProjectConfigResponse;
 import com.sparkit.staf.core.runtime.config.JsonStafProjectConfig;
 import com.sparkit.staf.core.runtime.loader.IStafProjectConfigReader;
+import com.sparkit.staf.domain.Directory;
+import com.sparkit.staf.domain.FileType;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestSuite;
 import org.apache.commons.io.FileUtils;
@@ -25,10 +30,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
+    public static final String ERROR_RESULT_STRING = "error";
+    public static final String OK_RESULT_STRING = "ok";
     private static final String USER_DIR = "user.dir";
-    private static final String PROJECT_ROOT_PLACEHOLDER = "$projectRoot";
-    private static final String ERROR_RESULT_STRING = "error";
-    private static final String OK_RESULT_STRING = "ok";
     private static final String READING_FILE_ERROR = "Error reading file";
     private final IProjectBuilder projectBuilder;
     private final IStafProjectConfigReader configReader;
@@ -45,11 +49,9 @@ public class ProjectService {
         return name.toLowerCase().replaceAll("\\s+", "-");
     }
 
-    public Map<String, Object> readProjectContent(String projectName) {
+    public Directory readProjectContent(String projectName) {
         File projectDir = new File(testDir, ProjectService.normalizeProjectName(projectName));
-        String currentDir = System.getProperty(USER_DIR);
-        String absoluteTestDir = currentDir + "/" + testDir;
-        return listDirectory(projectDir, absoluteTestDir);
+        return readDirectory(projectDir);
     }
 
     public List<String> getProjectsList() throws TestDirectoryNotFound {
@@ -67,33 +69,26 @@ public class ProjectService {
         return projectBuilder.buildProject(createProjectRequest);
     }
 
-    public Map<String, Object> listDirectory(File dir, String testDir) {
+    public Directory readDirectory(File dir) {
+        Directory directory = new Directory();
         File[] content = dir.listFiles();
-
-        List<Map<String, com.sparkit.staf.domain.File>> files = new LinkedList<>();
-        List<Map<String, Object>> folders = new LinkedList<>();
-
-        for (File f : content) {
-            if (f.isDirectory()) {
-                Map<String, Object> subList = listDirectory(f, testDir);
-                folders.add(subList);
+        directory.setContent(new ArrayList<>());
+        for (File file : content) {
+            if (file.isDirectory()) {
+                directory.getContent().add(readDirectory(file));
             } else {
-                Map<String, com.sparkit.staf.domain.File> fileMap = new HashMap<>();
-                com.sparkit.staf.domain.File file = new com.sparkit.staf.domain.File();
-                file.setName(f.getPath());
-                file.setFileContent(readFileContent(f));
-                file.setPath(f.toString());
-                fileMap.put(f.toString().replaceAll(testDir, PROJECT_ROOT_PLACEHOLDER), file);
-                files.add(fileMap);
+                com.sparkit.staf.domain.File newFile = new com.sparkit.staf.domain.File();
+                newFile.setName(file.getName());
+                newFile.setFileContent(readFileContent(file));
+                newFile.setPath(file.getPath());
+                newFile.setType(FileType.FILE);
+                directory.getContent().add(newFile);
             }
         }
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("folders", folders);
-        result.put("files", files);
-        result.put("name", dir.toString().replace(testDir, PROJECT_ROOT_PLACEHOLDER));
-        result.put("path", dir.toString().replace(testDir, PROJECT_ROOT_PLACEHOLDER));
-        return result;
+        directory.setName(dir.getName());
+        directory.setPath(dir.getPath());
+        directory.setType(FileType.DIRECTORY);
+        return directory;
     }
 
     private String readFileContent(File f) {
@@ -145,9 +140,8 @@ public class ProjectService {
         response.setName(request.getName());
         try {
             TestSuite testSuite = projectBuilder.buildTestSuite(request);
-            String absoluteTestDir = System.getProperty(USER_DIR) + "/" + testDir;
             response.setResult(OK_RESULT_STRING);
-            response.setContent(listDirectory(new File(testSuite.getRootPath()), absoluteTestDir));
+            response.setContent(readDirectory(new File(testSuite.getRootPath())));
         } catch (IOException e) {
             e.printStackTrace();
             response.setResult(ERROR_RESULT_STRING);

@@ -43,6 +43,7 @@ public class ProjectBuilder implements IProjectBuilder {
         config.setLogDir(createProjectRequest.getLogDir());
         config.setReportsDir(createProjectRequest.getReportsDir());
         config.setType(createProjectRequest.getType());
+        config.setLocation(createProjectRequest.getLocation());
         config.setTestSuites(new ArrayList<>());
         File projectDir = new File(testDir, normalizeProjectName(createProjectRequest.getName()));
         if (projectDir.exists()) {

@@ -15,9 +15,9 @@
         <clr-stack-label>{{testSuite.name}}</clr-stack-label>
 
         <clr-stack-block *ngIf="testSuite.testCases?.length == 0" [clrStackViewLevel]="2" [clrStackViewSetsize]="0" [clrStackViewPosinset]="1">
-            <clr-spinner clrAssertive clrInline>
+          <clr-spinner clrAssertive clrInline>
               Loading...
-            </clr-spinner>
+            </clr-spinner>            
         </clr-stack-block>
 
         <clr-stack-block

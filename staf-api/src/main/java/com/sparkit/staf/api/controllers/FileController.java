@@ -1,8 +1,14 @@
 package com.sparkit.staf.api.controllers;
 
+import com.sparkit.staf.application.models.request.CreateFileRequest;
+import com.sparkit.staf.application.models.request.RenameFileRequest;
+import com.sparkit.staf.application.models.response.CreateFileResponse;
 import com.sparkit.staf.application.models.response.ImageBase64;
+import com.sparkit.staf.application.models.response.RenameFileResponse;
 import com.sparkit.staf.application.service.FileService;
 import com.sparkit.staf.application.service.ProjectService;
+import com.sparkit.staf.domain.Directory;
+import com.sparkit.staf.domain.FileType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +30,33 @@ public class FileController {
         this.projectService = projectService;
     }
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("/directory")
+    public Directory getProject(@RequestParam("path") String directoryPath) {
+        directoryPath = directoryPath.replaceAll("^" + testDir + "/", "");
+        File testDirectoryFile = new File(testDir);
+        File directoryFile = new File(testDirectoryFile, directoryPath);
+        return projectService.readDirectory(directoryFile);
+    }
+
     @CrossOrigin("*")
     @PostMapping("/saveFile")
     public String saveFile(@RequestBody Map<String, Object> payload) throws IOException {
-        fileService.saveFile(payload.get("path").toString(), payload.get("content").toString(),
-                payload.get("type").toString());
+        FileType fileType = FileType.valueOf(payload.get("type").toString());
+        fileService.saveFile(payload.get("path").toString(), payload.get("content").toString(), fileType);
         return "{\"result\":\"ok\"}";
+    }
+
+    @CrossOrigin("*")
+    @PostMapping("/createFile")
+    public CreateFileResponse createFile(@RequestBody CreateFileRequest createFileRequest) {
+        return fileService.createFile(createFileRequest);
+    }
+
+    @CrossOrigin("*")
+    @PutMapping("/renameFile")
+    public RenameFileResponse renameFile(@RequestBody RenameFileRequest renameFileRequest) {
+        return fileService.renameFile(renameFileRequest);
     }
 
     @CrossOrigin("*")

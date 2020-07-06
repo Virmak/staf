@@ -1,9 +1,9 @@
+import { IDirectory } from './../interfaces/idirectory';
 import { ProjectService } from './../project.service';
 import { FileType, IFile } from './../interfaces/ifile';
 import { FileEditorService } from './../file-editor.service';
 import { StafProject } from '../types/staf-project';
 import { ITestSuite } from './../interfaces/itest-suite';
-import { IStafProject } from './../interfaces/istaf-project';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ContextMenuComponent } from 'ngx-contextmenu';
 import { Router } from '@angular/router';
@@ -29,6 +29,13 @@ export class SidenavDirectoryComponent implements OnInit {
 
   current: any = {};
 
+  renameFileModalOpened = false;
+
+
+  fileTypes = FileType;
+
+  fileToRename: IFile;
+  fileToRenameParentDir: IDirectory;
   
   constructor(
     private router: Router,
@@ -64,6 +71,20 @@ export class SidenavDirectoryComponent implements OnInit {
     } else if (this.fileEditorService.isImageFile(item)) {
       this.fileEditorService.setFile(item);
       this.router.navigate(['viewImage', this.project.getNormalizedProjectName(), item.name, key]);
+    }
+  }
+
+  renameFile(item, parent) {
+    this.fileToRename = item;
+    this.fileToRenameParentDir = parent;
+    this.renameFileModalOpened = true;
+  }
+
+  getIcon(fileType: FileType) {
+    if (fileType == FileType.File) {
+      return 'scroll';
+    } else if (fileType == FileType.Directory) {
+      return 'folder';
     }
   }
 }
