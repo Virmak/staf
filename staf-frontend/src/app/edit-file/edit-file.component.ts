@@ -108,7 +108,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
             if (this.file.path === filePath) {
               const compiledFile = res.fileMap[filePath];
               if (compiledFile.syntaxErrors) {
-                modelMarkers = compiledFile.syntaxErrors.map(syntaxError => {
+                modelMarkers = [ ... modelMarkers, ... compiledFile.syntaxErrors.map(syntaxError => {
                   return {
                     startLineNumber: syntaxError.line,
                     startColumn: syntaxError.charPositionInLine,
@@ -117,7 +117,19 @@ export class EditFileComponent implements OnInit, OnDestroy {
                     message: syntaxError.message,
                     severity: monaco.MarkerSeverity.Error,
                   };
-                });
+                })];
+              }
+              if (compiledFile.semanticErrors) {
+                modelMarkers = [ ... modelMarkers, ... compiledFile.semanticErrors.map(semanticError => {
+                  return {
+                    startLineNumber: semanticError.position.line,
+                    startColumn: semanticError.position.charPositionInLine + 1,
+                    endColumn: semanticError.position.stop - semanticError.position.start + semanticError.position.charPositionInLine + 1,
+                    endLineNumber: semanticError.position.line,
+                    message: semanticError.message,
+                    severity: monaco.MarkerSeverity.Error,
+                  }
+                })];
               }
             }
           });

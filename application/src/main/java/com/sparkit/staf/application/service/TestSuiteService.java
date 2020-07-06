@@ -7,6 +7,7 @@ import com.sparkit.staf.core.ast.ImportStatement;
 import com.sparkit.staf.core.ast.ImportTypes;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.parser.SyntaxErrorException;
+import com.sparkit.staf.core.runtime.interpreter.SemanticError;
 import com.sparkit.staf.core.runtime.loader.IStafCompiler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -61,7 +63,7 @@ public class TestSuiteService {
         testSuiteImportedFilesAST.put(toRelativePath(testSuiteMainFilePath), mainScriptAST);
         String currentDirectoryPath = mainScriptAST.getFilePath().substring(0, mainScriptAST.getFilePath().lastIndexOf('/'));
         if (mainScriptAST.getImports() != null) {
-            loadImports(currentDirectoryPath, mainScriptAST.getImports(), testSuiteImportedFilesAST);
+            loadImports(currentDirectoryPath, mainScriptAST, testSuiteImportedFilesAST);
         }
         return testSuiteImportedFilesAST;
     }
@@ -73,14 +75,14 @@ public class TestSuiteService {
         testSuiteImportedFilesAST.put(testSuiteMainFilePath, mainScriptAST);
         String currentDirectoryPath = mainScriptAST.getFilePath().substring(0, mainScriptAST.getFilePath().lastIndexOf('/'));
         if (mainScriptAST.getImports() != null) {
-            loadImports(currentDirectoryPath, mainScriptAST.getImports(), testSuiteImportedFilesAST);
+            loadImports(currentDirectoryPath, mainScriptAST, testSuiteImportedFilesAST);
         }
         return testSuiteImportedFilesAST;
     }
 
-    public void loadImports(String currentDirectory, List<ImportStatement> importStatements, Map<String, StafFile> testSuiteFilesAST)
+    public void loadImports(String currentDirectory, StafFile parentFileAST, Map<String, StafFile> testSuiteFilesAST)
             throws IOException {
-        for (ImportStatement statement : importStatements) {
+        for (ImportStatement statement : parentFileAST.getImports()) {
             if (statement.getType() == ImportTypes.BUILT_IN_LIBRARY) {
                 continue;
             }
@@ -88,10 +90,18 @@ public class TestSuiteService {
             File importedFile = new File(directory, statement.getPath().replaceAll("[\"']", ""));
             String importedFileAbsolutePath = importedFile.getCanonicalPath();
             if (!testSuiteFilesAST.containsKey(importedFileAbsolutePath)) {
-                StafFile scriptAST = stafCompiler.compileWithErrors(importedFileAbsolutePath);
-                testSuiteFilesAST.put(toRelativePath(importedFileAbsolutePath), scriptAST);
-                if (scriptAST.getImports() != null) {
-                    loadImports(importedFile.getParentFile().getAbsolutePath(), scriptAST.getImports(), testSuiteFilesAST);
+                StafFile scriptAST;
+                try {
+                    scriptAST = stafCompiler.compileWithErrors(importedFileAbsolutePath);
+                    testSuiteFilesAST.put(toRelativePath(importedFileAbsolutePath), scriptAST);
+                    if (scriptAST.getImports() != null) {
+                        loadImports(importedFile.getParentFile().getAbsolutePath(), scriptAST, testSuiteFilesAST);
+                    }
+                } catch (NoSuchFileException e) {
+                    if (parentFileAST.getSemanticErrors() == null) {
+                        parentFileAST.setSemanticErrors(new ArrayList<>());
+                    }
+                    parentFileAST.getSemanticErrors().add(new SemanticError(statement.getTokenPosition(), "Invalid import path"));
                 }
             }
         }

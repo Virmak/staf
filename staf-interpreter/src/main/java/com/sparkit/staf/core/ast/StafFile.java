@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.ast;
 
 import com.sparkit.staf.core.parser.SyntaxError;
+import com.sparkit.staf.core.runtime.interpreter.SemanticError;
 import lombok.Data;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public class StafFile {
     private Map<String, KeywordDeclaration> keywordDeclarationMap;
     private Map<String, TestCaseDeclaration> testCaseDeclarationMap;
     private List<SyntaxError> syntaxErrors;
+    private List<SemanticError> semanticErrors;
 }
