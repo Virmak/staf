@@ -65,6 +65,17 @@ public class ProjectService {
         }
     }
 
+    public List<String> getProjectTestSuiteNames(String projectLocation) throws IOException {
+        ProjectConfig config = getProjectConfig(projectLocation);
+        File projectDirectoryFile = getProjectDirectoryFile(projectLocation);
+        File[] content = projectDirectoryFile.listFiles();
+        return Arrays.stream(Objects.requireNonNull(content))
+                .filter(File::isDirectory)
+                .map(File::getName)
+                .filter(dirName -> !dirName.equals(config.getReportsDir()) && !dirName.equals(config.getLogDir()))
+                .collect(Collectors.toList());
+    }
+
     public ProjectConfig createProject(CreateProjectRequest createProjectRequest) throws IOException, ProjectNameAlreadyExist {
         return projectBuilder.buildProject(createProjectRequest);
     }
@@ -217,7 +228,7 @@ public class ProjectService {
         return new String(Files.readAllBytes(Paths.get(reportFile.getAbsolutePath())));
     }
 
-    private ProjectConfig getProjectConfig(String projectLocation) throws IOException {
+    public ProjectConfig getProjectConfig(String projectLocation) throws IOException {
         File projectDirectoryFile = getProjectDirectoryFile(normalizeProjectName(projectLocation));
         File configFile = new File(projectDirectoryFile, JsonStafProjectConfig.DEFAULT_PROJECT_CONFIG_NAME);
         return configReader.readConfigFile(configFile);

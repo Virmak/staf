@@ -1,3 +1,4 @@
+import { CompiledTestSuite } from './types/compiled-test-suite';
 import { environment } from './../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { TestSuiteService } from './test-suite.service';
@@ -46,7 +47,7 @@ export class ProjectService {
   fetchAllProjects(errCallback = null) {
     this.toastr.info('Loading projects');
     this.http.get(baseUrl + '/projects').subscribe((projects: any) => {
-      this.testDirectory = projects.name;
+      this.testDirectory = projects.path;
       this.projects = projects.content.map(this.createProject.bind(this))
         .filter(p => p != null);
       this.next();
@@ -78,7 +79,7 @@ export class ProjectService {
     return this.projects;
   }
 
-  createFile(parent: IDirectory, project: StafProject, filename: string, type: FileType) {
+  createFile(parent: IDirectory, project: StafProject, filename: string, type: FileType) {debugger;
     const filePath = parent.path + '/' + filename;
     if (type == FileType.File) {
       let file: IFile = {
@@ -181,18 +182,27 @@ export class ProjectService {
     const configFile = this.getProjectConfig(project);
     if (configFile != null) {
       const config = JSON.parse(configFile.fileContent);
-      return StafProject.fromObject({
+      const createdProject = StafProject.fromObject({
         id: this.sequence.getNext('project'),
         name: config.project,
         description: config.description,
         location: project.path.substr(project.path.lastIndexOf('/') + 1),
-        testSuites: this.testSuiteService.extractTestSuitesFromProject(project),
+        testSuites: this.testSuiteService.extractTestSuitesFromProject(project, config),
         logDir: config.logDir,
         reportsDir: config.reportsDir,
         type: config.type,
       });
+      this.compileProject(project.name).subscribe((compiledTestSuites: CompiledTestSuite[]) => {
+        createdProject.compiledFiles = compiledTestSuites;
+      });
+
+      return createdProject;
     }
     return null;
+  }
+
+  compileProject(projectLocation) {
+    return this.http.get(baseUrl + '/compileProject/' + projectLocation);
   }
 
   addProject(project: IStafProject) {
@@ -249,7 +259,13 @@ export class ProjectService {
   }
 
   saveFile(file: IFile) {
-    return this.http.post(baseUrl + '/saveFile', file);
+    const payload = {
+      content: file.content,
+      name: file.name,
+      path: file.path,
+      type: file.type
+    }
+    return this.http.post(baseUrl + '/saveFile', payload);
   }
 
   getImage(screenShot: string) {

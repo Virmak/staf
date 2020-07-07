@@ -121,6 +121,10 @@ public class TestSuiteService {
         return response;
     }
 
+    public StafFile compileFile(String filePath) throws IOException {
+        return stafCompiler.compileWithErrors(filePath);
+    }
+
     public File getTestSuiteMainFile(String project, String testSuiteName) {
         File testSuiteDir = getTestSuiteDirectory(project, testSuiteName);
         return new File(testSuiteDir, TEST_SUITE_MAIN_FILE);

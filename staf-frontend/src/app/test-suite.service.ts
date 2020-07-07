@@ -23,9 +23,9 @@ export class TestSuiteService {
     return this.http.post(baseUrl + "/testSuite", createTestSuite);
   }
 
-  extractTestSuitesFromProject(project): ITestSuite[] {
+  extractTestSuitesFromProject(project, config): ITestSuite[] {
     return project.content
-      .filter((item) => item.type === FileType.Directory)
+      .filter((item) => item.type === FileType.Directory && item.name !== config.logDir && item.name !== config.reportsDir)
       .map((directory) => {
         const testSuiteContentDirectory: IDirectory = {
           name: directory.name,

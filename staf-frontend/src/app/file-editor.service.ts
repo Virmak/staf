@@ -65,7 +65,7 @@ export class FileEditorService {
       if (completeCallback) {
         completeCallback();
       }
-    }, err => this.toastr.error('Cannot save file', 'Error'));
+    }, err => {console.error(err); this.toastr.error('Cannot save file', 'Error')});
   }
 
   getFile(name) {

@@ -12,7 +12,7 @@
 
 <div class="flex-line">
     <div class="filePath">
-        <span *ngFor="let p of pathSplitted"> <a (click)="fileEditorService.openFile(p, project)">{{p.name}}</a> > </span>
+        <span *ngFor="let p of pathSplitted; let last = last;"> <a (click)="fileEditorService.openFile(p, project)">{{p.name}}</a> <ng-container *ngIf="!last" > > </ng-container> </span>
     </div>
 
     <div>

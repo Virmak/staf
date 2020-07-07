@@ -27,7 +27,7 @@ public class ImportsSectionVisitor extends StafBaseVisitor<List<ImportStatement>
                     stafFileVisitor.getFilePath());
 
             ImportStatement importStatement = new ImportStatement(importStat.import_obj().getText(), tokenPosition);
-            if (importStatement.getPath().charAt(1) == '.' || importStatement.getPath().charAt(0) == '.') {
+            if (importStatement.getPath().length() > 2 && importStatement.getPath().charAt(1) == '.' || importStatement.getPath().charAt(0) == '.') {
                 importStatement.setType(ImportTypes.FILE);
             } else if (importStatement.getPath().matches("[\"']")) {
                 importStatement.setType(ImportTypes.USER_DEFINED_LIBRARY);
