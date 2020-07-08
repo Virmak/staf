@@ -16,6 +16,8 @@ export class LogServiceService {
 
   sessionCount;
 
+  showConsole = false;
+
   constructor() { }
 
   addMessage(message) {

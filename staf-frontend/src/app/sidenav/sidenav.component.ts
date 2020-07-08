@@ -1,3 +1,4 @@
+import { LogServiceService } from './../log-service.service';
 import { StafProject } from './../types/staf-project';
 import { ITestSuite } from './../interfaces/itest-suite';
 import { FileType } from './../interfaces/ifile';
@@ -42,6 +43,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
     private testSuiteService: TestSuiteService,
     private sequence: SequenceService,
     private projectService: ProjectService,
+    public logService: LogServiceService,
     private cdr: ChangeDetectorRef) { }
     
   ngAfterViewInit(): void {

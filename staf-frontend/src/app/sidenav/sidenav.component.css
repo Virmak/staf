@@ -1,3 +1,7 @@
 button, span {
     cursor: pointer;
 }
+
+.root-tree-node-height {
+    height: 540px;
+}

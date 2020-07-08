@@ -3,17 +3,17 @@
 
         <div class="consoleTitle">Logs console</div>
         <div class="toggle" (click)="toggleConsoleLog()">
-            <clr-icon shape="angle" [dir]="showConsole ? 'down' : 'up'"></clr-icon>
+            <clr-icon shape="angle" [dir]="logService.showConsole ? 'down' : 'up'"></clr-icon>
         </div>
         <div class="toggle flex">
-            <div *ngIf="showConsole" class="clear" (click)="clearConsole()">Clear</div>
+            <div *ngIf="logService.showConsole" class="clear" (click)="clearConsole()">Clear</div>
             <div (click)="toggleConsoleLog()">
-            {{showConsole ? 'Hide' : 'Show'}}
+            {{logService.showConsole ? 'Hide' : 'Show'}}
             </div>
         </div>
 
     </div>
-    <div #logConsole *ngIf="showConsole" class="log-console" [innerHtml]="logService.logContent">
+    <div #logConsole *ngIf="logService.showConsole" class="log-console" [innerHtml]="logService.logContent">
         <span>Log</span>
     </div>
 </div>
