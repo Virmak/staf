@@ -1,11 +1,9 @@
 nav.sidenav {
     overflow: scroll;
-    overflow-y: scroll;
 }
 
 app-sidenav {
     overflow: auto;
-    overflow-y: scroll;
 }
 
 .showSideNav {

@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { TestSuiteService } from "./../test-suite.service";
 import { ITestSuite } from "./../interfaces/itest-suite";
 import { StafProject } from "./../types/staf-project";
@@ -14,6 +15,8 @@ import { CompiledTestSuite } from '../types/compiled-test-suite';
   styleUrls: ["./edit-file.component.css"],
 })
 export class EditFileComponent implements OnInit, OnDestroy {
+  private compiledFilesSubscription: Subscription;
+
   filePath;
   project: StafProject;
   file: IFile;
@@ -59,7 +62,6 @@ export class EditFileComponent implements OnInit, OnDestroy {
     private router: Router,
     private projectService: ProjectService,
     public fileEditorService: FileEditorService,
-    private testSuiteService: TestSuiteService,
     private zone: NgZone
   ) {}
 
@@ -79,6 +81,10 @@ export class EditFileComponent implements OnInit, OnDestroy {
       }
       this.testSuites = [this.allTestSuite, ...this.project.testSuites];
       this.openFile();
+      if (this.compiledFilesSubscription) {
+        this.compiledFilesSubscription.unsubscribe(); 
+        this.compiledFilesSubscription = this.project.compiledFilesSubject.subscribe((cf) => setTimeout(() => this.handleTestSuiteErrors(cf), 0));
+      }
     });
   }
 
@@ -119,7 +125,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
   onInitEditor(editor) {
     this.editorInstance = editor;
 
-    this.project.compiledFilesSubject.subscribe((cf) => this.handleTestSuiteErrors(cf));
+    this.compiledFilesSubscription = this.project.compiledFilesSubject.subscribe((cf) => this.handleTestSuiteErrors(cf));
 
     editor.addAction({
       id: "go-to-keyword",
@@ -247,7 +253,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  private handleTestSuiteErrors(compiledTestSuite) {
+  private handleTestSuiteErrors(compiledTestSuite) {debugger;
     let modelMarkers = [];
     for (const filePath in compiledTestSuite.fileMap) {
       if (this.file.path === filePath) {
