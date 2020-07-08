@@ -7,5 +7,6 @@ import java.util.List;
 @Data
 public class LibraryDocumentation {
     private String libraryName;
+    private String importName;
     private List<KeywordDocumentation> keywords;
 }

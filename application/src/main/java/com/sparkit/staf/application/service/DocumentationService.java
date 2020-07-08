@@ -41,6 +41,7 @@ public class DocumentationService {
         LibraryDocumentation libraryDocumentation = new LibraryDocumentation();
         StafLibrary libraryClassAnnotation = libraryClass.getAnnotation(StafLibrary.class);
         libraryDocumentation.setLibraryName(libraryClassAnnotation.name());
+        libraryDocumentation.setImportName(extractLibraryImportName(libraryClass.getName()));
         libraryDocumentation.setKeywords(new ArrayList<>());
 
         for (Method method : libraryClass.getMethods()) {
@@ -66,7 +67,13 @@ public class DocumentationService {
     }
 
     private String convertType(String type) {
-        return type.substring(type.lastIndexOf('.') + 1).replaceAll("(Abstract)?Staf", "");
+        return type.substring(type.lastIndexOf('.') + 1).replaceAll("(Abstract)?Staf", "")
+                .toLowerCase();
+    }
+
+    private String extractLibraryImportName(String libraryClass) {
+        return libraryClass.substring(libraryClass.lastIndexOf('.') + 1).replace("Library", "")
+                .toLowerCase();
     }
 
 }

@@ -1,3 +1,4 @@
+import { DocsComponent } from './docs/docs.component';
 import { NoFileComponent } from './no-file/no-file.component';
 import { CsvEditorComponent } from './csv-editor/csv-editor.component';
 import { ImageViewerComponent } from './image-viewer/image-viewer.component';
@@ -18,7 +19,8 @@ const routes: Routes = [
   {path: 'viewImage/:project/:filePath/:fullPath', component: ImageViewerComponent},
   {path: 'directory/:project/:path', component: ViewDirectoryComponent},
   {path: 'csvEditor/:project/:path', component: CsvEditorComponent},
-  {path: 'noFile', component: NoFileComponent}
+  {path: 'noFile', component: NoFileComponent},
+  {path: 'docs', component: DocsComponent},
   
 ];
 

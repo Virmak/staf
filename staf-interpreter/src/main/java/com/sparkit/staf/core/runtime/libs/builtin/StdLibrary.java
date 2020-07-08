@@ -18,7 +18,7 @@ public class StdLibrary extends AbstractStafLibrary {
 
     @Keyword(name = "should be equal")
     public void shouldBeEqual(@KeywordArgument(name = "object") AbstractStafObject stafObject, @KeywordArgument(name = "expected") AbstractStafObject expected,
-                              @KeywordArgument(name = "errorMessage", optional = true) AbstractStafObject errorMessage)
+                              @KeywordArgument(name = "errorMessage", optional = true) StafString errorMessage)
             throws ShouldBeEqualException {
         if (!compareStafObjects(stafObject, expected)) {
             logger.info("Should be equal not validated {} = {}", stafObject, expected);
@@ -34,7 +34,7 @@ public class StdLibrary extends AbstractStafLibrary {
 
     @Keyword(name = "should not be equal")
     public void shouldNoBeEqual(@KeywordArgument(name = "object") AbstractStafObject stafObject, @KeywordArgument(name = "expected") AbstractStafObject expected,
-                                @KeywordArgument(name = "errorMessage", optional = true) AbstractStafObject errorMessage)
+                                @KeywordArgument(name = "errorMessage", optional = true) StafString errorMessage)
             throws ShouldBeEqualException {
         if (compareStafObjects(stafObject, expected)) {
             logger.info("Should not be equal not validated {} = {}", stafObject, expected);

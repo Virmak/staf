@@ -1,0 +1,41 @@
+<h1>Builtin keyword libraries documentation</h1>
+
+<p>This page contains a list of builtin libraries and their keywords</p>
+<div>
+    <small><strong>Notes: </strong> arguments surrounded by [ ] are optional</small>
+</div>
+<div>
+    <small>Parameters of type <strong>object</strong> accept any type of variable</small>
+</div>
+<div>
+    <small>Click on <clr-icon shape="info" role="none" title="Info"></clr-icon> to display library import statement</small>
+</div>
+
+<ul *ngFor="let lib of librariesDocs">
+    <h3>{{lib.libraryName}} 
+        <clr-signpost>
+            <clr-signpost-content *clrIfOpen>
+                <h3>{{lib.libraryName}}</h3>
+                <p>Usage : <code class="clr-code">import {{lib.importName}}</code> </p>
+            </clr-signpost-content>
+        </clr-signpost>
+    </h3>
+
+    
+
+    <li *ngFor="let keyword of lib.keywords">
+
+       <strong>{{keyword.name | titlecase}}</strong> 
+
+       ( 
+           <span *ngFor="let param of keyword.parameters; let last = last"><ng-container *ngIf="param.optional">[</ng-container>${{param.name}} : <strong>{{param.type}}</strong><ng-container *ngIf="param.optional">]</ng-container> <ng-container *ngIf="!last">, </ng-container></span>
+
+       )
+
+       <div>
+
+        {{keyword.description}} 
+       </div>
+
+    </li>
+</ul>

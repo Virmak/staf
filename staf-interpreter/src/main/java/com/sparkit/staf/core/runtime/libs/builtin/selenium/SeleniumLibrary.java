@@ -72,9 +72,9 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         webDriver.manage().window().maximize();
     }
 
-    @Keyword(name = "press key", doc = "Simulates the user pressing key to an element, if no selector is provided, key press will be invoked on body")
+    @Keyword(name = "press key", doc = "Simulates the user pressing key to an element, if no selector is provided, key press will be invoked on the body element")
     public void pressKey(@Inject(name = WEB_DRIVER_KEY) WebDriver webDriver, @KeywordArgument(name = "selector", optional = true) StafString selector,
-                         @KeywordArgument(name = "value") StafString key) {
+                         @KeywordArgument(name = "key") StafString key) {
         WebElement element;
         String locator;
         if (key == null) {
@@ -127,7 +127,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     }
 
 
-    @Keyword(name = "input value")
+    @Keyword(name = "input value", doc = "Returns the value of an input element")
     public StafString getInputValue(@Inject(name = WEB_DRIVER_KEY) WebDriver webDriver, @KeywordArgument(name = "selector") StafString selector) {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         return new StafString(webDriver.findElement(elementSelector).getAttribute("value"));
@@ -187,7 +187,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         }
     }
 
-    @Keyword(name = "element should contain", doc = "Verifies that element 'locator' contains text expected.")
+    @Keyword(name = "element should contain", doc = "Verifies that element $selector contains text expected.")
     public void elementShouldContainText(@Inject(name = WEB_DRIVER_KEY) WebDriver webDriver, @KeywordArgument(name = "selector") StafString selector,
                                          @KeywordArgument(name = "expected") StafString expected,
                                          @KeywordArgument(name = "message", optional = true) StafString message) {
@@ -202,7 +202,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         }
     }
 
-    @Keyword(name = "page should contain element", doc = "Verifies that page contains element 'locator'")
+    @Keyword(name = "page should contain element", doc = "Verifies that page contains element $selector")
     public void pageShouldContainElement(@Inject(name = WEB_DRIVER_KEY) WebDriver webDriver, @KeywordArgument(name = "selector") StafString selector) {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         if (webDriver.findElements(elementSelector).isEmpty()) {
@@ -210,7 +210,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         }
     }
 
-    @Keyword(name = "page contains element", doc = "Returns if page contains element 'locator'")
+    @Keyword(name = "page contains element", doc = "Returns if page contains element $selector")
     public StafBoolean pageContainsElement(@Inject(name = WEB_DRIVER_KEY) WebDriver webDriver, @KeywordArgument(name = "selector") StafString selector) {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         return new StafBoolean(!webDriver.findElements(elementSelector).isEmpty());
@@ -228,14 +228,14 @@ public class SeleniumLibrary extends AbstractStafLibrary {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(elementSelector));
     }
 
-    @Keyword(name = "get element count", doc = "Returns the number of elements matching <selector>")
+    @Keyword(name = "get element count", doc = "Returns the number of elements matching $selector")
     public StafInteger getElementCount(@Inject(name = WEB_DRIVER_KEY) WebDriver webDriver, @KeywordArgument(name = "selector") StafString selector) {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         return new StafInteger(webDriver.findElements(elementSelector).size());
     }
 
     @Keyword(name = "go to")
-    public void gotToUrl(@Inject(name = WEB_DRIVER_KEY) WebDriver webDriver, StafString url) {
+    public void gotToUrl(@Inject(name = WEB_DRIVER_KEY) WebDriver webDriver, @KeywordArgument(name = "url") StafString url) {
         try {
             webDriver.get(url.getValue().toString());
         } catch (NullPointerException e) {
