@@ -15,7 +15,7 @@ public class TestCaseDeclaration implements IStatementBlock {
     private boolean isDefaultOrder;
     private boolean ignored = false;
     private String filePath;
-
+    private int lineNumber;
 
     public TestCaseDeclaration(String name, List<IStatement> statements) {
         this.name = name;

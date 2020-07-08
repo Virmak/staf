@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -53,15 +52,14 @@ public class StafTestFacade {
 
         List<CompletableFuture<List<TestSuiteReport>>> futureList = new ArrayList<>();
         for (RunTestSuite testSuite : request.getTestSuites()) {
-            futureList.add(getTestSuiteFuture(testSuite, request.getWebDriverOptions().getSessionCount(), testDir, projectConfig));
+            futureList.add(getTestSuiteFuture(testSuite, request.getWebDriverOptions().getSessionCount(), projectConfig));
         }
 
         return futureList.stream().map(CompletableFuture::join)
                 .flatMap(Collection::stream).collect(Collectors.toList());
     }
 
-    private CompletableFuture<List<TestSuiteReport>> getTestSuiteFuture(RunTestSuite runTestSuiteRequest, int sessionCount,
-                                                                        String testDir, ProjectConfig projectConfig) {
+    private CompletableFuture<List<TestSuiteReport>> getTestSuiteFuture(RunTestSuite runTestSuiteRequest, int sessionCount, ProjectConfig projectConfig) {
         return CompletableFuture.supplyAsync(() -> {
             List<TestSuiteReport> testSuiteReport = null;
             try {
@@ -69,8 +67,7 @@ public class StafTestFacade {
             } catch (SyntaxErrorException | TestSuiteMainScriptNotFoundException e) {
                 e.printStackTrace();
             }
-            jsonReportWriter.write(Paths.get(testDir).toAbsolutePath() + "/" + projectConfig.getLocation()
-                    + "/" + projectConfig.getReportsDir()  + "/" + runTestSuiteRequest.getName() + "-" + getCurrentDateTime() + ".json", testSuiteReport);
+            jsonReportWriter.write(projectConfig, runTestSuiteRequest.getName(), testSuiteReport);
             return testSuiteReport;
         });
     }

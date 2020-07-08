@@ -31,6 +31,7 @@ public class TestCaseDeclarationVisitor extends StafBaseVisitor<TestCaseDeclarat
         } else {
             testCaseDeclaration.setDefaultOrder(testCaseDefaultOrder++);
         }
+        testCaseDeclaration.setLineNumber(ctx.getStart().getLine());
         String testCaseNameWithSpaces = ctx.keyword_name().IDENTIFIER().stream()
                 .map(ParseTree::getText)
                 .collect(Collectors.joining(" "));
