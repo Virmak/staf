@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;
 
-@StafLibrary(name = "json", builtin = true)
+@StafLibrary(name = "Json Library", builtin = true)
 public class JsonLibrary extends AbstractStafLibrary {
     @Autowired
     private JSONParser parser;

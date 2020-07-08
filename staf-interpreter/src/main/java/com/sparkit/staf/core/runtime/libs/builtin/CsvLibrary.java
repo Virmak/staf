@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@StafLibrary(name = "csv")
+@StafLibrary(name = "Csv Library")
 public class CsvLibrary extends AbstractStafLibrary {
 
     @Keyword(name = "read csv")

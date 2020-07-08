@@ -11,7 +11,7 @@ import com.sparkit.staf.core.runtime.libs.exceptions.ShouldNotBeEqualException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@StafLibrary(name = "standard", builtin = true)
+@StafLibrary(name = "Standard library", builtin = true)
 public class StdLibrary extends AbstractStafLibrary {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
     private final double THRESHOLD = .001;
@@ -20,7 +20,7 @@ public class StdLibrary extends AbstractStafLibrary {
     public void shouldBeEqual(AbstractStafObject object, AbstractStafObject expected, AbstractStafObject errorMessage)
             throws ShouldBeEqualException {
         if (!compareStafObjects(object, expected)) {
-            logger.info("Should be equal not validated " + object + " = " + expected);
+            logger.info("Should be equal not validated {} = {}", object, expected);
             if (errorMessage != null) {
                 throw new ShouldBeEqualException(errorMessage.getValue().toString());
             } else {
@@ -28,14 +28,14 @@ public class StdLibrary extends AbstractStafLibrary {
                         + ", " + expected.getValue().toString() + " are not equal");
             }
         }
-        logger.info("Should be equal validated " + object + " = " + expected);
+        logger.info("Should be equal validated {} = {}", object, expected);
     }
 
     @Keyword(name = "should not be equal")
     public void shouldNoBeEqual(AbstractStafObject object, AbstractStafObject expected, AbstractStafObject errorMessage)
             throws ShouldBeEqualException {
         if (compareStafObjects(object, expected)) {
-            logger.info("Should not be equal not validated " + object + " = " + expected);
+            logger.info("Should not be equal not validated {} = {}", object, expected);
             if (errorMessage != null) {
                 throw new ShouldNotBeEqualException(errorMessage.getValue().toString());
             } else {
@@ -43,7 +43,7 @@ public class StdLibrary extends AbstractStafLibrary {
                         + ", " + expected.getValue().toString() + " are equal");
             }
         }
-        logger.info("Should not be equal validated " + object + " = " + expected);
+        logger.info("Should not be equal validated {} != {}", object,  expected);
     }
 
     @Keyword(name = "trim")

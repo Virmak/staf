@@ -8,6 +8,7 @@ import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.builtin.selenium.SeleniumLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
+import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import java.util.*;
 public class KeywordLibrariesRepository {
     private static final Logger logger = LoggerFactory.getLogger(KeywordLibrariesRepository.class);
     private final Map<String, BuiltInLibraryKeywordWrapper> builtinKeywordMap = new HashMap<>();
+    @Getter
     private final Map<String, AbstractStafLibrary> libsInstancesMap = new HashMap<>();
     /* Map keyword to library method */
     private final Map<String, KeywordDeclaration> userDefinedKeywords = new HashMap<>();
@@ -28,10 +30,6 @@ public class KeywordLibrariesRepository {
     public KeywordLibrariesRepository(BuiltInLibraryFactory libraryFactory, StatementBlockExecutor statementBlockExecutor) {
         this.builtInLibraryFactory = libraryFactory;
         this.statementBlockExecutor = statementBlockExecutor;
-    }
-
-    public Map<String, KeywordDeclaration> getUserDefinedKeywords() {
-        return userDefinedKeywords;
     }
 
     public void registerLibrary(Class<? extends AbstractStafLibrary> libClass)

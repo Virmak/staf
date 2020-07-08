@@ -27,11 +27,11 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@StafLibrary(name = "selenium", builtin = true)
+@StafLibrary(name = "Selenium Library", builtin = true)
 public class SeleniumLibrary extends AbstractStafLibrary {
     public static final int DEFAULT_TIMEOUT = 5;
-    private static final Logger logger = LoggerFactory.getLogger(SeleniumLibrary.class);
     public static final String WEB_DRIVER_KEY = "__web_driver__";
+    private static final Logger logger = LoggerFactory.getLogger(SeleniumLibrary.class);
     @Autowired
     private WebDriverFactory webDriverFactory;
 

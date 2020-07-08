@@ -1,4 +1,4 @@
-package com.sparkit.staf.application.models.response;
+package com.sparkit.staf.application.models.response.compiler;
 
 import com.sparkit.staf.core.ast.StafFile;
 import lombok.Data;

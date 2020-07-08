@@ -1,4 +1,4 @@
-package com.sparkit.staf.application.models.response;
+package com.sparkit.staf.application.models.response.project;
 
 import lombok.Data;
 

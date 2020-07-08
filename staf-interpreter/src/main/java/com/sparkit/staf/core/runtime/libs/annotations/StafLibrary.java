@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface StafLibrary {
-    public String name();
-    public boolean builtin() default false;
+    String name();
+    boolean builtin() default false;
 }

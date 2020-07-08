@@ -16,7 +16,7 @@ import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-@StafLibrary(name = "ws")
+@StafLibrary(name = "API testing library")
 public class WsLibrary extends AbstractStafLibrary {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);

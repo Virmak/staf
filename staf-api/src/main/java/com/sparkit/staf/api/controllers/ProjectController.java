@@ -2,8 +2,8 @@ package com.sparkit.staf.api.controllers;
 
 import com.sparkit.staf.application.exception.ProjectNameAlreadyExist;
 import com.sparkit.staf.application.models.request.CreateProjectRequest;
-import com.sparkit.staf.application.models.response.GetProjectReportsResponse;
-import com.sparkit.staf.application.models.response.UpdateProjectConfigResponse;
+import com.sparkit.staf.application.models.response.project.GetProjectReportsResponse;
+import com.sparkit.staf.application.models.response.project.UpdateProjectConfigResponse;
 import com.sparkit.staf.application.service.ProjectService;
 import com.sparkit.staf.domain.Directory;
 import com.sparkit.staf.domain.ProjectConfig;

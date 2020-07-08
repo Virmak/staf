@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Keyword {
-    String name() default "";
+    String name();
 
     String doc() default "";
 }

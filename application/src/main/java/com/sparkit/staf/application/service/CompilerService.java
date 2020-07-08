@@ -1,18 +1,13 @@
 package com.sparkit.staf.application.service;
 
-import com.sparkit.staf.application.models.response.CompileProjectResponse;
-import com.sparkit.staf.application.models.response.CompileTestSuiteResponse;
+import com.sparkit.staf.application.models.response.compiler.CompileProjectResponse;
+import com.sparkit.staf.application.models.response.compiler.CompileTestSuiteResponse;
 import com.sparkit.staf.core.ast.StafFile;
-import com.sparkit.staf.core.runtime.loader.IStafProjectConfigReader;
-import com.sparkit.staf.domain.ProjectConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 @Service
 public class CompilerService {
