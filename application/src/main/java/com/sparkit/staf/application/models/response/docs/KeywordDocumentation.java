@@ -16,5 +16,6 @@ public class KeywordDocumentation {
     public static class KeywordParameter {
         private String name;
         private String type;
+        private boolean optional;
     }
 }

@@ -1,10 +1,10 @@
 package com.sparkit.staf.core.runtime.libs.builtin;
 
-import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.*;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.annotations.Inject;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
+import com.sparkit.staf.core.runtime.libs.annotations.KeywordArgument;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.ShouldBeEqualException;
 import com.sparkit.staf.core.runtime.libs.exceptions.ShouldNotBeEqualException;
@@ -13,48 +13,51 @@ import org.slf4j.LoggerFactory;
 
 @StafLibrary(name = "Standard library", builtin = true)
 public class StdLibrary extends AbstractStafLibrary {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    private final double THRESHOLD = .001;
+    private static final Logger logger = LoggerFactory.getLogger(StdLibrary.class);
+    private static final double THRESHOLD = .001;
 
     @Keyword(name = "should be equal")
-    public void shouldBeEqual(AbstractStafObject object, AbstractStafObject expected, AbstractStafObject errorMessage)
+    public void shouldBeEqual(@KeywordArgument(name = "object") AbstractStafObject stafObject, @KeywordArgument(name = "expected") AbstractStafObject expected,
+                              @KeywordArgument(name = "errorMessage", optional = true) AbstractStafObject errorMessage)
             throws ShouldBeEqualException {
-        if (!compareStafObjects(object, expected)) {
-            logger.info("Should be equal not validated {} = {}", object, expected);
+        if (!compareStafObjects(stafObject, expected)) {
+            logger.info("Should be equal not validated {} = {}", stafObject, expected);
             if (errorMessage != null) {
                 throw new ShouldBeEqualException(errorMessage.getValue().toString());
             } else {
-                throw new ShouldBeEqualException(object.getValue().toString()
+                throw new ShouldBeEqualException(stafObject.getValue().toString()
                         + ", " + expected.getValue().toString() + " are not equal");
             }
         }
-        logger.info("Should be equal validated {} = {}", object, expected);
+        logger.info("Should be equal validated {} = {}", stafObject, expected);
     }
 
     @Keyword(name = "should not be equal")
-    public void shouldNoBeEqual(AbstractStafObject object, AbstractStafObject expected, AbstractStafObject errorMessage)
+    public void shouldNoBeEqual(@KeywordArgument(name = "object") AbstractStafObject stafObject, @KeywordArgument(name = "expected") AbstractStafObject expected,
+                                @KeywordArgument(name = "errorMessage", optional = true) AbstractStafObject errorMessage)
             throws ShouldBeEqualException {
-        if (compareStafObjects(object, expected)) {
-            logger.info("Should not be equal not validated {} = {}", object, expected);
+        if (compareStafObjects(stafObject, expected)) {
+            logger.info("Should not be equal not validated {} = {}", stafObject, expected);
             if (errorMessage != null) {
                 throw new ShouldNotBeEqualException(errorMessage.getValue().toString());
             } else {
-                throw new ShouldNotBeEqualException(object.getValue().toString()
+                throw new ShouldNotBeEqualException(stafObject.getValue().toString()
                         + ", " + expected.getValue().toString() + " are equal");
             }
         }
-        logger.info("Should not be equal validated {} != {}", object,  expected);
+        logger.info("Should not be equal validated {} != {}", stafObject, expected);
     }
 
     @Keyword(name = "trim")
-    public StafString trim(AbstractStafObject object, AbstractStafObject expected) throws ShouldBeEqualException {
-        return new StafString(object.getValue().toString().trim());
+    public StafString trim(@KeywordArgument(name = "string") StafString stafString) throws ShouldBeEqualException {
+        return new StafString(stafString.getValue().toString().trim());
     }
 
     @Keyword(name = "replace text")
-    public StafString replaceString(AbstractStafObject str, AbstractStafObject oldStr, AbstractStafObject newStr)
+    public StafString replaceString(@KeywordArgument(name = "string") StafString stafString, @KeywordArgument(name = "search") StafString search,
+                                    @KeywordArgument(name = "replace") StafString replacement)
             throws ShouldBeEqualException {
-        return new StafString(str.getValue().toString().replaceAll(oldStr.getValue().toString(), newStr.getValue().toString()));
+        return new StafString(stafString.getValue().toString().replaceAll(search.getValue().toString(), replacement.getValue().toString()));
     }
 
     @Keyword(name = "debugger")
@@ -64,8 +67,9 @@ public class StdLibrary extends AbstractStafLibrary {
     }
 
 
-    @Keyword(name = "range")
-    public StafList range(AbstractStafObject from, AbstractStafObject to) throws ShouldBeEqualException {
+    @Keyword(name = "range", doc = "Generate a list with numbers [from ... to]")
+    public StafList range(@KeywordArgument(name = "from") AbstractStafObject from, @KeywordArgument(name = "to", optional = true) AbstractStafObject to)
+            throws ShouldBeEqualException {
         int start, end;
         if (to == null) {
             start = 0;
@@ -81,10 +85,10 @@ public class StdLibrary extends AbstractStafLibrary {
         return list;
     }
 
-    @Keyword(name = "parse number")
-    public AbstractStafObject parseNumber(AbstractStafObject object, AbstractStafObject defaultVal) {
+    @Keyword(name = "parse number", doc = "Convert a string into a double and remove currency")
+    public AbstractStafObject parseNumber(StafString stafString, AbstractStafObject defaultVal) {
         String s;
-        s = removeCurrency(object.getValue().toString());
+        s = removeCurrency(stafString.getValue().toString());
         s = removeWhiteSpace(s);
         try {
             double d = Double.parseDouble(s);

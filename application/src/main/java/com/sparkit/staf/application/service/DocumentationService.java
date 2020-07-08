@@ -2,10 +2,10 @@ package com.sparkit.staf.application.service;
 
 import com.sparkit.staf.application.models.response.docs.KeywordDocumentation;
 import com.sparkit.staf.application.models.response.docs.LibraryDocumentation;
-import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.BuiltInLibraryFactory;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
+import com.sparkit.staf.core.runtime.libs.annotations.KeywordArgument;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,14 +51,22 @@ public class DocumentationService {
                 keywordDocumentation.setDescription(keyword.doc());
                 Parameter[] parameters = method.getParameters();
                 List<KeywordDocumentation.KeywordParameter> keywordParameters = Arrays.stream(parameters)
-                        .filter(parameter -> AbstractStafObject.class.isAssignableFrom(parameter.getType()))
-                        .map(p -> new KeywordDocumentation.KeywordParameter(p.getName(), p.getType().getName()))
+                        .filter(parameter -> parameter.isAnnotationPresent(KeywordArgument.class))
+                        .map(p -> {
+                            KeywordArgument keywordArgument = p.getAnnotation(KeywordArgument.class);
+                            return new KeywordDocumentation.KeywordParameter(keywordArgument.name(),
+                                    convertType(p.getType().getName()), keywordArgument.optional());
+                        })
                         .collect(Collectors.toList());
                 keywordDocumentation.setParameters(keywordParameters);
                 libraryDocumentation.getKeywords().add(keywordDocumentation);
             }
         }
         return libraryDocumentation;
+    }
+
+    private String convertType(String type) {
+        return type.substring(type.lastIndexOf('.') + 1).replaceAll("(Abstract)?Staf", "");
     }
 
 }
