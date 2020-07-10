@@ -187,11 +187,7 @@ export class ProjectService {
       let reportsDirectory;
       const reportsDirContent = project.content.find(dir => dir.type === FileType.Directory && dir.name === config.reportsDir);
       if (reportsDirContent) {
-        reportsDirectory =  {
-          name: reportsDirContent.name,
-          type: FileType.Directory,
-          content: this.testSuiteService.readDirectory(reportsDirContent)
-        };
+        reportsDirectory = this.createReportsDirectory(reportsDirContent);
       }
       
       const createdProject = StafProject.fromObject({
@@ -211,6 +207,14 @@ export class ProjectService {
       return createdProject;
     }
     return null;
+  }
+
+  createReportsDirectory(reportsDirContent): IDirectory {
+    return {
+      name: reportsDirContent.name,
+      type: FileType.Directory,
+      content: this.testSuiteService.readDirectory(reportsDirContent)
+    };
   }
 
   compileProject(projectLocation) {
@@ -283,12 +287,16 @@ export class ProjectService {
     return this.http.get<IGetImage64>(baseUrl + "/screenshot/" + screenShotPath.replace(/\//g, '<sep>'));
   }
 
-  getReports(projectName: string) {
-    return this.http.get(baseUrl + "/projectReports/" + projectName);
+  getReports(projectLocation: string) { // Get a flat list of all reports files
+    return this.http.get(baseUrl + "/projectReports/" + projectLocation);
   }
 
-  getTestReport(filePath: string) {
+  getTestReport(filePath: string) { // Get a specific test report file
     return this.http.get(baseUrl + '/testReport/' + filePath.replace(/\//g, '<sep>'));
+  }
+
+  getProjectReportsDirectory(projectLocaiton: string) {
+    return this.http.get(baseUrl + '/projects/reportsDir/' + projectLocaiton);
   }
 
   searchFilesByExtension(project: StafProject, extension: string) {

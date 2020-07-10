@@ -1,3 +1,4 @@
+import { ProjectService } from 'src/app/project.service';
 import { IRunTestResponse } from './../interfaces/irun-test-response';
 import { TestSuiteService } from "./../test-suite.service";
 import { StafProject } from "./../types/staf-project";
@@ -44,6 +45,7 @@ export class RunTestComponent implements OnInit {
     private testService: TestService,
     private toastr: ToastrService,
     private testSuiteService: TestSuiteService,
+    private projectService: ProjectService,
     public logService: LogServiceService
   ) {}
 
@@ -103,6 +105,11 @@ export class RunTestComponent implements OnInit {
       }
       return report;
     });
+
+    this.projectService.getProjectReportsDirectory(this.project.location)
+      .subscribe(reportsDirContent => {
+        this.project.reportsDirectory = this.projectService.createReportsDirectory(reportsDirContent);
+      });
 
     this.testCompleted.emit(this.project.reports);
     this.progress = false;

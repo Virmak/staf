@@ -50,8 +50,8 @@ public class ProjectService {
         return name.toLowerCase().replaceAll("\\s+", "-");
     }
 
-    public Directory readProjectContent(String projectName) {
-        File projectDir = new File(testDir, ProjectService.normalizeProjectName(projectName));
+    public Directory readProjectContent(String projectLocation) {
+        File projectDir = new File(testDir, projectLocation);
         return readDirectory(projectDir);
     }
 
@@ -162,12 +162,12 @@ public class ProjectService {
         return response;
     }
 
-    public GetProjectReportsResponse getProjectReports(String projectName) throws IOException {
+    public GetProjectReportsResponse getProjectReports(String projectLocation) throws IOException {
         GetProjectReportsResponse response = new GetProjectReportsResponse();
-        response.setProjectName(projectName);
+        response.setProjectName(projectLocation);
         response.setReportsFileNameList(new ArrayList<>());
-        File projectDirectoryFile = getProjectDirectoryFile(projectName);
-        ProjectConfig projectConfig = getProjectConfig(projectName);
+        File projectDirectoryFile = getProjectDirectoryFile(projectLocation);
+        ProjectConfig projectConfig = getProjectConfig(projectLocation);
         File reportsDirectory = new File(projectDirectoryFile, projectConfig.getReportsDir());
         for (File testSuiteReportsDir : Objects.requireNonNull(reportsDirectory.listFiles())) {
             response.getReportsFileNameList().addAll(
@@ -192,14 +192,14 @@ public class ProjectService {
     }
 
     public boolean updateProjectLocation(String oldProjectLocation, String newProjectLocation) {
-        File projectDirectoryFile = getProjectDirectoryFile(normalizeProjectName(oldProjectLocation));
-        File newProjectDirectoryFile = getProjectDirectoryFile(normalizeProjectName(newProjectLocation));
+        File projectDirectoryFile = getProjectDirectoryFile(oldProjectLocation);
+        File newProjectDirectoryFile = getProjectDirectoryFile(newProjectLocation);
         return projectDirectoryFile.renameTo(newProjectDirectoryFile);
     }
 
-    public File getProjectDirectoryFile(String projectName) {
+    public File getProjectDirectoryFile(String projectLocation) {
         File testDirectoryFile = new File(testDir);
-        return new File(testDirectoryFile, normalizeProjectName(projectName));
+        return new File(testDirectoryFile, projectLocation);
     }
 
     public UpdateProjectConfigResponse updateProjectConfig(String projectLocation, ProjectConfig updateConfigRequest) {

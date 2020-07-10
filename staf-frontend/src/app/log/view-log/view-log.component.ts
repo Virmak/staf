@@ -33,7 +33,7 @@ export class ViewLogComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.projectService.getReports(this.project.name)
+    this.projectService.getReports(this.project.location)
     .subscribe((fileList: IGetReportsResponse) => {
       this.reportsFileList = fileList.reportsFileNameList;
       this.allReportsFileNameList = this.reportsFileList;

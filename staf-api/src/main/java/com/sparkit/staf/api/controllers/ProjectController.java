@@ -39,7 +39,7 @@ public class ProjectController {
             e.printStackTrace();
             return ResponseEntity.ok(new Directory());
         }
-        return ResponseEntity.ok(projectService.readProjectContent(createProjectRequest.getName()));
+        return ResponseEntity.ok(projectService.readProjectContent(createProjectRequest.getLocation()));
     }
 
     @CrossOrigin(origins = "*")
@@ -52,7 +52,7 @@ public class ProjectController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/projects")
-    public Directory getProjects() {
+    public Directory getAllProjects() {
         File projectsDir = new File(testDir);
         return projectService.readDirectory(projectsDir);
     }
@@ -64,9 +64,9 @@ public class ProjectController {
     }
 
     @CrossOrigin("*")
-    @GetMapping("/projectReports/{project}")
-    public GetProjectReportsResponse getProjectReports(@PathVariable(name = "project") String project) throws IOException {
-        return projectService.getProjectReports(project);
+    @GetMapping("/projectReports/{projectLocation}")
+    public GetProjectReportsResponse getProjectReports(@PathVariable(name = "projectLocation") String projectLocation) throws IOException {
+        return projectService.getProjectReports(projectLocation);
     }
 
     @CrossOrigin
@@ -74,5 +74,13 @@ public class ProjectController {
     public UpdateProjectConfigResponse updateProjectConfig(@PathVariable("projectLocation") String projectLocation,
                                                            @RequestBody ProjectConfig request) {
         return projectService.updateProjectConfig(projectLocation, request);
+    }
+
+    @CrossOrigin
+    @GetMapping("/projects/reportsDir/{projectLocation}")
+    public Directory getProjectReportsDirectory(@PathVariable("projectLocation") String projectLocation) throws IOException {
+        ProjectConfig config = projectService.getProjectConfig(projectLocation);
+        File projectDirectoryFile = projectService.getProjectDirectoryFile(projectLocation);
+        return projectService.readDirectory(new File(projectDirectoryFile, config.getReportsDir()));
     }
 }
