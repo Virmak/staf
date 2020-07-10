@@ -1,3 +1,4 @@
+import { AutoCompleteService } from './../auto-complete.service';
 import { Subscription } from 'rxjs';
 import { ITestSuite } from "./../interfaces/itest-suite";
 import { StafProject } from "./../types/staf-project";
@@ -34,6 +35,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
   editorInstance;
 
   hoverProvider: monaco.IDisposable;
+  builtinKeywordsCompletionProvider: monaco.IDisposable;
 
   private keyEventListener = (e) => {
     if (this.file.content != this.file.originalContent) {
@@ -54,6 +56,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
+    private autoCompleteService: AutoCompleteService,
     public fileEditorService: FileEditorService,
     private zone: NgZone
   ) {}
@@ -84,6 +87,9 @@ export class EditFileComponent implements OnInit, OnDestroy {
     document.removeEventListener("keydown", this.keyEventListener);
     if (this.hoverProvider) {
       this.hoverProvider.dispose();
+    }
+    if (this.builtinKeywordsCompletionProvider) {
+      this.builtinKeywordsCompletionProvider.dispose();
     }
   }
 
@@ -121,6 +127,11 @@ export class EditFileComponent implements OnInit, OnDestroy {
     this.editorInstance = editor;
 
     this.compiledFilesSubscription = this.project.compiledFilesSubject.subscribe((cf) => this.handleTestSuiteErrors(cf));
+
+    if (!this.builtinKeywordsCompletionProvider) {
+      this.registerCompletionProvider();
+    }
+
 
     editor.addAction({
       id: "go-to-keyword",
@@ -160,6 +171,26 @@ export class EditFileComponent implements OnInit, OnDestroy {
     if (!this.hoverProvider) {
       this.registerHoverProvider();
     }
+  }
+  registerCompletionProvider() {
+    this.builtinKeywordsCompletionProvider = monaco.languages.registerCompletionItemProvider('staf', {
+      provideCompletionItems: (model, position) => {
+          // find out if we are completing a property in the 'dependencies' object.
+          // const textUntilPosition = model.getValueInRange({startLineNumber: 1, startColumn: 1, endLineNumber: position.lineNumber, endColumn: position.column});
+          const word = model.getWordUntilPosition(position);
+          const range = {
+              startLineNumber: position.lineNumber,
+              endLineNumber: position.lineNumber,
+              startColumn: word.startColumn,
+              endColumn: word.endColumn
+          };
+          
+          return {
+              suggestions: [ ... this.autoCompleteService.getGenericAutoCompleteProposals(range), 
+                ... this.autoCompleteService.getBuiltInLibsKeywordsProposals(range)]
+          };              
+      }
+    });
   }
 
   registerHoverProvider() {

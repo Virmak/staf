@@ -89,18 +89,22 @@ public class ProjectService {
             if (file.isDirectory()) {
                 directory.getContent().add(readDirectory(file));
             } else {
-                com.sparkit.staf.domain.File newFile = new com.sparkit.staf.domain.File();
-                newFile.setName(file.getName());
-                newFile.setFileContent(readFileContent(file));
-                newFile.setPath(file.getPath());
-                newFile.setType(FileType.FILE);
-                directory.getContent().add(newFile);
+                directory.getContent().add(readFile(file));
             }
         }
         directory.setName(dir.getName());
         directory.setPath(dir.getPath());
         directory.setType(FileType.DIRECTORY);
         return directory;
+    }
+
+    private com.sparkit.staf.domain.File readFile(File file) {
+        com.sparkit.staf.domain.File newFile = new com.sparkit.staf.domain.File();
+        newFile.setName(file.getName());
+        newFile.setFileContent(readFileContent(file));
+        newFile.setPath(file.getPath());
+        newFile.setType(FileType.FILE);
+        return newFile;
     }
 
     private String readFileContent(File f) {
