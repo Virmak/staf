@@ -1,3 +1,4 @@
+import { IRunTestResponse } from './../interfaces/irun-test-response';
 import { TestSuiteService } from "./../test-suite.service";
 import { StafProject } from "./../types/staf-project";
 import { LogServiceService } from "./../log-service.service";
@@ -93,10 +94,10 @@ export class RunTestComponent implements OnInit {
     }
   }
 
-  testComplete(reports: TestSuiteReport[]) {
+  testComplete(runTestResponse) {
     let hasErrors = false;
 
-    this.project.reports = reports.map((report) => {
+    this.project.reports = runTestResponse.map((report) => {
       if (report.result == TestSuiteResult.Error) {
         hasErrors = true;
       }

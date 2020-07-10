@@ -66,7 +66,7 @@ public class TestSuiteRunner {
         try {
             scriptAST = stafCompiler.compile(fullPath);
         } catch (IOException e) {
-            throw new TestSuiteMainScriptNotFoundException(runTestSuiteRequest.getName());
+            throw new TestSuiteMainScriptNotFoundException(runTestSuiteRequest.getName(), fullPath);
         }
         return interpreter.run(projectConfig, testSuite, scriptAST, sessionCount);
     }

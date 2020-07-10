@@ -1,3 +1,4 @@
+import { GenericResponse } from './../interfaces/igeneric-response';
 import { LogServiceService } from './../log-service.service';
 import { StafProject } from './../types/staf-project';
 import { ITestSuite } from './../interfaces/itest-suite';
@@ -67,7 +68,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
 
     this.testSuiteService.createTestSuite(this.testSuite)
       .subscribe(testSuiteRes => {
-        if (testSuiteRes.result == 'ok') {
+        if (testSuiteRes.result == GenericResponse.Ok) {
           let testSuiteContentDir: IDirectory = {
             name: testSuiteRes.name,
             type: FileType.Directory,

@@ -12,7 +12,7 @@ export interface IProjectConfig {
     description: string;
     location: string;
     logDir: string;
-    reportsDir: string;
+    reportsDirPath: string;
 }
 
 export enum ProjectType {

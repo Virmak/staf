@@ -26,6 +26,7 @@ public class KeywordDeclaration implements IStatementBlock {
     private List<IStatement> statementList;
     private AbstractStafObject returnObject;
     private String file;
+    private int lineNumber;
     private List<StatementReport> reports;
 
     public KeywordDeclaration() {

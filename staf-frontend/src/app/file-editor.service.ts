@@ -68,7 +68,7 @@ export class FileEditorService {
     }, err => {console.error(err); this.toastr.error('Cannot save file', 'Error')});
   }
 
-  getFile(name) {
+  getFile(name): IFile {
     return this.openedFiles.get(name);
   }
 

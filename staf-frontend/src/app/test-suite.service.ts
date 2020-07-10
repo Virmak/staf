@@ -52,7 +52,7 @@ export class TestSuiteService {
           path: file.path,
           extension,
         });
-        if (this.isStafScript(extension)) {
+        if (this.isStafScript(extension)) { // replace with keyword service
           this.registerKeywords(file);
         }
       } else {

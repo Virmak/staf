@@ -10,6 +10,7 @@ import com.sparkit.staf.application.models.response.DeleteTestSuiteResponse;
 import com.sparkit.staf.application.models.response.project.GetProjectReportsResponse;
 import com.sparkit.staf.application.models.response.project.UpdateProjectConfigResponse;
 import com.sparkit.staf.core.runtime.config.JsonStafProjectConfig;
+import com.sparkit.staf.core.runtime.interpreter.StatementFailedScreenshot;
 import com.sparkit.staf.core.runtime.loader.IStafProjectConfigReader;
 import com.sparkit.staf.domain.Directory;
 import com.sparkit.staf.domain.FileType;
@@ -164,12 +165,16 @@ public class ProjectService {
     public GetProjectReportsResponse getProjectReports(String projectName) throws IOException {
         GetProjectReportsResponse response = new GetProjectReportsResponse();
         response.setProjectName(projectName);
+        response.setReportsFileNameList(new ArrayList<>());
         File projectDirectoryFile = getProjectDirectoryFile(projectName);
         ProjectConfig projectConfig = getProjectConfig(projectName);
         File reportsDirectory = new File(projectDirectoryFile, projectConfig.getReportsDir());
-        response.setReportsFileNameList(
-                Arrays.stream(Objects.requireNonNull(reportsDirectory.listFiles()))
-                        .map(File::getName).collect(Collectors.toList()));
+        for (File testSuiteReportsDir : Objects.requireNonNull(reportsDirectory.listFiles())) {
+            response.getReportsFileNameList().addAll(
+                    Arrays.stream(Objects.requireNonNull(testSuiteReportsDir.listFiles()))
+                            .filter(f -> !f.getName().equals(StatementFailedScreenshot.SCREEN_SHOTS_DIR))
+                            .map(f -> new GetProjectReportsResponse.ReportFile(f.getName(), f.getPath())).collect(Collectors.toList()));
+        }
         return response;
     }
 
@@ -220,12 +225,9 @@ public class ProjectService {
         return response;
     }
 
-    public String readTestReport(String projectName, String fileName) throws IOException {
-        ProjectConfig projectConfig = getProjectConfig(projectName);
-        File projectDirectoryFile = getProjectDirectoryFile(normalizeProjectName(projectName));
-        File reportsDirectory = new File(projectDirectoryFile, projectConfig.getReportsDir());
-        File reportFile = new File(reportsDirectory, fileName);
-        return new String(Files.readAllBytes(Paths.get(reportFile.getAbsolutePath())));
+    public String readTestReport(String reportFilePath) throws IOException {
+        File reportsDirectory = new File(reportFilePath);
+        return new String(Files.readAllBytes(Paths.get(reportsDirectory.getAbsolutePath())));
     }
 
     public ProjectConfig getProjectConfig(String projectLocation) throws IOException {

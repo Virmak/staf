@@ -137,7 +137,8 @@ public class SeleniumLibrary extends AbstractStafLibrary {
     public void captureScreenshot(@Inject(name = WEB_DRIVER_KEY) WebDriver webDriver, @KeywordArgument(name = "fileName") StafString filename) throws IOException {
         WebDriver augmentedDriver = new Augmenter().augment(webDriver);
         File sourceFile = ((TakesScreenshot) augmentedDriver).getScreenshotAs(OutputType.FILE);
-        File destinationFile = new File(System.getProperty("user.dir"), filename.getValue().toString());
+        File destinationFile = new File(filename.getValue().toString());
+        logger.info("Saving screenshot at : {} ", destinationFile.getPath());
         FileUtils.copyFile(sourceFile, destinationFile);
     }
 

@@ -69,7 +69,7 @@ export class ProjectConfigComponent implements OnInit {
     this.projectName = this.project.name;
     this.description = this.project.description;
     this.logDirectory = this.project.logDir;
-    this.reportDirectory = this.project.reportsDir;
+    this.reportDirectory = this.project.reportsDirPath;
     this.location = this.project.location;
   }
 

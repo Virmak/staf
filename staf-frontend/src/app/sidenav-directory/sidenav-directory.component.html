@@ -1,6 +1,6 @@
-<clr-tree-node *ngFor="let item of dir?.content | keyvalue">
+<clr-tree-node *ngFor="let item of dir?.content | keyvalue" [(clrExpanded)]="item.value.expanded">
     <button class="clr-treenode-link" [contextMenu]="basicMenu" [contextMenuSubject]="{item: item.value, parent: dir}" (click)="openFile(item.value, item.key)">
-      <clr-icon [attr.shape]="item.value.type"></clr-icon>
+      <clr-icon [attr.shape]="(item.value.expanded ? 'folder-open' : item.value.type)"></clr-icon>
       {{item.value.name}}
     </button>
 

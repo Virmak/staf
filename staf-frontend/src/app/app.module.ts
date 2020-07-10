@@ -40,6 +40,7 @@ import { RenameTestSuiteComponent } from './rename-test-suite/rename-test-suite.
 import { ProjectConfigComponent } from './project-config/project-config.component';
 import { RenameFileModalComponent } from './rename-file-modal/rename-file-modal.component';
 import { DocsComponent } from './docs/docs.component';
+import { ProjectsComponent } from './projects/projects.component';
 
 
 @NgModule({
@@ -72,6 +73,7 @@ import { DocsComponent } from './docs/docs.component';
     ProjectConfigComponent,
     RenameFileModalComponent,
     DocsComponent,
+    ProjectsComponent,
   ],
   imports: [
     BrowserModule,

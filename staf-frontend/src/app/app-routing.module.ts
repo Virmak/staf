@@ -1,3 +1,4 @@
+import { ProjectsComponent } from './projects/projects.component';
 import { DocsComponent } from './docs/docs.component';
 import { NoFileComponent } from './no-file/no-file.component';
 import { CsvEditorComponent } from './csv-editor/csv-editor.component';
@@ -12,7 +13,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 
 const routes: Routes = [
-  {path: '', component: DashboardComponent},
+  {path: '', redirectTo: 'projects', pathMatch: 'full'},
+  {path: 'projects', component: ProjectsComponent},
   {path: 'createProject', component: CreateProjectComponent},
   {path: 'projectDetails/:id', component: ProjectDetailsComponent},
   {path: 'editFile/:project/:fileName/:fullPath', component: EditFileComponent},

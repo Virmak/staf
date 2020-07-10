@@ -65,6 +65,7 @@ public class StafScriptInterpreter {
             logger.error("Script execution stopped");
             logger.error(e.getClass().getName());
             logger.error(e.getMessage());
+            logger.error("At {}", mainStafFile.getFilePath());
             e.printStackTrace();
         }
         return testSessionList.stream().map(TestSession::getTestSuiteReport).collect(Collectors.toList());

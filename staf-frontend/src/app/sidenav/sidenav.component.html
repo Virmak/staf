@@ -1,5 +1,5 @@
 <clr-tree>
-	<clr-tree-node  [ngClass]="{'root-tree-node-height': logService.showConsole}">
+	<clr-tree-node  [ngClass]="{'root-tree-node-height': logService.showConsole}" [clrExpanded]="true">
 
 
 		<clr-icon shape="folder"></clr-icon>
@@ -13,7 +13,7 @@
 		</clr-tree-node>
 		<clr-tree-node *ngFor="let project of projects" [(clrExpanded)]="project.expanded">
 			<span (click)="openProject(project.id)">
-				<clr-icon shape="file-settings" class="is-solid"></clr-icon>
+				<clr-icon shape="bundle"></clr-icon>
 				{{project.name}}
 			</span>
 			<clr-tree-node>
@@ -33,6 +33,16 @@
 
 				<app-sidenav-directory [dir]="testSuite.content" [testSuite]="testSuite" [parent]="testSuite" [project]="project" ngProjectAs='clr-tree-node'></app-sidenav-directory>
 
+			</clr-tree-node>
+
+			<clr-tree-node *ngIf="project?.reportsDirectory">
+				<button class="clr-treenode-link" [contextMenu]="basicMenu" [contextMenuSubject]="{testSuite: testSuite, project: project}">
+					<clr-icon shape="resource-pool"></clr-icon>
+
+
+					{{project?.reportsDirectory?.name}}
+				</button>
+			<app-sidenav-directory [dir]="project.reportsDirectory" [testSuite]="null" [parent]="project" [project]="project" ngProjectAs='clr-tree-node'></app-sidenav-directory>
 			</clr-tree-node>
 		</clr-tree-node>
 

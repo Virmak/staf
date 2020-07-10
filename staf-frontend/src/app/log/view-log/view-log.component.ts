@@ -22,25 +22,26 @@ export class ViewLogComponent implements OnInit {
   
   @Input() reports = [];
 
-  reportsFileNameList = [];
-  selectedTestReport = '';
+  reportsFileList = [];
+  selectedTestReportPath = '';
   selectedDate = '';
 
   private allReportsFileNameList
 
-  constructor(private projectService: ProjectService,
+  constructor(
+    private projectService: ProjectService,
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.projectService.getReports(this.project.name)
     .subscribe((fileList: IGetReportsResponse) => {
-      this.reportsFileNameList = fileList.reportsFileNameList.sort().reverse();
-      this.allReportsFileNameList = this.reportsFileNameList;
+      this.reportsFileList = fileList.reportsFileNameList;
+      this.allReportsFileNameList = this.reportsFileList;
     });
   }
 
   loadTestReport() {
-    this.projectService.getTestReport(this.project.location, this.selectedTestReport)
+    this.projectService.getTestReport(this.selectedTestReportPath)
     .subscribe((res: any) => {
       this.reports = res;
     }, err => {
@@ -51,7 +52,7 @@ export class ViewLogComponent implements OnInit {
 
   filterReportsList() {
     console.log(this.selectedDate);
-    this.reportsFileNameList = this.allReportsFileNameList.filter(r => {
+    this.reportsFileList = this.allReportsFileNameList.filter(r => {
 
     });
   }

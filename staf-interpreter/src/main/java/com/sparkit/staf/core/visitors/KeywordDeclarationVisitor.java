@@ -22,12 +22,14 @@ public class KeywordDeclarationVisitor extends StafBaseVisitor<KeywordDeclaratio
     public KeywordDeclaration visitKeyword_declaration(StafParser.Keyword_declarationContext ctx) {
         KeywordDeclaration keywordDeclaration = new KeywordDeclaration();
         keywordDeclaration.setFile(stafFileVisitor.getFilePath());
+        keywordDeclaration.setLineNumber(ctx.getStart().getLine());
         String keywordNameWithSpaces = ctx.keyword_name().IDENTIFIER().stream().map(ParseTree::getText)
                 .collect(Collectors.joining(" "));
         keywordDeclaration.setKeywordName(keywordNameWithSpaces);
         keywordDeclaration.setArgsList(keywordDeclarationArgumentsVisitor.visitKeyword_declaration_arguments(ctx.keyword_declaration_arguments()));
         keywordDeclaration.setStatementList(keywordBodyVisitor.visitKeyword_body(ctx.keyword_body()));
         keywordDeclaration.setReturnObject(keywordReturnStatementVisitor.visitKeyword_return_stat(ctx.keyword_return_stat()));
+
         return keywordDeclaration;
     }
 }

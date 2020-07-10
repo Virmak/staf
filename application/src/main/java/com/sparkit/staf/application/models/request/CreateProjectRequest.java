@@ -10,6 +10,6 @@ public class CreateProjectRequest {
     private String description;
     private String location;
     private String logDir;
-    private String reportsDir;
+    private String reportsDirPath;
     private ProjectType type;
 }

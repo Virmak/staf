@@ -10,6 +10,7 @@ export class ProjectOverviewComponent implements OnInit {
 
   @Input() set project(value) {
     this._project = value;
+    this._project.expanded = true;
   }
 
   constructor() { }

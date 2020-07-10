@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -33,8 +34,18 @@ public class JSONReportWriter implements ITestReportWriter {
     }
 
     private String getReportFilePath(ProjectConfig projectConfig, String testSuiteName) {
-        return Paths.get(testDirectory).toAbsolutePath() + "/" + projectConfig.getLocation()
-                + "/" + projectConfig.getReportsDir() + "/" + testSuiteName + "-" + getCurrentDateTime() + ".json";
+        return getReportDirectory(projectConfig, testSuiteName) + "/" + testSuiteName + "-report-" + getCurrentDateTime() + ".json";
+    }
+
+    private String getReportDirectory(ProjectConfig projectConfig, String testSuiteName) {
+        String testSuiteReportsPath = Paths.get(testDirectory).toAbsolutePath() + "/" + projectConfig.getLocation()
+                + "/" + projectConfig.getReportsDir() + "/" + testSuiteName;
+
+        File reportDirFile = new File(testSuiteReportsPath);
+        if (!reportDirFile.exists()) {
+            reportDirFile.mkdirs();
+        }
+        return testSuiteReportsPath;
     }
 
     private String getCurrentDateTime() {

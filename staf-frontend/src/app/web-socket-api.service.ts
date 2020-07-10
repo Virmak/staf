@@ -11,6 +11,7 @@ export class WebSocketApiService {
   topic: string = "/staf/logs";
   stompClient: any;
   messageSubject = new Subject();
+  isDisconnected = false;
 
   constructor() { }
 
@@ -20,11 +21,12 @@ export class WebSocketApiService {
     this.stompClient = Stomp.over(ws);
     const _this = this;
     _this.stompClient.connect({}, function (frame) {
+      this.isDisconnected = false;
       _this.stompClient.subscribe('/staf/logs', function (sdkEvent) {
         _this.onMessageReceived(sdkEvent);
       });
       //_this.stompClient.reconnect_delay = 2000;
-    }, this.errorCallBack);
+    }, e => this.errorCallBack(e));
   }
 
   _disconnect() {
@@ -36,7 +38,8 @@ export class WebSocketApiService {
 
   // on error, schedule a reconnection attempt
   errorCallBack(error) {
-    console.log("errorCallBack -> " + error)
+    console.log("errorCallBack -> " + error);
+    this.isDisconnected = true;
     setTimeout(() => {
       this._connect();
     }, 5000);

@@ -41,7 +41,7 @@ public class ProjectBuilder implements IProjectBuilder {
         config.setProject(createProjectRequest.getName());
         config.setDescription(createProjectRequest.getDescription());
         config.setLogDir(createProjectRequest.getLogDir());
-        config.setReportsDir(createProjectRequest.getReportsDir());
+        config.setReportsDir(createProjectRequest.getReportsDirPath());
         config.setType(createProjectRequest.getType());
         config.setLocation(createProjectRequest.getLocation());
         config.setTestSuites(new ArrayList<>());

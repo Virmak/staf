@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   showSidenav = true;
 
   constructor(public projectService: ProjectService,
-    private webSocket: WebSocketApiService) {}
+    public webSocket: WebSocketApiService) {}
 
   ngOnInit(): void {
 

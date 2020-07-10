@@ -1,5 +1,4 @@
 import { Subscription } from 'rxjs';
-import { TestSuiteService } from "./../test-suite.service";
 import { ITestSuite } from "./../interfaces/itest-suite";
 import { StafProject } from "./../types/staf-project";
 import { FileType, IFile } from "./../interfaces/ifile";
@@ -31,9 +30,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
 
   pathSplitted = [];
 
-  allTestSuite = { id: 999, name: "All", content: null };
   testSuites: ITestSuite[];
-  selectedTestSuite: ITestSuite = this.allTestSuite;
   editorInstance;
 
   hoverProvider: monaco.IDisposable;
@@ -52,10 +49,6 @@ export class EditFileComponent implements OnInit, OnDestroy {
     event.preventDefault();
     return false;
   };
-
-  private navigationListener = (e: CustomEvent) => {
-    this.router.navigate(e.detail);
-  }
 
   constructor(
     private route: ActivatedRoute,
@@ -79,7 +72,6 @@ export class EditFileComponent implements OnInit, OnDestroy {
         this.router.navigate(["/"]);
         return;
       }
-      this.testSuites = [this.allTestSuite, ...this.project.testSuites];
       this.openFile();
       if (this.compiledFilesSubscription) {
         this.compiledFilesSubscription.unsubscribe(); 
@@ -90,6 +82,9 @@ export class EditFileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     document.removeEventListener("keydown", this.keyEventListener);
+    if (this.hoverProvider) {
+      this.hoverProvider.dispose();
+    }
   }
 
   openFile() {
@@ -130,7 +125,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
     editor.addAction({
       id: "go-to-keyword",
       label: "Go to keyword definition",
-      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.F10],
+      keybindings: [monaco.KeyCode.F10],
       precondition: null,
       keybindingContext: null,
       contextMenuGroupId: "navigation",
@@ -139,11 +134,24 @@ export class EditFileComponent implements OnInit, OnDestroy {
         const line = ed.getModel().getLineContent(ed.getPosition().lineNumber);
         const keywordName = this.extractKeywordName(line, ed.getPosition().column.valueOf());
         if (keywordName) {
-          const delcarationFilePath = this.getKeywordDelarationFile(
+          const keywordDeclaration = this.getKeywordDelarationFile(
             keywordName
           );
+          if (!keywordDeclaration) {
+            return;
+          }
           this.zone.run(() => {
-            this.openFileByFullPath(delcarationFilePath);
+            this.openFileByFullPath(keywordDeclaration.filePath)
+            .then(navigation => {
+              ed.revealPositionInCenter({ lineNumber: keywordDeclaration.lineNumber, column: 0 });
+              setTimeout(() => {
+                var decorations = ed.deltaDecorations([], [
+                  { range: new monaco.Range(keywordDeclaration.lineNumber,1,keywordDeclaration.lineNumber,50), options: { inlineClassName: 'myLineDecoration' }},
+                ]);
+                setTimeout(() =>  ed.deltaDecorations(decorations, []), 400);
+              }, 500)
+              
+            });
           });
         }
         return null;
@@ -165,11 +173,11 @@ export class EditFileComponent implements OnInit, OnDestroy {
         const keywordName = this.extractKeywordName(line, position.column.valueOf());
 
         if (keywordName) {
-          const delcarationFilePath = this.getKeywordDelarationFile(
+          const keywordDeclaration = this.getKeywordDelarationFile(
             keywordName
           );
-          if (delcarationFilePath) {
-            const fileUrl = this.extractFileRoute(delcarationFilePath);
+          if (keywordDeclaration) {
+            const fileUrl = this.extractFileRoute(keywordDeclaration.filePath);
             return {
               range: new monaco.Range(
                 position.lineNumber,
@@ -179,7 +187,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
               ),
               contents: [
                 { value: "**Keyword definition : "+ keywordName + "**" },
-                { value: "File : **" + fileUrl + "**" },
+                { value: "File : **" + fileUrl + ": " + keywordDeclaration.lineNumber + "**" },
               ],
             };
           }
@@ -189,18 +197,20 @@ export class EditFileComponent implements OnInit, OnDestroy {
   }
 
   getKeywordDelarationFile(keywordName) {
-    keywordName = keywordName.toLowerCase();
+    const lowerCaseKeywordName = keywordName.toLowerCase();
     if (this.project.compiledFiles) {
       for (const filePath in this.project.compiledFiles.fileMap) {
         const file = this.project.compiledFiles.fileMap[filePath];
         if (file.keywordDeclarationMap) {
-          if (Object.keys(file.keywordDeclarationMap).map(key => key.toLowerCase()).includes(keywordName)) {
-            return file.filePath;
+          for (const keywordKey in file.keywordDeclarationMap) {
+            if (keywordKey.toLowerCase() == lowerCaseKeywordName) {
+              return {filePath: file.filePath, lineNumber: file.keywordDeclarationMap[keywordKey].lineNumber};
+            }
           }
         }
       }
     }
-    return "";
+    return null;
   }
 
   private extractFileRoute(fullFilePath: string) {
@@ -245,7 +255,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
       filePath.indexOf(this.projectService.testDirectory)
     );
 
-    this.router.navigate([
+    return this.router.navigate([
       "editFile",
       splittedPath[projectIndex],
       splittedPath[splittedPath.length - 1],
@@ -253,7 +263,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  private handleTestSuiteErrors(compiledTestSuite) {debugger;
+  private handleTestSuiteErrors(compiledTestSuite) {
     let modelMarkers = [];
     for (const filePath in compiledTestSuite.fileMap) {
       if (this.file.path === filePath) {

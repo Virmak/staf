@@ -70,7 +70,7 @@ export class SidenavDirectoryComponent implements OnInit {
       this.router.navigate(['csvEditor', this.project.getNormalizedProjectName(), item.path]);
     } else if (this.fileEditorService.isImageFile(item)) {
       this.fileEditorService.setFile(item);
-      this.router.navigate(['viewImage', this.project.getNormalizedProjectName(), item.name, key]);
+      this.router.navigate(['viewImage', this.project.getNormalizedProjectName(), item.path, key]);
     }
   }
 

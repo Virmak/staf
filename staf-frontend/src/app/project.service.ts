@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { CompiledTestSuite } from './types/compiled-test-suite';
 import { environment } from './../environments/environment';
 import { ToastrService } from 'ngx-toastr';
@@ -8,10 +9,11 @@ import { ITestSuite } from './interfaces/itest-suite';
 import { Injectable } from '@angular/core';
 import { IStafProject, ProjectType } from './interfaces/istaf-project';
 import { IDirectory } from './interfaces/idirectory';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { IFile, FileType } from './interfaces/ifile';
 import { HttpClient } from '@angular/common/http';
 import { IGenericResponse, GenericResponse } from './interfaces/igeneric-response';
+import { IGetImage64 } from './interfaces/i-getimage64';
 
 const baseUrl = environment.resolveApi();
 
@@ -20,7 +22,7 @@ const baseUrl = environment.resolveApi();
 })
 export class ProjectService {
 
-  private projectsSubject = new Subject<IStafProject[]>();
+  private projectsSubject = new BehaviorSubject<IStafProject[]>([]);
 
   private projects: StafProject[] = [];
 
@@ -182,20 +184,30 @@ export class ProjectService {
     const configFile = this.getProjectConfig(project);
     if (configFile != null) {
       const config = JSON.parse(configFile.fileContent);
+      let reportsDirectory;
+      const reportsDirContent = project.content.find(dir => dir.type === FileType.Directory && dir.name === config.reportsDir);
+      if (reportsDirContent) {
+        reportsDirectory =  {
+          name: reportsDirContent.name,
+          type: FileType.Directory,
+          content: this.testSuiteService.readDirectory(reportsDirContent)
+        };
+      }
+      
       const createdProject = StafProject.fromObject({
         id: this.sequence.getNext('project'),
         name: config.project,
         description: config.description,
         location: project.path.substr(project.path.lastIndexOf('/') + 1),
+        type: config.type,
         testSuites: this.testSuiteService.extractTestSuitesFromProject(project, config),
         logDir: config.logDir,
-        reportsDir: config.reportsDir,
-        type: config.type,
-      });
+        reportsDirPath: config.reportsDir,
+      }, reportsDirectory);
       this.compileProject(project.name).subscribe((compiledTestSuites: CompiledTestSuite[]) => {
         createdProject.compiledFiles = compiledTestSuites;
       });
-
+     
       return createdProject;
     }
     return null;
@@ -215,8 +227,7 @@ export class ProjectService {
           this.projectsSubject.next(this.projects);
         }
         this.toastr.success('Project created', 'Success');
-      }, err => { this.toastr.error('Error creating project', 'Error') })
-
+      }, err => { this.toastr.error('Error creating project', 'Error') });
   }
 
   getProjectById(id: number) {
@@ -243,7 +254,7 @@ export class ProjectService {
       description: '',
       location: '',
       logDir: 'logs',
-      reportsDir: 'reports',
+      reportsDirPath: 'reports',
       testSuites: [],
       type: ProjectType.UITest,
     };
@@ -268,16 +279,16 @@ export class ProjectService {
     return this.http.post(baseUrl + '/saveFile', payload);
   }
 
-  getImage(screenShot: string) {
-    return this.http.get(baseUrl + "/screenshot/" + screenShot);
+  getImage(screenShotPath: string): Observable<IGetImage64> {
+    return this.http.get<IGetImage64>(baseUrl + "/screenshot/" + screenShotPath.replace(/\//g, '<sep>'));
   }
 
   getReports(projectName: string) {
     return this.http.get(baseUrl + "/projectReports/" + projectName);
   }
 
-  getTestReport(projectName: string, fileName: string) {
-    return this.http.get(baseUrl + '/testReport/' + projectName + '/' + fileName);
+  getTestReport(filePath: string) {
+    return this.http.get(baseUrl + '/testReport/' + filePath.replace(/\//g, '<sep>'));
   }
 
   searchFilesByExtension(project: StafProject, extension: string) {
@@ -354,7 +365,7 @@ export class ProjectService {
         project.description = description;
         project.name = projectName;
         project.logDir = logDirectory;
-        project.reportsDir = reportDirectory;
+        project.reportsDirPath = reportDirectory;
         if (reloadProject) {
           this.reloadProject(project);
         }

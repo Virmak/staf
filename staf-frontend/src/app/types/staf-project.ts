@@ -12,11 +12,12 @@ export class StafProject implements IStafProject {
     description: string;
     location: string;
     logDir: string;
-    reportsDir: string;
+    reportsDirPath: string;
     testSuites: ITestSuite[] = [];
     type: ProjectType;
     expanded: boolean;
     reports?: TestSuiteReport[];
+    reportsDirectory: IDirectory;
 
     private _compiledFiles;
     compiledFilesSubject?: BehaviorSubject<CompiledTestSuite[]> = new BehaviorSubject([]);
@@ -39,16 +40,19 @@ export class StafProject implements IStafProject {
         return name.replace(/[ \t]/g, '-').toLowerCase();
     }
 
-    static fromObject(project: IStafProject) {
+    static fromObject(project: IStafProject, reportsDir: IDirectory) {
         const newStafProject = new StafProject();
         newStafProject.id = project.id;
         newStafProject.name = project.name;
         newStafProject.description = project.description;
         newStafProject.location = project.location;
         newStafProject.logDir = project.logDir;
-        newStafProject.reportsDir = project.reportsDir;
+        newStafProject.reportsDirPath = project.reportsDirPath;
         newStafProject.testSuites = project.testSuites;
         newStafProject.type = project.type;
+        if (reportsDir) {
+            newStafProject.reportsDirectory = reportsDir;
+        }
         return newStafProject;
     }
 
@@ -73,4 +77,6 @@ export class StafProject implements IStafProject {
         }
         return null;
     }
+
+    private buildReportsDir(reportsDirContent) {}
 }

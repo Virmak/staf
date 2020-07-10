@@ -11,11 +11,13 @@ import com.sparkit.staf.domain.TestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.EmptyStackException;
 
 public class StatementFailedScreenshot implements OnStatementFailed {
+    public static final String SCREEN_SHOTS_DIR = "screenshots";
     private static final Logger logger = LoggerFactory.getLogger(StatementFailedScreenshot.class);
     private static final String CAPTURE_SCREENSHOT_KEYWORD_NAME = "capturescreenshot";
     private final TestCaseReport testCaseReport;
@@ -59,10 +61,25 @@ public class StatementFailedScreenshot implements OnStatementFailed {
     }
 
     private String getScreenshotPath() {
-        return testDirectory + "/" + config.getLocation()
-                + "/" + testSuite.getTestSuiteName() + "/" + config.getReportsDir()
-                + "/screenshot-" + testSuite.getTestSuiteName()
+        File screenshotDirectory = getScreenshotsDirectory();
+        String screenshotFileName = "screenshot-" + testSuite.getTestSuiteName()
                 + "-" + testCaseName.replaceAll("\\s*", "")
                 + "-" + new Date().getTime() + ".png";
+        return new File(screenshotDirectory, screenshotFileName).getPath();
+    }
+
+    private File getScreenshotsDirectory() {
+        File screenshotDirectory = new File(getScreenShotsDirectoryPath());
+        if (!screenshotDirectory.exists()) {
+            screenshotDirectory.mkdirs();
+        }
+        return screenshotDirectory;
+    }
+
+    private String getScreenShotsDirectoryPath() {
+        return testDirectory + "/" + config.getLocation()
+                + "/" + config.getReportsDir()
+                + "/" + testSuite.getTestSuiteName()
+                + "/" + SCREEN_SHOTS_DIR;
     }
 }

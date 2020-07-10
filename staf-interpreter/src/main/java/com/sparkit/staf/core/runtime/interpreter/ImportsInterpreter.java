@@ -5,15 +5,19 @@ import com.sparkit.staf.core.ast.ImportTypes;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.BuiltInLibraryFactory;
 import com.sparkit.staf.core.runtime.loader.IStafScriptLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.Map;
 
 @Component
 public class ImportsInterpreter implements IImportsInterpreter {
+    private static final Logger logger = LoggerFactory.getLogger(ImportsInterpreter.class);
     @Autowired
     private IStafScriptLoader scriptBuilder;
     @Autowired
@@ -31,7 +35,14 @@ public class ImportsInterpreter implements IImportsInterpreter {
                 File directory = new File(currentDirectory);
                 File importedFile = new File(directory, statement.getPath().replaceAll("[\"']", ""));
                 String importedFileAbsolutePath = importedFile.getCanonicalPath(); // may throw IOException
-                scriptBuilder.load(testSuite, importedFileAbsolutePath);
+                try {
+                    scriptBuilder.load(testSuite, importedFileAbsolutePath);
+                } catch (NoSuchFileException e) {
+                    logger.error("Cannot find imported file '{}' at file {} on line {}", statement.getPath(),
+                            statement.getTokenPosition().getFilePath().replace(testDirectory +"/", ""),
+                            statement.getTokenPosition().getLine());
+                    throw e;
+                }
             }
         }
     }

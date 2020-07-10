@@ -58,9 +58,9 @@ public class ProjectController {
     }
 
     @CrossOrigin("*")
-    @GetMapping("/testReport/{project}/{fileName}")
-    public String getTestReport(@PathVariable(name = "project") String project, @PathVariable(name = "fileName") String fileName) throws IOException {
-        return projectService.readTestReport(project, fileName);
+    @GetMapping("/testReport/{reportFilePath}")
+    public String getTestReport(@PathVariable(name = "reportFilePath") String reportFilePath) throws IOException {
+        return projectService.readTestReport(reportFilePath.replace("<sep>", "/"));
     }
 
     @CrossOrigin("*")

@@ -1,29 +1,39 @@
 <div class="main-container">
 
-	<div *ngIf="serverError" class="alert alert-danger alert-app-level">
-  <div class="alert-items">
-				<div class="alert-item static">
-					<div class="alert-icon-wrapper">
-						<clr-icon class="alert-icon" shape="exclamation-triangle"></clr-icon>
-					</div>
-					<span class="alert-text">Cannot connect to server</span>
-				</div>
-			</div>
-    <button type="button" class="close" aria-label="Close">
-        <clr-icon aria-hidden="true" shape="close"></clr-icon>
-    </button>
-	</div>
-	<app-header></app-header>
-	<div class="content-container">
-		<div class="content-area">
+    <div *ngIf="serverError" class="alert alert-danger alert-app-level">
+        <div class="alert-items">
+            <div class="alert-item static">
+                <div class="alert-icon-wrapper">
+                    <clr-icon class="alert-icon" shape="exclamation-triangle"></clr-icon>
+                </div>
+                <span class="alert-text">Cannot connect to server</span>
+            </div>
+        </div>
+        <button type="button" class="close" aria-label="Close">
+            <clr-icon aria-hidden="true" shape="close"></clr-icon>
+        </button>
+    </div>
+
+    <clr-alert *ngIf="webSocket.isDisconnected" [clrAlertClosable]="true" [clrAlertType]="'warning'" [clrAlertAppLevel]="true">
+        <clr-alert-item>
+            <span class="alert-text">
+                Web socket connection is lost
+            </span>
+        </clr-alert-item>
+    </clr-alert>
+
+
+    <app-header></app-header>
+    <div class="content-container">
+        <div class="content-area">
             <clr-icon shape="caret" *ngIf="!showSidenav" (click)="showSidenav = true" class="showSideNav navToggle"></clr-icon>
             <clr-icon shape="caret" *ngIf="showSidenav" (click)="showSidenav = false" class="hideSideNav navToggle"></clr-icon>
-			<router-outlet></router-outlet>
-		</div>
-		<nav class="sidenav" *ngIf="showSidenav">
+            <router-outlet></router-outlet>
+        </div>
+        <nav class="sidenav" *ngIf="showSidenav">
             <app-sidenav [projects]="projects"></app-sidenav>
-		</nav>
-	</div>
+        </nav>
+    </div>
 </div>
 
 
