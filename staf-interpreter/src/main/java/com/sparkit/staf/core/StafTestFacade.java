@@ -34,29 +34,33 @@ public class StafTestFacade {
     @Autowired
     private ITestReportWriter jsonReportWriter;
 
-    public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, RunTestRequest request) throws IOException {
+    public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, RunTestRequest runTestRequest) throws IOException {
         ProjectConfig projectConfig = projectConfigReader.readConfigFile(new File(configFile));
         String logFilePath = getLogFilePath(projectConfig.getLogDir());
         System.setProperty(AppConfig.LOGGING_FILE, logFilePath);
         System.setProperty(AppConfig.TEST_DIRECTORY, testDir);
-        if (request.getWebDriverOptions() != null) {
-            System.setProperty(AppConfig.WEB_DRIVER_ADDRESS, request.getWebDriverOptions().getWebDriverAddress());
-            System.setProperty(AppConfig.REMOTE_WEB_DRIVER, String.valueOf(request.getWebDriverOptions().isRemote()));
-            System.setProperty(AppConfig.BROWSER_NAME, request.getWebDriverOptions().getBrowserName());
-            System.setProperty(AppConfig.BROWSER_VERSION, request.getWebDriverOptions().getBrowserVersion());
-            System.setProperty(AppConfig.ENABLE_VNC, String.valueOf(request.getWebDriverOptions().isEnableVnc()));
-            System.setProperty(AppConfig.ENABLE_VIDEO, String.valueOf(request.getWebDriverOptions().isEnableVideo()));
+        if (runTestRequest.getWebDriverOptions() != null) {
+            setWebDriverSystemProperties(runTestRequest);
         }
 
         logger.info("Running project '{}'", projectDir);
 
         List<CompletableFuture<List<TestSuiteReport>>> futureList = new ArrayList<>();
-        for (RunTestSuite testSuite : request.getTestSuites()) {
-            futureList.add(getTestSuiteFuture(testSuite, request.getWebDriverOptions().getSessionCount(), projectConfig));
+        for (RunTestSuite testSuite : runTestRequest.getTestSuites()) {
+            futureList.add(getTestSuiteFuture(testSuite, runTestRequest.getWebDriverOptions().getSessionCount(), projectConfig));
         }
 
         return futureList.stream().map(CompletableFuture::join)
                 .flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+    private void setWebDriverSystemProperties(RunTestRequest runTestRequest) {
+        System.setProperty(AppConfig.WEB_DRIVER_ADDRESS, runTestRequest.getWebDriverOptions().getWebDriverAddress());
+        System.setProperty(AppConfig.REMOTE_WEB_DRIVER, String.valueOf(runTestRequest.getWebDriverOptions().isRemote()));
+        System.setProperty(AppConfig.BROWSER_NAME, runTestRequest.getWebDriverOptions().getBrowserName());
+        System.setProperty(AppConfig.BROWSER_VERSION, runTestRequest.getWebDriverOptions().getBrowserVersion());
+        System.setProperty(AppConfig.ENABLE_VNC, String.valueOf(runTestRequest.getWebDriverOptions().isEnableVnc()));
+        System.setProperty(AppConfig.ENABLE_VIDEO, String.valueOf(runTestRequest.getWebDriverOptions().isEnableVideo()));
     }
 
     private CompletableFuture<List<TestSuiteReport>> getTestSuiteFuture(RunTestSuite runTestSuiteRequest, int sessionCount, ProjectConfig projectConfig) {

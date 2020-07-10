@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 public class ProjectController {
@@ -34,8 +32,6 @@ public class ProjectController {
         try {
             projectService.createProject(createProjectRequest);
         } catch (IOException | ProjectNameAlreadyExist e) {
-            Map<String, Object> res = new HashMap<>();
-            res.put("error", "Project name already exists");
             e.printStackTrace();
             return ResponseEntity.ok(new Directory());
         }
@@ -45,9 +41,7 @@ public class ProjectController {
     @CrossOrigin(origins = "*")
     @GetMapping("/projects/{projectLocation}")
     public Directory getProject(@PathVariable("projectLocation") String projectLocation) {
-        File testDirectoryFile = new File(testDir);
-        File projectDirectoryFile = new File(testDirectoryFile, projectLocation);
-        return projectService.readDirectory(projectDirectoryFile);
+        return projectService.readDirectory(projectService.getProjectDirectoryFile(projectLocation));
     }
 
     @CrossOrigin(origins = "*")
