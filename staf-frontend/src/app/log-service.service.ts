@@ -1,3 +1,4 @@
+import { FileEditorService } from './file-editor.service';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -18,7 +19,7 @@ export class LogServiceService {
 
   showConsole = false;
 
-  constructor() { }
+  constructor(private fileEditorService: FileEditorService) { }
 
   addMessage(message) {
     if (message.startsWith('[INFO] WebSocketSession[1 current WS')) { //ignore websocket session log

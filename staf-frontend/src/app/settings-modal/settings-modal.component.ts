@@ -1,3 +1,4 @@
+import { LogServiceService } from './../log-service.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TestService } from '../test.service';
 
@@ -33,7 +34,7 @@ export class SettingsModalComponent implements OnInit {
 
   selectedVersion;
 
-  constructor(public testService: TestService) { }
+  constructor(public testService: TestService, private logService: LogServiceService) { }
 
   ngOnInit(): void {
     if (this.testService.driverOptions) {
@@ -46,6 +47,7 @@ export class SettingsModalComponent implements OnInit {
       this.enableVnc = this.testService.driverOptions.enableVnc;
       this.runInSelenoid = this.testService.driverOptions.runInSelenoid;
     }
+    this.logService.showConsole = false;
   }
 
   saveWebDriverOptions() {

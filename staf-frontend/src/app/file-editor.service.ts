@@ -89,6 +89,21 @@ export class FileEditorService {
     }
   }
 
+  openFileByPath(filePath) {
+    const splittedPath = filePath.split("/");
+    
+    const relativeFilePath = filePath.substr(
+      filePath.indexOf(this.projectService.testDirectory)
+    );
+
+    return this.router.navigate([
+      "editFile",
+      splittedPath[0],
+      splittedPath[splittedPath.length - 1],
+      relativeFilePath,
+    ]);
+  }
+
 
   isTextFile(file) {
     return file.extension == 'txt' 

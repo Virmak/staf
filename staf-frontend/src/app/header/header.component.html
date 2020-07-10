@@ -12,13 +12,13 @@
     </div>
     <div class="header-actions">
         <div class="dropdown bottom-left open">
-            <button class="dropdown-toggle" (click)="settingsMenuExpanded = !settingsMenuExpanded" >
+            <button class="dropdown-toggle" (click)="settingsMenuExpanded = !settingsMenuExpanded">
                 <clr-icon shape="cog" size="24"></clr-icon>
                 <clr-icon shape="caret down"></clr-icon>
             </button>
             <div *ngIf="settingsMenuExpanded" class="dropdown-menu">
                 <h4 class="dropdown-header">Settings</h4>
-                <div class="dropdown-item" (click)="settingsModal = true">Web driver settings</div>
+                <div class="dropdown-item" (click)="settingsModal = true; settingsMenuExpanded = false; ">Web driver settings</div>
                 <!--<div class="dropdown-divider"></div>-->
             </div>
         </div>
@@ -44,7 +44,7 @@
 <clr-modal [(clrModalOpen)]="settingsModal">
     <h3 class="modal-title">Web driver settings</h3>
     <div class="modal-body">
-        <app-settings-modal (showModalChange)="showHideModal($event)" ></app-settings-modal>
+        <app-settings-modal *ngIf="settingsModal" (showModalChange)="showHideModal($event)" ></app-settings-modal>
     </div>
         
 </clr-modal>

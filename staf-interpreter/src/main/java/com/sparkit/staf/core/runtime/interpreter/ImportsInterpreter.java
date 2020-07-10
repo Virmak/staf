@@ -38,7 +38,7 @@ public class ImportsInterpreter implements IImportsInterpreter {
                 try {
                     scriptBuilder.load(testSuite, importedFileAbsolutePath);
                 } catch (NoSuchFileException e) {
-                    logger.error("Cannot find imported file '{}' at file {} on line {}", statement.getPath(),
+                    logger.error("Cannot find imported file '{}' at file [{}] on line {}", statement.getPath(),
                             statement.getTokenPosition().getFilePath().replace(testDirectory +"/", ""),
                             statement.getTokenPosition().getLine());
                     throw e;

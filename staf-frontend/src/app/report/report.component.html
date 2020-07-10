@@ -3,7 +3,7 @@
 	<ng-container *ngFor="let testSuite of reports">
 		<thead>
 			<tr>
-				<th colspan="4">{{testSuite.testSuite | titlecase}}</th>
+				<th colspan="5">{{testSuite.testSuite | titlecase}}</th>
 			</tr>
 			<tr>
 				<th>Test case</th>
@@ -24,7 +24,6 @@
 				<tr *ngFor="let tc of testSuite.testCaseReports" [ngClass]="tc.result">
 					<td>{{tc.testCase | titlecase}}</td>
 					<td>{{tc.start}}</td>
-					<td>{{tc.end}}</td>
 					<td>{{tc.end}}</td>
 					<td>{{tc.elapsed}}</td>
 					<td>{{tc.result}}</td>

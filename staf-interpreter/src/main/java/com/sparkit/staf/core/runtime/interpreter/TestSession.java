@@ -28,6 +28,7 @@ public class TestSession implements Runnable {
     private final ProjectConfig projectConfig;
     private final SymbolsTable testSuiteSharedSymbolsTable;
     private final TestCaseExecutor testCaseRunner;
+    @Getter
     private final int sessionId;
     @Getter
     private final TestSuiteReport testSuiteReport = new TestSuiteReport();
