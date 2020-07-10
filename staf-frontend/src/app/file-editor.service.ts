@@ -85,7 +85,7 @@ export class FileEditorService {
       this.router.navigate(['csvEditor', item.project.getNormalizedProjectName(), item.path]);
     } else if (this.isImageFile(item)) {
       this.setFile(item);
-      this.router.navigate(['viewImage', project.getNormalizedProjectName(), item.name, item.path]);
+      this.router.navigate(['viewImage', project.getNormalizedProjectName(), item.path, item.path]);
     }
   }
 
