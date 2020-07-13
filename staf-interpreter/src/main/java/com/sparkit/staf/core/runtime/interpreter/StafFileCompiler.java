@@ -15,6 +15,7 @@ import java.io.IOException;
 public class StafFileCompiler implements IStafCompiler {
     @Autowired
     private StafFileVisitor stafFileVisitor;
+
     @Override
     public StafFile compile(String filePath) throws IOException, SyntaxErrorException {
         CharStream stafCharStream = CharStreams.fromFileName(filePath);
@@ -31,12 +32,35 @@ public class StafFileCompiler implements IStafCompiler {
             throw new SyntaxErrorException(filePath, e.getMessage());
         }
 
-        for (SyntaxError syntaxError : listener.getSyntaxErrors()) {
-            System.out.println(syntaxError.getMessage());
-        }
+
         stafFileVisitor.setFilePath(filePath);
         StafFile stafFile = (StafFile) stafFileVisitor.visitStaf_file(parseTree);
         stafFile.setFilePath(filePath);
+        stafFile.setSyntaxErrors(listener.getSyntaxErrors());
         return stafFile;
+    }
+
+    @Override
+    public StafFile compileWithErrors(String filePath) throws IOException {
+        CharStream stafCharStream = CharStreams.fromFileName(filePath);
+        StafLexer lexer = new StafLexer(stafCharStream);
+        SyntaxErrorListener listener = new SyntaxErrorListener();
+        lexer.addErrorListener(listener);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        StafParser parser = new StafParser(tokens);
+        parser.addErrorListener(listener);
+        StafParser.Staf_fileContext parseTree;
+        try {
+            parseTree = parser.staf_file(); stafFileVisitor.setFilePath(filePath);
+            StafFile stafFile = (StafFile) stafFileVisitor.visitStaf_file(parseTree);
+            stafFile.setFilePath(filePath);
+            return stafFile;
+        } catch (ParseCancellationException ignored) {
+            stafFileVisitor.setFilePath(filePath);
+            StafFile stafFile = new StafFile();
+            stafFile.setFilePath(filePath);
+            stafFile.setSyntaxErrors(listener.getSyntaxErrors());
+            return stafFile;
+        }
     }
 }

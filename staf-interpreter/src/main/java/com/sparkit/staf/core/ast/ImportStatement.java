@@ -8,9 +8,11 @@ import lombok.Data;
 public class ImportStatement implements IStatement {
     private String path;
     private ImportTypes type;
+    private TokenPosition tokenPosition;
 
-    public ImportStatement(String path) {
+    public ImportStatement(String path, TokenPosition tokenPosition) {
         this.path = path;
+        this.tokenPosition = tokenPosition;
         this.resolveType();
     }
 

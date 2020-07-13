@@ -93,7 +93,7 @@ public class StatementBlockExecutor {
         AbstractStafObject actualIterator = (AbstractStafObject) iterable.getIterator().evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
         if (actualIterator instanceof StafList) {
             int iteration = 0;
-            for (AbstractStafObject item : ((StafList) actualIterator).getList()) {
+            for (AbstractStafObject item : ((StafList) actualIterator).getStafList()) {
                 boolean loopExited = false;
                 localSymbolsTable.setSymbolValue("$__index__", new StafInteger(iteration));
                 loopReport.setErrorMessage("Iteration[" + (iteration++) + "] : " + item);

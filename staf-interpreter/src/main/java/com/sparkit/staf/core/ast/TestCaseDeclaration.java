@@ -12,10 +12,10 @@ public class TestCaseDeclaration implements IStatementBlock {
     private List<IStatement> statements;
     private List<StatementReport> reports;
     private int order;
-    private static int instanceCount;
+    private boolean isDefaultOrder;
     private boolean ignored = false;
     private String filePath;
-
+    private int lineNumber;
 
     public TestCaseDeclaration(String name, List<IStatement> statements) {
         this.name = name;
@@ -33,5 +33,10 @@ public class TestCaseDeclaration implements IStatementBlock {
     @Override
     public void setStatementReports(List<StatementReport> reports) {
         this.reports = reports;
+    }
+
+    public void setDefaultOrder(int order) {
+        this.order = order;
+        this.isDefaultOrder = true;
     }
 }

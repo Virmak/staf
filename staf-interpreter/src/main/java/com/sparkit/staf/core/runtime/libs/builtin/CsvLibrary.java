@@ -7,6 +7,7 @@ import com.sparkit.staf.core.ast.types.*;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.annotations.Inject;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
+import com.sparkit.staf.core.runtime.libs.annotations.KeywordArgument;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 
 import java.io.File;
@@ -19,11 +20,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@StafLibrary(name = "csv")
+@StafLibrary(name = "Csv Library")
 public class CsvLibrary extends AbstractStafLibrary {
 
     @Keyword(name = "read csv")
-    public StafList readCsv(@Inject(name = "__keyword__") KeywordCall keywordCall, StafString filePath)
+    public StafList readCsv(@Inject(name = "__keyword__") KeywordCall keywordCall, @KeywordArgument(name = "filePath") StafString filePath)
             throws IOException {
         Reader reader = Files.newBufferedReader(getCSVFilePath(keywordCall.getFilePath(), (String) filePath.getValue()));
         List<String[]> list;
@@ -39,7 +40,8 @@ public class CsvLibrary extends AbstractStafLibrary {
     }
 
     @Keyword(name = "write csv")
-    public void writeCsv(@Inject(name = "__keyword__") KeywordCall keywordCall, StafString filePath, StafList stafList) throws IOException {
+    public void writeCsv(@Inject(name = "__keyword__") KeywordCall keywordCall, @KeywordArgument(name = "filePath") StafString filePath,
+                         @KeywordArgument(name = "list") StafList stafList) throws IOException {
         Path csvFilePath = getCSVFilePath(keywordCall.getFilePath(), (String) filePath.getValue());
         List<String[]> lines = new ArrayList<>();
         try (CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath.toString()),
@@ -47,11 +49,11 @@ public class CsvLibrary extends AbstractStafLibrary {
                 CSVWriter.NO_QUOTE_CHARACTER,
                 CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                 CSVWriter.RFC4180_LINE_END)) {
-            StafDictionary firstDict = (StafDictionary) stafList.getList().get(0);
+            StafDictionary firstDict = (StafDictionary) stafList.getStafList().get(0);
             String[] firstLine = firstDict.getObjectMap().keySet().toArray(new String[0]); // first line for dictionaries keys
             lines.add(firstLine);
-            for (int i = 1; i < stafList.getList().size(); i++) {
-                lines.add(getStringArrayFromDictionary((StafDictionary) stafList.getList().get(i)));
+            for (int i = 1; i < stafList.getStafList().size(); i++) {
+                lines.add(getStringArrayFromDictionary((StafDictionary) stafList.getStafList().get(i)));
             }
             writer.writeAll(lines);
         }

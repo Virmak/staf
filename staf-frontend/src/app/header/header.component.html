@@ -5,17 +5,20 @@
         </a>
     </div>
     <div class="header-nav">
-        <a href="javascript://" class="active nav-link nav-text">Dashboard</a>
+        <a routerLink="/projects" routerLinkActive="active" class="nav-link nav-text">Projects</a>
+    </div>
+    <div class="header-nav">
+        <a routerLink="/docs" routerLinkActive="active" class="nav-link nav-text">Docs</a>
     </div>
     <div class="header-actions">
         <div class="dropdown bottom-left open">
-            <button class="dropdown-toggle" (click)="settingsMenuExpanded = !settingsMenuExpanded" >
+            <button class="dropdown-toggle" (click)="settingsMenuExpanded = !settingsMenuExpanded">
                 <clr-icon shape="cog" size="24"></clr-icon>
                 <clr-icon shape="caret down"></clr-icon>
             </button>
             <div *ngIf="settingsMenuExpanded" class="dropdown-menu">
                 <h4 class="dropdown-header">Settings</h4>
-                <div class="dropdown-item" (click)="settingsModal = true">Web driver settings</div>
+                <div class="dropdown-item" (click)="settingsModal = true; settingsMenuExpanded = false; ">Web driver settings</div>
                 <!--<div class="dropdown-divider"></div>-->
             </div>
         </div>
@@ -27,7 +30,7 @@
 </header>
 
 <nav class="subnav">
-    <ul class="nav">
+    <ul class="nav"  (wheel)="onWheel($event)">
         <li class="nav-item" *ngFor="let file of fileEditor.openedFiles | keyvalue;">
             <a class="nav-link file" [ngClass]="{'active': file.value.active}" 
                 (click)="openFile(file.value, file.value.project)"
@@ -41,7 +44,7 @@
 <clr-modal [(clrModalOpen)]="settingsModal">
     <h3 class="modal-title">Web driver settings</h3>
     <div class="modal-body">
-        <app-settings-modal (showModalChange)="showHideModal($event)" ></app-settings-modal>
+        <app-settings-modal *ngIf="settingsModal" (showModalChange)="showHideModal($event)" ></app-settings-modal>
     </div>
         
 </clr-modal>

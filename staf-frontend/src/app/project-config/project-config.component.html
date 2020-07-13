@@ -1,0 +1,93 @@
+<form
+  clrForm
+  clrLayout="horizontal"
+  clrLabelSize="4"
+  (submit)="saveConfig(false)"
+>
+  <clr-input-container>
+    <label>Project name</label>
+    <input
+      clrInput
+      type="text"
+      [(ngModel)]="projectName"
+      name="projectName"
+      required
+    />
+  </clr-input-container>
+
+  <clr-textarea-container>
+    <label>Description</label>
+    <textarea
+      clrTextarea
+      name="description"
+      [(ngModel)]="description"
+    ></textarea>
+  </clr-textarea-container>
+
+  <clr-input-container>
+    <label>Logs directory</label>
+    <input
+      clrInput
+      type="text"
+      [(ngModel)]="logDirectory"
+      name="logDirectory"
+      required
+    />
+  </clr-input-container>
+
+  <clr-input-container>
+    <label>Reports directory</label>
+    <input
+      clrInput
+      type="text"
+      [(ngModel)]="reportDirectory"
+      name="reportDirectory"
+      required
+    />
+  </clr-input-container>
+
+  <clr-input-container>
+    <label>Project location</label>
+    <input
+      clrInput
+      type="text"
+      [(ngModel)]="location"
+      name="location"
+      required
+      (blur)="normalizeProjectLocation()"
+    />
+  </clr-input-container>
+
+  <button class="btn btn-success" type="submit">
+    <clr-icon shape="floppy"></clr-icon> Save
+  </button>
+  <button class="btn btn-outline" type="button" (click)="resetFields()">
+    <clr-icon shape="ban"></clr-icon> Reset
+  </button>
+</form>
+
+<clr-modal [(clrModalOpen)]="projectConfigWarningModal">
+  <h3 class="modal-title">Update project config</h3>
+  <div class="modal-body">
+    <clr-alert [clrAlertType]="'warning'">
+      <clr-alert-item>
+        <span class="alert-text">
+          Project location is changed and may require reloading the entire
+          project
+        </span>
+      </clr-alert-item>
+    </clr-alert>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline"
+      (click)="projectConfigWarningModal = false"
+    >
+      Cancel
+    </button>
+    <button type="button" class="btn btn-primary" (click)="saveConfig(true)">
+      Ok
+    </button>
+  </div>
+</clr-modal>

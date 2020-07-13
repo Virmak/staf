@@ -1,21 +1,16 @@
 package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.ast.TestCaseDeclaration;
+import com.sparkit.staf.core.models.RunTestCase;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TestSuite {
     @Getter
     private final String testSuiteName;
-    @Getter
-    @Setter
-    private String testDirectory;
     @Getter
     private final SymbolsTable globalSharedSymbolsTable; // shared symbols table between test sessions (threads)
     @Getter
@@ -23,15 +18,20 @@ public class TestSuite {
     @Getter
     private final List<String> loadedFilesList = new ArrayList<>();
     @Getter
+    private final Map<String, RunTestCase> selectedTestCaseMap;
+    @Getter
+    private final String testDirectory;
+    @Getter
     @Setter
-    private Map<String, TestCaseDeclaration> testCaseDeclarationMap;
+    private Map<String, TestCaseDeclaration> testCaseDeclarationMap = new HashMap<>();
 
     public TestSuite(String testSuiteName, String testDirectory, SymbolsTable symbolsTable,
-                     KeywordLibrariesRepository keywordLibrariesRepository) {
+                     KeywordLibrariesRepository keywordLibrariesRepository, Map<String, RunTestCase> selectedTestCaseMap) {
         this.testSuiteName = testSuiteName;
         this.testDirectory = testDirectory;
         this.globalSharedSymbolsTable = symbolsTable;
         this.keywordLibrariesRepository = keywordLibrariesRepository;
+        this.selectedTestCaseMap = selectedTestCaseMap;
     }
 
     public String getFullPath() {

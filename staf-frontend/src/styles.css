@@ -103,3 +103,7 @@
     width: 100%;
     position: relative;
 }
+
+.myLineDecoration {
+	background: darkslategray;
+}

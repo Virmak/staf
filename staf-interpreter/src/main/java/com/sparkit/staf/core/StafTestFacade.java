@@ -1,20 +1,21 @@
 package com.sparkit.staf.core;
 
+import com.sparkit.staf.core.models.RunTestRequest;
+import com.sparkit.staf.core.models.RunTestSuite;
 import com.sparkit.staf.core.parser.SyntaxErrorException;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.WebDriverOptions;
-import com.sparkit.staf.core.runtime.loader.IStafConfig;
+import com.sparkit.staf.core.runtime.loader.IStafProjectConfigReader;
 import com.sparkit.staf.core.runtime.loader.TestSuiteRunner;
-import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
 import com.sparkit.staf.core.runtime.loader.exceptions.TestSuiteMainScriptNotFoundException;
 import com.sparkit.staf.core.runtime.reports.ITestReportWriter;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
+import com.sparkit.staf.domain.ProjectConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.nio.file.Paths;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,53 +28,50 @@ import java.util.stream.Collectors;
 public class StafTestFacade {
     private static final Logger logger = LogManager.getLogger(StafTestFacade.class);
     @Autowired
-    private IStafConfig stafConfig;
+    private IStafProjectConfigReader projectConfigReader;
     @Autowired
     private TestSuiteRunner loader;
     @Autowired
     private ITestReportWriter jsonReportWriter;
 
-    public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, List<String> testSuites,
-                                            WebDriverOptions webDriverOptions,
-                                            int sessionCount)
-            throws ConfigFileNotFoundException {
-        stafConfig.readConfigFile(projectDir, configFile);
-        String logFilePath = getLogFilePath(stafConfig.getLogDirectory());
-        System.setProperty("logging.file", logFilePath);
-        System.setProperty("testDirectory", testDir);
-        if (webDriverOptions != null) {
-            System.setProperty("webDriverAddress", webDriverOptions.getWebDriverAddress());
-            System.setProperty("remote", String.valueOf(webDriverOptions.isRemote()));
-            System.setProperty("browserName", webDriverOptions.getBrowserName());
-            System.setProperty("browserVersion", webDriverOptions.getBrowserVersion());
-            System.setProperty("enableVnc", String.valueOf(webDriverOptions.isEnableVnc()));
-            System.setProperty("enableVideo", String.valueOf(webDriverOptions.isEnableVideo()));
+    public List<TestSuiteReport> runProject(String testDir, String projectDir, String configFile, RunTestRequest runTestRequest) throws IOException {
+        ProjectConfig projectConfig = projectConfigReader.readConfigFile(new File(configFile));
+        String logFilePath = getLogFilePath(projectConfig.getLogDir());
+        System.setProperty(AppConfig.LOGGING_FILE, logFilePath);
+        System.setProperty(AppConfig.TEST_DIRECTORY, testDir);
+        if (runTestRequest.getWebDriverOptions() != null) {
+            setWebDriverSystemProperties(runTestRequest);
         }
 
         logger.info("Running project '{}'", projectDir);
 
         List<CompletableFuture<List<TestSuiteReport>>> futureList = new ArrayList<>();
-        for (String testSuite : testSuites) {
-            futureList.add(getTestSuiteFuture(testSuite, sessionCount, testDir));
+        for (RunTestSuite testSuite : runTestRequest.getTestSuites()) {
+            futureList.add(getTestSuiteFuture(testSuite, runTestRequest.getWebDriverOptions().getSessionCount(), projectConfig));
         }
 
-        List<TestSuiteReport> collect = futureList.stream().map(CompletableFuture::join)
+        return futureList.stream().map(CompletableFuture::join)
                 .flatMap(Collection::stream).collect(Collectors.toList());
-        return collect;
     }
 
-    private CompletableFuture<List<TestSuiteReport>> getTestSuiteFuture(String testSuite, int sessionCount, String testDir) {
+    private void setWebDriverSystemProperties(RunTestRequest runTestRequest) {
+        System.setProperty(AppConfig.WEB_DRIVER_ADDRESS, runTestRequest.getWebDriverOptions().getWebDriverAddress());
+        System.setProperty(AppConfig.REMOTE_WEB_DRIVER, String.valueOf(runTestRequest.getWebDriverOptions().isRemote()));
+        System.setProperty(AppConfig.BROWSER_NAME, runTestRequest.getWebDriverOptions().getBrowserName());
+        System.setProperty(AppConfig.BROWSER_VERSION, runTestRequest.getWebDriverOptions().getBrowserVersion());
+        System.setProperty(AppConfig.ENABLE_VNC, String.valueOf(runTestRequest.getWebDriverOptions().isEnableVnc()));
+        System.setProperty(AppConfig.ENABLE_VIDEO, String.valueOf(runTestRequest.getWebDriverOptions().isEnableVideo()));
+    }
+
+    private CompletableFuture<List<TestSuiteReport>> getTestSuiteFuture(RunTestSuite runTestSuiteRequest, int sessionCount, ProjectConfig projectConfig) {
         return CompletableFuture.supplyAsync(() -> {
             List<TestSuiteReport> testSuiteReport = null;
             try {
-                testSuiteReport = loader.runTests(testSuite, sessionCount);
-            } catch (SyntaxErrorException e) {
-                e.printStackTrace();
-            } catch (TestSuiteMainScriptNotFoundException e) {
+                testSuiteReport = loader.runTests(runTestSuiteRequest, sessionCount, projectConfig);
+            } catch (SyntaxErrorException | TestSuiteMainScriptNotFoundException e) {
                 e.printStackTrace();
             }
-            jsonReportWriter.write(Paths.get(testDir).toAbsolutePath() + "/" + stafConfig.getProjectDir()
-                    + "/results/" + testSuite + "-" + getCurrentDateTime() + ".json", testSuiteReport);
+            jsonReportWriter.write(projectConfig, runTestSuiteRequest.getName(), testSuiteReport);
             return testSuiteReport;
         });
     }

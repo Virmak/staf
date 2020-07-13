@@ -1,9 +1,11 @@
 package com.sparkit.staf.api.controllers;
 
 import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
+import com.sparkit.staf.application.models.request.RenameTestSuiteRequest;
 import com.sparkit.staf.application.models.response.CreateTestSuiteResponse;
 import com.sparkit.staf.application.models.response.DeleteTestSuiteResponse;
 import com.sparkit.staf.application.models.response.GetTestSuiteDetailsResponse;
+import com.sparkit.staf.application.models.response.RenameTestSuiteResponse;
 import com.sparkit.staf.application.service.ProjectService;
 import com.sparkit.staf.application.service.TestSuiteService;
 import com.sparkit.staf.core.parser.SyntaxErrorException;
@@ -14,15 +16,25 @@ import java.io.IOException;
 
 @RestController
 public class TestSuiteController {
+    private final ProjectService projectService;
+    private final TestSuiteService testSuiteService;
+
     @Autowired
-    private ProjectService projectService;
-    @Autowired
-    private TestSuiteService testSuiteService;
+    public TestSuiteController(ProjectService projectService, TestSuiteService testSuiteService) {
+        this.projectService = projectService;
+        this.testSuiteService = testSuiteService;
+    }
 
     @CrossOrigin
     @PostMapping("/testSuite")
     public CreateTestSuiteResponse createTestSuite(@RequestBody CreateTestSuiteRequest request) {
         return projectService.createTestSuite(request);
+    }
+
+    @CrossOrigin
+    @PutMapping("/testSuite")
+    public RenameTestSuiteResponse renameTestSuite(@RequestBody RenameTestSuiteRequest request) {
+        return testSuiteService.renameTestSuite(request);
     }
 
     @CrossOrigin

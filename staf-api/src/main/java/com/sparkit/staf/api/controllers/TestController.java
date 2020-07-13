@@ -2,14 +2,12 @@ package com.sparkit.staf.api.controllers;
 
 import com.sparkit.staf.application.exception.ProjectNotFoundException;
 import com.sparkit.staf.application.exception.TestDirectoryNotFound;
-import com.sparkit.staf.application.models.request.RunTestRequest;
 import com.sparkit.staf.application.service.ProjectService;
 import com.sparkit.staf.core.StafTestFacade;
+import com.sparkit.staf.core.models.RunTestRequest;
+import com.sparkit.staf.core.runtime.config.JsonStafProjectConfig;
 import com.sparkit.staf.core.runtime.interpreter.StafScriptInterpreter;
-import com.sparkit.staf.core.runtime.loader.exceptions.ConfigFileNotFoundException;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,29 +15,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 public class TestController {
-    private static final Logger logger = LoggerFactory.getLogger(TestController.class);
+    private final StafTestFacade testFacade;
+    private final ProjectService projectService;
+    private final StafScriptInterpreter stafScriptInterpreter;
     @Value("${testDirectory}")
     String testDir;
+
     @Autowired
-    private StafTestFacade testFacade;
-    @Autowired
-    private ProjectService projectService;
-    @Autowired
-    private StafScriptInterpreter interpreter;
+    public TestController(StafTestFacade testFacade, ProjectService projectService, StafScriptInterpreter stafScriptInterpreter) {
+        this.testFacade = testFacade;
+        this.projectService = projectService;
+        this.stafScriptInterpreter = stafScriptInterpreter;
+    }
 
     @CrossOrigin("*")
     @PostMapping("/runTest")
-    public List<TestSuiteReport> runTest(@RequestBody RunTestRequest runTestRequest) throws ConfigFileNotFoundException,
-            ProjectNotFoundException, TestDirectoryNotFound {
+    public List<TestSuiteReport> runTest(@RequestBody RunTestRequest runTestRequest) throws ProjectNotFoundException,
+            TestDirectoryNotFound, IOException {
         String project = runTestRequest.getProject().replaceAll("\\s+", "-").toLowerCase(); // normalize project name
         for (String projectName : projectService.getProjectsList()) {
             if (project.equals(projectName)) {
-                return testFacade.runProject(testDir, projectName, testDir + "/" + project + "/" + "config.json",
-                        runTestRequest.getTestSuites(), runTestRequest.getWebDriverOptions(), runTestRequest.getWebDriverOptions().getSessionCount());
+                return testFacade.runProject(testDir, projectName, testDir + "/" + project + "/" + JsonStafProjectConfig.DEFAULT_PROJECT_CONFIG_NAME, runTestRequest);
             }
         }
         throw new ProjectNotFoundException();
@@ -48,7 +49,7 @@ public class TestController {
     @CrossOrigin("*")
     @PostMapping("/terminateTest")
     public String terminateTest() {
-        interpreter.terminateTestExecution();
+        stafScriptInterpreter.terminateTestExecution();
         return "{\"result\": \"Test terminated\"}";
     }
 }

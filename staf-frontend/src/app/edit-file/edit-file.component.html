@@ -1,23 +1,13 @@
 <h3>Edit file</h3>
 
-<form clrForm> <!-- TODO: Form to run tests from file editor-->
-<clr-select-container>
-    <label>Test Suite</label>
-    <select clrSelect [(ngModel)]="selectedTestSuite" name="testSuites">
-        <option *ngFor="let ts of testSuites" [ngValue]="ts">{{ts.name}}</option>
-    </select>
-  </clr-select-container>
-</form>
-<br>
-
 <div class="flex-line">
     <div class="filePath">
-        <span *ngFor="let p of pathSplitted"> <a (click)="fileEditorService.openFile(p, project)">{{p.name}}</a> > </span>
+        <span *ngFor="let p of pathSplitted; let last = last;"> <a (click)="fileEditorService.openFile(p, project)">{{p.name}}</a> <ng-container *ngIf="!last" > > </ng-container> </span>
     </div>
 
     <div>
     
-    <button class="btn btn-primary" [disabled]="!this.file.changed" (click)="saveFile()">Save</button>
+    <button class="btn btn-primary" [disabled]="!this.file?.changed" (click)="saveFile()">Save</button>
     </div>
 </div>
 

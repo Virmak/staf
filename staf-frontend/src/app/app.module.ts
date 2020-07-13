@@ -34,6 +34,13 @@ import { CsvEditorComponent } from './csv-editor/csv-editor.component';
 import { NoFileComponent } from './no-file/no-file.component';
 import { HotTableModule } from '@handsontable/angular';
 import { TestSuiteOverviewComponent } from './test-suite-overview/test-suite-overview.component';
+import { TestSuiteRowDetailsComponent } from './test-suite-row-details/test-suite-row-details.component';
+import { CreateFileModalComponent } from './create-file-modal/create-file-modal.component';
+import { RenameTestSuiteComponent } from './rename-test-suite/rename-test-suite.component';
+import { ProjectConfigComponent } from './project-config/project-config.component';
+import { RenameFileModalComponent } from './rename-file-modal/rename-file-modal.component';
+import { DocsComponent } from './docs/docs.component';
+import { ProjectsComponent } from './projects/projects.component';
 
 
 @NgModule({
@@ -60,6 +67,13 @@ import { TestSuiteOverviewComponent } from './test-suite-overview/test-suite-ove
     CsvEditorComponent,
     NoFileComponent,
     TestSuiteOverviewComponent,
+    TestSuiteRowDetailsComponent,
+    CreateFileModalComponent,
+    RenameTestSuiteComponent,
+    ProjectConfigComponent,
+    RenameFileModalComponent,
+    DocsComponent,
+    ProjectsComponent,
   ],
   imports: [
     BrowserModule,

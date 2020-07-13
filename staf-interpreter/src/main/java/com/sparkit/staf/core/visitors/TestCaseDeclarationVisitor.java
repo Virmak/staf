@@ -29,9 +29,11 @@ public class TestCaseDeclarationVisitor extends StafBaseVisitor<TestCaseDeclarat
                 testCaseDeclaration.setIgnored(true);
             }
         } else {
-            testCaseDeclaration.setOrder(testCaseDefaultOrder++);
+            testCaseDeclaration.setDefaultOrder(testCaseDefaultOrder++);
         }
-        String testCaseNameWithSpaces = ctx.keyword_name().IDENTIFIER().stream().map(ParseTree::getText)
+        testCaseDeclaration.setLineNumber(ctx.getStart().getLine());
+        String testCaseNameWithSpaces = ctx.keyword_name().IDENTIFIER().stream()
+                .map(ParseTree::getText)
                 .collect(Collectors.joining(" "));
         testCaseDeclaration.setName(testCaseNameWithSpaces);
         StafParser.Test_case_bodyContext bodyContext = ctx.test_case_body();

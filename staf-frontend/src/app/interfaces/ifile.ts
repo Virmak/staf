@@ -14,7 +14,6 @@ export interface IFile {
 }
 
 export enum FileType {
-    File = 'scroll', // icon to display
-    Directory = 'folder',
-    TestSuite = 'test_suite',
+    File = 'FILE', // icon to display
+    Directory = 'DIRECTORY',
 }

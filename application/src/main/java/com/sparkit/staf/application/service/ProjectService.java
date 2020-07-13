@@ -7,19 +7,22 @@ import com.sparkit.staf.application.models.request.CreateProjectRequest;
 import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
 import com.sparkit.staf.application.models.response.CreateTestSuiteResponse;
 import com.sparkit.staf.application.models.response.DeleteTestSuiteResponse;
-import com.sparkit.staf.application.models.response.GetProjectReportsResponse;
+import com.sparkit.staf.application.models.response.project.GetProjectReportsResponse;
+import com.sparkit.staf.application.models.response.project.UpdateProjectConfigResponse;
+import com.sparkit.staf.core.runtime.config.JsonStafProjectConfig;
+import com.sparkit.staf.core.runtime.interpreter.StatementFailedScreenshot;
+import com.sparkit.staf.core.runtime.loader.IStafProjectConfigReader;
+import com.sparkit.staf.domain.Directory;
+import com.sparkit.staf.domain.FileType;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestSuite;
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -28,22 +31,28 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
-    private static final Logger logger = LoggerFactory.getLogger(ProjectService.class);
+    public static final String ERROR_RESULT_STRING = "error";
+    public static final String OK_RESULT_STRING = "ok";
     private static final String USER_DIR = "user.dir";
-    @Autowired
-    private IProjectBuilder projectBuilder;
+    private static final String READING_FILE_ERROR = "Error reading file";
+    private final IProjectBuilder projectBuilder;
+    private final IStafProjectConfigReader configReader;
     @Value("${testDirectory}")
     private String testDir;
+
+    @Autowired
+    public ProjectService(IProjectBuilder projectBuilder, IStafProjectConfigReader configReader) {
+        this.projectBuilder = projectBuilder;
+        this.configReader = configReader;
+    }
 
     public static String normalizeProjectName(String name) {
         return name.toLowerCase().replaceAll("\\s+", "-");
     }
 
-    public Map<String, Object> readProjectContent(String projectName) throws IOException {
-        File projectDir = new File(testDir, ProjectService.normalizeProjectName(projectName));
-        String currentDir = System.getProperty(USER_DIR);
-        String absoluteTestDir = currentDir + "/" + testDir;
-        return listDirectory(projectDir, absoluteTestDir);
+    public Directory readProjectContent(String projectLocation) {
+        File projectDir = new File(testDir, projectLocation);
+        return readDirectory(projectDir);
     }
 
     public List<String> getProjectsList() throws TestDirectoryNotFound {
@@ -57,37 +66,45 @@ public class ProjectService {
         }
     }
 
+    public List<String> getProjectTestSuiteNames(String projectLocation) throws IOException {
+        ProjectConfig config = getProjectConfig(projectLocation);
+        File projectDirectoryFile = getProjectDirectoryFile(projectLocation);
+        File[] content = projectDirectoryFile.listFiles();
+        return Arrays.stream(Objects.requireNonNull(content))
+                .filter(File::isDirectory)
+                .map(File::getName)
+                .filter(dirName -> !dirName.equals(config.getReportsDir()) && !dirName.equals(config.getLogDir()))
+                .collect(Collectors.toList());
+    }
+
     public ProjectConfig createProject(CreateProjectRequest createProjectRequest) throws IOException, ProjectNameAlreadyExist {
         return projectBuilder.buildProject(createProjectRequest);
     }
 
-    public Map<String, Object> listDirectory(File dir, String testDir) throws IOException {
+    public Directory readDirectory(File dir) {
+        Directory directory = new Directory();
         File[] content = dir.listFiles();
-
-        List<Map<String, com.sparkit.staf.domain.File>> files = new LinkedList<>();
-        List<Map<String, Object>> folders = new LinkedList<>();
-
-        for (File f : content) {
-            if (f.isDirectory()) {
-                Map<String, Object> subList = listDirectory(f, testDir);
-                folders.add(subList);
+        directory.setContent(new ArrayList<>());
+        for (File file : content) {
+            if (file.isDirectory()) {
+                directory.getContent().add(readDirectory(file));
             } else {
-                Map<String, com.sparkit.staf.domain.File> fileMap = new HashMap<>();
-                com.sparkit.staf.domain.File file = new com.sparkit.staf.domain.File();
-                file.setName(f.getPath());
-                file.setFileContent(readFileContent(f));
-                file.setPath(f.toString());
-                fileMap.put(f.toString().replaceAll(testDir, "$projectRoot"), file);
-                files.add(fileMap);
+                directory.getContent().add(readFile(file));
             }
         }
+        directory.setName(dir.getName());
+        directory.setPath(dir.getPath());
+        directory.setType(FileType.DIRECTORY);
+        return directory;
+    }
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("folders", folders);
-        result.put("files", files);
-        result.put("name", dir.toString().replace(testDir, "$projectRoot"));
-        result.put("path", dir.toString().replace(testDir, "$projectRoot"));
-        return result;
+    private com.sparkit.staf.domain.File readFile(File file) {
+        com.sparkit.staf.domain.File newFile = new com.sparkit.staf.domain.File();
+        newFile.setName(file.getName());
+        newFile.setFileContent(readFileContent(file));
+        newFile.setPath(file.getPath());
+        newFile.setType(FileType.FILE);
+        return newFile;
     }
 
     private String readFileContent(File f) {
@@ -111,36 +128,27 @@ public class ProjectService {
     }
 
     public String readImageBase64(File f) {
-        String encodedFile = null;
-        FileInputStream fileInputStreamReader = null;
-        String readingFileError = "Error reading file";
-        try {
-            fileInputStreamReader = new FileInputStream(f);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return readingFileError;
-        }
-        byte[] bytes = new byte[(int) f.length()];
-        try {
-            fileInputStreamReader.read(bytes);
+
+        try (FileInputStream fileInputStream = new FileInputStream(f)) {
+            byte[] bytes = new byte[(int) f.length()];
+            fileInputStream.read(bytes);
+            return Base64.getEncoder().encodeToString(bytes);
         } catch (IOException e) {
             e.printStackTrace();
-            return readingFileError;
+            return READING_FILE_ERROR;
         }
-        encodedFile = Base64.getEncoder().encodeToString(bytes);
-        return encodedFile;
     }
 
     private String readTextFile(File f) {
         try {
             return new String(Files.readAllBytes(Paths.get(f.getPath())));
         } catch (IOException e) {
-            return "Error reading file";
+            return READING_FILE_ERROR;
         }
     }
 
     private String getFileExtension(File f) {
-        return f.getName().substring(f.getName().lastIndexOf(".") + 1);
+        return f.getName().substring(f.getName().lastIndexOf('.') + 1);
     }
 
     public CreateTestSuiteResponse createTestSuite(CreateTestSuiteRequest request) {
@@ -148,25 +156,29 @@ public class ProjectService {
         response.setName(request.getName());
         try {
             TestSuite testSuite = projectBuilder.buildTestSuite(request);
-            String absoluteTestDir = System.getProperty("user.dir") + "/" + testDir;
-            response.setResult("ok");
-            response.setContent(listDirectory(new File(testSuite.getRootPath()), absoluteTestDir));
+            response.setResult(OK_RESULT_STRING);
+            response.setContent(readDirectory(new File(testSuite.getRootPath())));
         } catch (IOException e) {
             e.printStackTrace();
-            response.setResult("error");
+            response.setResult(ERROR_RESULT_STRING);
             response.setMessage(e.getMessage());
         }
         return response;
     }
 
-    public GetProjectReportsResponse getProjectReports(String projectName) {
+    public GetProjectReportsResponse getProjectReports(String projectLocation) throws IOException {
         GetProjectReportsResponse response = new GetProjectReportsResponse();
-        response.setProjectName(projectName);
-        String reportsDirectoryPath = testDir + '/' + normalizeProjectName(projectName) + "/results";
-        File reportsDirectory = new File(reportsDirectoryPath);
-        response.setReportsFileNameList(
-                Arrays.stream(Objects.requireNonNull(reportsDirectory.listFiles()))
-                        .map(File::getName).collect(Collectors.toList()));
+        response.setProjectName(projectLocation);
+        response.setReportsFileNameList(new ArrayList<>());
+        File projectDirectoryFile = getProjectDirectoryFile(projectLocation);
+        ProjectConfig projectConfig = getProjectConfig(projectLocation);
+        File reportsDirectory = new File(projectDirectoryFile, projectConfig.getReportsDir());
+        for (File testSuiteReportsDir : Objects.requireNonNull(reportsDirectory.listFiles())) {
+            response.getReportsFileNameList().addAll(
+                    Arrays.stream(Objects.requireNonNull(testSuiteReportsDir.listFiles()))
+                            .filter(f -> !f.getName().equals(StatementFailedScreenshot.SCREEN_SHOTS_DIR))
+                            .map(f -> new GetProjectReportsResponse.ReportFile(f.getName(), f.getPath())).collect(Collectors.toList()));
+        }
         return response;
     }
 
@@ -175,11 +187,56 @@ public class ProjectService {
         String testSuitePath = testDir + '/' + project + '/' + testSuite;
         try {
             FileUtils.deleteDirectory(new File(testSuitePath));
-            response.setResult("ok");
+            response.setResult(OK_RESULT_STRING);
         } catch (IOException e) {
             e.printStackTrace();
-            response.setResult("error");
+            response.setResult(ERROR_RESULT_STRING);
         }
         return response;
+    }
+
+    public boolean updateProjectLocation(String oldProjectLocation, String newProjectLocation) {
+        File projectDirectoryFile = getProjectDirectoryFile(oldProjectLocation);
+        File newProjectDirectoryFile = getProjectDirectoryFile(newProjectLocation);
+        return projectDirectoryFile.renameTo(newProjectDirectoryFile);
+    }
+
+    public File getProjectDirectoryFile(String projectLocation) {
+        File testDirectoryFile = new File(testDir);
+        return new File(testDirectoryFile, projectLocation);
+    }
+
+    public UpdateProjectConfigResponse updateProjectConfig(String projectLocation, ProjectConfig updateConfigRequest) {
+        UpdateProjectConfigResponse response = new UpdateProjectConfigResponse();
+        try {
+            ProjectConfig originalConfig = getProjectConfig(projectLocation);
+            originalConfig.setProject(updateConfigRequest.getProject());
+            originalConfig.setDescription(updateConfigRequest.getDescription());
+            originalConfig.setLogDir(updateConfigRequest.getLogDir());
+            originalConfig.setReportsDir(updateConfigRequest.getReportsDir());
+            if (!originalConfig.getLocation().equals(updateConfigRequest.getLocation())) {
+                if (!updateProjectLocation(originalConfig.getLocation(), updateConfigRequest.getLocation())) {
+                    throw new IOException("Cannot rename project");
+                }
+                originalConfig.setLocation(updateConfigRequest.getLocation());
+            }
+            projectBuilder.writeConfigFile(originalConfig, getProjectDirectoryFile(updateConfigRequest.getLocation()));
+            response.setResult(OK_RESULT_STRING);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setResult(ERROR_RESULT_STRING);
+        }
+        return response;
+    }
+
+    public String readTestReport(String reportFilePath) throws IOException {
+        File reportsDirectory = new File(reportFilePath);
+        return new String(Files.readAllBytes(Paths.get(reportsDirectory.getAbsolutePath())));
+    }
+
+    public ProjectConfig getProjectConfig(String projectLocation) throws IOException {
+        File projectDirectoryFile = getProjectDirectoryFile(normalizeProjectName(projectLocation));
+        File configFile = new File(projectDirectoryFile, JsonStafProjectConfig.DEFAULT_PROJECT_CONFIG_NAME);
+        return configReader.readConfigFile(configFile);
     }
 }

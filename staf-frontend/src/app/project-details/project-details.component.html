@@ -7,6 +7,12 @@
         </clr-tab-content>
     </clr-tab>
     <clr-tab>
+        <button clrTabLink>Config</button>
+        <clr-tab-content *clrIfActive>
+            <app-project-config  [project]="project"></app-project-config>
+        </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
         <button clrTabLink>Test data</button>
         <clr-tab-content *clrIfActive>
             <app-test-data  [project]="project"></app-test-data>

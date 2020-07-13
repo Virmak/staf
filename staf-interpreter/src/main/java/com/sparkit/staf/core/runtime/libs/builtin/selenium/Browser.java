@@ -7,8 +7,8 @@ public enum Browser {
 
     private final String name;
 
-    Browser(String s) {
-        name = s;
+    Browser(String name) {
+        this.name = name;
     }
 
     public boolean equalsName(String otherName) {

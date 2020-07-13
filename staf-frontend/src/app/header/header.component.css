@@ -1,10 +1,18 @@
 .port {
-    width: 50px;
+  width: 50px;
 }
 input:first-child {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .file {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+nav.subnav ul {
+  overflow-x: scroll;
+}
+
+nav.subnav ul::-webkit-scrollbar {
+  display: none;
 }

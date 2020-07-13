@@ -57,15 +57,18 @@ export class FileEditorService {
     }
   }
 
-  saveFile(file) {
+  saveFile(file, completeCallback = null) {
     this.projectService.saveFile(file).subscribe(res => {
       this.toastr.success('File saved', 'Success');
       file.changed = false;
       file.originalContent = file.content as string;
-    }, err => this.toastr.error('Cannot save file', 'Error'));
+      if (completeCallback) {
+        completeCallback();
+      }
+    }, err => {console.error(err); this.toastr.error('Cannot save file', 'Error')});
   }
 
-  getFile(name) {
+  getFile(name): IFile {
     return this.openedFiles.get(name);
   }
 
@@ -82,8 +85,23 @@ export class FileEditorService {
       this.router.navigate(['csvEditor', item.project.getNormalizedProjectName(), item.path]);
     } else if (this.isImageFile(item)) {
       this.setFile(item);
-      this.router.navigate(['viewImage', project.getNormalizedProjectName(), item.name, item.path]);
+      this.router.navigate(['viewImage', project.getNormalizedProjectName(), item.path, item.path]);
     }
+  }
+
+  openFileByPath(filePath) {
+    const splittedPath = filePath.split("/");
+    
+    const relativeFilePath = filePath.substr(
+      filePath.indexOf(this.projectService.testDirectory)
+    );
+
+    return this.router.navigate([
+      "editFile",
+      splittedPath[0],
+      splittedPath[splittedPath.length - 1],
+      relativeFilePath,
+    ]);
   }
 
 

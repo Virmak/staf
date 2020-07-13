@@ -1,0 +1,29 @@
+<clr-modal [clrModalOpen]="renameModalOpened" (clrModalOpenChange)="openChanged($event)">
+	<h3 class="modal-title">Rename {{file.type == fileTypes.File ? 'File' : 'Directory'}} {{file?.name}}</h3>
+	<div class="modal-body">
+        <div *ngIf="file.type == fileTypes.Directory && directoryHasOpenedFiles" class="alert alert-danger" role="alert">
+            <div class="alert-items">
+                <div class="alert-item static">
+                    <div class="alert-icon-wrapper">
+                        <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                    </div>
+                    <span class="alert-text">
+                        This directory contains opened files. Save and close them before continuing
+                    </span>
+                </div>
+            </div>
+        </div>
+
+		<form clrForm>
+			<clr-input-container>
+				<label>Name</label>
+				<input clrInput type="text" name="testSuiteName" [(ngModel)]="newFileName" required/>
+			</clr-input-container>
+		</form>
+
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline" (click)="renameModalOpened = false">Cancel</button>
+		<button type="button" class="btn btn-primary" [disabled]="directoryHasOpenedFiles" (click)="renameFile()">Ok</button>
+	</div>
+</clr-modal>

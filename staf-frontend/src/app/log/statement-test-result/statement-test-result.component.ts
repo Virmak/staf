@@ -21,7 +21,7 @@ export class StatementTestResultComponent implements OnInit {
     this._statement.badge = this._statement.result == 'Pass' ? 'badge-success' : 'badge-danger';
     
     if (this._statement.screenShot) {
-      this.projectService.getImage(this._statement.screenShot.replace(/\//g, '<sep>'))
+      this.projectService.getImage(this._statement.screenShot)
       .subscribe((img:any) => this._statement.imageBase64 = img.imageData);
     }
   }

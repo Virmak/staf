@@ -11,13 +11,13 @@ import { Subscription } from 'rxjs';
 export class LogConsoleComponent implements OnInit, OnDestroy {
   @ViewChild('logConsole') logConsole: ElementRef;
   logSubscription: Subscription;
-  showConsole = false;
+  
   constructor(private webSocket: WebSocketApiService,
     public logService: LogServiceService) { }
 
   ngOnInit(): void {
     this.logSubscription = this.webSocket.messageSubject.subscribe((message: string) => {
-      this.showConsole = true;
+      this.logService.showConsole = true;
       this.logService.addMessage(message);
       setTimeout(() => this.logConsole.nativeElement.scrollTop = 10000000, 0);
     });
@@ -29,7 +29,11 @@ export class LogConsoleComponent implements OnInit, OnDestroy {
   }
 
   toggleConsoleLog() {
-    this.showConsole = !this.showConsole;
+    this.logService.showConsole = !this.logService.showConsole;
+  }
+
+  clearConsole() {
+    this.logService.logContent = '';
   }
 
 }

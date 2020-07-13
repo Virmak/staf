@@ -1,13 +1,15 @@
+import { GenericResponse } from './../interfaces/igeneric-response';
+import { LogServiceService } from './../log-service.service';
+import { StafProject } from './../types/staf-project';
+import { ITestSuite } from './../interfaces/itest-suite';
+import { FileType } from './../interfaces/ifile';
 import { ProjectService } from './../project.service';
 import { SequenceService } from './../sequence.service';
 import { ICreateTestSuite } from './../interfaces/icreate-test-suite';
 import { TestSuiteService } from './../test-suite.service';
-import { StafProject } from '../types/staf-project';
 import { Component, OnInit, Input, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContextMenuComponent } from 'ngx-contextmenu';
-import { ITestSuite } from '../interfaces/itest-suite';
-import { FileType } from '../interfaces/ifile';
 import { IDirectory } from '../interfaces/idirectory';
 
 @Component({
@@ -19,6 +21,8 @@ export class SidenavComponent implements OnInit, AfterViewInit {
   @Input() projects: StafProject[] = [];
   @ViewChild(ContextMenuComponent,  { static: true }) public basicMenu: ContextMenuComponent;
 
+  fileTypes = FileType;
+
 
   createTestSuiteModal = false;
   testSuite: ICreateTestSuite = {
@@ -28,18 +32,19 @@ export class SidenavComponent implements OnInit, AfterViewInit {
     projectName: '',
   };
   currentProject: StafProject;
-
-  newFile = {
-    name: '',
-  }
+  
   createFileModal = false;
-
-  current: any = {};
+  renameModalOpened = false;
+  
+  selectedTestSuite: ITestSuite;
+  selectedProject: StafProject;
+  selectedType: FileType;
 
   constructor(private router: Router,
     private testSuiteService: TestSuiteService,
     private sequence: SequenceService,
     private projectService: ProjectService,
+    public logService: LogServiceService,
     private cdr: ChangeDetectorRef) { }
     
   ngAfterViewInit(): void {
@@ -63,7 +68,7 @@ export class SidenavComponent implements OnInit, AfterViewInit {
 
     this.testSuiteService.createTestSuite(this.testSuite)
       .subscribe(testSuiteRes => {
-        if (testSuiteRes.result == 'ok') {
+        if (testSuiteRes.result == GenericResponse.Ok) {
           let testSuiteContentDir: IDirectory = {
             name: testSuiteRes.name,
             type: FileType.Directory,
@@ -87,17 +92,12 @@ export class SidenavComponent implements OnInit, AfterViewInit {
     this.createTestSuiteModal = false;
   }
 
-  createNewFileSystemItem(testSuite: ITestSuite, project: StafProject, type: string) {
+  createNewFileSystemItem(testSuite: ITestSuite, project: StafProject, type: FileType) {
     this.createFileModal = true;
-    this.current = {
-      testSuite, project, type
-    }
-  }
 
-  createFile() {debugger;
-    this.current.testSuite.content.path = this.current.project.getNormalizedProjectName() + '/' + this.current.testSuite.name;
-    this.projectService.createFile(this.current.testSuite.content, this.current.project, this.newFile.name, this.current.type);
-    this.createFileModal = false;
+    this.selectedTestSuite = testSuite;
+    this.selectedProject = project;
+    this.selectedType = type;
   }
 
   openFile(e) {
@@ -106,6 +106,13 @@ export class SidenavComponent implements OnInit, AfterViewInit {
 
   deleteFile(item, parent) {
     this.projectService.showDeleteTestSuiteDialog(item, parent);
+  }
+
+  renameTestSuite(testSuite: ITestSuite, project: StafProject) {
+    this.renameModalOpened = true;
+
+    this.selectedTestSuite = testSuite;
+    this.selectedProject = project;
   }
 
 }

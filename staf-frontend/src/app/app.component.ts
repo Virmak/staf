@@ -17,12 +17,12 @@ export class AppComponent implements OnInit {
   showSidenav = true;
 
   constructor(public projectService: ProjectService,
-    private webSocket: WebSocketApiService) {}
+    public webSocket: WebSocketApiService) {}
 
   ngOnInit(): void {
 
     (<any>window).userKeywords = {};
-    this.projectService.fetchProjects(err => {this.serverError = true});
+    this.projectService.fetchAllProjects(err => {this.serverError = true});
     this.projectService.getProjectsSubject().subscribe(projects => {
       setTimeout(() => {
 

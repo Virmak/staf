@@ -1,17 +1,19 @@
-<h5>Project overview</h5>
-
-
+<div class="flex space-between">
+	<h5>Project overview</h5>
+	
+	<button (click)="downloadProject()" class="btn btn-primary">Download <clr-icon shape="download"></clr-icon></button>
+</div>
 <form clrform>
 	<clr-input-container>
 		<label>Project name</label>
-		<input clrInput placeholder="Project name" name="name" [(ngModel)]="project.name"/>
+		<input clrInput placeholder="Project name" name="name" [(ngModel)]="_project.name" disabled/>
 	</clr-input-container>
 
 
 	<clr-textarea-container>
 		<label>Description</label>
-		<textarea clrTextarea name="description" [(ngModel)]="project.description"></textarea>
+		<textarea clrTextarea name="description" [(ngModel)]="_project.description" disabled></textarea>
 	</clr-textarea-container>
 </form>
 
-<app-test-suite-overview [project]="project"></app-test-suite-overview>
+<app-test-suite-overview [project]="_project"></app-test-suite-overview>

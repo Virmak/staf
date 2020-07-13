@@ -1,17 +1,28 @@
 <form clrForm class="flex">
-    <clr-select-container>
-        <label class="clr-col-md-3">Test history</label>
-        <select clrSelect name="options" [(ngModel)]="selectedTestReport" (change)="loadTestReport()">
-            <option *ngFor="let item of reportsFileNameList" [value]="item">{{item}}</option>
-        </select>
-      </clr-select-container>
+  <clr-select-container>
+    <label class="clr-col-md-3">Test history</label>
+    <select
+      clrSelect
+      name="optiosns"
+      [(ngModel)]="selectedTestReportPath"
+      (change)="loadTestReport()"
+    >
+      <option
+        *ngFor="let reportFile of reportsFileList"
+        [value]="reportFile.path"
+        >{{ reportFile.fileName }}</option
+      >
+    </select>
+  </clr-select-container>
 </form>
 
 <div *ngIf="reports?.length > 0; else elseBlock">
-    <test-suite-result *ngFor="let testSuite of reports" [testSuite]="testSuite"></test-suite-result>
+  <test-suite-result
+    *ngFor="let testSuite of reports"
+    [testSuite]="testSuite"
+  ></test-suite-result>
 </div>
 
-
-<ng-template  #elseBlock>
-    <p>Run tests to view logs</p>
+<ng-template #elseBlock>
+  <p>Run tests to view logs</p>
 </ng-template>
