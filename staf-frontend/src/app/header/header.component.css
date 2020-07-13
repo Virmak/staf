@@ -10,7 +10,7 @@ input:first-child {
 }
 
 nav.subnav ul {
-  overflow-x: auto;
+  overflow-x: scroll;
 }
 
 nav.subnav ul::-webkit-scrollbar {

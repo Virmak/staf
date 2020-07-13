@@ -25,7 +25,7 @@ fi
 if [ "$back" == true ]; then
   echo "Building backend ..."
   mvn clean package
-  cp staf-api/target/staf-api-0.0.1-SNAPSHOT.jar build/
+  cp ./staf-api/target/staf-api-0.0.1-SNAPSHOT.jar build/
 fi
 
 cp docker-compose.yml build/

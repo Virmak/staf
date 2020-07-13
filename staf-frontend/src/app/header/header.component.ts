@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onWheel(event: WheelEvent): void {
-    (<Element>event.target).parentElement.scrollLeft += event.deltaY;
+    (<Element>event.currentTarget).scrollLeft += event.deltaY;
     event.preventDefault();
   } 
 
