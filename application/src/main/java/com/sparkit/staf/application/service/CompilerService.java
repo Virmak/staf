@@ -23,7 +23,7 @@ public class CompilerService {
     public CompileTestSuiteResponse compileTestSuite(String project, String testSuiteName) throws IOException {
         CompileTestSuiteResponse response = new CompileTestSuiteResponse();
         response.setTestSuiteName(testSuiteName);
-        response.setFileMap(testSuiteService.compileWithErrors(project, testSuiteName));
+        response.setFileMap(testSuiteService.compileTestSuiteWithErrors(project, testSuiteName));
         return response;
     }
 

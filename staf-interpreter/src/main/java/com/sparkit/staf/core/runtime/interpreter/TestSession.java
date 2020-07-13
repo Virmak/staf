@@ -3,11 +3,13 @@ package com.sparkit.staf.core.runtime.interpreter;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.ast.TestCaseDeclaration;
 import com.sparkit.staf.core.ast.types.StafInteger;
+import com.sparkit.staf.core.runtime.libs.builtin.selenium.SeleniumLibrary;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestResult;
 import lombok.Getter;
+import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,6 +68,9 @@ public class TestSession implements Runnable {
                     logger.warn("Test execution terminated by user");
                     testSuiteReport.setMessage("Test execution terminated by user");
                     testSuiteReport.setResult(TestResult.Fail);
+                    if (sessionGlobalSymbolsTable.getSymbolsMap().containsKey(SeleniumLibrary.WEB_DRIVER_KEY)) {
+                        ((WebDriver)sessionGlobalSymbolsTable.getSymbolsMap().get(SeleniumLibrary.WEB_DRIVER_KEY)).close();
+                    }
                     break;
                 }
                 if (testCaseDeclarationEntry.getKey().equalsIgnoreCase(SETUP_TEST_CASE)

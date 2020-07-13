@@ -1,5 +1,6 @@
 package com.sparkit.staf.application.models.response;
 
+import com.sparkit.staf.core.parser.SyntaxError;
 import lombok.Data;
 
 import java.util.List;
@@ -9,9 +10,9 @@ public class GetTestSuiteDetailsResponse {
     private String testSuite;
     private String project;
     private List<TestCase> testCases;
-
+    private List<SyntaxError> syntaxErrors;
     @Data
-    public class TestCase {
+    public static class TestCase {
         private String name;
         private String path;
         private boolean ignored;

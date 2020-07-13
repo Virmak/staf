@@ -14,17 +14,19 @@ public class SyntaxError {
     private final Object offendingSymbol;
     private final int line;
     private final int charPositionInLine;
+    private final String filePath;
     private final String message;
     @JsonIgnore
     private final RecognitionException e;
     private int start;
     private int stop;
 
-    SyntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
+    SyntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String filePath, String msg, RecognitionException e) {
         this.recognizer = recognizer;
         this.offendingSymbol = offendingSymbol;
         this.line = line;
         this.charPositionInLine = charPositionInLine;
+        this.filePath = filePath;
         this.message = msg;
         this.e = e;
         if (offendingSymbol instanceof CommonToken) {

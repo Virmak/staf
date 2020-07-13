@@ -1,3 +1,4 @@
+import { DocsService } from './../docs.service';
 import { AutoCompleteService } from './../auto-complete.service';
 import { Subscription } from 'rxjs';
 import { ITestSuite } from "./../interfaces/itest-suite";
@@ -37,6 +38,8 @@ export class EditFileComponent implements OnInit, OnDestroy {
   hoverProvider: monaco.IDisposable;
   builtinKeywordsCompletionProvider: monaco.IDisposable;
 
+  builtinKeywordLibraries;
+
   private keyEventListener = (e) => {
     if (this.file.content != this.file.originalContent) {
       this.file.changed = true;
@@ -58,6 +61,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
     private projectService: ProjectService,
     private autoCompleteService: AutoCompleteService,
     public fileEditorService: FileEditorService,
+    private docsService: DocsService,
     private zone: NgZone
   ) {}
 
@@ -81,6 +85,11 @@ export class EditFileComponent implements OnInit, OnDestroy {
         this.compiledFilesSubscription = this.project.compiledFilesSubject
         .subscribe((cf) => setTimeout(() => this.handleTestSuiteErrors(cf), 0));
       }
+
+
+      this.docsService.getBuiltinLibrariesKeywords().subscribe(builtinKeywordLibraries => {
+        this.builtinKeywordLibraries = builtinKeywordLibraries;
+      });
     });
   }
 
@@ -232,6 +241,28 @@ export class EditFileComponent implements OnInit, OnDestroy {
                 { value: "File : **" + fileUrl + ": " + keywordDeclaration.lineNumber + "**" },
               ],
             };
+          } else {
+            let lowerCaseKeywordName = keywordName.toLowerCase();
+            
+            for (let lib of this.builtinKeywordLibraries) {
+              for (let keyword of lib.keywords) {
+                if (keyword.name === lowerCaseKeywordName) {
+                  return {
+                    range:  new monaco.Range(
+                      position.lineNumber,
+                      line.indexOf(keywordName),
+                      position.lineNumber,
+                      model.getLineMaxColumn(position.lineNumber)
+                    ),
+                    contents: [
+                      { value: "**Builtin keyword : "+ lib.libraryName + "**" },
+                      { value: this.autoCompleteService.transformKeywordName(keywordName) + ' (' + this.autoCompleteService.getParamsString(keyword.parameters) + ')' },
+                    ],
+                  }
+                }
+              }
+            }
+            
           }
         }
       },

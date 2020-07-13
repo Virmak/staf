@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
@@ -9,9 +10,15 @@ const baseUrl = environment.resolveApi();
 })
 export class DocsService {
 
-  constructor(private http: HttpClient) { }
+  private builtinLibrariesBehaviorSubject = new BehaviorSubject([]);
+
+  constructor(private http: HttpClient) { 
+    this.http.get(baseUrl + '/docs/builtinKeywords').subscribe((builtinLibraries: any[]) => {
+      this.builtinLibrariesBehaviorSubject.next(builtinLibraries);
+    })
+  }
 
   getBuiltinLibrariesKeywords() {
-    return this.http.get(baseUrl + '/docs/builtinKeywords');
+    return this.builtinLibrariesBehaviorSubject;
   }
 }

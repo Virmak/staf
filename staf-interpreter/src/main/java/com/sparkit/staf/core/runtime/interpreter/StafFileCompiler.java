@@ -9,18 +9,21 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 
 public class StafFileCompiler implements IStafCompiler {
     @Autowired
     private StafFileVisitor stafFileVisitor;
+    @Value("${testDirectory}")
+    String testDirectory;
 
     @Override
     public StafFile compile(String filePath) throws IOException, SyntaxErrorException {
         CharStream stafCharStream = CharStreams.fromFileName(filePath);
         StafLexer lexer = new StafLexer(stafCharStream);
-        SyntaxErrorListener listener = new SyntaxErrorListener();
+        SyntaxErrorListener listener = new SyntaxErrorListener(getRelativeFilePath(filePath));
         lexer.addErrorListener(listener);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         StafParser parser = new StafParser(tokens);
@@ -44,7 +47,7 @@ public class StafFileCompiler implements IStafCompiler {
     public StafFile compileWithErrors(String filePath) throws IOException {
         CharStream stafCharStream = CharStreams.fromFileName(filePath);
         StafLexer lexer = new StafLexer(stafCharStream);
-        SyntaxErrorListener listener = new SyntaxErrorListener();
+        SyntaxErrorListener listener = new SyntaxErrorListener(getRelativeFilePath(filePath));
         lexer.addErrorListener(listener);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         StafParser parser = new StafParser(tokens);
@@ -62,5 +65,9 @@ public class StafFileCompiler implements IStafCompiler {
             stafFile.setSyntaxErrors(listener.getSyntaxErrors());
             return stafFile;
         }
+    }
+
+    private String getRelativeFilePath(String filePath) {
+        return filePath.substring(filePath.indexOf(testDirectory) + testDirectory.length() + 1);
     }
 }

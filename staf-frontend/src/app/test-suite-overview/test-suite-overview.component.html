@@ -14,11 +14,22 @@
       >
         <clr-stack-label>{{testSuite.name}}</clr-stack-label>
 
-        <clr-stack-block *ngIf="testSuite.testCases?.length == 0" [clrStackViewLevel]="2" [clrStackViewSetsize]="0" [clrStackViewPosinset]="1">
+        <clr-stack-block *ngIf="testSuite.testCases?.length == 0 && testSuite.syntaxErrors?.length == 0" [clrStackViewLevel]="2" [clrStackViewSetsize]="0" [clrStackViewPosinset]="1">
           <clr-spinner clrAssertive clrInline>
               Loading...
             </clr-spinner>            
         </clr-stack-block>
+
+       
+        <clr-stack-block
+        *ngFor="let error of testSuite.syntaxErrors; let j = index"
+        [clrStackViewLevel]="2"
+        [clrStackViewSetsize]="testSuite.syntaxErrors.length"
+        [clrStackViewPosinset]="j + 1"
+        >
+          <clr-stack-label class="error-text-red">{{error.message}}</clr-stack-label>
+          <clr-stack-content>{{error.filePath}} at line {{error.line}}</clr-stack-content>
+      </clr-stack-block>
 
         <clr-stack-block
           *ngFor="let testCase of testSuite.testCases; let j = index"

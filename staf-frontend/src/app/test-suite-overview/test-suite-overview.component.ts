@@ -1,3 +1,4 @@
+import { ITestSuite } from './../interfaces/itest-suite';
 import { StafProject } from './../types/staf-project';
 import { TestSuiteService } from './../test-suite.service';
 import { Component, OnInit, Input } from '@angular/core';
@@ -9,7 +10,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class TestSuiteOverviewComponent implements OnInit {
   @Input() project: StafProject;
-  testSuites = [];
+  testSuites: ITestSuite[] = [];
 
   constructor(private testSuiteService: TestSuiteService) { }
 
@@ -22,7 +23,10 @@ export class TestSuiteOverviewComponent implements OnInit {
 
   fetchTestSuite(testSuite) {
     this.testSuiteService.getTestSuiteDetails(this.project.getNormalizedProjectName(), testSuite.name)
-    .subscribe((ts: any) => testSuite.testCases = ts.testCases.sort((a,b) => a.order - b.order));
+    .subscribe((ts: any) => {
+      testSuite.testCases = ts.testCases.sort((a,b) => a.order - b.order);
+      testSuite.syntaxErrors = ts.syntaxErrors;
+    });
   }
 
   resetTestSuites() {
