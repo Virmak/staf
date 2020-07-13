@@ -20,8 +20,7 @@ public class TestSuite {
     @Getter
     private final Map<String, RunTestCase> selectedTestCaseMap;
     @Getter
-    @Setter
-    private String testDirectory;
+    private final String testDirectory;
     @Getter
     @Setter
     private Map<String, TestCaseDeclaration> testCaseDeclarationMap = new HashMap<>();

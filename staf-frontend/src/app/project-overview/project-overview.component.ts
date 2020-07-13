@@ -1,4 +1,8 @@
+import { StafProject } from './../types/staf-project';
+import { environment } from './../../environments/environment';
 import { Component, OnInit, Input } from '@angular/core';
+
+const baseUrl = environment.resolveApi();
 
 @Component({
   selector: 'app-project-overview',
@@ -6,7 +10,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./project-overview.component.css']
 })
 export class ProjectOverviewComponent implements OnInit {
-  _project;
+  _project: StafProject;
 
   @Input() set project(value) {
     this._project = value;
@@ -16,6 +20,10 @@ export class ProjectOverviewComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  downloadProject() {
+    window.open(baseUrl + '/projects/download/' + this._project.location, '_blank');
   }
 
 }

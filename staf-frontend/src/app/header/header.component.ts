@@ -50,4 +50,9 @@ export class HeaderComponent implements OnInit {
     this.settingsModal = e;
   }
 
+  onWheel(event: WheelEvent): void {
+    (<Element>event.target).parentElement.scrollLeft += event.deltaY;
+    event.preventDefault();
+  } 
+
 }

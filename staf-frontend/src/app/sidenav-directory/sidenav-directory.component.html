@@ -33,6 +33,10 @@
 	<ng-template contextMenuItem (execute)="openFile($event.item.item, '')">
 		Open
 	</ng-template>
+
+	<ng-template contextMenuItem (execute)="copyPath($event.item.item)">
+		Copy path
+	</ng-template>
 	<ng-template contextMenuItem divider="true"></ng-template>
 
 	<ng-template contextMenuItem (execute)="renameFile($event.item.item, $event.item.parent)">

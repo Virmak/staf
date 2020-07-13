@@ -159,7 +159,7 @@ public class SeleniumLibrary extends AbstractStafLibrary {
 
     @Keyword(name = "wait until element is enabled")
     public void waitUntilElementIsEnabled(@Inject(name = WEB_DRIVER_KEY) WebDriver webDriver, @KeywordArgument(name = "selector") StafString selector,
-                                          @KeywordArgument(name = "timeout") StafInteger timeout) {
+                                          @KeywordArgument(name = "timeout", optional = true) StafInteger timeout) {
         By elementSelector = getLocatorFromString(selector.getValue().toString());
         if (timeout != null) {
             WebDriverWait wait = new WebDriverWait(webDriver, (Integer) timeout.getValue());

@@ -87,4 +87,9 @@ export class SidenavDirectoryComponent implements OnInit {
       return 'folder';
     }
   }
+
+  copyPath(item) {
+    navigator.clipboard.writeText(item.path.replace(this.projectService.testDirectory, '')).then(function() {
+    });
+  }
 }

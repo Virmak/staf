@@ -78,7 +78,8 @@ export class EditFileComponent implements OnInit, OnDestroy {
       this.openFile();
       if (this.compiledFilesSubscription) {
         this.compiledFilesSubscription.unsubscribe(); 
-        this.compiledFilesSubscription = this.project.compiledFilesSubject.subscribe((cf) => setTimeout(() => this.handleTestSuiteErrors(cf), 0));
+        this.compiledFilesSubscription = this.project.compiledFilesSubject
+        .subscribe((cf) => setTimeout(() => this.handleTestSuiteErrors(cf), 0));
       }
     });
   }
@@ -174,10 +175,20 @@ export class EditFileComponent implements OnInit, OnDestroy {
   }
   registerCompletionProvider() {
     this.builtinKeywordsCompletionProvider = monaco.languages.registerCompletionItemProvider('staf', {
+      triggerCharacters: ['$'],
       provideCompletionItems: (model, position) => {
           // find out if we are completing a property in the 'dependencies' object.
           // const textUntilPosition = model.getValueInRange({startLineNumber: 1, startColumn: 1, endLineNumber: position.lineNumber, endColumn: position.column});
+          // const keywordOrTestCaseSectionMatch = textUntilPosition.match(/(?<=keywords[\s]*|test cases[\s]*|end\s*|return.*).*/gim);
+          // if (keywordOrTestCaseSectionMatch) {
+          //   console.log('section')
+          // }
+          // console.log('okokok')
           const word = model.getWordUntilPosition(position);
+          if (word.word === '') { // variable
+            console.log('varrr')
+          }
+          
           const range = {
               startLineNumber: position.lineNumber,
               endLineNumber: position.lineNumber,

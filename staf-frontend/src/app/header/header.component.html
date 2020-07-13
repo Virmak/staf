@@ -30,7 +30,7 @@
 </header>
 
 <nav class="subnav">
-    <ul class="nav">
+    <ul class="nav"  (wheel)="onWheel($event)">
         <li class="nav-item" *ngFor="let file of fileEditor.openedFiles | keyvalue;">
             <a class="nav-link file" [ngClass]="{'active': file.value.active}" 
                 (click)="openFile(file.value, file.value.project)"

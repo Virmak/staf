@@ -23,7 +23,7 @@ export class AutoCompleteService {
         const keywordName = this.transformKeywordName(keyword.name);
         return {
           label: keywordName,
-          kind: monaco.languages.CompletionItemKind.Snippet,
+          kind: monaco.languages.CompletionItemKind.Function,
           insertText: keywordName + ' (' + this.getParamsString(keyword.parameters) + ')',
           documentation: keyword.description,
           range: range,
@@ -35,7 +35,12 @@ export class AutoCompleteService {
 
   private getParamsString(paramsList: any[]) {
     return paramsList.reduce((acc, currentParam, index) => {
-        return acc + '$' + currentParam.name + (index + 1 < paramsList.length ? ', ' : '');
+        let paramName = '$' + currentParam.name;
+        if (currentParam.optional) {
+          paramName = '[' + paramName + ']';
+        }
+
+        return acc + paramName + (index + 1 < paramsList.length ? ', ' : '');
     }, '');
   }
 
