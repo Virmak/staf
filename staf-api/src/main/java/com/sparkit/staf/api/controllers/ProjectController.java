@@ -11,10 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.zeroturnaround.zip.ZipUtil;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -83,12 +82,19 @@ public class ProjectController {
 
     @CrossOrigin
     @GetMapping("/projects/download/{projectLocation}")
-    public byte[] zipProject(HttpServletResponse response, @PathVariable("projectLocation") String projectLocation) throws IOException {
+    public byte[] zipProject(HttpServletResponse response, @PathVariable("projectLocation") String projectLocation) {
         //setting headers
         response.setContentType("application/zip");
         response.setStatus(HttpServletResponse.SC_OK);
         response.addHeader("Content-Disposition", "attachment; filename=\"" + projectLocation + ".zip\"");
         return projectService.compressProject(projectLocation);
+    }
+
+    @CrossOrigin
+    @PostMapping("/projects/upload")
+    public String uploadProject(@RequestParam("file") MultipartFile file) throws IOException {
+        projectService.unpackProject(file.getInputStream());
+        return "{\"result\": \"ok\"}";
     }
 
 

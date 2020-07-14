@@ -22,10 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.zeroturnaround.zip.ZipUtil;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -248,5 +245,7 @@ public class ProjectService {
         return byteArrayOutputStream.toByteArray();
     }
 
-
+    public void unpackProject(InputStream projectZipInputStream) {
+        ZipUtil.unpack(projectZipInputStream, new File(testDir));
+    }
 }

@@ -37,8 +37,10 @@
         </select>
     </clr-select-container>
     
-    <button class="btn btn-primary right-0" type="submit" (click)="createProject()">Create</button>
-    Or 
+    <button class="btn btn-primary" type="submit" (click)="createProject()">Create</button> 
+    <span>OR</span> &nbsp;&nbsp;
+    <button class="btn btn-primary" type="button" (click)="uploadProject()" [disabled]="uploadBtnDisabled">Import</button>
      
-<input type="file" id="import-project" accept="application/zip">
+<input #fileImportInput type="file" id="import-project" accept="application/zip" (change)="fileChange($event)" placeholder="Import project" >
+<small>Max file size is 20MB</small>
 </form>
