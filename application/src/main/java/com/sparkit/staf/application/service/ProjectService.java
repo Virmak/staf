@@ -20,7 +20,9 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.zeroturnaround.zip.ZipUtil;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -239,4 +241,12 @@ public class ProjectService {
         File configFile = new File(projectDirectoryFile, JsonStafProjectConfig.DEFAULT_PROJECT_CONFIG_NAME);
         return configReader.readConfigFile(configFile);
     }
+
+    public byte[] compressProject(String projectLocation) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ZipUtil.pack(getProjectDirectoryFile(projectLocation), byteArrayOutputStream, name -> projectLocation + "/" + name);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+
 }

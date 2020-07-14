@@ -29,8 +29,4 @@ export class TestSuiteOverviewComponent implements OnInit {
     });
   }
 
-  resetTestSuites() {
-
-  }
-
 }

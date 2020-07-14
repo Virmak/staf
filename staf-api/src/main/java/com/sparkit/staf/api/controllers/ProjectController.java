@@ -83,14 +83,12 @@ public class ProjectController {
 
     @CrossOrigin
     @GetMapping("/projects/download/{projectLocation}")
-    public byte[] zipFiles(HttpServletResponse response, @PathVariable("projectLocation") String projectLocation) throws IOException {
+    public byte[] zipProject(HttpServletResponse response, @PathVariable("projectLocation") String projectLocation) throws IOException {
         //setting headers
         response.setContentType("application/zip");
         response.setStatus(HttpServletResponse.SC_OK);
         response.addHeader("Content-Disposition", "attachment; filename=\"" + projectLocation + ".zip\"");
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ZipUtil.pack(projectService.getProjectDirectoryFile(projectLocation), byteArrayOutputStream, name -> projectLocation + "/" + name);
-        return byteArrayOutputStream.toByteArray();
+        return projectService.compressProject(projectLocation);
     }
 
 
