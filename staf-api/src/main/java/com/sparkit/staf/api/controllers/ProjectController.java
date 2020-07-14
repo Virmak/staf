@@ -30,7 +30,7 @@ public class ProjectController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/projects")
-    public ResponseEntity<Directory> createProject(@RequestBody CreateProjectRequest createProjectRequest) throws IOException {
+    public ResponseEntity<Directory> createProject(@RequestBody CreateProjectRequest createProjectRequest) {
         try {
             projectService.createProject(createProjectRequest);
         } catch (IOException | ProjectNameAlreadyExist e) {

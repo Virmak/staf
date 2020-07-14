@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.runtime.loader;
 
 import com.sparkit.staf.core.ast.StafFile;
+import com.sparkit.staf.core.compiler.IStafCompiler;
 import com.sparkit.staf.core.models.RunTestCase;
 import com.sparkit.staf.core.models.RunTestSuite;
 import com.sparkit.staf.core.parser.SyntaxErrorException;

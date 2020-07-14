@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.runtime.loader;
 
 import com.sparkit.staf.core.ast.*;
+import com.sparkit.staf.core.compiler.IStafCompiler;
 import com.sparkit.staf.core.runtime.interpreter.ImportsInterpreter;
 import com.sparkit.staf.core.runtime.interpreter.TestSuite;
 import org.springframework.beans.factory.annotation.Autowired;

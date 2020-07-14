@@ -1,7 +1,7 @@
 package com.sparkit.staf.core;
 
-import com.sparkit.staf.core.runtime.interpreter.StafFileCompiler;
-import com.sparkit.staf.core.runtime.loader.IStafCompiler;
+import com.sparkit.staf.core.compiler.StafFileCompiler;
+import com.sparkit.staf.core.compiler.IStafCompiler;
 import org.json.simple.parser.JSONParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
