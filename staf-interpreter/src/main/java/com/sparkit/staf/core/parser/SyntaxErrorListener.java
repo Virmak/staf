@@ -12,9 +12,11 @@ import java.util.List;
 
 public class SyntaxErrorListener extends BaseErrorListener {
     private final List<SyntaxError> syntaxErrors = new ArrayList<>();
+    private final String filePath;
 
-    public SyntaxErrorListener()
+    public SyntaxErrorListener(String filePath)
     {
+        this.filePath = filePath;
     }
 
     public List<SyntaxError> getSyntaxErrors()
@@ -28,7 +30,7 @@ public class SyntaxErrorListener extends BaseErrorListener {
                             int line, int charPositionInLine,
                             String msg, RecognitionException e)
     {
-        syntaxErrors.add(new SyntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e));
+        syntaxErrors.add(new SyntaxError(recognizer, offendingSymbol, line, charPositionInLine, filePath, msg, e));
         throw new ParseCancellationException("line " + line + ":" + charPositionInLine + " " + msg);
 
     }

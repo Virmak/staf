@@ -14,10 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -74,10 +71,11 @@ public class StafScriptInterpreter {
     }
 
     public void terminateTestExecution() {
-        allTestSessions.forEach((key, value) -> {
-            value.stopTestExecution();
-            allTestSessions.remove(key);
-        });
+        for (Iterator<Map.Entry<Integer, TestSession>> iterator = allTestSessions.entrySet().iterator();
+             iterator.hasNext();) {
+            iterator.next().getValue().stopTestExecution();
+            iterator.remove();
+        }
         logger.warn("Received test termination signal : stopping tests ...");
     }
 

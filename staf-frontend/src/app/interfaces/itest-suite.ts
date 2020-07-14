@@ -6,4 +6,5 @@ export interface ITestSuite {
     content: IDirectory;
     active?: boolean;
     testCases?: ITestCase[];
+    syntaxErrors?: any[];
 }

@@ -78,15 +78,6 @@
             <version>1.18.12</version>
             <scope>compile</scope>
         </dependency>
-
-
-        <dependency> <!--used to zip projects -->
-            <groupId>org.zeroturnaround</groupId>
-            <artifactId>zt-zip</artifactId>
-            <version>1.14</version>
-            <type>jar</type>
-        </dependency>
-
     </dependencies>
 
     <build>

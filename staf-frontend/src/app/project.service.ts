@@ -11,7 +11,7 @@ import { IStafProject, ProjectType } from './interfaces/istaf-project';
 import { IDirectory } from './interfaces/idirectory';
 import { BehaviorSubject } from 'rxjs';
 import { IFile, FileType } from './interfaces/ifile';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { IGenericResponse, GenericResponse } from './interfaces/igeneric-response';
 import { IGetImage64 } from './interfaces/i-getimage64';
 
@@ -424,5 +424,11 @@ export class ProjectService {
     parent.content.set(newName, directory);
     directory.name = newName;
     directory.content
+  }
+
+  uploadProject(projectFile) {
+    const data: FormData = new FormData();
+    data.append('file', projectFile);
+    return this.http.post(baseUrl + '/projects/upload', data);
   }
 }

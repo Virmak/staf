@@ -6,6 +6,7 @@ import com.sparkit.staf.application.models.response.RenameTestSuiteResponse;
 import com.sparkit.staf.core.ast.ImportStatement;
 import com.sparkit.staf.core.ast.ImportTypes;
 import com.sparkit.staf.core.ast.StafFile;
+import com.sparkit.staf.core.ast.TestCaseDeclaration;
 import com.sparkit.staf.core.parser.SyntaxErrorException;
 import com.sparkit.staf.core.runtime.interpreter.SemanticError;
 import com.sparkit.staf.core.runtime.loader.IStafCompiler;
@@ -37,25 +38,29 @@ public class TestSuiteService {
         return child.startsWith(parent);
     }
 
-    public GetTestSuiteDetailsResponse getTestSuiteDetails(String project, String testSuiteName) throws IOException, SyntaxErrorException {
+    public GetTestSuiteDetailsResponse getTestSuiteDetails(String project, String testSuiteName) throws IOException {
         String testSuiteDirectory = getTestSuiteMainFile(project, testSuiteName).getParentFile().getAbsolutePath();
         GetTestSuiteDetailsResponse response = new GetTestSuiteDetailsResponse();
         response.setTestSuite(testSuiteName);
         response.setProject(project);
         response.setTestCases(new ArrayList<>());
-        compileTestSuite(project, testSuiteName).values().stream()
-                .filter(ast -> Objects.nonNull(ast.getTestCaseDeclarationMap()) && isChild(Paths.get(ast.getFilePath()), testSuiteDirectory))
-                .map(ast -> ast.getTestCaseDeclarationMap().values())
-                .flatMap(Collection::stream)
-                .forEach(testCaseDeclaration -> response.getTestCases().add(
-                        response.new TestCase(testCaseDeclaration.getName(),
-                                testCaseDeclaration.getFilePath(),
-                                testCaseDeclaration.isIgnored(),
-                                !testCaseDeclaration.isDefaultOrder() ? String.valueOf(testCaseDeclaration.getOrder()) : "N/A")));
+        for (StafFile ast : compileTestSuiteWithErrors(project, testSuiteName).values()) {
+            response.setSyntaxErrors(ast.getSyntaxErrors());
+            if (Objects.nonNull(ast.getTestCaseDeclarationMap()) && isChild(Paths.get(ast.getFilePath()), testSuiteDirectory)) {
+                Collection<TestCaseDeclaration> values = ast.getTestCaseDeclarationMap().values();
+                for (TestCaseDeclaration testCaseDeclaration : values) {
+                    response.getTestCases().add(
+                            new GetTestSuiteDetailsResponse.TestCase(testCaseDeclaration.getName(),
+                                    testCaseDeclaration.getFilePath(),
+                                    testCaseDeclaration.isIgnored(),
+                                    !testCaseDeclaration.isDefaultOrder() ? String.valueOf(testCaseDeclaration.getOrder()) : "N/A"));
+                }
+            }
+        }
         return response;
     }
 
-    public Map<String, StafFile> compileWithErrors(String project, String testSuiteName) throws IOException {
+    public Map<String, StafFile> compileTestSuiteWithErrors(String project, String testSuiteName) throws IOException {
         String testSuiteMainFilePath = getTestSuiteMainFile(project, testSuiteName).getAbsolutePath();
         StafFile mainScriptAST = null;
         mainScriptAST = stafCompiler.compileWithErrors(testSuiteMainFilePath);

@@ -1,3 +1,5 @@
+import { StafProject } from './types/staf-project';
+import { ProjectService } from './project.service';
 import { DocsService } from "./docs.service";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
@@ -8,12 +10,16 @@ import { Injectable } from "@angular/core";
 export class AutoCompleteService {
   builtinKeywords = [];
 
-  constructor(private http: HttpClient, private docsService: DocsService) {
+  constructor(private docsService: DocsService) {
     docsService
       .getBuiltinLibrariesKeywords()
       .subscribe((builtInLibsKeywords: any) => {
         this.builtinKeywords = builtInLibsKeywords;
-      });
+      });    
+  }
+
+  getGlobalVariablesCompletion(project: StafProject) {
+    project.compiledFilesSubject.subscribe()
   }
 
   getBuiltInLibsKeywordsProposals(range) {
@@ -33,7 +39,7 @@ export class AutoCompleteService {
     return [].concat.apply([], keywordsProposals);
   }
 
-  private getParamsString(paramsList: any[]) {
+  getParamsString(paramsList: any[]) {
     return paramsList.reduce((acc, currentParam, index) => {
         let paramName = '$' + currentParam.name;
         if (currentParam.optional) {
@@ -44,7 +50,7 @@ export class AutoCompleteService {
     }, '');
   }
 
-  private transformKeywordName(name) {
+  transformKeywordName(name) {
     return name.charAt(0).toUpperCase() + name.slice(1);
   }
 

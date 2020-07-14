@@ -10,12 +10,11 @@ import com.sparkit.staf.core.runtime.interpreter.StafScriptInterpreter;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 @RestController
@@ -51,5 +50,11 @@ public class TestController {
     public String terminateTest() {
         stafScriptInterpreter.terminateTestExecution();
         return "{\"result\": \"Test terminated\"}";
+    }
+
+    @CrossOrigin
+    @GetMapping("/hostAddress")
+    public String resolveHost() throws UnknownHostException {
+        return InetAddress.getLocalHost().getHostAddress();
     }
 }
