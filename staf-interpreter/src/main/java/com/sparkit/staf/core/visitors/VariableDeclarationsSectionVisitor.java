@@ -17,7 +17,7 @@ public class VariableDeclarationsSectionVisitor extends StafBaseVisitor<Map<Stri
 
         for (StafParser.AssignmentContext assignmentContext : ctx.assignment()) {
             Assignment assignment = assignmentVisitor.visitAssignment(assignmentContext);
-            vars.put(assignment.getObject().getValue().toString(), assignment);
+            vars.put(assignment.getLeftHandSide().getValue().toString(), assignment);
         }
         return vars;
     }

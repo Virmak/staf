@@ -26,7 +26,7 @@ public class CsvLibrary extends AbstractStafLibrary {
     @Keyword(name = "read csv")
     public StafList readCsv(@Inject(name = "__keyword__") KeywordCall keywordCall, @KeywordArgument(name = "filePath") StafString filePath)
             throws IOException {
-        Reader reader = Files.newBufferedReader(getCSVFilePath(keywordCall.getFilePath(), (String) filePath.getValue()));
+        Reader reader = Files.newBufferedReader(getCSVFilePath(keywordCall.getPosition().getFilePath(), (String) filePath.getValue()));
         List<String[]> list;
         StafList stafList = new StafList();
         try (CSVReader csvReader = new CSVReader(reader)) {
@@ -42,7 +42,7 @@ public class CsvLibrary extends AbstractStafLibrary {
     @Keyword(name = "write csv")
     public void writeCsv(@Inject(name = "__keyword__") KeywordCall keywordCall, @KeywordArgument(name = "filePath") StafString filePath,
                          @KeywordArgument(name = "list") StafList stafList) throws IOException {
-        Path csvFilePath = getCSVFilePath(keywordCall.getFilePath(), (String) filePath.getValue());
+        Path csvFilePath = getCSVFilePath(keywordCall.getPosition().getFilePath(), (String) filePath.getValue());
         List<String[]> lines = new ArrayList<>();
         try (CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath.toString()),
                 CSVWriter.DEFAULT_SEPARATOR,

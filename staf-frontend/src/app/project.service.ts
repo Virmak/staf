@@ -221,6 +221,10 @@ export class ProjectService {
     return this.http.get(baseUrl + '/compileProject/' + projectLocation);
   }
 
+  compileFile(filePath) {
+    return this.http.get(baseUrl + '/compileFile?filePath=' + filePath);
+  }
+
   addProject(project: IStafProject) {
     this.http.post(baseUrl + '/projects', project)
       .subscribe((res: any) => {

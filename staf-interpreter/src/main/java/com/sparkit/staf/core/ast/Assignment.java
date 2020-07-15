@@ -13,13 +13,14 @@ import java.util.List;
 
 public class Assignment implements IStatement, IReportableBlock {
     @Getter
-    private final AbstractStafObject object;
-    private final AbstractStafObject value;
+    private final AbstractStafObject leftHandSide;
+    @Getter
+    private final AbstractStafObject rightHandSide;
     private List<StatementReport> reports;
 
-    public Assignment(AbstractStafObject object, AbstractStafObject value) {
-        this.object = object;
-        this.value = value;
+    public Assignment(AbstractStafObject leftHandSide, AbstractStafObject rightHandSide) {
+        this.leftHandSide = leftHandSide;
+        this.rightHandSide = rightHandSide;
     }
 
     @Override
@@ -34,38 +35,38 @@ public class Assignment implements IStatement, IReportableBlock {
 
     @Override
     public String toString() {
-        return "Assignment : " + object + " = " + value;
+        return "Assignment : " + leftHandSide + " = " + rightHandSide;
     }
 
     @Override
     public Object execute(MemoryMap globalMemory, MemoryMap localMemory, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        if (value instanceof KeywordCall) {
-            KeywordCall keywordCall = (KeywordCall) value;
+        if (rightHandSide instanceof KeywordCall) {
+            KeywordCall keywordCall = (KeywordCall) rightHandSide;
             Object returnObj = keywordCall.execute(globalMemory, localMemory, keywordLibrariesRepository);
             this.reports = keywordCall.getStatementReports();
-            if (localMemory != null && localMemory.getVariablesMap().containsKey(object.getValue().toString())) {
-                localMemory.getVariablesMap().put(object.getValue().toString(), returnObj);
-            } else if (globalMemory.getVariablesMap().containsKey(object.getValue().toString())) {
-                globalMemory.getVariablesMap().put(object.getValue().toString(), returnObj);
+            if (localMemory != null && localMemory.getVariablesMap().containsKey(leftHandSide.getValue().toString())) {
+                localMemory.getVariablesMap().put(leftHandSide.getValue().toString(), returnObj);
+            } else if (globalMemory.getVariablesMap().containsKey(leftHandSide.getValue().toString())) {
+                globalMemory.getVariablesMap().put(leftHandSide.getValue().toString(), returnObj);
             } else if (localMemory != null) {
-                localMemory.getVariablesMap().put(object.getValue().toString(), returnObj);
+                localMemory.getVariablesMap().put(leftHandSide.getValue().toString(), returnObj);
             }
             return returnObj;
         }
-        if (localMemory != null && localMemory.getVariablesMap().containsKey(object.getValue().toString())) {
-            localMemory.getVariablesMap().put(object.getValue().toString(),
-                    value.evaluate(globalMemory, localMemory, keywordLibrariesRepository));
-        } else if (globalMemory.getVariablesMap().containsKey(object.getValue().toString())) {
-            globalMemory.getVariablesMap().put(object.getValue().toString(),
-                    value.evaluate(globalMemory, localMemory, keywordLibrariesRepository));
+        if (localMemory != null && localMemory.getVariablesMap().containsKey(leftHandSide.getValue().toString())) {
+            localMemory.getVariablesMap().put(leftHandSide.getValue().toString(),
+                    rightHandSide.evaluate(globalMemory, localMemory, keywordLibrariesRepository));
+        } else if (globalMemory.getVariablesMap().containsKey(leftHandSide.getValue().toString())) {
+            globalMemory.getVariablesMap().put(leftHandSide.getValue().toString(),
+                    rightHandSide.evaluate(globalMemory, localMemory, keywordLibrariesRepository));
         } else if (localMemory != null) {
-            localMemory.getVariablesMap().put(object.getValue().toString(),
-                    value.evaluate(globalMemory, localMemory, keywordLibrariesRepository));
+            localMemory.getVariablesMap().put(leftHandSide.getValue().toString(),
+                    rightHandSide.evaluate(globalMemory, localMemory, keywordLibrariesRepository));
         }
 
-        if (value instanceof Expression || value instanceof StafVariable) {
-            return value.evaluate(globalMemory, localMemory, keywordLibrariesRepository);
+        if (rightHandSide instanceof Expression || rightHandSide instanceof StafVariable) {
+            return rightHandSide.evaluate(globalMemory, localMemory, keywordLibrariesRepository);
         }
-        return (value);
+        return (rightHandSide);
     }
 }

@@ -32,7 +32,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
 
   pathSplitted = [];
 
-  testSuites: ITestSuite[];
+  
   editorInstance;
 
   hoverProvider: monaco.IDisposable;
@@ -125,10 +125,18 @@ export class EditFileComponent implements OnInit, OnDestroy {
     };
   }
 
+  getTestSuiteName() {
+
+  }
+
   saveFile() {
     this.fileEditorService.saveFile(this.file, () => {
-      this.projectService.compileProject(this.project.location).subscribe((compiledTestSuites: CompiledTestSuite[]) => {
-        this.project.compiledFiles = compiledTestSuites;
+      this.projectService.compileFile(this.file.path).subscribe((compiledFileResponse: any) => {
+        const projectCompiledFiles = this.project.compiledFiles;
+        Object.keys(compiledFileResponse.fileMap).forEach(filePath => {
+          projectCompiledFiles.fileMap[filePath] = compiledFileResponse.fileMap[filePath];
+        });
+        this.project.compiledFiles = projectCompiledFiles;
       });
     });
   }

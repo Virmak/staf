@@ -1,16 +1,14 @@
 package com.sparkit.staf.api.controllers;
 
+import com.sparkit.staf.application.models.response.compiler.CompileFileResponse;
 import com.sparkit.staf.application.models.response.compiler.CompileProjectResponse;
 import com.sparkit.staf.application.models.response.compiler.CompileTestSuiteResponse;
 import com.sparkit.staf.application.service.CompilerService;
-import com.sparkit.staf.core.ast.StafFile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 @RestController
 public class CompilerController {
@@ -24,21 +22,21 @@ public class CompilerController {
     @CrossOrigin
     @GetMapping("/compileTestSuite/{projectLocation}/{testSuite}")
     public CompileTestSuiteResponse compileTestSuite(@PathVariable("projectLocation") String project, @PathVariable("testSuite") String testSuite)
-            throws IOException {
+            throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
         return compilerService.compileTestSuite(project, testSuite);
     }
 
     @CrossOrigin
     @GetMapping("/compileProject/{projectLocation}")
     public CompileProjectResponse compileProject(@PathVariable("projectLocation") String project)
-            throws IOException {
+            throws IOException, IllegalAccessException, InvocationTargetException, InstantiationException {
         return compilerService.compileProject(project);
     }
 
     @CrossOrigin
-    @GetMapping("/compileFile/{filePath}")
-    public StafFile compileFile(@PathVariable("filePath") String filePath)
-            throws IOException {
+    @GetMapping("/compileFile")
+    public CompileFileResponse compileFile(@RequestParam("filePath") String filePath)
+            throws IOException, IllegalAccessException, InvocationTargetException, InstantiationException {
         return compilerService.compileFile(filePath);
     }
 }

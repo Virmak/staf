@@ -4,12 +4,14 @@ import com.sparkit.staf.core.ast.ImportStatement;
 import com.sparkit.staf.core.ast.ImportTypes;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.runtime.interpreter.SemanticError;
+import com.sparkit.staf.core.validator.SemanticAnalyzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,25 +21,34 @@ import java.util.Map;
 public class TestSuiteCompiler {
     private static final String TEST_SUITE_MAIN_FILE = "main.staf";
     private final IStafCompiler stafFileCompiler;
+    private final SemanticAnalyzer semanticAnalyzer;
     @Value("${testDirectory}")
-    String testDirectory;
+    private String testDirectory;
 
     @Autowired
-    public TestSuiteCompiler(IStafCompiler stafCompiler) {
+    public TestSuiteCompiler(IStafCompiler stafCompiler, SemanticAnalyzer semanticAnalyzer) {
         this.stafFileCompiler = stafCompiler;
+        this.semanticAnalyzer = semanticAnalyzer;
     }
 
-    public Map<String, StafFile> compileTestSuiteWithErrors(String project, String testSuiteName) throws IOException {
-        String testSuiteMainFilePath = getTestSuiteMainFile(project, testSuiteName).getAbsolutePath();
+    public Map<String, StafFile> compileTestSuiteWithErrors(String project, String testSuiteName) throws IOException,
+            IllegalAccessException, InstantiationException, InvocationTargetException {
+        String testSuiteMainFile = getTestSuiteMainFile(project, testSuiteName).getAbsolutePath();
+        return compileFile(testSuiteMainFile);
+    }
+
+    public Map<String, StafFile> compileFile(String filePath) throws IOException, IllegalAccessException,
+            InvocationTargetException, InstantiationException {
         StafFile mainScriptAST = null;
-        mainScriptAST = stafFileCompiler.compileWithErrors(testSuiteMainFilePath);
-        Map<String, StafFile> testSuiteImportedFilesAST = new HashMap<>();
-        testSuiteImportedFilesAST.put(toRelativePath(testSuiteMainFilePath), mainScriptAST);
+        mainScriptAST = stafFileCompiler.compileWithErrors(filePath);
+        Map<String, StafFile> testSuiteFilesAST = new HashMap<>();
+        testSuiteFilesAST.put(toRelativePath(filePath), mainScriptAST);
         String currentDirectoryPath = mainScriptAST.getFilePath().substring(0, mainScriptAST.getFilePath().lastIndexOf('/'));
         if (mainScriptAST.getImports() != null) {
-            loadImports(currentDirectoryPath, mainScriptAST, testSuiteImportedFilesAST);
+            loadImports(currentDirectoryPath, mainScriptAST, testSuiteFilesAST);
         }
-        return testSuiteImportedFilesAST;
+        semanticAnalyzer.validateSemantics(mainScriptAST, testSuiteFilesAST);
+        return testSuiteFilesAST;
     }
 
     public Map<String, StafFile> compileTestSuite(String project, String testSuiteName) throws IOException {
@@ -77,10 +88,6 @@ public class TestSuiteCompiler {
                 }
             }
         }
-    }
-
-    public StafFile compileFile(String filePath) throws IOException {
-        return stafFileCompiler.compileWithErrors(filePath);
     }
 
     public File getTestSuiteMainFile(String project, String testSuiteName) {

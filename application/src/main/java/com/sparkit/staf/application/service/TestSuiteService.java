@@ -3,14 +3,15 @@ package com.sparkit.staf.application.service;
 import com.sparkit.staf.application.models.request.RenameTestSuiteRequest;
 import com.sparkit.staf.application.models.response.GetTestSuiteDetailsResponse;
 import com.sparkit.staf.application.models.response.RenameTestSuiteResponse;
-import com.sparkit.staf.core.compiler.TestSuiteCompiler;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.ast.TestCaseDeclaration;
+import com.sparkit.staf.core.compiler.TestSuiteCompiler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -31,7 +32,8 @@ public class TestSuiteService {
         return child.startsWith(parent);
     }
 
-    public GetTestSuiteDetailsResponse getTestSuiteDetails(String project, String testSuiteName) throws IOException {
+    public GetTestSuiteDetailsResponse getTestSuiteDetails(String project, String testSuiteName) throws IOException,
+            IllegalAccessException, InvocationTargetException, InstantiationException {
         String testSuiteDirectory = testSuiteCompiler.getTestSuiteMainFile(project, testSuiteName).getParentFile().getAbsolutePath();
         GetTestSuiteDetailsResponse response = new GetTestSuiteDetailsResponse();
         response.setTestSuite(testSuiteName);

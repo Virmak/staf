@@ -8,11 +8,11 @@ import com.sparkit.staf.application.models.response.GetTestSuiteDetailsResponse;
 import com.sparkit.staf.application.models.response.RenameTestSuiteResponse;
 import com.sparkit.staf.application.service.ProjectService;
 import com.sparkit.staf.application.service.TestSuiteService;
-import com.sparkit.staf.core.parser.SyntaxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 @RestController
 public class TestSuiteController {
@@ -46,7 +46,7 @@ public class TestSuiteController {
     @CrossOrigin
     @GetMapping("/testSuite/{project}/{testSuite}")
     public GetTestSuiteDetailsResponse getTestSuite(@PathVariable("project") String project, @PathVariable("testSuite") String testSuite)
-            throws IOException, SyntaxErrorException {
+            throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
         return testSuiteService.getTestSuiteDetails(project, testSuite);
     }
 }

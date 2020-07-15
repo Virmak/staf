@@ -3,8 +3,9 @@ package com.sparkit.staf.core.ast.types;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparkit.staf.core.ast.IStatement;
 import com.sparkit.staf.core.ast.StafTypes;
-import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
+import com.sparkit.staf.core.ast.TokenPosition;
 import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedKeywordException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
@@ -15,23 +16,20 @@ import lombok.Setter;
 import java.util.List;
 
 public class KeywordCall extends AbstractStafObject implements IStatement, IReportableBlock {
-    protected final StatementBlockExecutor blockExecutor;
-    @Getter
-    @Setter
-    protected String keywordName;
-    @Getter
-    @Setter
-    protected List<AbstractStafObject> argumentsList;
-    @Getter
-    @Setter
-    protected int lineNumber;
-    @Getter
-    @Setter
-    protected String filePath;
+    private final StatementBlockExecutor blockExecutor;
     @JsonIgnore
     @Getter
     @Setter
     protected List<StatementReport> statementReports;
+    @Getter
+    @Setter
+    private String keywordName;
+    @Getter
+    @Setter
+    private List<AbstractStafObject> argumentsList;
+    @Getter
+    @Setter
+    private TokenPosition position;
 
     public KeywordCall(StatementBlockExecutor blockExecutor, String keywordName, List<AbstractStafObject> argumentsList) {
         this.blockExecutor = blockExecutor;
@@ -73,7 +71,7 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
         } else {
             argsString = "";
         }
-        return keywordName + " [" + argsString + "] at " + getFilePath() + "  at line " + lineNumber;
+        return keywordName + " [" + argsString + "] at " + position.getFilePath() + "  at line " + position.getLine();
     }
 
     @Override

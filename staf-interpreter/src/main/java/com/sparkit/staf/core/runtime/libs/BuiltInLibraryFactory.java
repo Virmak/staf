@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.runtime.libs;
 
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
+import com.sparkit.staf.core.runtime.libs.exceptions.LibraryNotFoundException;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
@@ -22,6 +23,9 @@ public class BuiltInLibraryFactory {
 
     public AbstractStafLibrary build(Class<? extends AbstractStafLibrary> libraryClass)
             throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        if (libraryClass == null) {
+            throw new LibraryNotFoundException("Library not found");
+        }
         StafLibrary libraryClassAnnotation = libraryClass.getAnnotation(StafLibrary.class);
         AbstractStafLibrary libraryInstance = (AbstractStafLibrary) libraryClass.getConstructors()[0].newInstance();
         autowireCapableBeanFactory.autowireBean(libraryInstance);
