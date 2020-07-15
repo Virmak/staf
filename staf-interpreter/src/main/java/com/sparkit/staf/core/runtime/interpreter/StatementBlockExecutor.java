@@ -43,13 +43,13 @@ public class StatementBlockExecutor {
     // Execute statement block like test case or user defined keyword
     public List<StatementReport> execute(IStatementBlock statementBlock,
                                          OnStatementFailed statementFailed,
-                                         SymbolsTable globalSymbolsTable,
-                                         SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+                                         MemoryMap globalMemory,
+                                         MemoryMap localMemory, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         List<StatementReport> reports = new ArrayList<>();
         for (IStatement statement : statementBlock.getStatements()) {
             StatementReport statementReport = createStatementReport(statement, TestResult.Pass);
             try {
-                statement.execute(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
+                statement.execute(globalMemory, localMemory, keywordLibrariesRepository);
                 if (statement instanceof IReportableBlock) {
                     statementReport.setChildren(((IReportableBlock) statement).getStatementReports());
                 }
@@ -60,7 +60,7 @@ public class StatementBlockExecutor {
                 statementReport.setResult(TestResult.Fail);
                 throw new FatalErrorException(reports, e);
             } catch (Exception e) {
-                logger.error("At " + statement);
+                logger.error("At {}", statement);
                 statementReport.setErrorMessage("At " + statement);
                 statementReport.setResult(TestResult.Fail);
                 if (this.statementFailed != null) {
@@ -79,27 +79,27 @@ public class StatementBlockExecutor {
 
     // Execute loop statements
     public StatementReport executeIterable(IStafIterable iterable,
-                                           SymbolsTable globalSymbolsTable,
-                                           SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+                                           MemoryMap globalSymbolsTable,
+                                           MemoryMap localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         StatementReport loopReport = createStatementReport((IStatement) iterable, null);
         loopReport.setChildren(new ArrayList<>());
         AbstractStafObject tmp = null;  // used to save variable with the same name as the loop variable if it currently
         // exist in localSymTable so we can retrieve it later after for statement execution
         if (localSymbolsTable == null) {
-            localSymbolsTable = new SymbolsTable();
+            localSymbolsTable = new MemoryMap();
         } else {
-            tmp = (AbstractStafObject) localSymbolsTable.getSymbolValue(iterable.getLoopVariable().getValue().toString());
+            tmp = (AbstractStafObject) localSymbolsTable.getVariableValue(iterable.getLoopVariable().getValue().toString());
         }
         AbstractStafObject actualIterator = (AbstractStafObject) iterable.getIterator().evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
         if (actualIterator instanceof StafList) {
             int iteration = 0;
             for (AbstractStafObject item : ((StafList) actualIterator).getStafList()) {
                 boolean loopExited = false;
-                localSymbolsTable.setSymbolValue("$__index__", new StafInteger(iteration));
+                localSymbolsTable.setVariableValue("$__index__", new StafInteger(iteration));
                 loopReport.setErrorMessage("Iteration[" + (iteration++) + "] : " + item);
                 for (IStatement statement : iterable.getStatements()) {
                     StatementReport statementReport = new StatementReport();
-                    localSymbolsTable.setSymbolValue(iterable.getLoopVariable().getValue().toString(), item);
+                    localSymbolsTable.setVariableValue(iterable.getLoopVariable().getValue().toString(), item);
                     try {
                         statement.execute(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
                         if (statement instanceof ExitLoopStatement) {
@@ -121,7 +121,7 @@ public class StatementBlockExecutor {
                         }
                         statementReport.setResult(statementListTestResult(statementReport.getChildren()));
                     } catch (Exception e) {
-                        logger.error("At " + statement);
+                        logger.error("At {}", statement);
                         statementReport.setErrorMessage("At " + statement);
                         statementReport.setResult(TestResult.Fail);
                         if (this.statementFailed != null) {

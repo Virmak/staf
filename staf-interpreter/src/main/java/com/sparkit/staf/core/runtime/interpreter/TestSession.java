@@ -28,7 +28,7 @@ public class TestSession implements Runnable {
     private final StafFile mainStafFile;
     private final TestSuite testSuite;
     private final ProjectConfig projectConfig;
-    private final SymbolsTable testSuiteSharedSymbolsTable;
+    private final MemoryMap testSuiteSharedMemory;
     private final TestCaseExecutor testCaseRunner;
     @Getter
     private final int sessionId;
@@ -36,9 +36,9 @@ public class TestSession implements Runnable {
     private final TestSuiteReport testSuiteReport = new TestSuiteReport();
     private boolean testTerminated = false;
 
-    public TestSession(SymbolsTable testSuiteSharedSymbolsTable, TestCaseExecutor testCaseRunner, StafFile mainStafFile,
+    public TestSession(MemoryMap testSuiteSharedMemory, TestCaseExecutor testCaseRunner, StafFile mainStafFile,
                        TestSuite testSuite, ProjectConfig projectConfig) {
-        this.testSuiteSharedSymbolsTable = testSuiteSharedSymbolsTable;
+        this.testSuiteSharedMemory = testSuiteSharedMemory;
         this.testCaseRunner = testCaseRunner;
         this.mainStafFile = mainStafFile;
         this.testSuite = testSuite;
@@ -54,12 +54,12 @@ public class TestSession implements Runnable {
     public void run() {
         initTestSuiteReport();
         List<TestCaseReport> testCaseReportList = new ArrayList<>();
-        SymbolsTable sessionGlobalSymbolsTable = new SymbolsTable(new HashMap<>(testSuiteSharedSymbolsTable.getSymbolsMap()));
-        sessionGlobalSymbolsTable.setSymbolValue(SESSION_ID_VAR_NAME, new StafInteger(sessionId));
+        MemoryMap sessionGlobalMemory = new MemoryMap(new HashMap<>(testSuiteSharedMemory.getVariablesMap()));
+        sessionGlobalMemory.setVariableValue(SESSION_ID_VAR_NAME, new StafInteger(sessionId));
         TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get(SETUP_TEST_CASE);
         TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get(TEARDOWN_TEST_CASE);
         if (setup != null && isTestCaseEnabled(SETUP_TEST_CASE, testSuite)) {
-            TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, SETUP_TEST_CASE, setup, sessionGlobalSymbolsTable, projectConfig);
+            TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, SETUP_TEST_CASE, setup, sessionGlobalMemory, projectConfig);
             testCaseReportList.add(testCaseReport);
         }
         try {
@@ -68,8 +68,8 @@ public class TestSession implements Runnable {
                     logger.warn("Test execution terminated by user");
                     testSuiteReport.setMessage("Test execution terminated by user");
                     testSuiteReport.setResult(TestResult.Fail);
-                    if (sessionGlobalSymbolsTable.getSymbolsMap().containsKey(SeleniumLibrary.WEB_DRIVER_KEY)) {
-                        ((WebDriver)sessionGlobalSymbolsTable.getSymbolsMap().get(SeleniumLibrary.WEB_DRIVER_KEY)).close();
+                    if (sessionGlobalMemory.getVariablesMap().containsKey(SeleniumLibrary.WEB_DRIVER_KEY)) {
+                        ((WebDriver)sessionGlobalMemory.getVariablesMap().get(SeleniumLibrary.WEB_DRIVER_KEY)).close();
                     }
                     break;
                 }
@@ -83,7 +83,7 @@ public class TestSession implements Runnable {
                     continue;
                 }
                 TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, testCaseDeclarationEntry.getKey(),
-                        testCaseDeclarationEntry.getValue(), sessionGlobalSymbolsTable, projectConfig);
+                        testCaseDeclarationEntry.getValue(), sessionGlobalMemory, projectConfig);
                 testCaseReportList.add(testCaseReport);
                 if (testCaseReport.getResult() == TestResult.Fail) {
                     testSuiteReport.setResult(TestResult.Fail);
@@ -94,7 +94,7 @@ public class TestSession implements Runnable {
             testSuiteReport.setResult(TestResult.Fail);
         } finally {
             if (tearDown != null && isTestCaseEnabled(TEARDOWN_TEST_CASE, testSuite)) {
-                testCaseReportList.add(testCaseRunner.executeTestCase(testSuite, TEARDOWN_TEST_CASE, tearDown, sessionGlobalSymbolsTable, projectConfig));
+                testCaseReportList.add(testCaseRunner.executeTestCase(testSuite, TEARDOWN_TEST_CASE, tearDown, sessionGlobalMemory, projectConfig));
             }
         }
         testSuiteReport.setTestCaseReports(testCaseReportList);

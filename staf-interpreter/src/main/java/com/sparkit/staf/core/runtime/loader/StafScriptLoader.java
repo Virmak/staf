@@ -44,7 +44,7 @@ public class StafScriptLoader implements IStafScriptLoader {
             importsInterpreter.loadImports(imports, testSuite, currentDirectory, testDirectory);
         }
         if (varsMap != null) {
-            testSuite.getGlobalSharedSymbolsTable().addVariablesMap(varsMap, testSuite.getKeywordLibrariesRepository());
+            testSuite.getGlobalSharedMemory().addVariablesMap(varsMap, testSuite.getKeywordLibrariesRepository());
         }
         if (keywordsMap != null) {
             testSuite.getKeywordLibrariesRepository().addUserDefinedKeywords(keywordsMap);

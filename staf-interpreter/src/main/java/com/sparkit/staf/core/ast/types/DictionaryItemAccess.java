@@ -1,6 +1,6 @@
 package com.sparkit.staf.core.ast.types;
 
-import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 
 public class DictionaryItemAccess extends AbstractStafObject {
@@ -29,7 +29,7 @@ public class DictionaryItemAccess extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+    public Object evaluate(MemoryMap globalSymbolsTable, MemoryMap localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         StafDictionary actualDict = (StafDictionary) dictVariable.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
         return actualDict.getObjectMap().get(itemIdentifier);
     }

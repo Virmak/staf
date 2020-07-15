@@ -8,45 +8,45 @@ import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SymbolsTable {
-    private final Map<String, Object> symbolsMap;
+public class MemoryMap {
+    private final Map<String, Object> variablesMap;
 
-    public SymbolsTable() {
-        symbolsMap = new HashMap<>();
+    public MemoryMap() {
+        variablesMap = new HashMap<>();
     }
 
-    public SymbolsTable(Map<String, Object> symbolsMap) {
-        this.symbolsMap = symbolsMap;
+    public MemoryMap(Map<String, Object> variablesMap) {
+        this.variablesMap = variablesMap;
     }
 
     public void addVariablesMap(Map<String, Assignment> assignmentMap, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         for (Map.Entry<String, Assignment> assignmentEntry : assignmentMap.entrySet()) {
-            if (symbolsMap.containsKey(assignmentEntry.getKey())) {
+            if (variablesMap.containsKey(assignmentEntry.getKey())) {
                 throw new VariableAlreadyDefinedException(assignmentEntry.getKey());
             }
-            symbolsMap.put(assignmentEntry.getKey(),
+            variablesMap.put(assignmentEntry.getKey(),
                     assignmentEntry.getValue().execute(this, null, keywordLibrariesRepository));
         }
     }
 
-    public Object getSymbolValue(String symbol) {
-        return symbolsMap.get(symbol);
+    public Object getVariableValue(String symbol) {
+        return variablesMap.get(symbol);
     }
 
-    public void setSymbolValue(String symbolName, Object value) {
-        symbolsMap.put(symbolName, value);
+    public void setVariableValue(String symbolName, Object value) {
+        variablesMap.put(symbolName, value);
     }
 
-    public Map<String, Object> getSymbolsMap() {
-        return symbolsMap;
+    public Map<String, Object> getVariablesMap() {
+        return variablesMap;
     }
 
     public void clearSymbolsMap() {
-        symbolsMap.clear();
+        variablesMap.clear();
     }
 
     public int getSessionId() {
-        StafInteger session = (StafInteger) this.symbolsMap.get("$__session__");
+        StafInteger session = (StafInteger) this.variablesMap.get("$__session__");
         if (session != null) {
             return (int) session.getValue();
         } else {

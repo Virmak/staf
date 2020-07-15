@@ -42,7 +42,7 @@ public class StafScriptInterpreter {
             String importRelativePath = mainStafFile.getFilePath().substring(0, mainStafFile.getFilePath().lastIndexOf('/'));
             importsInterpreter.loadImports(mainStafFile.getImports(), testSuite, importRelativePath, testDirectory);
             if (varsAssignments != null) {
-                testSuite.getGlobalSharedSymbolsTable().addVariablesMap(varsAssignments, testSuite.getKeywordLibrariesRepository());
+                testSuite.getGlobalSharedMemory().addVariablesMap(varsAssignments, testSuite.getKeywordLibrariesRepository());
             }
             if (keywordsMap != null) {
                 testSuite.getKeywordLibrariesRepository().addUserDefinedKeywords(keywordsMap);
@@ -82,7 +82,7 @@ public class StafScriptInterpreter {
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     private TestSession testSession(ProjectConfig projectConfig, TestSuite testSuite, StafFile mainStafFile) {
-        return new TestSession(testSuite.getGlobalSharedSymbolsTable(), testCaseRunner, mainStafFile, testSuite, projectConfig);
+        return new TestSession(testSuite.getGlobalSharedMemory(), testCaseRunner, mainStafFile, testSuite, projectConfig);
     }
 
 }

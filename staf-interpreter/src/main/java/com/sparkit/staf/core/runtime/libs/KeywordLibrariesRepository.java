@@ -3,7 +3,7 @@ package com.sparkit.staf.core.runtime.libs;
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
-import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.builtin.selenium.SeleniumLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
@@ -66,7 +66,7 @@ public class KeywordLibrariesRepository {
         }
     }
 
-    public Object invokeKeyword(SymbolsTable globalSymbolsTable, KeywordCall keyword, Object[] params) throws Throwable {
+    public Object invokeKeyword(MemoryMap globalSymbolsTable, KeywordCall keyword, Object[] params) throws Throwable {
         String normalizedKeywordName = normalizeKeywordName(keyword.getKeywordName());
 
         logger.debug("Invoking Keyword : {}", keyword);
@@ -79,7 +79,7 @@ public class KeywordLibrariesRepository {
                 ret = builtinKeywordMap.get(normalizedKeywordName).invoke(dependencies);
                 statementBlockExecutor.getCallStack().pop(globalSymbolsTable.getSessionId());
                 if (ret instanceof WebDriver) { // this is used by selenium library (open browser) keyword to save an instance of web driver in global sym table
-                    globalSymbolsTable.setSymbolValue(SeleniumLibrary.WEB_DRIVER_KEY, ret);
+                    globalSymbolsTable.setVariableValue(SeleniumLibrary.WEB_DRIVER_KEY, ret);
                     return null;
                 }
                 return ret;
@@ -107,11 +107,11 @@ public class KeywordLibrariesRepository {
         return keyword.toLowerCase().replaceAll("\\s*", "");
     }
 
-    private List<Object> injectKeywordDependencies(SymbolsTable symbolsTable, KeywordCall keywordCall, BuiltInLibraryKeywordWrapper keywordWrapper) { // Fetch variables requested using keyword method @Inject annotation from globalSymbolsTable
+    private List<Object> injectKeywordDependencies(MemoryMap symbolsTable, KeywordCall keywordCall, BuiltInLibraryKeywordWrapper keywordWrapper) { // Fetch variables requested using keyword method @Inject annotation from globalSymbolsTable
         List<Object> keywordDependencies = new ArrayList<>();
-        symbolsTable.setSymbolValue("__keyword__", keywordCall);
+        symbolsTable.setVariableValue("__keyword__", keywordCall);
         for (String dep : keywordWrapper.getInjectAnnotatedParams()) {
-            keywordDependencies.add(symbolsTable.getSymbolValue(dep));
+            keywordDependencies.add(symbolsTable.getVariableValue(dep));
         }
         return keywordDependencies;
     }

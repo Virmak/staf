@@ -1,7 +1,7 @@
 package com.sparkit.staf.core.ast.types;
 
 import com.sparkit.staf.core.ast.StafTypes;
-import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 
@@ -11,13 +11,13 @@ public class StafVariable extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+    public Object evaluate(MemoryMap globalSymbolsTable, MemoryMap localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         Object obj = null;
         if (localSymbolsTable != null) {
-            obj = localSymbolsTable.getSymbolValue(value.toString());
+            obj = localSymbolsTable.getVariableValue(value.toString());
         }
         if (obj == null) {
-            obj = globalSymbolsTable.getSymbolValue(value.toString());
+            obj = globalSymbolsTable.getVariableValue(value.toString());
         }
         if (obj instanceof StafVariable) {
             AbstractStafObject stafObject = (AbstractStafObject) obj;

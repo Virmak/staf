@@ -24,18 +24,18 @@ public class StatementFailedScreenshot implements OnStatementFailed {
     private final TestSuite testSuite;
     private final ProjectConfig config;
     private final StatementBlockExecutor statementBlockExecutor;
-    private final SymbolsTable sessionGlobalSymbolsTable;
+    private final MemoryMap sessionGlobalMemory;
     private final String testDirectory;
     private final String testCaseName;
 
     public StatementFailedScreenshot(TestCaseReport testCaseReport, TestSuite testSuite, ProjectConfig config,
-                                     StatementBlockExecutor statementBlockExecutor, SymbolsTable sessionGlobalSymbolsTable,
+                                     StatementBlockExecutor statementBlockExecutor, MemoryMap sessionGlobalMemory,
                                      String testDirectory, String testCaseName) {
         this.testCaseReport = testCaseReport;
         this.testSuite = testSuite;
         this.config = config;
         this.statementBlockExecutor = statementBlockExecutor;
-        this.sessionGlobalSymbolsTable = sessionGlobalSymbolsTable;
+        this.sessionGlobalMemory = sessionGlobalMemory;
         this.testDirectory = testDirectory;
         this.testCaseName = testCaseName;
     }
@@ -50,7 +50,7 @@ public class StatementFailedScreenshot implements OnStatementFailed {
         try {
             KeywordCall captureScreenshotKeyword = new KeywordCall(statementBlockExecutor,
                     CAPTURE_SCREENSHOT_KEYWORD_NAME, Arrays.asList(new AbstractStafObject[]{screenShotPath}));
-            captureScreenshotKeyword.execute(sessionGlobalSymbolsTable, null, testSuite.getKeywordLibrariesRepository());
+            captureScreenshotKeyword.execute(sessionGlobalMemory, null, testSuite.getKeywordLibrariesRepository());
         } catch (EmptyStackException e) {
             logger.error("No browser open");
             statementReport.setErrorMessage("No browser open");
