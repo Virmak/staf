@@ -21,7 +21,7 @@ import java.io.IOException;
 public class ProjectController {
     private final ProjectService projectService;
     @Value("${testDirectory}")
-    String testDir;
+    private String testDirectory;
 
     @Autowired
     public ProjectController(ProjectService projectService) {
@@ -49,7 +49,7 @@ public class ProjectController {
     @CrossOrigin(origins = "*")
     @GetMapping("/projects")
     public Directory getAllProjects() {
-        File projectsDir = new File(testDir);
+        File projectsDir = new File(testDirectory);
         return projectService.readDirectory(projectsDir);
     }
 
@@ -61,8 +61,8 @@ public class ProjectController {
 
     @CrossOrigin("*")
     @GetMapping("/projectReports/{projectLocation}")
-    public GetProjectReportsResponse getProjectReports(@PathVariable(name = "projectLocation") String projectLocation) throws IOException {
-        return projectService.getProjectReports(projectLocation);
+    public GetProjectReportsResponse getProjectReportFiles(@PathVariable(name = "projectLocation") String projectLocation) throws IOException {
+        return projectService.getProjectReportFiles(projectLocation);
     }
 
     @CrossOrigin
@@ -83,7 +83,6 @@ public class ProjectController {
     @CrossOrigin
     @GetMapping("/projects/download/{projectLocation}")
     public byte[] zipProject(HttpServletResponse response, @PathVariable("projectLocation") String projectLocation) {
-        //setting headers
         response.setContentType("application/zip");
         response.setStatus(HttpServletResponse.SC_OK);
         response.addHeader("Content-Disposition", "attachment; filename=\"" + projectLocation + ".zip\"");
@@ -96,6 +95,4 @@ public class ProjectController {
         projectService.unpackProject(file.getInputStream());
         return "{\"result\": \"ok\"}";
     }
-
-
 }

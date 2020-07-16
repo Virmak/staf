@@ -167,18 +167,20 @@ public class ProjectService {
         return response;
     }
 
-    public GetProjectReportsResponse getProjectReports(String projectLocation) throws IOException {
+    public GetProjectReportsResponse getProjectReportFiles(String projectLocation) throws IOException {
         GetProjectReportsResponse response = new GetProjectReportsResponse();
         response.setProjectName(projectLocation);
         response.setReportsFileNameList(new ArrayList<>());
         File projectDirectoryFile = getProjectDirectoryFile(projectLocation);
         ProjectConfig projectConfig = getProjectConfig(projectLocation);
         File reportsDirectory = new File(projectDirectoryFile, projectConfig.getReportsDir());
-        for (File testSuiteReportsDir : Objects.requireNonNull(reportsDirectory.listFiles())) {
-            response.getReportsFileNameList().addAll(
-                    Arrays.stream(Objects.requireNonNull(testSuiteReportsDir.listFiles()))
-                            .filter(f -> !f.getName().equals(StatementFailedScreenshot.SCREEN_SHOTS_DIR))
-                            .map(f -> new GetProjectReportsResponse.ReportFile(f.getName(), f.getPath())).collect(Collectors.toList()));
+        if (reportsDirectory.exists()) {
+            for (File testSuiteReportsDir : Objects.requireNonNull(reportsDirectory.listFiles())) {
+                response.getReportsFileNameList().addAll(
+                        Arrays.stream(Objects.requireNonNull(testSuiteReportsDir.listFiles()))
+                                .filter(f -> !f.getName().equals(StatementFailedScreenshot.SCREEN_SHOTS_DIR))
+                                .map(f -> new GetProjectReportsResponse.ReportFile(f.getName(), f.getPath())).collect(Collectors.toList()));
+            }
         }
         return response;
     }
