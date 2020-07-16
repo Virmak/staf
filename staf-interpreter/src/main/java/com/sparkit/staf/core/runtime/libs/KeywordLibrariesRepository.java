@@ -59,8 +59,11 @@ public class KeywordLibrariesRepository {
 
     public void addUserDefinedKeywords(List<KeywordDeclaration> keywordDeclarations) {
         for (KeywordDeclaration keywordDeclaration : keywordDeclarations) {
-            if (isKeywordDeclared(normalizeKeywordName(keywordDeclaration.getKeywordName()))) {
-                throw new KeywordAlreadyRegisteredException(keywordDeclaration.getKeywordName());
+            if (userDefinedKeywords.containsKey(keywordDeclaration.getKeywordName())) {
+                throw new KeywordAlreadyRegisteredException(userDefinedKeywords.get(keywordDeclaration.getKeywordName()), keywordDeclaration);
+            } else if (builtinKeywordMap.containsKey(keywordDeclaration.getKeywordName())) {
+                BuiltInLibraryKeywordWrapper keyword = builtinKeywordMap.get(keywordDeclaration.getKeywordName());
+                throw new KeywordAlreadyRegisteredException(keywordDeclaration.getKeywordName(), keyword.getLibInstance().libraryName);
             }
             userDefinedKeywords.put(normalizeKeywordName(keywordDeclaration.getKeywordName()), keywordDeclaration);
         }

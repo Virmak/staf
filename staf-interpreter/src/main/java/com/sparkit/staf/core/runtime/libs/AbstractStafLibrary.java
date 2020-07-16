@@ -9,6 +9,7 @@ import java.util.Map;
 
 public abstract class AbstractStafLibrary {
     @Setter
+    @Getter
     protected String libraryName;
     @Getter
     @Setter

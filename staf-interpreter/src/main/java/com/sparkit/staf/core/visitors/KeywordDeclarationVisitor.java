@@ -6,6 +6,7 @@ import com.sparkit.staf.core.parser.StafBaseVisitor;
 import com.sparkit.staf.core.parser.StafParser;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.stream.Collectors;
 
@@ -18,6 +19,8 @@ public class KeywordDeclarationVisitor extends StafBaseVisitor<KeywordDeclaratio
     private KeywordReturnStatementVisitor keywordReturnStatementVisitor;
     @Autowired
     private StafFileVisitor stafFileVisitor;
+    @Value("${testDirectory}")
+    private String testDirectory;
 
     @Override
     public KeywordDeclaration visitKeyword_declaration(StafParser.Keyword_declarationContext ctx) {
@@ -33,7 +36,7 @@ public class KeywordDeclarationVisitor extends StafBaseVisitor<KeywordDeclaratio
                 ctx.keyword_name().getStart().getCharPositionInLine(),
                 ctx.keyword_name().getStart().getStartIndex(),
                 ctx.keyword_name().getStop().getStopIndex(),
-                stafFileVisitor.getFilePath());
+                stafFileVisitor.getFilePath().substring(stafFileVisitor.getFilePath().indexOf(testDirectory)));
         keywordDeclaration.setTokenPosition(tokenPosition);
 
         return keywordDeclaration;

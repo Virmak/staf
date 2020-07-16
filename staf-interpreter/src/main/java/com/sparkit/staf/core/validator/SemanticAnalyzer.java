@@ -79,11 +79,16 @@ public class SemanticAnalyzer {
         try {
             keywordLibrariesRepository.addUserDefinedKeywords(userKeywordDeclarations);
         } catch (KeywordAlreadyRegisteredException e) {
-            Optional<KeywordDeclaration> keywordWithError = userKeywordDeclarations.stream()
-                    .filter(kd -> kd.getKeywordName().equals(e.getKeywordName()))
-                    .findFirst();
-            keywordWithError.ifPresent(keywordDeclaration -> stafFileMap.get(getRelativePathToTestDirectory(keywordDeclaration.getTokenPosition().getFilePath()))
-                    .getSemanticErrors().add(new SemanticError(keywordDeclaration.getTokenPosition(), e.getMessage())));
+            if (e.getFirstKeyword() != null && e.getSecondKeyword() != null) {
+                stafFileMap.get(getRelativePathToTestDirectory(e.getFirstKeyword().getTokenPosition().getFilePath()))
+                        .getSemanticErrors().add(new SemanticError(e.getFirstKeyword().getTokenPosition(), e.getMessage()));
+            } else {
+                Optional<KeywordDeclaration> keywordWithError = userKeywordDeclarations.stream()
+                        .filter(kd -> kd.getKeywordName().equals(e.getKeywordName()))
+                        .findFirst();
+                keywordWithError.ifPresent(keywordDeclaration -> stafFileMap.get(getRelativePathToTestDirectory(keywordDeclaration.getTokenPosition().getFilePath()))
+                        .getSemanticErrors().add(new SemanticError(keywordDeclaration.getTokenPosition(), e.getMessage())));
+            }
         }
         return keywordLibrariesRepository;
     }
