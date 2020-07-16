@@ -1,11 +1,10 @@
 package com.sparkit.staf.core.ast;
 
-import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.runtime.interpreter.IStatementBlock;
-import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.InvalidArgsNumberKeywordCallException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedKeywordException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
@@ -20,14 +19,13 @@ import java.util.List;
 
 @Data
 public class KeywordDeclaration implements IStatementBlock {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final Logger logger = LoggerFactory.getLogger(KeywordDeclaration.class);
     private String keywordName;
     private List<String> argsList;
     private List<IStatement> statementList;
     private AbstractStafObject returnObject;
-    private String file;
-    private int lineNumber;
     private List<StatementReport> reports;
+    private TokenPosition tokenPosition;
 
     public KeywordDeclaration() {
     }

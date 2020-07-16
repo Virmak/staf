@@ -6,6 +6,7 @@ import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.runtime.interpreter.SemanticError;
 import com.sparkit.staf.core.runtime.libs.BuiltInLibraryFactory;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.LibraryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,7 +63,7 @@ public class SemanticAnalyzer {
                 } else if (importStatement.getType() == ImportTypes.FILE) {
                     try {
                         String importAbsolutePath = new File(currentDirectoryFile, importStatement.getPath()).getCanonicalPath();
-                        importAbsolutePath = importAbsolutePath.substring(importAbsolutePath.indexOf(testDirectory));
+                        importAbsolutePath = getRelativePathToTestDirectory(importAbsolutePath);
                         if (stafFileMap.containsKey(importAbsolutePath) && stafFileMap.get(importAbsolutePath).getKeywordDeclarationMap() != null) {
                             userKeywordDeclarationMap.putAll(stafFileMap.get(importAbsolutePath).getKeywordDeclarationMap());
                         }
@@ -75,7 +76,13 @@ public class SemanticAnalyzer {
         if (currentStafFile.getKeywordDeclarationMap() != null) {
             userKeywordDeclarationMap.putAll(currentStafFile.getKeywordDeclarationMap());
         }
-        keywordLibrariesRepository.addUserDefinedKeywords(userKeywordDeclarationMap);
+        try {
+            keywordLibrariesRepository.addUserDefinedKeywords(userKeywordDeclarationMap);
+        } catch (KeywordAlreadyRegisteredException e) {
+            KeywordDeclaration keywordWithError = userKeywordDeclarationMap.get(e.getKeywordName());
+            stafFileMap.get(getRelativePathToTestDirectory(keywordWithError.getTokenPosition().getFilePath()))
+                    .getSemanticErrors().add(new SemanticError(keywordWithError.getTokenPosition(), e.getMessage()));
+        }
         return keywordLibrariesRepository;
     }
 
@@ -154,5 +161,9 @@ public class SemanticAnalyzer {
                     .collect(Collectors.toList()));
         }
         return keywordCalls;
+    }
+
+    private String getRelativePathToTestDirectory(String path) {
+        return path.substring(path.indexOf(testDirectory));
     }
 }

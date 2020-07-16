@@ -74,6 +74,7 @@ export class FileEditorService {
 
   openFile(item: any, project: StafProject) {
     if (item.type == FileType.Directory) {
+      debugger
       this.projectService.currentDir = item;
       this.router.navigate(['directory', project.getNormalizedProjectName(), item.name]);
     } else if (this.isTextFile(item)) {
@@ -103,7 +104,6 @@ export class FileEditorService {
       relativeFilePath,
     ]);
   }
-
 
   isTextFile(file) {
     return file.extension == 'txt' 

@@ -194,13 +194,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
     this.builtinKeywordsCompletionProvider = monaco.languages.registerCompletionItemProvider('staf', {
       triggerCharacters: ['$'],
       provideCompletionItems: (model, position) => {
-          // find out if we are completing a property in the 'dependencies' object.
           // const textUntilPosition = model.getValueInRange({startLineNumber: 1, startColumn: 1, endLineNumber: position.lineNumber, endColumn: position.column});
-          // const keywordOrTestCaseSectionMatch = textUntilPosition.match(/(?<=keywords[\s]*|test cases[\s]*|end\s*|return.*).*/gim);
-          // if (keywordOrTestCaseSectionMatch) {
-          //   console.log('section')
-          // }
-          // console.log('okokok')
           const word = model.getWordUntilPosition(position);
           if (word.word === '') { // variable
             console.log('varrr')
