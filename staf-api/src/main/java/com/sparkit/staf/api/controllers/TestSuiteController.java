@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+@CrossOrigin
 @RestController
 public class TestSuiteController {
     private final ProjectService projectService;
@@ -25,25 +26,21 @@ public class TestSuiteController {
         this.testSuiteService = testSuiteService;
     }
 
-    @CrossOrigin
     @PostMapping("/testSuite")
     public CreateTestSuiteResponse createTestSuite(@RequestBody CreateTestSuiteRequest request) {
         return projectService.createTestSuite(request);
     }
 
-    @CrossOrigin
     @PutMapping("/testSuite")
     public RenameTestSuiteResponse renameTestSuite(@RequestBody RenameTestSuiteRequest request) {
         return testSuiteService.renameTestSuite(request);
     }
 
-    @CrossOrigin
     @DeleteMapping("/testSuite/{project}/{testSuite}")
     public DeleteTestSuiteResponse deleteTestSuite(@PathVariable("project") String project, @PathVariable("testSuite") String testSuite) {
         return projectService.deleteTestSuite(project, testSuite);
     }
 
-    @CrossOrigin
     @GetMapping("/testSuite/{project}/{testSuite}")
     public GetTestSuiteDetailsResponse getTestSuite(@PathVariable("project") String project, @PathVariable("testSuite") String testSuite)
             throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {

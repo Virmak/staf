@@ -5,14 +5,15 @@ import com.sparkit.staf.core.compiler.IStafCompiler;
 import com.sparkit.staf.core.models.RunTestCase;
 import com.sparkit.staf.core.models.RunTestSuite;
 import com.sparkit.staf.core.parser.SyntaxErrorException;
+import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.interpreter.StafScriptInterpreter;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
-import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.interpreter.TestSuite;
 import com.sparkit.staf.core.runtime.libs.BuiltInLibraryFactory;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.loader.exceptions.TestSuiteMainScriptNotFoundException;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.domain.ProjectConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,7 @@ public class TestSuiteRunner {
     @Autowired
     private StafScriptInterpreter interpreter;
 
-    @Value("${testDirectory}")
+    @Value(SharedConstants.TEST_DIRECTORY_PROPERTY_VALUE)
     private String testDirectory;
     @Autowired
     private BuiltInLibraryFactory libraryFactory;
@@ -47,17 +48,16 @@ public class TestSuiteRunner {
 
     public List<TestSuiteReport> runTests(RunTestSuite runTestSuiteRequest, int sessionCount, ProjectConfig projectConfig)
             throws SyntaxErrorException, TestSuiteMainScriptNotFoundException {
-        logger.info("Started running tests at {}", LocalDateTime.now());
-        List<TestSuiteReport> testSuiteReport = runTestScript(runTestSuiteRequest.getName() + "/main.staf",
+        logger.info(SharedConstants.STARTED_RUNNING_TESTS, LocalDateTime.now());
+        List<TestSuiteReport> testSuiteReport = runTestScript(runTestSuiteRequest.getName() + "/" + SharedConstants.TEST_SUITE_MAIN_FILE,
                 runTestSuiteRequest, testDirectory, sessionCount, projectConfig);
-        logger.info("Finished running tests at {}", LocalDateTime.now());
+        logger.info(SharedConstants.FINISHED_RUNNING_TESTS, LocalDateTime.now());
         return testSuiteReport;
     }
 
     public List<TestSuiteReport> runTestScript(String mainFilePath, RunTestSuite runTestSuiteRequest, String testDirectory,
                                                int sessionCount, ProjectConfig projectConfig)
             throws TestSuiteMainScriptNotFoundException, SyntaxErrorException {
-        logger.info("Running test suite : {}", runTestSuiteRequest.getName());
         Map<String, RunTestCase> selectedTestCaseMap = new HashMap<>();
         runTestSuiteRequest.getTestCases().forEach(testCase -> selectedTestCaseMap.put(testCase.getName().toLowerCase(), testCase));
         TestSuite testSuite = new TestSuite(runTestSuiteRequest.getName(), testDirectory, symbolsTable(), keywordLibrariesRepository(), selectedTestCaseMap);

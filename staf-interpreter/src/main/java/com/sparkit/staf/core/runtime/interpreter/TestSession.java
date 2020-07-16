@@ -3,9 +3,9 @@ package com.sparkit.staf.core.runtime.interpreter;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.ast.TestCaseDeclaration;
 import com.sparkit.staf.core.ast.types.StafInteger;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.SeleniumLibrary;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestResult;
 import lombok.Getter;
@@ -21,9 +21,6 @@ import java.util.Map;
 
 public class TestSession implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(TestSession.class);
-    private static final String SETUP_TEST_CASE = "setup";
-    private static final String TEARDOWN_TEST_CASE = "teardown";
-    private static final String SESSION_ID_VAR_NAME = "$__session__";
     private static int instanceCount = 0;
     private final StafFile mainStafFile;
     private final TestSuite testSuite;
@@ -55,29 +52,29 @@ public class TestSession implements Runnable {
         initTestSuiteReport();
         List<TestCaseReport> testCaseReportList = new ArrayList<>();
         MemoryMap sessionGlobalMemory = new MemoryMap(new HashMap<>(testSuiteSharedMemory.getVariablesMap()));
-        sessionGlobalMemory.setVariableValue(SESSION_ID_VAR_NAME, new StafInteger(sessionId));
-        TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get(SETUP_TEST_CASE);
-        TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get(TEARDOWN_TEST_CASE);
-        if (setup != null && isTestCaseEnabled(SETUP_TEST_CASE, testSuite)) {
-            TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, SETUP_TEST_CASE, setup, sessionGlobalMemory, projectConfig);
+        sessionGlobalMemory.setVariableValue(SharedConstants.SESSION_ID_MEMORY_KEY, new StafInteger(sessionId));
+        TestCaseDeclaration setup = mainStafFile.getTestCaseDeclarationMap().get(SharedConstants.SETUP_TEST_CASE);
+        TestCaseDeclaration tearDown = mainStafFile.getTestCaseDeclarationMap().get(SharedConstants.TEARDOWN_TEST_CASE);
+        if (setup != null && isTestCaseEnabled(SharedConstants.SETUP_TEST_CASE, testSuite)) {
+            TestCaseReport testCaseReport = testCaseRunner.executeTestCase(testSuite, SharedConstants.SETUP_TEST_CASE, setup, sessionGlobalMemory, projectConfig);
             testCaseReportList.add(testCaseReport);
         }
         try {
             for (Map.Entry<String, TestCaseDeclaration> testCaseDeclarationEntry : testSuite.getSortedTestCases()) {
                 if (testTerminated) {
-                    logger.warn("Test execution terminated by user");
-                    testSuiteReport.setMessage("Test execution terminated by user");
+                    logger.warn(SharedConstants.TEST_EXECUTION_TERMINATED_BY_USER);
+                    testSuiteReport.setMessage(SharedConstants.TEST_EXECUTION_TERMINATED_BY_USER);
                     testSuiteReport.setResult(TestResult.Fail);
-                    if (sessionGlobalMemory.getVariablesMap().containsKey(SeleniumLibrary.WEB_DRIVER_KEY)) {
-                        ((WebDriver)sessionGlobalMemory.getVariablesMap().get(SeleniumLibrary.WEB_DRIVER_KEY)).close();
+                    if (sessionGlobalMemory.getVariablesMap().containsKey(SharedConstants.WEB_DRIVER_MEMORY_KEY)) {
+                        ((WebDriver) sessionGlobalMemory.getVariablesMap().get(SharedConstants.WEB_DRIVER_MEMORY_KEY)).close();
                     }
                     break;
                 }
-                if (testCaseDeclarationEntry.getKey().equalsIgnoreCase(SETUP_TEST_CASE)
-                        || testCaseDeclarationEntry.getKey().equalsIgnoreCase(TEARDOWN_TEST_CASE)) {
+                if (testCaseDeclarationEntry.getKey().equalsIgnoreCase(SharedConstants.SETUP_TEST_CASE)
+                        || testCaseDeclarationEntry.getKey().equalsIgnoreCase(SharedConstants.TEARDOWN_TEST_CASE)) {
                     continue;
                 } else if (testCaseDeclarationEntry.getValue().isIgnored()) {
-                    logger.info("Test case [{}] Ignored", testCaseDeclarationEntry.getValue().getName());
+                    logger.info(SharedConstants.TEST_CASE_IGNORED, testCaseDeclarationEntry.getValue().getName());
                     continue;
                 } else if (!isTestCaseEnabled(testCaseDeclarationEntry.getKey(), testSuite)) {
                     continue;
@@ -93,8 +90,8 @@ public class TestSession implements Runnable {
             e.printStackTrace();
             testSuiteReport.setResult(TestResult.Fail);
         } finally {
-            if (tearDown != null && isTestCaseEnabled(TEARDOWN_TEST_CASE, testSuite)) {
-                testCaseReportList.add(testCaseRunner.executeTestCase(testSuite, TEARDOWN_TEST_CASE, tearDown, sessionGlobalMemory, projectConfig));
+            if (tearDown != null && isTestCaseEnabled(SharedConstants.TEARDOWN_TEST_CASE, testSuite)) {
+                testCaseReportList.add(testCaseRunner.executeTestCase(testSuite, SharedConstants.TEARDOWN_TEST_CASE, tearDown, sessionGlobalMemory, projectConfig));
             }
         }
         testSuiteReport.setTestCaseReports(testCaseReportList);

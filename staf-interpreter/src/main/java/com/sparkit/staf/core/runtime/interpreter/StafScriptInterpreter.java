@@ -4,6 +4,7 @@ import com.sparkit.staf.core.ast.Assignment;
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.domain.ProjectConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +30,12 @@ public class StafScriptInterpreter {
     private IImportsInterpreter importsInterpreter;
     @Autowired
     private TestCaseExecutor testCaseRunner;
-    @Value("#{systemProperties['testDirectory']}")
+    @Value(SharedConstants.TEST_DIRECTORY_PROPERTY_VALUE)
     private String testDirectory;
 
     public List<TestSuiteReport> run(ProjectConfig projectConfig, TestSuite testSuite, StafFile mainStafFile, int sessionCount) {
         List<TestSession> testSuiteSessions = new ArrayList<>();
-        testDirectory = System.getProperty("testDirectory");
+        testDirectory = System.getProperty(SharedConstants.TEST_DIRECTORY_PROPERTY);
         try {
             Map<String, Assignment> varsAssignments = mainStafFile.getVariableDeclarationMap();
             List<KeywordDeclaration> keywordDeclarations = mainStafFile.getKeywordDeclarations();
@@ -52,11 +53,11 @@ public class StafScriptInterpreter {
                 testSuite.getTestCaseDeclarationMap().putAll(mainStafFile.getTestCaseDeclarationMap());
             }
             if (testSuite.getTestCaseDeclarationMap().isEmpty()) {
-                logger.warn("No test cases found, terminating tests");
+                logger.warn(SharedConstants.NO_TEST_CASE_FOUND);
                 return new ArrayList<>();
             }
 
-            logger.info("Started executing test suite : [{}] {} Test cases found", testSuite.getTestSuiteName(),
+            logger.info(SharedConstants.STARTED_TEST_SUITE_EXECUTION, testSuite.getTestSuiteName(),
                     testSuite.getTestCaseDeclarationMap().size());
 
             TestSession.initSessionCount();
@@ -70,7 +71,7 @@ public class StafScriptInterpreter {
             executorService.shutdown();
             executorService.awaitTermination(MAX_TEST_AWAIT_MINUTES, TimeUnit.MINUTES);
         } catch (Throwable e) {
-            logger.error("Script execution stopped");
+            logger.error(SharedConstants.SCRIPT_EXECUTION_STOPPED);
             logger.error(e.getClass().getName());
             logger.error(e.getMessage());
             logger.error("At {}", mainStafFile.getFilePath());
@@ -87,7 +88,7 @@ public class StafScriptInterpreter {
             iterator.next().getValue().stopTestExecution();
             iterator.remove();
         }
-        logger.warn("Received test termination signal : stopping tests ...");
+        logger.warn(SharedConstants.RECEIVED_TEST_TERMINATION_SIGNAL);
     }
 
     @Bean

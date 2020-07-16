@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+@CrossOrigin
 @RestController
 public class CompilerController {
     private final CompilerService compilerService;
@@ -19,21 +20,18 @@ public class CompilerController {
         this.compilerService = compilerService;
     }
 
-    @CrossOrigin
     @GetMapping("/compileTestSuite/{projectLocation}/{testSuite}")
     public CompileTestSuiteResponse compileTestSuite(@PathVariable("projectLocation") String project, @PathVariable("testSuite") String testSuite)
             throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
         return compilerService.compileTestSuite(project, testSuite);
     }
 
-    @CrossOrigin
     @GetMapping("/compileProject/{projectLocation}")
     public CompileProjectResponse compileProject(@PathVariable("projectLocation") String project)
             throws IOException, IllegalAccessException, InvocationTargetException, InstantiationException {
         return compilerService.compileProject(project);
     }
 
-    @CrossOrigin
     @GetMapping("/compileFile")
     public CompileFileResponse compileFile(@RequestParam("filePath") String filePath)
             throws IOException, IllegalAccessException, InvocationTargetException, InstantiationException {

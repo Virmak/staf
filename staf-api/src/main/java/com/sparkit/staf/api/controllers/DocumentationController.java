@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class DocumentationController {
     private final DocumentationService documentationService;
@@ -18,7 +19,6 @@ public class DocumentationController {
         this.documentationService = documentationService;
     }
 
-    @CrossOrigin
     @GetMapping("/docs/builtinKeywords")
     public List<LibraryDocumentation> getBuiltinKeywords() {
         return documentationService.extractKeywords();

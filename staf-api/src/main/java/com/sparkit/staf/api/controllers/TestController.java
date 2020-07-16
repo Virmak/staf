@@ -17,6 +17,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class TestController {
     private final StafTestFacade testFacade;
@@ -32,7 +33,6 @@ public class TestController {
         this.stafScriptInterpreter = stafScriptInterpreter;
     }
 
-    @CrossOrigin("*")
     @PostMapping("/runTest")
     public List<TestSuiteReport> runTest(@RequestBody RunTestRequest runTestRequest) throws ProjectNotFoundException,
             TestDirectoryNotFound, IOException {
@@ -45,14 +45,12 @@ public class TestController {
         throw new ProjectNotFoundException();
     }
 
-    @CrossOrigin("*")
     @PostMapping("/terminateTest")
     public String terminateTest() {
         stafScriptInterpreter.terminateTestExecution();
         return "{\"result\": \"Test terminated\"}";
     }
 
-    @CrossOrigin
     @GetMapping("/hostAddress")
     public String resolveHost() throws UnknownHostException {
         return InetAddress.getLocalHost().getHostAddress();

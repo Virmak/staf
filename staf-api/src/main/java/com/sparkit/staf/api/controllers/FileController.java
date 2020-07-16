@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 public class FileController {
     private final FileService fileService;
@@ -30,7 +31,6 @@ public class FileController {
         this.projectService = projectService;
     }
 
-    @CrossOrigin(origins = "*")
     @GetMapping("/directory")
     public Directory getProject(@RequestParam("path") String directoryPath) {
         directoryPath = directoryPath.replaceAll("^" + testDir + "/", "");
@@ -39,7 +39,6 @@ public class FileController {
         return projectService.readDirectory(directoryFile);
     }
 
-    @CrossOrigin("*")
     @PostMapping("/saveFile")
     public String saveFile(@RequestBody Map<String, Object> payload) throws IOException {
         FileType fileType = FileType.valueOf(payload.get("type").toString());
@@ -47,19 +46,16 @@ public class FileController {
         return "{\"result\":\"ok\"}";
     }
 
-    @CrossOrigin("*")
     @PostMapping("/createFile")
     public CreateFileResponse createFile(@RequestBody CreateFileRequest createFileRequest) {
         return fileService.createFile(createFileRequest);
     }
 
-    @CrossOrigin("*")
     @PutMapping("/renameFile")
     public RenameFileResponse renameFile(@RequestBody RenameFileRequest renameFileRequest) {
         return fileService.renameFile(renameFileRequest);
     }
 
-    @CrossOrigin("*")
     @DeleteMapping("/deleteFile/{path}")
     public String deleteFile(@PathVariable String path) {
         path = path.replace("<sep>", "/");
@@ -69,7 +65,6 @@ public class FileController {
         return "{\"result\":\"error\"}";
     }
 
-    @CrossOrigin("*")
     @GetMapping("/screenshot/{url}")
     public ImageBase64 imageBase64(@PathVariable String url) {
         String screenShotPath = url.replace("<sep>", "/");

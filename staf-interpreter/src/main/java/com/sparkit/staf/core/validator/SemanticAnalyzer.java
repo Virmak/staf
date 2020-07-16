@@ -8,6 +8,7 @@ import com.sparkit.staf.core.runtime.libs.BuiltInLibraryFactory;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.LibraryNotFoundException;
+import com.sparkit.staf.core.utils.SharedConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -39,39 +40,18 @@ public class SemanticAnalyzer {
                 if (currentFile.getSemanticErrors() == null) {
                     currentFile.setSemanticErrors(new ArrayList<>());
                 }
-                currentFile.getSemanticErrors().add(new SemanticError(keywordCall.getPosition(), "Cannot find keyword '" + keywordCall.getKeywordName() + "'"));
+                currentFile.getSemanticErrors().add(new SemanticError(keywordCall.getPosition(), SharedConstants.CANNOT_FIND_KEYWORD + " '" + keywordCall.getKeywordName() + "'"));
             }
         });
     }
 
     private KeywordLibrariesRepository buildKeywordRepository(StafFile currentStafFile, Map<String, StafFile> stafFileMap)
             throws InstantiationException, IllegalAccessException, InvocationTargetException {
-        File currentDirectoryFile = new File(currentStafFile.getFilePath()).getParentFile();
 
         List<KeywordDeclaration> userKeywordDeclarations = new ArrayList<>();
         KeywordLibrariesRepository keywordLibrariesRepository = new KeywordLibrariesRepository(libraryFactory, null);
         if (currentStafFile.getImports() != null) {
-            for (ImportStatement importStatement : currentStafFile.getImports()) {
-                if (importStatement.getType() == ImportTypes.BUILT_IN_LIBRARY) {
-                    String libClassName = importStatement.getPath().substring(0, 1).toUpperCase()
-                            + importStatement.getPath().toLowerCase().substring(1) + "Library";
-                    try {
-                        keywordLibrariesRepository.registerLibrary(libraryFactory.getBuiltinLibrariesClasses().get(libClassName));
-                    } catch (LibraryNotFoundException e) {
-                        currentStafFile.getSemanticErrors().add(new SemanticError(importStatement.getTokenPosition(), "Library '" + importStatement.getPath() + "' not found"));
-                    }
-                } else if (importStatement.getType() == ImportTypes.FILE) {
-                    try {
-                        String importAbsolutePath = new File(currentDirectoryFile, importStatement.getPath()).getCanonicalPath();
-                        importAbsolutePath = getRelativePathToTestDirectory(importAbsolutePath);
-                        if (stafFileMap.containsKey(importAbsolutePath) && stafFileMap.get(importAbsolutePath).getKeywordDeclarations() != null) {
-                            userKeywordDeclarations.addAll(stafFileMap.get(importAbsolutePath).getKeywordDeclarations());
-                        }
-                    } catch (IOException ignored) {
-
-                    }
-                }
-            }
+            loadImports(currentStafFile, keywordLibrariesRepository, stafFileMap, userKeywordDeclarations);
         }
         if (currentStafFile.getKeywordDeclarations() != null) {
             userKeywordDeclarations.addAll(currentStafFile.getKeywordDeclarations());
@@ -91,6 +71,34 @@ public class SemanticAnalyzer {
             }
         }
         return keywordLibrariesRepository;
+    }
+
+    private void loadImports(StafFile currentStafFile, KeywordLibrariesRepository keywordLibrariesRepository,
+                             Map<String, StafFile> stafFileMap, List<KeywordDeclaration> userKeywordDeclarations)
+            throws InstantiationException, IllegalAccessException, InvocationTargetException {
+        File currentDirectoryFile = new File(currentStafFile.getFilePath()).getParentFile();
+        for (ImportStatement importStatement : currentStafFile.getImports()) {
+            if (importStatement.getType() == ImportTypes.BUILT_IN_LIBRARY) {
+                String libClassName = importStatement.getPath().substring(0, 1).toUpperCase()
+                        + importStatement.getPath().toLowerCase().substring(1) + SharedConstants.LIBRARY;
+                try {
+                    keywordLibrariesRepository.registerLibrary(libraryFactory.getBuiltinLibrariesClasses().get(libClassName));
+                } catch (LibraryNotFoundException e) {
+                    currentStafFile.getSemanticErrors()
+                            .add(new SemanticError(importStatement.getTokenPosition(), SharedConstants.LIBRARY + " '" + importStatement.getPath() + "' not found"));
+                }
+            } else if (importStatement.getType() == ImportTypes.FILE) {
+                try {
+                    String importAbsolutePath = new File(currentDirectoryFile, importStatement.getPath()).getCanonicalPath();
+                    importAbsolutePath = getRelativePathToTestDirectory(importAbsolutePath);
+                    if (stafFileMap.containsKey(importAbsolutePath) && stafFileMap.get(importAbsolutePath).getKeywordDeclarations() != null) {
+                        userKeywordDeclarations.addAll(stafFileMap.get(importAbsolutePath).getKeywordDeclarations());
+                    }
+                } catch (IOException ignored) {
+
+                }
+            }
+        }
     }
 
     private List<KeywordCall> extractStafFileKeywordCalls(StafFile currentStafFile) {

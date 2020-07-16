@@ -17,14 +17,6 @@ public class TestCaseDeclaration implements IStatementBlock {
     private String filePath;
     private int lineNumber;
 
-    public TestCaseDeclaration(String name, List<IStatement> statements) {
-        this.name = name;
-        this.statements = statements;
-    }
-
-    public TestCaseDeclaration() {
-    }
-
     @Override
     public List<StatementReport> getStatementReports() {
         return reports;

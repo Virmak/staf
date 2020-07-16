@@ -2,6 +2,7 @@ package com.sparkit.staf.core.runtime.libs;
 
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.LibraryNotFoundException;
+import com.sparkit.staf.core.utils.SharedConstants;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
@@ -24,7 +25,7 @@ public class BuiltInLibraryFactory {
     public AbstractStafLibrary build(Class<? extends AbstractStafLibrary> libraryClass)
             throws IllegalAccessException, InvocationTargetException, InstantiationException {
         if (libraryClass == null) {
-            throw new LibraryNotFoundException("Library not found");
+            throw new LibraryNotFoundException(SharedConstants.LIBRARY_NOT_FOUND);
         }
         StafLibrary libraryClassAnnotation = libraryClass.getAnnotation(StafLibrary.class);
         AbstractStafLibrary libraryInstance = (AbstractStafLibrary) libraryClass.getConstructors()[0].newInstance();
@@ -43,8 +44,8 @@ public class BuiltInLibraryFactory {
         try (ScanResult result = new ClassGraph().enableClassInfo().enableAnnotationInfo()
                 .whitelistPackages(LIBS_PACKAGE).scan()) {
 
-            ClassInfoList classInfos = result.getClassesWithAnnotation(StafLibrary.class.getName());
-            List<Class<?>> librariesClasses = classInfos.loadClasses();
+            ClassInfoList classInfoList = result.getClassesWithAnnotation(StafLibrary.class.getName());
+            List<Class<?>> librariesClasses = classInfoList.loadClasses();
             Map<String, Class<? extends AbstractStafLibrary>> classMap = new HashMap<>();
             for (Class<?> libClass : librariesClasses) {
                 classMap.put(libClass.getSimpleName(), (Class<? extends AbstractStafLibrary>) libClass);

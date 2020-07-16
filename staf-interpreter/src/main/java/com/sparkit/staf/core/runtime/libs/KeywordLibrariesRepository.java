@@ -5,9 +5,9 @@ import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.SeleniumLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
+import com.sparkit.staf.core.utils.SharedConstants;
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -53,10 +53,6 @@ public class KeywordLibrariesRepository {
         }
     }
 
-    public void clearUserDefinedKeywordsMap() {
-        userDefinedKeywords.clear();
-    }
-
     public void addUserDefinedKeywords(List<KeywordDeclaration> keywordDeclarations) {
         for (KeywordDeclaration keywordDeclaration : keywordDeclarations) {
             if (userDefinedKeywords.containsKey(keywordDeclaration.getKeywordName())) {
@@ -82,7 +78,7 @@ public class KeywordLibrariesRepository {
                 ret = builtinKeywordMap.get(normalizedKeywordName).invoke(dependencies);
                 statementBlockExecutor.getCallStack().pop(globalSymbolsTable.getSessionId());
                 if (ret instanceof WebDriver) { // this is used by selenium library (open browser) keyword to save an instance of web driver in global sym table
-                    globalSymbolsTable.setVariableValue(SeleniumLibrary.WEB_DRIVER_KEY, ret);
+                    globalSymbolsTable.setVariableValue(SharedConstants.WEB_DRIVER_MEMORY_KEY, ret);
                     return null;
                 }
                 return ret;
@@ -107,7 +103,7 @@ public class KeywordLibrariesRepository {
 
     private List<Object> injectKeywordDependencies(MemoryMap symbolsTable, KeywordCall keywordCall, BuiltInLibraryKeywordWrapper keywordWrapper) { // Fetch variables requested using keyword method @Inject annotation from globalSymbolsTable
         List<Object> keywordDependencies = new ArrayList<>();
-        symbolsTable.setVariableValue("__keyword__", keywordCall);
+        symbolsTable.setVariableValue(SharedConstants.CURRENT_KEYWORD_MEMORY_KEY, keywordCall);
         for (String dep : keywordWrapper.getInjectAnnotatedParams()) {
             keywordDependencies.add(symbolsTable.getVariableValue(dep));
         }

@@ -5,6 +5,7 @@ import com.sparkit.staf.application.models.request.CreateProjectRequest;
 import com.sparkit.staf.application.models.response.project.GetProjectReportsResponse;
 import com.sparkit.staf.application.models.response.project.UpdateProjectConfigResponse;
 import com.sparkit.staf.application.service.ProjectService;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.domain.Directory;
 import com.sparkit.staf.domain.ProjectConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 
+@CrossOrigin("*")
 @RestController
 public class ProjectController {
     private final ProjectService projectService;
-    @Value("${testDirectory}")
+    @Value(SharedConstants.TEST_DIRECTORY_PROPERTY_VALUE)
     private String testDirectory;
 
     @Autowired
@@ -28,7 +30,6 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @CrossOrigin(origins = "*")
     @PostMapping("/projects")
     public ResponseEntity<Directory> createProject(@RequestBody CreateProjectRequest createProjectRequest) {
         try {
@@ -40,39 +41,33 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.readProjectContent(createProjectRequest.getLocation()));
     }
 
-    @CrossOrigin(origins = "*")
     @GetMapping("/projects/{projectLocation}")
     public Directory getProject(@PathVariable("projectLocation") String projectLocation) {
         return projectService.readDirectory(projectService.getProjectDirectoryFile(projectLocation));
     }
 
-    @CrossOrigin(origins = "*")
     @GetMapping("/projects")
     public Directory getAllProjects() {
         File projectsDir = new File(testDirectory);
         return projectService.readDirectory(projectsDir);
     }
 
-    @CrossOrigin("*")
     @GetMapping("/testReport/{reportFilePath}")
     public String getTestReport(@PathVariable(name = "reportFilePath") String reportFilePath) throws IOException {
         return projectService.readTestReport(reportFilePath.replace("<sep>", "/"));
     }
 
-    @CrossOrigin("*")
     @GetMapping("/projectReports/{projectLocation}")
     public GetProjectReportsResponse getProjectReportFiles(@PathVariable(name = "projectLocation") String projectLocation) throws IOException {
         return projectService.getProjectReportFiles(projectLocation);
     }
 
-    @CrossOrigin
     @PutMapping("/projects/config/{projectLocation}")
     public UpdateProjectConfigResponse updateProjectConfig(@PathVariable("projectLocation") String projectLocation,
                                                            @RequestBody ProjectConfig request) {
         return projectService.updateProjectConfig(projectLocation, request);
     }
 
-    @CrossOrigin
     @GetMapping("/projects/reportsDir/{projectLocation}")
     public Directory getProjectReportsDirectory(@PathVariable("projectLocation") String projectLocation) throws IOException {
         ProjectConfig config = projectService.getProjectConfig(projectLocation);
@@ -80,7 +75,6 @@ public class ProjectController {
         return projectService.readDirectory(new File(projectDirectoryFile, config.getReportsDir()));
     }
 
-    @CrossOrigin
     @GetMapping("/projects/download/{projectLocation}")
     public byte[] zipProject(HttpServletResponse response, @PathVariable("projectLocation") String projectLocation) {
         response.setContentType("application/zip");
@@ -89,7 +83,6 @@ public class ProjectController {
         return projectService.compressProject(projectLocation);
     }
 
-    @CrossOrigin
     @PostMapping("/projects/upload")
     public String uploadProject(@RequestParam("file") MultipartFile file) throws IOException {
         projectService.unpackProject(file.getInputStream());
