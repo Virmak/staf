@@ -38,8 +38,10 @@ public class StafScriptInterpreter {
         try {
             Map<String, Assignment> varsAssignments = mainStafFile.getVariableDeclarationMap();
             List<KeywordDeclaration> keywordDeclarations = mainStafFile.getKeywordDeclarations();
-            String importRelativePath = mainStafFile.getFilePath().substring(0, mainStafFile.getFilePath().lastIndexOf('/'));
-            importsInterpreter.loadImports(mainStafFile.getImports(), testSuite, importRelativePath, testDirectory);
+            if (mainStafFile.getImports() != null) {
+                String importRelativePath = mainStafFile.getFilePath().substring(0, mainStafFile.getFilePath().lastIndexOf('/'));
+                importsInterpreter.loadImports(mainStafFile.getImports(), testSuite, importRelativePath, testDirectory);
+            }
             if (varsAssignments != null) {
                 testSuite.getGlobalSharedMemory().addVariablesMap(varsAssignments, testSuite.getKeywordLibrariesRepository());
             }
