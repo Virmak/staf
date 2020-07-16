@@ -82,13 +82,15 @@ public class ProjectService {
 
     public Directory readDirectory(File dir) {
         Directory directory = new Directory();
-        File[] content = dir.listFiles();
-        directory.setContent(new ArrayList<>());
-        for (File file : content) {
-            if (file.isDirectory()) {
-                directory.getContent().add(readDirectory(file));
-            } else {
-                directory.getContent().add(readFile(file));
+        if (dir.exists()) {
+            File[] content = dir.listFiles();
+            directory.setContent(new ArrayList<>());
+            for (File file : content) {
+                if (file.isDirectory()) {
+                    directory.getContent().add(readDirectory(file));
+                } else {
+                    directory.getContent().add(readFile(file));
+                }
             }
         }
         directory.setName(dir.getName());
