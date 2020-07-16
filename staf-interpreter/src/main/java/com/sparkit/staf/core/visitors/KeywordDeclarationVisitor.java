@@ -23,7 +23,7 @@ public class KeywordDeclarationVisitor extends StafBaseVisitor<KeywordDeclaratio
     public KeywordDeclaration visitKeyword_declaration(StafParser.Keyword_declarationContext ctx) {
         KeywordDeclaration keywordDeclaration = new KeywordDeclaration();
         String keywordNameWithSpaces = ctx.keyword_name().IDENTIFIER().stream().map(ParseTree::getText)
-                .collect(Collectors.joining(" "));
+                .collect(Collectors.joining(" ")).toLowerCase();
         keywordDeclaration.setKeywordName(keywordNameWithSpaces);
         keywordDeclaration.setArgsList(keywordDeclarationArgumentsVisitor.visitKeyword_declaration_arguments(ctx.keyword_declaration_arguments()));
         keywordDeclaration.setStatementList(keywordBodyVisitor.visitKeyword_body(ctx.keyword_body()));

@@ -38,14 +38,14 @@ public class StafScriptInterpreter {
         logger.info("Started executing test suite : [{}] {} Test cases found", testSuite.getTestSuiteName(), mainStafFile.getTestCaseDeclarationMap().size());
         try {
             Map<String, Assignment> varsAssignments = mainStafFile.getVariableDeclarationMap();
-            Map<String, KeywordDeclaration> keywordsMap = mainStafFile.getKeywordDeclarationMap();
+            List<KeywordDeclaration> keywordDeclarations = mainStafFile.getKeywordDeclarations();
             String importRelativePath = mainStafFile.getFilePath().substring(0, mainStafFile.getFilePath().lastIndexOf('/'));
             importsInterpreter.loadImports(mainStafFile.getImports(), testSuite, importRelativePath, testDirectory);
             if (varsAssignments != null) {
                 testSuite.getGlobalSharedMemory().addVariablesMap(varsAssignments, testSuite.getKeywordLibrariesRepository());
             }
-            if (keywordsMap != null) {
-                testSuite.getKeywordLibrariesRepository().addUserDefinedKeywords(keywordsMap);
+            if (keywordDeclarations != null) {
+                testSuite.getKeywordLibrariesRepository().addUserDefinedKeywords(keywordDeclarations);
             }
             testSuite.getTestCaseDeclarationMap().putAll(mainStafFile.getTestCaseDeclarationMap());
             TestSession.initSessionCount();
@@ -72,7 +72,7 @@ public class StafScriptInterpreter {
 
     public void terminateTestExecution() {
         for (Iterator<Map.Entry<Integer, TestSession>> iterator = allTestSessions.entrySet().iterator();
-             iterator.hasNext();) {
+             iterator.hasNext(); ) {
             iterator.next().getValue().stopTestExecution();
             iterator.remove();
         }

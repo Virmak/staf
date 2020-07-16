@@ -48,7 +48,7 @@ public class SemanticAnalyzer {
             throws InstantiationException, IllegalAccessException, InvocationTargetException {
         File currentDirectoryFile = new File(currentStafFile.getFilePath()).getParentFile();
 
-        Map<String, KeywordDeclaration> userKeywordDeclarationMap = new HashMap<>();
+        List<KeywordDeclaration> userKeywordDeclarations = new ArrayList<>();
         KeywordLibrariesRepository keywordLibrariesRepository = new KeywordLibrariesRepository(libraryFactory, null);
         if (currentStafFile.getImports() != null) {
             for (ImportStatement importStatement : currentStafFile.getImports()) {
@@ -64,8 +64,8 @@ public class SemanticAnalyzer {
                     try {
                         String importAbsolutePath = new File(currentDirectoryFile, importStatement.getPath()).getCanonicalPath();
                         importAbsolutePath = getRelativePathToTestDirectory(importAbsolutePath);
-                        if (stafFileMap.containsKey(importAbsolutePath) && stafFileMap.get(importAbsolutePath).getKeywordDeclarationMap() != null) {
-                            userKeywordDeclarationMap.putAll(stafFileMap.get(importAbsolutePath).getKeywordDeclarationMap());
+                        if (stafFileMap.containsKey(importAbsolutePath) && stafFileMap.get(importAbsolutePath).getKeywordDeclarations() != null) {
+                            userKeywordDeclarations.addAll(stafFileMap.get(importAbsolutePath).getKeywordDeclarations());
                         }
                     } catch (IOException ignored) {
 
@@ -73,15 +73,17 @@ public class SemanticAnalyzer {
                 }
             }
         }
-        if (currentStafFile.getKeywordDeclarationMap() != null) {
-            userKeywordDeclarationMap.putAll(currentStafFile.getKeywordDeclarationMap());
+        if (currentStafFile.getKeywordDeclarations() != null) {
+            userKeywordDeclarations.addAll(currentStafFile.getKeywordDeclarations());
         }
         try {
-            keywordLibrariesRepository.addUserDefinedKeywords(userKeywordDeclarationMap);
+            keywordLibrariesRepository.addUserDefinedKeywords(userKeywordDeclarations);
         } catch (KeywordAlreadyRegisteredException e) {
-            KeywordDeclaration keywordWithError = userKeywordDeclarationMap.get(e.getKeywordName());
-            stafFileMap.get(getRelativePathToTestDirectory(keywordWithError.getTokenPosition().getFilePath()))
-                    .getSemanticErrors().add(new SemanticError(keywordWithError.getTokenPosition(), e.getMessage()));
+            Optional<KeywordDeclaration> keywordWithError = userKeywordDeclarations.stream()
+                    .filter(kd -> kd.getKeywordName().equals(e.getKeywordName()))
+                    .findFirst();
+            keywordWithError.ifPresent(keywordDeclaration -> stafFileMap.get(getRelativePathToTestDirectory(keywordDeclaration.getTokenPosition().getFilePath()))
+                    .getSemanticErrors().add(new SemanticError(keywordDeclaration.getTokenPosition(), e.getMessage())));
         }
         return keywordLibrariesRepository;
     }
@@ -94,8 +96,8 @@ public class SemanticAnalyzer {
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList()));
         }
-        if (currentStafFile.getKeywordDeclarationMap() != null) {
-            fileKeywordCalls.addAll(currentStafFile.getKeywordDeclarationMap().values().stream()
+        if (currentStafFile.getKeywordDeclarations() != null) {
+            fileKeywordCalls.addAll(currentStafFile.getKeywordDeclarations().stream()
                     .map(KeywordDeclaration::getStatementList)
                     .flatMap(Collection::stream)
                     .map(this::extractKeywordCalls)

@@ -2,8 +2,8 @@ package com.sparkit.staf.core.runtime.libs;
 
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.ast.types.KeywordCall;
-import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
+import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.builtin.selenium.SeleniumLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
@@ -57,12 +57,12 @@ public class KeywordLibrariesRepository {
         userDefinedKeywords.clear();
     }
 
-    public void addUserDefinedKeywords(Map<String, KeywordDeclaration> keywordDeclarationMap) {
-        for (Map.Entry<String, KeywordDeclaration> keywordDeclaration : keywordDeclarationMap.entrySet()) {
-            if (isKeywordDeclared(normalizeKeywordName(keywordDeclaration.getKey()))) {
-                throw new KeywordAlreadyRegisteredException(keywordDeclaration.getKey());
+    public void addUserDefinedKeywords(List<KeywordDeclaration> keywordDeclarations) {
+        for (KeywordDeclaration keywordDeclaration : keywordDeclarations) {
+            if (isKeywordDeclared(normalizeKeywordName(keywordDeclaration.getKeywordName()))) {
+                throw new KeywordAlreadyRegisteredException(keywordDeclaration.getKeywordName());
             }
-            userDefinedKeywords.put(normalizeKeywordName(keywordDeclaration.getKey()), keywordDeclaration.getValue());
+            userDefinedKeywords.put(normalizeKeywordName(keywordDeclaration.getKeywordName()), keywordDeclaration);
         }
     }
 

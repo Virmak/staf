@@ -37,7 +37,7 @@ public class StafFileVisitor extends StafBaseVisitor<Object> {
         }
         StafParser.Keywords_sectionContext keywordsSectionContext = ctx.keywords_section();
         if (keywordsSectionContext != null) {
-            stafFile.setKeywordDeclarationMap(keywordDeclarationsSectionVisitor.visitKeywords_section(keywordsSectionContext));
+            stafFile.setKeywordDeclarations(keywordDeclarationsSectionVisitor.visitKeywords_section(keywordsSectionContext));
         }
         StafParser.Test_cases_sectionContext testCasesSectionContext = ctx.test_cases_section();
         if (testCasesSectionContext != null) {

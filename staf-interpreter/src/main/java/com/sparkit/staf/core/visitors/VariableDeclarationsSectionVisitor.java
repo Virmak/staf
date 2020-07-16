@@ -13,12 +13,12 @@ public class VariableDeclarationsSectionVisitor extends StafBaseVisitor<Map<Stri
     private AssignmentVisitor assignmentVisitor;
     @Override
     public Map<String, Assignment> visitVars_section(StafParser.Vars_sectionContext ctx) {
-        Map<String, Assignment> vars = new HashMap<>();
+        Map<String, Assignment> variablesMap = new HashMap<>();
 
         for (StafParser.AssignmentContext assignmentContext : ctx.assignment()) {
             Assignment assignment = assignmentVisitor.visitAssignment(assignmentContext);
-            vars.put(assignment.getLeftHandSide().getValue().toString(), assignment);
+            variablesMap.put(assignment.getLeftHandSide().getValue().toString(), assignment);
         }
-        return vars;
+        return variablesMap;
     }
 }

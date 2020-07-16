@@ -14,7 +14,7 @@ public class StafFile {
     private String filePath;
     private List<ImportStatement> imports;
     private Map<String, Assignment> variableDeclarationMap;
-    private Map<String, KeywordDeclaration> keywordDeclarationMap;
+    private List<KeywordDeclaration> keywordDeclarations;
     private Map<String, TestCaseDeclaration> testCaseDeclarationMap;
     private List<SyntaxError> syntaxErrors = new ArrayList<>();
     private List<SemanticError> semanticErrors = new ArrayList<>();
