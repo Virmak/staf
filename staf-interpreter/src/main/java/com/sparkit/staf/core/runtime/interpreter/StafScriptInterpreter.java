@@ -35,7 +35,6 @@ public class StafScriptInterpreter {
     public List<TestSuiteReport> run(ProjectConfig projectConfig, TestSuite testSuite, StafFile mainStafFile, int sessionCount) {
         List<TestSession> testSuiteSessions = new ArrayList<>();
         testDirectory = System.getProperty("testDirectory");
-        logger.info("Started executing test suite : [{}] {} Test cases found", testSuite.getTestSuiteName(), mainStafFile.getTestCaseDeclarationMap().size());
         try {
             Map<String, Assignment> varsAssignments = mainStafFile.getVariableDeclarationMap();
             List<KeywordDeclaration> keywordDeclarations = mainStafFile.getKeywordDeclarations();
@@ -47,7 +46,17 @@ public class StafScriptInterpreter {
             if (keywordDeclarations != null) {
                 testSuite.getKeywordLibrariesRepository().addUserDefinedKeywords(keywordDeclarations);
             }
-            testSuite.getTestCaseDeclarationMap().putAll(mainStafFile.getTestCaseDeclarationMap());
+            if (mainStafFile.getTestCaseDeclarationMap() != null) {
+                testSuite.getTestCaseDeclarationMap().putAll(mainStafFile.getTestCaseDeclarationMap());
+            }
+            if (testSuite.getTestCaseDeclarationMap().isEmpty()) {
+                logger.warn("No test cases found, terminating tests");
+                return new ArrayList<>();
+            }
+
+            logger.info("Started executing test suite : [{}] {} Test cases found", testSuite.getTestSuiteName(),
+                    testSuite.getTestCaseDeclarationMap().size());
+
             TestSession.initSessionCount();
             ExecutorService executorService = Executors.newCachedThreadPool();
             for (int i = 0; i < sessionCount; i++) {

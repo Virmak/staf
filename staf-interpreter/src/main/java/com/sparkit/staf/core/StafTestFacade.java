@@ -71,7 +71,9 @@ public class StafTestFacade {
             } catch (SyntaxErrorException | TestSuiteMainScriptNotFoundException e) {
                 e.printStackTrace();
             }
-            jsonReportWriter.write(projectConfig, runTestSuiteRequest.getName(), testSuiteReport);
+            if (testSuiteReport != null && !testSuiteReport.isEmpty()) {
+                jsonReportWriter.write(projectConfig, runTestSuiteRequest.getName(), testSuiteReport);
+            }
             return testSuiteReport;
         });
     }
