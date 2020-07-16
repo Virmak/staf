@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SubscriptionAppender extends AppenderBase<ILoggingEvent> {
     private String prefix;
-    private List<LogObserver> observers = new ArrayList<>();
+    private final List<LogObserver> observers = new ArrayList<>();
     private static SubscriptionAppender instance;
 
     public SubscriptionAppender() {

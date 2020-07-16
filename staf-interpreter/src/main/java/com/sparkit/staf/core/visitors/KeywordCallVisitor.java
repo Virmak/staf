@@ -22,7 +22,7 @@ public class KeywordCallVisitor extends StafBaseVisitor<KeywordCall> {
     public KeywordCall visitKeyword_call(StafParser.Keyword_callContext ctx) {
         KeywordCall keywordCall = new KeywordCall(blockExecutor);
         String keywordNameWithSpaces = ctx.keyword_name().IDENTIFIER().stream().map(ParseTree::getText)
-                .collect(Collectors.joining(" "));
+                .collect(Collectors.joining(" ")).toLowerCase();
         keywordCall.setKeywordName(keywordNameWithSpaces);
         TokenPosition tokenPosition = new TokenPosition(
                 ctx.keyword_name().getStart().getLine(),

@@ -43,7 +43,7 @@ public class KeywordLibrariesRepository {
         for (Method method : libClass.getMethods()) {
             if (method.isAnnotationPresent(Keyword.class)) {
                 Keyword keywordAnnotation = method.getAnnotation(Keyword.class);
-                String keywordString = normalizeKeywordName(keywordAnnotation.name());
+                String keywordString = keywordAnnotation.name();
                 if (builtinKeywordMap.containsKey(keywordString)) {
                     throw new KeywordAlreadyRegisteredException(keywordString);
                 } else {
@@ -65,12 +65,12 @@ public class KeywordLibrariesRepository {
                 BuiltInLibraryKeywordWrapper keyword = builtinKeywordMap.get(keywordDeclaration.getKeywordName());
                 throw new KeywordAlreadyRegisteredException(keywordDeclaration.getKeywordName(), keyword.getLibInstance().libraryName);
             }
-            userDefinedKeywords.put(normalizeKeywordName(keywordDeclaration.getKeywordName()), keywordDeclaration);
+            userDefinedKeywords.put(keywordDeclaration.getKeywordName(), keywordDeclaration);
         }
     }
 
     public Object invokeKeyword(MemoryMap globalSymbolsTable, KeywordCall keyword, Object[] params) throws Throwable {
-        String normalizedKeywordName = normalizeKeywordName(keyword.getKeywordName());
+        String normalizedKeywordName = keyword.getKeywordName();
 
         logger.debug("Invoking Keyword : {}", keyword);
         if (builtinKeywordMap.containsKey(normalizedKeywordName)) {
@@ -102,12 +102,7 @@ public class KeywordLibrariesRepository {
     }
 
     public boolean isKeywordDeclared(String keyword) {
-        String normalized = normalizeKeywordName(keyword);
-        return builtinKeywordMap.containsKey(normalized) || userDefinedKeywords.containsKey(normalized);
-    }
-
-    public String normalizeKeywordName(String keyword) {
-        return keyword.toLowerCase().replaceAll("\\s*", "");
+        return builtinKeywordMap.containsKey(keyword) || userDefinedKeywords.containsKey(keyword);
     }
 
     private List<Object> injectKeywordDependencies(MemoryMap symbolsTable, KeywordCall keywordCall, BuiltInLibraryKeywordWrapper keywordWrapper) { // Fetch variables requested using keyword method @Inject annotation from globalSymbolsTable

@@ -10,12 +10,15 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 
 public class StafFileCompiler implements IStafCompiler {
+    private static final Logger logger = LoggerFactory.getLogger(StafFileCompiler.class);
     @Value("${testDirectory}")
     String testDirectory;
     @Autowired
