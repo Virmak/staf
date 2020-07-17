@@ -52,12 +52,12 @@ public class ProjectController {
         return projectService.readDirectory(projectsDir);
     }
 
-    @GetMapping("/testReport/{reportFilePath}")
+    @GetMapping("/test-report/{reportFilePath}")
     public String getTestReport(@PathVariable(name = "reportFilePath") String reportFilePath) throws IOException {
         return projectService.readTestReport(reportFilePath.replace("<sep>", "/"));
     }
 
-    @GetMapping("/projectReports/{projectLocation}")
+    @GetMapping("/project-reports/{projectLocation}")
     public GetProjectReportsResponse getProjectReportFiles(@PathVariable(name = "projectLocation") String projectLocation) throws IOException {
         return projectService.getProjectReportFiles(projectLocation);
     }
@@ -68,7 +68,7 @@ public class ProjectController {
         return projectService.updateProjectConfig(projectLocation, request);
     }
 
-    @GetMapping("/projects/reportsDir/{projectLocation}")
+    @GetMapping("/projects/reports-directory/{projectLocation}")
     public Directory getProjectReportsDirectory(@PathVariable("projectLocation") String projectLocation) throws IOException {
         ProjectConfig config = projectService.getProjectConfig(projectLocation);
         File projectDirectoryFile = projectService.getProjectDirectoryFile(projectLocation);

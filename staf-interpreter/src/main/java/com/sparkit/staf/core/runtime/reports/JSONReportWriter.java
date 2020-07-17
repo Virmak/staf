@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.runtime.reports;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.domain.ProjectConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ public class JSONReportWriter implements ITestReportWriter {
     private static final Logger logger = LoggerFactory.getLogger(JSONReportWriter.class);
     @Autowired
     private ObjectMapper objectMapper;
-    @Value("${testDirectory}")
+    @Value(SharedConstants.TEST_DIRECTORY_PROPERTY_VALUE)
     private String testDirectory;
 
     @Override
@@ -29,7 +30,7 @@ public class JSONReportWriter implements ITestReportWriter {
             objectMapper.writeValue(Paths.get(getReportFilePath(projectConfig, testSuiteName)).toFile(), reports);
         } catch (IOException e) {
             e.printStackTrace();
-            logger.error("Cannot write test result file : {}", testSuiteName);
+            logger.error(SharedConstants.CANNOT_WRITE_TEST_RESULTS, testSuiteName);
         }
     }
 
@@ -49,7 +50,7 @@ public class JSONReportWriter implements ITestReportWriter {
     }
 
     private String getCurrentDateTime() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(SharedConstants.YYYY_MM_DD_HH_MM_SS);
         return dateTimeFormatter.format(LocalDateTime.now());
     }
 }

@@ -26,22 +26,22 @@ public class TestSuiteController {
         this.testSuiteService = testSuiteService;
     }
 
-    @PostMapping("/testSuite")
+    @PostMapping("/test-suite")
     public CreateTestSuiteResponse createTestSuite(@RequestBody CreateTestSuiteRequest request) {
         return projectService.createTestSuite(request);
     }
 
-    @PutMapping("/testSuite")
+    @PutMapping("/test-suite")
     public RenameTestSuiteResponse renameTestSuite(@RequestBody RenameTestSuiteRequest request) {
         return testSuiteService.renameTestSuite(request);
     }
 
-    @DeleteMapping("/testSuite/{project}/{testSuite}")
+    @DeleteMapping("/test-suite/{project}/{testSuite}")
     public DeleteTestSuiteResponse deleteTestSuite(@PathVariable("project") String project, @PathVariable("testSuite") String testSuite) {
         return projectService.deleteTestSuite(project, testSuite);
     }
 
-    @GetMapping("/testSuite/{project}/{testSuite}")
+    @GetMapping("/test-suite/{project}/{testSuite}")
     public GetTestSuiteDetailsResponse getTestSuite(@PathVariable("project") String project, @PathVariable("testSuite") String testSuite)
             throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
         return testSuiteService.getTestSuiteDetails(project, testSuite);

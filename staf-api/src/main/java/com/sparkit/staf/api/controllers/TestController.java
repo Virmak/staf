@@ -33,7 +33,7 @@ public class TestController {
         this.stafScriptInterpreter = stafScriptInterpreter;
     }
 
-    @PostMapping("/runTest")
+    @PostMapping("/test/run")
     public List<TestSuiteReport> runTest(@RequestBody RunTestRequest runTestRequest) throws ProjectNotFoundException,
             TestDirectoryNotFound, IOException {
         String project = runTestRequest.getProject().replaceAll("\\s+", "-").toLowerCase(); // normalize project name
@@ -45,13 +45,13 @@ public class TestController {
         throw new ProjectNotFoundException();
     }
 
-    @PostMapping("/terminateTest")
+    @PostMapping("/test/terminate")
     public String terminateTest() {
         stafScriptInterpreter.terminateTestExecution();
         return "{\"result\": \"Test terminated\"}";
     }
 
-    @GetMapping("/hostAddress")
+    @GetMapping("/host-address")
     public String resolveHost() throws UnknownHostException {
         return InetAddress.getLocalHost().getHostAddress();
     }

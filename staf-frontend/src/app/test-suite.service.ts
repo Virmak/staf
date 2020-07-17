@@ -1,3 +1,4 @@
+import { StafAPI } from './api-endpoints';
 import { StafProject } from './types/staf-project';
 import { HttpClient } from "@angular/common/http";
 import { SequenceService } from "./sequence.service";
@@ -10,8 +11,6 @@ import { environment } from "../environments/environment";
 import { Observable } from "rxjs";
 
 const baseUrl = environment.resolveApi();
-const LOGS_DIR = "/logs";
-const RESULTS_DIR = "/reports";
 
 @Injectable({
   providedIn: "root",
@@ -20,7 +19,7 @@ export class TestSuiteService {
   constructor(private sequence: SequenceService, private http: HttpClient) {}
 
   createTestSuite(createTestSuite: ICreateTestSuite): Observable<any> {
-    return this.http.post(baseUrl + "/testSuite", createTestSuite);
+    return this.http.post(baseUrl + StafAPI.CREATE_TEST_SUITE, createTestSuite);
   }
 
   extractTestSuitesFromProject(project, config): ITestSuite[] {
@@ -94,11 +93,11 @@ export class TestSuiteService {
 
   getTestSuiteDetails(project, testSuite) {
     return this.http.get(
-      environment.resolveApi() + "/testSuite/" + project + "/" + testSuite
+      baseUrl + StafAPI.GET_TEST_SUITE_DETAILS + '/' + project + '/' + testSuite
     );
   }
 
   compileTestSuite(project: StafProject, testSuiteName) {
-    return this.http.get(baseUrl + '/compileTestSuite/' + project.location + '/' + testSuiteName);
+    return this.http.get(baseUrl + StafAPI.COMPILE_TEST_SUITE + '/' + project.location + '/' + testSuiteName);
   }
 }

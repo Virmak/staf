@@ -50,6 +50,9 @@ public class StafFileCompiler implements IStafCompiler {
 
     @Override
     public StafFile compileWithErrors(String filePath) throws IOException {
+        if (!filePath.contains(testDirectory)) {
+            filePath = testDirectory + '/' + filePath;
+        }
         CharStream stafCharStream = CharStreams.fromFileName(filePath);
         StafLexer lexer = new StafLexer(stafCharStream);
         SyntaxErrorListener listener = new SyntaxErrorListener(getRelativeFilePath(filePath));

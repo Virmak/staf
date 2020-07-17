@@ -19,7 +19,7 @@ public class DocumentationController {
         this.documentationService = documentationService;
     }
 
-    @GetMapping("/docs/builtinKeywords")
+    @GetMapping("/docs/builtin")
     public List<LibraryDocumentation> getBuiltinKeywords() {
         return documentationService.extractKeywords();
     }

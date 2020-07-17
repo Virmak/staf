@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
+    private final List<String> ACCEPTED_EXTENSIONS = Arrays.asList("staf", "step", "steps", "txt", "json", "log", "csv");
     private final IProjectBuilder projectBuilder;
     private final IStafProjectConfigReader configReader;
     @Value("${testDirectory}")
@@ -110,18 +111,10 @@ public class ProjectService {
         if (f.getName().startsWith("reports-") && f.getName().endsWith(".json")) {
             return "";
         }
-        switch (fileExtension) {
-            case "staf":
-            case "page":
-            case "step":
-            case "steps":
-            case "txt":
-            case "json":
-            case "log":
-            case "csv":
-                return readTextFile(f);
-            default:
-                return "Error : Unsupported file format!";
+        if (ACCEPTED_EXTENSIONS.contains(fileExtension)) {
+            return readTextFile(f);
+        } else {
+            return SharedConstants.UNSUPPORTED_FILE_FORMAT_ERROR;
         }
     }
 
@@ -216,7 +209,7 @@ public class ProjectService {
             originalConfig.setReportsDir(updateConfigRequest.getReportsDir());
             if (!originalConfig.getLocation().equals(updateConfigRequest.getLocation())) {
                 if (!updateProjectLocation(originalConfig.getLocation(), updateConfigRequest.getLocation())) {
-                    throw new IOException("Cannot rename project");
+                    throw new IOException(SharedConstants.CANNOT_RENAME_PROJECT);
                 }
                 originalConfig.setLocation(updateConfigRequest.getLocation());
             }

@@ -20,19 +20,19 @@ public class CompilerController {
         this.compilerService = compilerService;
     }
 
-    @GetMapping("/compileTestSuite/{projectLocation}/{testSuite}")
+    @GetMapping("/compile/test-suite/{projectLocation}/{testSuite}")
     public CompileTestSuiteResponse compileTestSuite(@PathVariable("projectLocation") String project, @PathVariable("testSuite") String testSuite)
             throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
         return compilerService.compileTestSuite(project, testSuite);
     }
 
-    @GetMapping("/compileProject/{projectLocation}")
+    @GetMapping("/compile/project/{projectLocation}")
     public CompileProjectResponse compileProject(@PathVariable("projectLocation") String project)
             throws IOException, IllegalAccessException, InvocationTargetException, InstantiationException {
         return compilerService.compileProject(project);
     }
 
-    @GetMapping("/compileFile")
+    @GetMapping("/compile/file")
     public CompileFileResponse compileFile(@RequestParam("filePath") String filePath)
             throws IOException, IllegalAccessException, InvocationTargetException, InstantiationException {
         return compilerService.compileFile(filePath);
