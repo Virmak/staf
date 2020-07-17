@@ -224,7 +224,6 @@ export class EditFileComponent implements OnInit, OnDestroy {
         const line = model.getLineContent(position.lineNumber);
 
         const keywordName = this.extractKeywordName(line, position.column.valueOf());
-
         if (keywordName) {
           const keywordDeclaration = this.getKeywordDelarationFile(
             keywordName
@@ -276,10 +275,10 @@ export class EditFileComponent implements OnInit, OnDestroy {
     if (this.project.compiledFiles) {
       for (const filePath in this.project.compiledFiles.fileMap) {
         const file = this.project.compiledFiles.fileMap[filePath];
-        if (file.keywordDeclarationMap) {
-          for (const keywordKey in file.keywordDeclarationMap) {
-            if (keywordKey.toLowerCase() == lowerCaseKeywordName) {
-              return {filePath: file.filePath, lineNumber: file.keywordDeclarationMap[keywordKey].lineNumber};
+        if (file.keywordDeclarations) {
+          for (const keywordDeclaration of file.keywordDeclarations) {
+            if (keywordDeclaration.keywordName == lowerCaseKeywordName) {
+              return {filePath: file.filePath, lineNumber: keywordDeclaration.tokenPosition.line};
             }
           }
         }
