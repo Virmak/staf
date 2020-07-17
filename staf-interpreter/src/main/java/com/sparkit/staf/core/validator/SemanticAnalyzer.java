@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class SemanticAnalyzer {
     @Autowired
     private BuiltInLibraryFactory libraryFactory;
-    @Value("${testDirectory}")
+    @Value(SharedConstants.TEST_DIRECTORY_PROPERTY_VALUE)
     private String testDirectory;
 
     public void validateSemantics(StafFile mainFile, Map<String, StafFile> stafFileMap)

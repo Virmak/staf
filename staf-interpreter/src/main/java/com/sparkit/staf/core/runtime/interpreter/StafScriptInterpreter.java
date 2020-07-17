@@ -26,12 +26,16 @@ public class StafScriptInterpreter {
     private static final Logger logger = LoggerFactory.getLogger(StafScriptInterpreter.class);
     private static final int MAX_TEST_AWAIT_MINUTES = 5;
     private final Map<Integer, TestSession> allTestSessions = new HashMap<>();
-    @Autowired
-    private IImportsInterpreter importsInterpreter;
-    @Autowired
-    private TestCaseExecutor testCaseRunner;
+    private final IImportsInterpreter importsInterpreter;
+    private final TestCaseExecutor testCaseRunner;
     @Value(SharedConstants.TEST_DIRECTORY_PROPERTY_VALUE)
     private String testDirectory;
+
+    @Autowired
+    public StafScriptInterpreter(IImportsInterpreter importsInterpreter, TestCaseExecutor testCaseRunner) {
+        this.importsInterpreter = importsInterpreter;
+        this.testCaseRunner = testCaseRunner;
+    }
 
     public List<TestSuiteReport> run(ProjectConfig projectConfig, TestSuite testSuite, StafFile mainStafFile, int sessionCount) {
         List<TestSession> testSuiteSessions = new ArrayList<>();

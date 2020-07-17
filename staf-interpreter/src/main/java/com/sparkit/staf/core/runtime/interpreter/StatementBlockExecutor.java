@@ -1,13 +1,16 @@
 package com.sparkit.staf.core.runtime.interpreter;
 
-import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.ExitLoopStatement;
 import com.sparkit.staf.core.ast.IStatement;
-import com.sparkit.staf.core.ast.types.*;
+import com.sparkit.staf.core.ast.types.AbstractStafObject;
+import com.sparkit.staf.core.ast.types.StafBoolean;
+import com.sparkit.staf.core.ast.types.StafInteger;
+import com.sparkit.staf.core.ast.types.StafList;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.FatalErrorException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.domain.TestResult;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -22,7 +25,7 @@ import java.util.List;
 
 @Component
 public class StatementBlockExecutor {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final Logger logger = LoggerFactory.getLogger(StatementBlockExecutor.class);
     private OnStatementFailed statementFailed;
     @Autowired
     @Getter
@@ -56,7 +59,7 @@ public class StatementBlockExecutor {
                 statementReport.setResult(statementListTestResult(statementReport.getChildren()));
             } catch (EmptyStackException e) {
                 logger.error("No browser open");
-                statementReport.setErrorMessage("No browser is opened  At " + statement);
+                statementReport.setErrorMessage(SharedConstants.NO_BROWSER_OPEN_ERROR + " At " + statement);
                 statementReport.setResult(TestResult.Fail);
                 throw new FatalErrorException(reports, e);
             } catch (Exception e) {
@@ -95,7 +98,7 @@ public class StatementBlockExecutor {
             int iteration = 0;
             for (AbstractStafObject item : ((StafList) actualIterator).getStafList()) {
                 boolean loopExited = false;
-                localSymbolsTable.setVariableValue("$__index__", new StafInteger(iteration));
+                localSymbolsTable.setVariableValue(SharedConstants.LOOP_INDEX_VAR_MEMORY_KEY, new StafInteger(iteration));
                 loopReport.setErrorMessage("Iteration[" + (iteration++) + "] : " + item);
                 for (IStatement statement : iterable.getStatements()) {
                     StatementReport statementReport = new StatementReport();

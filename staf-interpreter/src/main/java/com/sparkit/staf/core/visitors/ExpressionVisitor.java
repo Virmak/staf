@@ -1,6 +1,7 @@
 package com.sparkit.staf.core.visitors;
 
 import com.sparkit.staf.core.ast.Expression;
+import com.sparkit.staf.core.ast.ExpressionOperator;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.StafBoolean;
 import com.sparkit.staf.core.ast.types.StafInteger;
@@ -43,15 +44,15 @@ public class ExpressionVisitor extends StafBaseVisitor<AbstractStafObject> {
             e.setExpressionLeftMember(visitExpression(leftExpressionContext));
             StafParser.MulopContext mulopContext = ctx.mulop();
             if (mulopContext != null) {
-                e.setOperation(mulopContext.getText());
+                e.setOperation(ExpressionOperator.fromString(mulopContext.getText()));
             }
             StafParser.AddopContext addopContext = ctx.addop();
             if (addopContext != null) {
-                e.setOperation(addopContext.getText());
+                e.setOperation(ExpressionOperator.fromString(addopContext.getText()));
             }
             StafParser.BinopContext binopContext = ctx.binop();
             if (binopContext != null) {
-                e.setOperation(binopContext.getText());
+                e.setOperation(ExpressionOperator.fromString(binopContext.getText()));
             }
 
             e.setExpressionRightMember(visitExpression(ctx.expression(1)));

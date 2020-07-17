@@ -7,6 +7,7 @@ import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.compiler.IStafCompiler;
 import com.sparkit.staf.core.runtime.interpreter.ImportsInterpreter;
 import com.sparkit.staf.core.runtime.interpreter.TestSuite;
+import com.sparkit.staf.core.utils.SharedConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,16 +17,15 @@ import java.util.Map;
 
 @Component
 public class StafScriptLoader implements IStafScriptLoader {
+    private final IStafCompiler stafCompiler;
+    private final ImportsInterpreter importsInterpreter;
+    @Value(SharedConstants.TEST_DIRECTORY_PROPERTY_VALUE)
+    private String testDirectory;
 
-    @Value("#{systemProperties['testDirectory']}")
-    private final String testDirectory;
     @Autowired
-    private IStafCompiler stafCompiler;
-    @Autowired
-    private ImportsInterpreter importsInterpreter;
-
-    public StafScriptLoader() {
-        testDirectory = System.getProperty("testDirectory");
+    public StafScriptLoader(IStafCompiler stafCompiler, ImportsInterpreter importsInterpreter) {
+        this.stafCompiler = stafCompiler;
+        this.importsInterpreter = importsInterpreter;
     }
 
     @Override

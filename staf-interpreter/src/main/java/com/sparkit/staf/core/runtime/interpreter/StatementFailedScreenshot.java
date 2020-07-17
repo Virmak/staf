@@ -6,6 +6,7 @@ import com.sparkit.staf.core.ast.types.StafString;
 import com.sparkit.staf.core.runtime.libs.builtin.selenium.SeleniumLibrary;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestResult;
 import org.slf4j.Logger;
@@ -43,7 +44,8 @@ public class StatementFailedScreenshot implements OnStatementFailed {
     @Override
     public void execute(StatementReport statementReport) {
         testCaseReport.setResult(TestResult.Fail);
-        if (!testSuite.getKeywordLibrariesRepository().hasLibrary(SeleniumLibrary.class) || !testSuite.getKeywordLibrariesRepository().isKeywordDeclared(CAPTURE_SCREENSHOT_KEYWORD_NAME)) {
+        if (!testSuite.getKeywordLibrariesRepository().hasLibrary(SeleniumLibrary.class)
+                || !testSuite.getKeywordLibrariesRepository().isKeywordDeclared(CAPTURE_SCREENSHOT_KEYWORD_NAME)) {
             return;
         }
         StafString screenShotPath = new StafString(getScreenshotPath());
@@ -52,8 +54,8 @@ public class StatementFailedScreenshot implements OnStatementFailed {
                     CAPTURE_SCREENSHOT_KEYWORD_NAME, Arrays.asList(new AbstractStafObject[]{screenShotPath}));
             captureScreenshotKeyword.execute(sessionGlobalMemory, null, testSuite.getKeywordLibrariesRepository());
         } catch (EmptyStackException e) {
-            logger.error("No browser open");
-            statementReport.setErrorMessage("No browser open");
+            logger.error(SharedConstants.NO_BROWSER_OPEN_ERROR);
+            statementReport.setErrorMessage(SharedConstants.NO_BROWSER_OPEN_ERROR);
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

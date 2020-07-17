@@ -8,6 +8,7 @@ import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -16,21 +17,13 @@ public class Assignment implements IStatement, IReportableBlock {
     private final AbstractStafObject leftHandSide;
     @Getter
     private final AbstractStafObject rightHandSide;
-    private List<StatementReport> reports;
+    @Getter
+    @Setter
+    private List<StatementReport> statementReports;
 
     public Assignment(AbstractStafObject leftHandSide, AbstractStafObject rightHandSide) {
         this.leftHandSide = leftHandSide;
         this.rightHandSide = rightHandSide;
-    }
-
-    @Override
-    public List<StatementReport> getStatementReports() {
-        return reports;
-    }
-
-    @Override
-    public void setStatementReports(List<StatementReport> reports) {
-        this.reports = reports;
     }
 
     @Override
@@ -43,7 +36,7 @@ public class Assignment implements IStatement, IReportableBlock {
         if (rightHandSide instanceof KeywordCall) {
             KeywordCall keywordCall = (KeywordCall) rightHandSide;
             Object returnObj = keywordCall.execute(globalMemory, localMemory, keywordLibrariesRepository);
-            this.reports = keywordCall.getStatementReports();
+            this.statementReports = keywordCall.getStatementReports();
             if (localMemory != null && localMemory.getVariablesMap().containsKey(leftHandSide.getValue().toString())) {
                 localMemory.getVariablesMap().put(leftHandSide.getValue().toString(), returnObj);
             } else if (globalMemory.getVariablesMap().containsKey(leftHandSide.getValue().toString())) {

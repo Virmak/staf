@@ -4,6 +4,7 @@ import com.sparkit.staf.core.ast.ImportStatement;
 import com.sparkit.staf.core.ast.ImportTypes;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.runtime.interpreter.SemanticError;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.core.validator.SemanticAnalyzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,10 +20,9 @@ import java.util.Map;
 
 @Component
 public class TestSuiteCompiler {
-    private static final String TEST_SUITE_MAIN_FILE = "main.staf";
     private final IStafCompiler stafFileCompiler;
     private final SemanticAnalyzer semanticAnalyzer;
-    @Value("${testDirectory}")
+    @Value(SharedConstants.TEST_DIRECTORY_PROPERTY_VALUE)
     private String testDirectory;
 
     @Autowired
@@ -39,8 +39,7 @@ public class TestSuiteCompiler {
 
     public Map<String, StafFile> compileFile(String filePath) throws IOException, IllegalAccessException,
             InvocationTargetException, InstantiationException {
-        StafFile mainScriptAST = null;
-        mainScriptAST = stafFileCompiler.compileWithErrors(filePath);
+        StafFile mainScriptAST = stafFileCompiler.compileWithErrors(filePath);
         Map<String, StafFile> testSuiteFilesAST = new HashMap<>();
         testSuiteFilesAST.put(toRelativePath(filePath), mainScriptAST);
         String currentDirectoryPath = mainScriptAST.getFilePath().substring(0, mainScriptAST.getFilePath().lastIndexOf('/'));
@@ -84,7 +83,7 @@ public class TestSuiteCompiler {
                     if (parentFileAST.getSemanticErrors() == null) {
                         parentFileAST.setSemanticErrors(new ArrayList<>());
                     }
-                    parentFileAST.getSemanticErrors().add(new SemanticError(statement.getTokenPosition(), "Invalid import path"));
+                    parentFileAST.getSemanticErrors().add(new SemanticError(statement.getTokenPosition(), SharedConstants.INVALID_IMPORT_PATH));
                 }
             }
         }
@@ -92,7 +91,7 @@ public class TestSuiteCompiler {
 
     public File getTestSuiteMainFile(String project, String testSuiteName) {
         File testSuiteDir = getTestSuiteDirectory(project, testSuiteName);
-        return new File(testSuiteDir, TEST_SUITE_MAIN_FILE);
+        return new File(testSuiteDir, SharedConstants.TEST_SUITE_MAIN_FILE);
     }
 
 

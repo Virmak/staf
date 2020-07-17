@@ -76,7 +76,7 @@ public class ProjectBuilder implements IProjectBuilder {
 
     public void writeConfigFile(ProjectConfig config, File projectDir) throws IOException {
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-        writer.writeValue(new File(projectDir, JsonStafProjectConfig.DEFAULT_PROJECT_CONFIG_NAME), config);
+        writer.writeValue(new File(projectDir, JsonStafProjectConfig.DEFAULT_PROJECT_CONFIG_FILE), config);
     }
 
     private void createUITestSuite(String testSuiteName, ProjectConfig config, File projectDir) throws IOException {

@@ -34,17 +34,20 @@ import java.util.Map;
 @Component
 public class TestSuiteRunner {
     private static final Logger logger = LoggerFactory.getLogger(TestSuiteRunner.class);
-    @Autowired
-    private IStafCompiler stafCompiler;
-    @Autowired
-    private StafScriptInterpreter interpreter;
-
+    private final IStafCompiler stafCompiler;
+    private final BuiltInLibraryFactory libraryFactory;
+    private final StatementBlockExecutor statementBlockExecutor;
+    private final StafScriptInterpreter interpreter;
     @Value(SharedConstants.TEST_DIRECTORY_PROPERTY_VALUE)
     private String testDirectory;
+
     @Autowired
-    private BuiltInLibraryFactory libraryFactory;
-    @Autowired
-    private StatementBlockExecutor statementBlockExecutor;
+    public TestSuiteRunner(IStafCompiler stafCompiler, BuiltInLibraryFactory libraryFactory, StatementBlockExecutor statementBlockExecutor, StafScriptInterpreter interpreter) {
+        this.stafCompiler = stafCompiler;
+        this.libraryFactory = libraryFactory;
+        this.statementBlockExecutor = statementBlockExecutor;
+        this.interpreter = interpreter;
+    }
 
     public List<TestSuiteReport> runTests(RunTestSuite runTestSuiteRequest, int sessionCount, ProjectConfig projectConfig)
             throws SyntaxErrorException, TestSuiteMainScriptNotFoundException {

@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @Component
 public class JsonStafProjectConfig implements IStafProjectConfigReader {
-    public static final String DEFAULT_PROJECT_CONFIG_NAME = "config.json";
+    public static final String DEFAULT_PROJECT_CONFIG_FILE = "config.json";
     private final ObjectMapper mapper;
 
     @Autowired

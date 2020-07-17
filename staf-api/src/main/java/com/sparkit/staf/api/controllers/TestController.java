@@ -39,7 +39,7 @@ public class TestController {
         String project = runTestRequest.getProject().replaceAll("\\s+", "-").toLowerCase(); // normalize project name
         for (String projectName : projectService.getProjectsList()) {
             if (project.equals(projectName)) {
-                return testFacade.runProject(testDir, projectName, testDir + "/" + project + "/" + JsonStafProjectConfig.DEFAULT_PROJECT_CONFIG_NAME, runTestRequest);
+                return testFacade.runProject(testDir, projectName, testDir + "/" + project + "/" + JsonStafProjectConfig.DEFAULT_PROJECT_CONFIG_FILE, runTestRequest);
             }
         }
         throw new ProjectNotFoundException();

@@ -15,8 +15,10 @@ public final class SharedConstants {
     public static final String STARTED_RUNNING_TESTS = "Started running tests at {}";
     public static final String STARTED_TEST_SUITE_EXECUTION = "Started executing test suite : [{}] {} Test cases found";
     public static final String SCRIPT_EXECUTION_STOPPED = "Script execution stopped";
+    public static final String STARTED_EXECUTING_TEST_CASES = "Started executing test case : [{}]";
+    public static final String FINISHED_EXECUTING_TEST_CASES = "Finished executing test case : [{}] {} ";
     public static final String RECEIVED_TEST_TERMINATION_SIGNAL = "Received test termination signal : stopping tests ...";
-
+    public static final String EXECUTING_STATEMENT_FAILED = "Executing statement failed at [{}] : {} | {}";
 
     public static final String CANNOT_FIND_IMPORTED_FILE = "Cannot find imported file '{}' at file [{}] on line {}";
 
@@ -26,6 +28,7 @@ public final class SharedConstants {
     public static final String SESSION_ID_MEMORY_KEY = "$__session__";
     public static final String CURRENT_KEYWORD_MEMORY_KEY = "__keyword__";
     public static final String WEB_DRIVER_MEMORY_KEY = "__web_driver__";
+    public static final String LOOP_INDEX_VAR_MEMORY_KEY = "$__index__";
 
     public static final String TEST_CASE_IGNORED = "Test case [{}] Ignored";
     public static final String TEST_EXECUTION_TERMINATED_BY_USER = "Test execution terminated by user";
@@ -40,6 +43,9 @@ public final class SharedConstants {
     public static final String CANNOT_WRITE_TEST_RESULTS = "Cannot write test result file : {}";
     public static final String CANNOT_RENAME_PROJECT = "Cannot rename project";
     public static final String UNSUPPORTED_FILE_FORMAT_ERROR = "Error : Unsupported file format!";
+    public static final String INVALID_IMPORT_PATH = "Invalid import path";
+    public static final String SYNTAX_ERROR_AT = "Syntax Error at {}";
+    public static final String NO_BROWSER_OPEN_ERROR = "No opened browser";
 
     private SharedConstants() {
     }

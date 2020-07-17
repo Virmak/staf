@@ -229,7 +229,7 @@ public class ProjectService {
 
     public ProjectConfig getProjectConfig(String projectLocation) throws IOException {
         File projectDirectoryFile = getProjectDirectoryFile(normalizeProjectName(projectLocation));
-        File configFile = new File(projectDirectoryFile, JsonStafProjectConfig.DEFAULT_PROJECT_CONFIG_NAME);
+        File configFile = new File(projectDirectoryFile, JsonStafProjectConfig.DEFAULT_PROJECT_CONFIG_FILE);
         return configReader.readConfigFile(configFile);
     }
 

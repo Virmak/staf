@@ -1,5 +1,6 @@
 package com.sparkit.staf.core.parser;
 
+import com.sparkit.staf.core.utils.SharedConstants;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
@@ -31,7 +32,7 @@ public class SyntaxErrorListener extends BaseErrorListener {
                             String msg, RecognitionException e) {
         syntaxErrors.add(new SyntaxError(recognizer, offendingSymbol, line, charPositionInLine, filePath, msg, e));
         String errorMessage = "line " + line + ":" + charPositionInLine + " " + msg + " at file : " + filePath;
-        logger.error("Syntax Error at {}", errorMessage);
+        logger.error(SharedConstants.SYNTAX_ERROR_AT, errorMessage);
         throw new ParseCancellationException(errorMessage);
 
     }
