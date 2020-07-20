@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RunTestRequest {
-    WebDriverOptions webDriverOptions;
+    private WebDriverOptions webDriverOptions;
     private String project;
     private List<RunTestSuite> testSuites;
 }

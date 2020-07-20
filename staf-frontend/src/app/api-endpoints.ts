@@ -23,4 +23,5 @@ export enum StafAPI {
   RUN_TEST = '/test/run',
   TERMINATE_TEST = '/test/terminate',
   BUILTIN_KEYWORD_DOCS = '/docs/builtin',
+  GET_HOST_ADDRESS = '/host-address',
 }

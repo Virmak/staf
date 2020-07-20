@@ -4,6 +4,7 @@ import com.sparkit.staf.core.ast.Assignment;
 import com.sparkit.staf.core.ast.types.StafInteger;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.VariableAlreadyDefinedException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.core.utils.SharedConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +47,7 @@ public class MemoryMap {
     }
 
     public int getSessionId() {
-        StafInteger session = (StafInteger) this.variablesMap.get("$__session__");
+        StafInteger session = (StafInteger) variablesMap.get(SharedConstants.SESSION_ID_MEMORY_KEY);
         if (session != null) {
             return (int) session.getValue();
         } else {

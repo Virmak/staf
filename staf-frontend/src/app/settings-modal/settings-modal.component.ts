@@ -18,6 +18,8 @@ export class SettingsModalComponent implements OnInit {
   enableVnc = false;
   enableVideo = false;
 
+  serverIp = '';
+
   browserList = {
     chrome: ['81.0', '83.0'],
     firefox: ['76.0', '77.0'],
@@ -28,7 +30,7 @@ export class SettingsModalComponent implements OnInit {
     'chrome',
     'firefox',
     'opera'
-  ]
+  ];
 
   selectedBrowser = this.browserNames[0];
 
@@ -48,6 +50,9 @@ export class SettingsModalComponent implements OnInit {
       this.runInSelenoid = this.testService.driverOptions.runInSelenoid;
     }
     this.logService.showConsole = false;
+    this.testService.getServerHostAddress().subscribe((res: any) => {
+      this.serverIp = res.result;
+    });
   }
 
   saveWebDriverOptions() {

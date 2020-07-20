@@ -3,6 +3,7 @@ package com.sparkit.staf.api.controllers;
 import com.sparkit.staf.application.models.request.CreateFileRequest;
 import com.sparkit.staf.application.models.request.RenameFileRequest;
 import com.sparkit.staf.application.models.response.CreateFileResponse;
+import com.sparkit.staf.application.models.response.GenericResponse;
 import com.sparkit.staf.application.models.response.ImageBase64;
 import com.sparkit.staf.application.models.response.RenameFileResponse;
 import com.sparkit.staf.application.service.FileService;
@@ -41,10 +42,10 @@ public class FileController {
     }
 
     @PostMapping("/save-file")
-    public String saveFile(@RequestBody Map<String, Object> payload) throws IOException {
+    public GenericResponse saveFile(@RequestBody Map<String, Object> payload) throws IOException {
         FileType fileType = FileType.valueOf(payload.get("type").toString());
         fileService.saveFile(payload.get("path").toString(), payload.get("content").toString(), fileType);
-        return "{\"result\":\"ok\"}";
+        return new GenericResponse(SharedConstants.OK_RESULT_STRING);
     }
 
     @PostMapping("/create-file")
@@ -58,12 +59,12 @@ public class FileController {
     }
 
     @DeleteMapping("/delete-file/{path}")
-    public String deleteFile(@PathVariable String path) {
+    public GenericResponse deleteFile(@PathVariable String path) {
         path = path.replace("<sep>", "/");
         if (fileService.removeFile(path)) {
-            return "{\"result\":\"ok\"}";
+            return new GenericResponse(SharedConstants.OK_RESULT_STRING);
         }
-        return "{\"result\":\"error\"}";
+        return new GenericResponse(SharedConstants.ERROR_RESULT_STRING);
     }
 
     @GetMapping("/screenshot/{url}")

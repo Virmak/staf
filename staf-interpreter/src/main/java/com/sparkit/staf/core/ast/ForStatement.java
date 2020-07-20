@@ -3,7 +3,7 @@ package com.sparkit.staf.core.ast;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.StafVariable;
-import com.sparkit.staf.core.runtime.interpreter.IStafIterable;
+import com.sparkit.staf.core.runtime.interpreter.IStafLoop;
 import com.sparkit.staf.core.runtime.interpreter.IStatementBlock;
 import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
@@ -15,7 +15,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Data
-public class ForStatement implements IStatement, IStatementBlock, IStafIterable {
+public class ForStatement implements IStatement, IStatementBlock, IStafLoop {
     @JsonIgnore
     private final StatementBlockExecutor blockExecutor;
     private StafVariable loopVariable;

@@ -2,12 +2,14 @@ package com.sparkit.staf.api.controllers;
 
 import com.sparkit.staf.application.exception.ProjectNotFoundException;
 import com.sparkit.staf.application.exception.TestDirectoryNotFound;
+import com.sparkit.staf.application.models.response.GenericResponse;
 import com.sparkit.staf.application.service.ProjectService;
 import com.sparkit.staf.core.StafTestFacade;
 import com.sparkit.staf.core.models.RunTestRequest;
 import com.sparkit.staf.core.runtime.config.JsonStafProjectConfig;
 import com.sparkit.staf.core.runtime.interpreter.StafScriptInterpreter;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
+import com.sparkit.staf.core.utils.SharedConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -46,13 +48,13 @@ public class TestController {
     }
 
     @PostMapping("/test/terminate")
-    public String terminateTest() {
+    public GenericResponse terminateTest() {
         stafScriptInterpreter.terminateTestExecution();
-        return "{\"result\": \"Test terminated\"}";
+        return new GenericResponse(SharedConstants.OK_RESULT_STRING);
     }
 
     @GetMapping("/host-address")
-    public String resolveHost() throws UnknownHostException {
-        return InetAddress.getLocalHost().getHostAddress();
+    public GenericResponse resolveHost() throws UnknownHostException {
+        return new GenericResponse(InetAddress.getLocalHost().getHostAddress());
     }
 }

@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
-    private final List<String> ACCEPTED_EXTENSIONS = Arrays.asList("staf", "step", "steps", "txt", "json", "log", "csv");
+    private final List<String> ACCEPTED_EXTENSIONS = Arrays.asList("staf", "step", "page", "steps", "txt", "json", "log", "csv");
     private final IProjectBuilder projectBuilder;
     private final IStafProjectConfigReader configReader;
     @Value("${testDirectory}")

@@ -8,6 +8,7 @@ import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -16,7 +17,9 @@ public class RunKeywordIf implements IStatement, IReportableBlock {
     private final AbstractStafObject condition;
     @Getter
     private final KeywordCall keywordCall;
-    private List<StatementReport> reports;
+    @Getter
+    @Setter
+    private List<StatementReport> statementReports;
 
     public RunKeywordIf(AbstractStafObject condition, KeywordCall keywordCall) {
         this.condition = condition;
@@ -31,15 +34,5 @@ public class RunKeywordIf implements IStatement, IReportableBlock {
             keywordCall.execute(globalMemory, localMemory, keywordLibrariesRepository);
         }
         return null;
-    }
-
-    @Override
-    public List<StatementReport> getStatementReports() {
-        return null;
-    }
-
-    @Override
-    public void setStatementReports(List<StatementReport> reports) {
-
     }
 }

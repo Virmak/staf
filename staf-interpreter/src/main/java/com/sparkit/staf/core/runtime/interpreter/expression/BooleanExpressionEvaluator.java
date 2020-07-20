@@ -11,7 +11,8 @@ import javax.naming.OperationNotSupportedException;
 @Component
 public class BooleanExpressionEvaluator implements ExpressionEvaluator {
     @Override
-    public AbstractStafObject evaluate(AbstractStafObject expressionLeftMember, AbstractStafObject expressionRightMember, ExpressionOperator operator) throws InvalidExpressionOperationParams, OperationNotSupportedException {
+    public AbstractStafObject evaluate(AbstractStafObject expressionLeftMember, AbstractStafObject expressionRightMember, ExpressionOperator operator)
+            throws InvalidExpressionOperationParams, OperationNotSupportedException {
         if (expressionLeftMember.getValue() instanceof String || expressionRightMember.getValue() instanceof String) {
             throw new InvalidExpressionOperationParams();
         } else if (expressionLeftMember.getValue() instanceof Double || expressionRightMember.getValue() instanceof Double

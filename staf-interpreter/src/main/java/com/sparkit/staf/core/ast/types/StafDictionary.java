@@ -4,6 +4,8 @@ import com.sparkit.staf.core.ast.KeyValuePair;
 import com.sparkit.staf.core.ast.StafTypes;
 import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import lombok.Getter;
+import lombok.Setter;
 import org.json.simple.JSONObject;
 
 import java.util.HashMap;
@@ -11,7 +13,9 @@ import java.util.Hashtable;
 import java.util.Map;
 
 public class StafDictionary extends AbstractStafObject {
-    protected Map<String, AbstractStafObject> objectMap;
+    @Getter
+    @Setter
+    private Map<String, AbstractStafObject> objectMap;
 
     public StafDictionary() {
         objectMap = new Hashtable<>();
@@ -34,14 +38,6 @@ public class StafDictionary extends AbstractStafObject {
     @Override
     public Object evaluate(MemoryMap globalSymbolsTable, MemoryMap localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
         return this;
-    }
-
-    public Map<String, AbstractStafObject> getObjectMap() {
-        return objectMap;
-    }
-
-    public void setObjectMap(Map<String, AbstractStafObject> objectMap) {
-        this.objectMap = objectMap;
     }
 
     public Map<String, Object> getEvaluatedObjectMap() {

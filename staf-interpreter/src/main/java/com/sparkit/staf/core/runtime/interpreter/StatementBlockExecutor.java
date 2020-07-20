@@ -81,28 +81,28 @@ public class StatementBlockExecutor {
     }
 
     // Execute loop statements
-    public StatementReport executeIterable(IStafIterable iterable,
+    public StatementReport executeIterable(IStafLoop stafLoop,
                                            MemoryMap globalSymbolsTable,
                                            MemoryMap localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        StatementReport loopReport = createStatementReport((IStatement) iterable, null);
+        StatementReport loopReport = createStatementReport((IStatement) stafLoop, null);
         loopReport.setChildren(new ArrayList<>());
         AbstractStafObject tmp = null;  // used to save variable with the same name as the loop variable if it currently
         // exist in localSymTable so we can retrieve it later after for statement execution
         if (localSymbolsTable == null) {
             localSymbolsTable = new MemoryMap();
         } else {
-            tmp = (AbstractStafObject) localSymbolsTable.getVariableValue(iterable.getLoopVariable().getValue().toString());
+            tmp = (AbstractStafObject) localSymbolsTable.getVariableValue(stafLoop.getLoopVariable().getValue().toString());
         }
-        AbstractStafObject actualIterator = (AbstractStafObject) iterable.getIterator().evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
+        AbstractStafObject actualIterator = (AbstractStafObject) stafLoop.getIterator().evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
         if (actualIterator instanceof StafList) {
             int iteration = 0;
             for (AbstractStafObject item : ((StafList) actualIterator).getStafList()) {
                 boolean loopExited = false;
                 localSymbolsTable.setVariableValue(SharedConstants.LOOP_INDEX_VAR_MEMORY_KEY, new StafInteger(iteration));
                 loopReport.setErrorMessage("Iteration[" + (iteration++) + "] : " + item);
-                for (IStatement statement : iterable.getStatements()) {
+                for (IStatement statement : stafLoop.getStatements()) {
                     StatementReport statementReport = new StatementReport();
-                    localSymbolsTable.setVariableValue(iterable.getLoopVariable().getValue().toString(), item);
+                    localSymbolsTable.setVariableValue(stafLoop.getLoopVariable().getValue().toString(), item);
                     try {
                         statement.execute(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
                         if (statement instanceof ExitLoopStatement) {

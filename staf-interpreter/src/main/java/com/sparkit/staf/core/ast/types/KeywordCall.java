@@ -20,7 +20,7 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
     @JsonIgnore
     @Getter
     @Setter
-    protected List<StatementReport> statementReports;
+    private List<StatementReport> statementReports;
     @Getter
     @Setter
     private String keywordName;
@@ -51,9 +51,9 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
     public Object[] evaluateArgumentsList(MemoryMap globalSymTable, MemoryMap localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         Object[] params = new AbstractStafObject[argumentsList.size()];
         int i = 0;
-        for (AbstractStafObject arg : argumentsList) {
-            Object val = arg.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
-            params[i++] = val;
+        for (AbstractStafObject argument : argumentsList) {
+            Object argumentActualValue = argument.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
+            params[i++] = argumentActualValue;
         }
         return params;
     }

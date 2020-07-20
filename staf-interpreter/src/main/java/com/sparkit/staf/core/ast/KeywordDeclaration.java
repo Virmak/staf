@@ -26,10 +26,7 @@ public class KeywordDeclaration implements IStatementBlock {
     private AbstractStafObject returnObject;
     private List<StatementReport> reports;
     private TokenPosition tokenPosition;
-
-    public KeywordDeclaration() {
-    }
-
+    
     public Object execute(StatementBlockExecutor statementBlockExecutor, MemoryMap globalSymTable,
                           KeywordLibrariesRepository keywordLibrariesRepository,
                           Object[] params) throws Throwable {

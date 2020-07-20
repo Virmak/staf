@@ -2,6 +2,7 @@ package com.sparkit.staf.api.controllers;
 
 import com.sparkit.staf.application.exception.ProjectNameAlreadyExist;
 import com.sparkit.staf.application.models.request.CreateProjectRequest;
+import com.sparkit.staf.application.models.response.GenericResponse;
 import com.sparkit.staf.application.models.response.project.GetProjectReportsResponse;
 import com.sparkit.staf.application.models.response.project.UpdateProjectConfigResponse;
 import com.sparkit.staf.application.service.ProjectService;
@@ -84,8 +85,8 @@ public class ProjectController {
     }
 
     @PostMapping("/projects/upload")
-    public String uploadProject(@RequestParam("file") MultipartFile file) throws IOException {
+    public GenericResponse uploadProject(@RequestParam("file") MultipartFile file) throws IOException {
         projectService.unpackProject(file.getInputStream());
-        return "{\"result\": \"ok\"}";
+        return new GenericResponse(SharedConstants.OK_RESULT_STRING);
     }
 }

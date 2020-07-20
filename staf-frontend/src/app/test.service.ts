@@ -39,4 +39,8 @@ export class TestService {
     return this.http.post(baseUrl + StafAPI.TERMINATE_TEST, {});
   }
 
+  getServerHostAddress() {
+    return this.http.get(baseUrl + StafAPI.GET_HOST_ADDRESS);
+  }
+
 }
