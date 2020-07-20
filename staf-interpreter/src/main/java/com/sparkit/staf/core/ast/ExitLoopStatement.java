@@ -1,7 +1,7 @@
 package com.sparkit.staf.core.ast;
 
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
-import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import lombok.Getter;
 
@@ -17,7 +17,7 @@ public class ExitLoopStatement implements IStatement {
     }
 
     @Override
-    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+    public Object execute(MemoryMap globalMemory, MemoryMap localMemory, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         return null;
     }
 }

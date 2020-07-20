@@ -1,6 +1,5 @@
 package com.sparkit.staf.core.runtime.interpreter.expression;
 
-import com.sparkit.staf.core.ast.Expression;
 import com.sparkit.staf.core.ast.ExpressionOperator;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.StafBoolean;
@@ -12,7 +11,8 @@ import javax.naming.OperationNotSupportedException;
 @Component
 public class BooleanExpressionEvaluator implements ExpressionEvaluator {
     @Override
-    public AbstractStafObject evaluate(AbstractStafObject expressionLeftMember, AbstractStafObject expressionRightMember, ExpressionOperator operator) throws InvalidExpressionOperationParams, OperationNotSupportedException {
+    public AbstractStafObject evaluate(AbstractStafObject expressionLeftMember, AbstractStafObject expressionRightMember, ExpressionOperator operator)
+            throws InvalidExpressionOperationParams, OperationNotSupportedException {
         if (expressionLeftMember.getValue() instanceof String || expressionRightMember.getValue() instanceof String) {
             throw new InvalidExpressionOperationParams();
         } else if (expressionLeftMember.getValue() instanceof Double || expressionRightMember.getValue() instanceof Double
@@ -29,7 +29,7 @@ public class BooleanExpressionEvaluator implements ExpressionEvaluator {
             case EQUAL:
                 return expressionLeftMember == expressionRightMember;
             case GT:
-                return  expressionLeftMember > expressionRightMember;
+                return expressionLeftMember > expressionRightMember;
             case LT:
                 return expressionLeftMember < expressionRightMember;
             case NE:

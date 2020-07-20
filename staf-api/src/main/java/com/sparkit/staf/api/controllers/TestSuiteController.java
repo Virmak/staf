@@ -8,12 +8,13 @@ import com.sparkit.staf.application.models.response.GetTestSuiteDetailsResponse;
 import com.sparkit.staf.application.models.response.RenameTestSuiteResponse;
 import com.sparkit.staf.application.service.ProjectService;
 import com.sparkit.staf.application.service.TestSuiteService;
-import com.sparkit.staf.core.parser.SyntaxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
+@CrossOrigin
 @RestController
 public class TestSuiteController {
     private final ProjectService projectService;
@@ -25,28 +26,24 @@ public class TestSuiteController {
         this.testSuiteService = testSuiteService;
     }
 
-    @CrossOrigin
-    @PostMapping("/testSuite")
+    @PostMapping("/test-suite")
     public CreateTestSuiteResponse createTestSuite(@RequestBody CreateTestSuiteRequest request) {
         return projectService.createTestSuite(request);
     }
 
-    @CrossOrigin
-    @PutMapping("/testSuite")
+    @PutMapping("/test-suite")
     public RenameTestSuiteResponse renameTestSuite(@RequestBody RenameTestSuiteRequest request) {
         return testSuiteService.renameTestSuite(request);
     }
 
-    @CrossOrigin
-    @DeleteMapping("/testSuite/{project}/{testSuite}")
+    @DeleteMapping("/test-suite/{project}/{testSuite}")
     public DeleteTestSuiteResponse deleteTestSuite(@PathVariable("project") String project, @PathVariable("testSuite") String testSuite) {
         return projectService.deleteTestSuite(project, testSuite);
     }
 
-    @CrossOrigin
-    @GetMapping("/testSuite/{project}/{testSuite}")
+    @GetMapping("/test-suite/{project}/{testSuite}")
     public GetTestSuiteDetailsResponse getTestSuite(@PathVariable("project") String project, @PathVariable("testSuite") String testSuite)
-            throws IOException, SyntaxErrorException {
+            throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
         return testSuiteService.getTestSuiteDetails(project, testSuite);
     }
 }

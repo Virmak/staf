@@ -10,30 +10,12 @@ import java.util.List;
 public class TestCaseDeclaration implements IStatementBlock {
     private String name;
     private List<IStatement> statements;
-    private List<StatementReport> reports;
+    private List<StatementReport> statementReports;
     private int order;
     private boolean isDefaultOrder;
     private boolean ignored = false;
     private String filePath;
     private int lineNumber;
-
-    public TestCaseDeclaration(String name, List<IStatement> statements) {
-        this.name = name;
-        this.statements = statements;
-    }
-
-    public TestCaseDeclaration() {
-    }
-
-    @Override
-    public List<StatementReport> getStatementReports() {
-        return reports;
-    }
-
-    @Override
-    public void setStatementReports(List<StatementReport> reports) {
-        this.reports = reports;
-    }
 
     public void setDefaultOrder(int order) {
         this.order = order;

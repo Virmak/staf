@@ -3,8 +3,9 @@ package com.sparkit.staf.core.ast.types;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparkit.staf.core.ast.IStatement;
 import com.sparkit.staf.core.ast.StafTypes;
+import com.sparkit.staf.core.ast.TokenPosition;
+import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
-import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedKeywordException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
@@ -15,23 +16,20 @@ import lombok.Setter;
 import java.util.List;
 
 public class KeywordCall extends AbstractStafObject implements IStatement, IReportableBlock {
-    protected final StatementBlockExecutor blockExecutor;
-    @Getter
-    @Setter
-    protected String keywordName;
-    @Getter
-    @Setter
-    protected List<AbstractStafObject> argumentsList;
-    @Getter
-    @Setter
-    protected int lineNumber;
-    @Getter
-    @Setter
-    protected String filePath;
+    private final StatementBlockExecutor blockExecutor;
     @JsonIgnore
     @Getter
     @Setter
-    protected List<StatementReport> statementReports;
+    private List<StatementReport> statementReports;
+    @Getter
+    @Setter
+    private String keywordName;
+    @Getter
+    @Setter
+    private List<AbstractStafObject> argumentsList;
+    @Getter
+    @Setter
+    private TokenPosition position;
 
     public KeywordCall(StatementBlockExecutor blockExecutor, String keywordName, List<AbstractStafObject> argumentsList) {
         this.blockExecutor = blockExecutor;
@@ -46,16 +44,16 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
     }
 
     @Override
-    public Object evaluate(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+    public Object evaluate(MemoryMap globalSymbolsTable, MemoryMap localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         return this.execute(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
     }
 
-    public Object[] evaluateArgumentsList(SymbolsTable globalSymTable, SymbolsTable localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+    public Object[] evaluateArgumentsList(MemoryMap globalSymTable, MemoryMap localSymTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         Object[] params = new AbstractStafObject[argumentsList.size()];
         int i = 0;
-        for (AbstractStafObject arg : argumentsList) {
-            Object val = arg.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
-            params[i++] = val;
+        for (AbstractStafObject argument : argumentsList) {
+            Object argumentActualValue = argument.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
+            params[i++] = argumentActualValue;
         }
         return params;
     }
@@ -73,17 +71,17 @@ public class KeywordCall extends AbstractStafObject implements IStatement, IRepo
         } else {
             argsString = "";
         }
-        return keywordName + " [" + argsString + "] at " + getFilePath() + "  at line " + lineNumber;
+        return keywordName + " [" + argsString + "] at " + position.getFilePath() + "  at line " + position.getLine();
     }
 
     @Override
-    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable,
+    public Object execute(MemoryMap globalMemory, MemoryMap localMemory,
                           KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        blockExecutor.getCallStack().push(this, globalSymbolsTable.getSessionId());
+        blockExecutor.getCallStack().push(this, globalMemory.getSessionId());
         if (keywordLibrariesRepository.isKeywordDeclared(keywordName)) {
-            Object[] params = evaluateArgumentsList(globalSymbolsTable,
-                    localSymbolsTable, keywordLibrariesRepository);
-            return keywordLibrariesRepository.invokeKeyword(globalSymbolsTable, this, params);
+            Object[] params = evaluateArgumentsList(globalMemory,
+                    localMemory, keywordLibrariesRepository);
+            return keywordLibrariesRepository.invokeKeyword(globalMemory, this, params);
         } else {
             throw new UndefinedKeywordException(keywordName);
         }

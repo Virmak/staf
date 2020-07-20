@@ -1,8 +1,13 @@
 package com.sparkit.staf.core.runtime.loader;
 
-import com.sparkit.staf.core.ast.*;
+import com.sparkit.staf.core.ast.Assignment;
+import com.sparkit.staf.core.ast.ImportStatement;
+import com.sparkit.staf.core.ast.KeywordDeclaration;
+import com.sparkit.staf.core.ast.StafFile;
+import com.sparkit.staf.core.compiler.IStafCompiler;
 import com.sparkit.staf.core.runtime.interpreter.ImportsInterpreter;
 import com.sparkit.staf.core.runtime.interpreter.TestSuite;
+import com.sparkit.staf.core.utils.SharedConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,16 +17,15 @@ import java.util.Map;
 
 @Component
 public class StafScriptLoader implements IStafScriptLoader {
+    private final IStafCompiler stafCompiler;
+    private final ImportsInterpreter importsInterpreter;
+    @Value(SharedConstants.TEST_DIRECTORY_PROPERTY_VALUE)
+    private String testDirectory;
 
-    @Value("#{systemProperties['testDirectory']}")
-    private final String testDirectory;
     @Autowired
-    private IStafCompiler stafCompiler;
-    @Autowired
-    private ImportsInterpreter importsInterpreter;
-
-    public StafScriptLoader() {
-        testDirectory = System.getProperty("testDirectory");
+    public StafScriptLoader(IStafCompiler stafCompiler, ImportsInterpreter importsInterpreter) {
+        this.stafCompiler = stafCompiler;
+        this.importsInterpreter = importsInterpreter;
     }
 
     @Override
@@ -34,7 +38,7 @@ public class StafScriptLoader implements IStafScriptLoader {
         StafFile stafFileAST = stafCompiler.compile(filePath);
         List<ImportStatement> imports = stafFileAST.getImports();
         Map<String, Assignment> varsMap = stafFileAST.getVariableDeclarationMap();
-        Map<String, KeywordDeclaration> keywordsMap = stafFileAST.getKeywordDeclarationMap();
+        List<KeywordDeclaration> keywordDeclarations = stafFileAST.getKeywordDeclarations();
         if (stafFileAST.getTestCaseDeclarationMap() != null) {
             testSuite.getTestCaseDeclarationMap().putAll(stafFileAST.getTestCaseDeclarationMap());
         }
@@ -43,10 +47,10 @@ public class StafScriptLoader implements IStafScriptLoader {
             importsInterpreter.loadImports(imports, testSuite, currentDirectory, testDirectory);
         }
         if (varsMap != null) {
-            testSuite.getGlobalSharedSymbolsTable().addVariablesMap(varsMap, testSuite.getKeywordLibrariesRepository());
+            testSuite.getGlobalSharedMemory().addVariablesMap(varsMap, testSuite.getKeywordLibrariesRepository());
         }
-        if (keywordsMap != null) {
-            testSuite.getKeywordLibrariesRepository().addUserDefinedKeywords(keywordsMap);
+        if (keywordDeclarations != null) {
+            testSuite.getKeywordLibrariesRepository().addUserDefinedKeywords(keywordDeclarations);
         }
         testSuite.getLoadedFilesList().add(filePath);
     }

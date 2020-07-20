@@ -4,6 +4,7 @@ import com.sparkit.staf.application.models.request.CreateFileRequest;
 import com.sparkit.staf.application.models.request.RenameFileRequest;
 import com.sparkit.staf.application.models.response.CreateFileResponse;
 import com.sparkit.staf.application.models.response.RenameFileResponse;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.domain.FileType;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,19 +12,19 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class FileService {
 
-    @Value("${testDirectory}")
+    @Value(SharedConstants.TEST_DIRECTORY_PROPERTY_VALUE)
     private String testDir;
 
-    // File type 'scroll' => file, 'folder' => dir
     public void saveFile(String path, String content, FileType type) throws IOException {
         path = path.replace(testDir, "");
         File file = new File(testDir, path);
         if (type == FileType.FILE) {
-            FileUtils.writeStringToFile(file, content, "UTF-8");
+            FileUtils.writeStringToFile(file, content, StandardCharsets.UTF_8);
         } else {
             file.mkdir();
         }
@@ -34,22 +35,22 @@ public class FileService {
         String relativePath = createFileRequest.getPath().replace(testDir, "");
         File file = new File(testDir, relativePath);
         if (file.exists()) {
-            response.setResult(ProjectService.ERROR_RESULT_STRING);
-            response.setError("File already exists");
+            response.setResult(SharedConstants.ERROR_RESULT_STRING);
+            response.setError(SharedConstants.FILE_ALREADY_EXISTS);
         } else if (createFileRequest.getType() == FileType.FILE) {
             try {
-                FileUtils.writeStringToFile(file, "", "UTF-8");
-                response.setResult(ProjectService.OK_RESULT_STRING);
+                FileUtils.writeStringToFile(file, "", StandardCharsets.UTF_8);
+                response.setResult(SharedConstants.OK_RESULT_STRING);
             } catch (IOException e) {
-                response.setResult(ProjectService.ERROR_RESULT_STRING);
-                response.setError("Cannot create file");
+                response.setResult(SharedConstants.ERROR_RESULT_STRING);
+                response.setError(SharedConstants.CANNOT_CREATE_FILE);
             }
         } else {
             if (file.mkdir()) {
-                response.setResult(ProjectService.OK_RESULT_STRING);
+                response.setResult(SharedConstants.OK_RESULT_STRING);
             } else {
-                response.setResult(ProjectService.ERROR_RESULT_STRING);
-                response.setError("Cannot create directory");
+                response.setResult(SharedConstants.ERROR_RESULT_STRING);
+                response.setError(SharedConstants.CANNOT_CREATE_DIRECTORY);
             }
         }
         return response;
@@ -61,9 +62,9 @@ public class FileService {
         File fileToRename = new File(testDir, actualFilePath);
         File newFile = new File(fileToRename.getParentFile(), renameFileRequest.getNewName());
         if (fileToRename.renameTo(newFile)) {
-            response.setResult(ProjectService.OK_RESULT_STRING);
+            response.setResult(SharedConstants.OK_RESULT_STRING);
         } else {
-            response.setResult(ProjectService.ERROR_RESULT_STRING);
+            response.setResult(SharedConstants.ERROR_RESULT_STRING);
         }
         return response;
     }

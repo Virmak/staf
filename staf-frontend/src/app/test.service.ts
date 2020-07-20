@@ -1,3 +1,4 @@
+import { StafAPI } from './api-endpoints';
 import { IWebDriverOptions } from './interfaces/web-driver-options';
 import { environment } from './../environments/environment';
 import { RunTestRequest } from './interfaces/run-test-request';
@@ -25,7 +26,7 @@ export class TestService {
       return throwError({});
     }
     this.toastr.info(runTest.project + ' Tests are running', 'Test');
-    return this.http.post(baseUrl + '/runTest', runTest);
+    return this.http.post(baseUrl + StafAPI.RUN_TEST, runTest);
   }
 
   setWebDriverOptions(options: IWebDriverOptions) {
@@ -35,7 +36,11 @@ export class TestService {
   }
 
   stopTest() {
-    return this.http.post(baseUrl + '/terminateTest', {});
+    return this.http.post(baseUrl + StafAPI.TERMINATE_TEST, {});
+  }
+
+  getServerHostAddress() {
+    return this.http.get(baseUrl + StafAPI.GET_HOST_ADDRESS);
   }
 
 }

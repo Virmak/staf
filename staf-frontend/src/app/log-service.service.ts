@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class LogServiceService {
 
-  logContent;
+  logContent= '';
   debug = true;
   currentTestCase;
   totalTestCases;

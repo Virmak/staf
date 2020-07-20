@@ -12,6 +12,7 @@ import com.sparkit.staf.application.models.response.project.UpdateProjectConfigR
 import com.sparkit.staf.core.runtime.config.JsonStafProjectConfig;
 import com.sparkit.staf.core.runtime.interpreter.StatementFailedScreenshot;
 import com.sparkit.staf.core.runtime.loader.IStafProjectConfigReader;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.domain.Directory;
 import com.sparkit.staf.domain.FileType;
 import com.sparkit.staf.domain.ProjectConfig;
@@ -30,10 +31,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
-    public static final String ERROR_RESULT_STRING = "error";
-    public static final String OK_RESULT_STRING = "ok";
-    private static final String USER_DIR = "user.dir";
-    private static final String READING_FILE_ERROR = "Error reading file";
+    private final List<String> ACCEPTED_EXTENSIONS = Arrays.asList("staf", "step", "page", "steps", "txt", "json", "log", "csv");
     private final IProjectBuilder projectBuilder;
     private final IStafProjectConfigReader configReader;
     @Value("${testDirectory}")
@@ -55,7 +53,7 @@ public class ProjectService {
     }
 
     public List<String> getProjectsList() throws TestDirectoryNotFound {
-        File currentDir = new File(System.getProperty(USER_DIR));
+        File currentDir = new File(System.getProperty(SharedConstants.USER_DIR));
         File projectsDir = new File(currentDir, testDir);
         File[] files = projectsDir.listFiles();
         if (files != null) {
@@ -82,13 +80,15 @@ public class ProjectService {
 
     public Directory readDirectory(File dir) {
         Directory directory = new Directory();
-        File[] content = dir.listFiles();
-        directory.setContent(new ArrayList<>());
-        for (File file : content) {
-            if (file.isDirectory()) {
-                directory.getContent().add(readDirectory(file));
-            } else {
-                directory.getContent().add(readFile(file));
+        if (dir.exists()) {
+            File[] content = dir.listFiles();
+            directory.setContent(new ArrayList<>());
+            for (File file : content) {
+                if (file.isDirectory()) {
+                    directory.getContent().add(readDirectory(file));
+                } else {
+                    directory.getContent().add(readFile(file));
+                }
             }
         }
         directory.setName(dir.getName());
@@ -111,18 +111,10 @@ public class ProjectService {
         if (f.getName().startsWith("reports-") && f.getName().endsWith(".json")) {
             return "";
         }
-        switch (fileExtension) {
-            case "staf":
-            case "page":
-            case "step":
-            case "steps":
-            case "txt":
-            case "json":
-            case "log":
-            case "csv":
-                return readTextFile(f);
-            default:
-                return "Error : Unsupported file format!";
+        if (ACCEPTED_EXTENSIONS.contains(fileExtension)) {
+            return readTextFile(f);
+        } else {
+            return SharedConstants.UNSUPPORTED_FILE_FORMAT_ERROR;
         }
     }
 
@@ -134,7 +126,7 @@ public class ProjectService {
             return Base64.getEncoder().encodeToString(bytes);
         } catch (IOException e) {
             e.printStackTrace();
-            return READING_FILE_ERROR;
+            return SharedConstants.READING_FILE_ERROR;
         }
     }
 
@@ -142,7 +134,7 @@ public class ProjectService {
         try {
             return new String(Files.readAllBytes(Paths.get(f.getPath())));
         } catch (IOException e) {
-            return READING_FILE_ERROR;
+            return SharedConstants.READING_FILE_ERROR;
         }
     }
 
@@ -155,28 +147,30 @@ public class ProjectService {
         response.setName(request.getName());
         try {
             TestSuite testSuite = projectBuilder.buildTestSuite(request);
-            response.setResult(OK_RESULT_STRING);
+            response.setResult(SharedConstants.OK_RESULT_STRING);
             response.setContent(readDirectory(new File(testSuite.getRootPath())));
         } catch (IOException e) {
             e.printStackTrace();
-            response.setResult(ERROR_RESULT_STRING);
+            response.setResult(SharedConstants.ERROR_RESULT_STRING);
             response.setMessage(e.getMessage());
         }
         return response;
     }
 
-    public GetProjectReportsResponse getProjectReports(String projectLocation) throws IOException {
+    public GetProjectReportsResponse getProjectReportFiles(String projectLocation) throws IOException {
         GetProjectReportsResponse response = new GetProjectReportsResponse();
         response.setProjectName(projectLocation);
         response.setReportsFileNameList(new ArrayList<>());
         File projectDirectoryFile = getProjectDirectoryFile(projectLocation);
         ProjectConfig projectConfig = getProjectConfig(projectLocation);
         File reportsDirectory = new File(projectDirectoryFile, projectConfig.getReportsDir());
-        for (File testSuiteReportsDir : Objects.requireNonNull(reportsDirectory.listFiles())) {
-            response.getReportsFileNameList().addAll(
-                    Arrays.stream(Objects.requireNonNull(testSuiteReportsDir.listFiles()))
-                            .filter(f -> !f.getName().equals(StatementFailedScreenshot.SCREEN_SHOTS_DIR))
-                            .map(f -> new GetProjectReportsResponse.ReportFile(f.getName(), f.getPath())).collect(Collectors.toList()));
+        if (reportsDirectory.exists()) {
+            for (File testSuiteReportsDir : Objects.requireNonNull(reportsDirectory.listFiles())) {
+                response.getReportsFileNameList().addAll(
+                        Arrays.stream(Objects.requireNonNull(testSuiteReportsDir.listFiles()))
+                                .filter(f -> !f.getName().equals(StatementFailedScreenshot.SCREEN_SHOTS_DIR))
+                                .map(f -> new GetProjectReportsResponse.ReportFile(f.getName(), f.getPath())).collect(Collectors.toList()));
+            }
         }
         return response;
     }
@@ -186,10 +180,10 @@ public class ProjectService {
         String testSuitePath = testDir + '/' + project + '/' + testSuite;
         try {
             FileUtils.deleteDirectory(new File(testSuitePath));
-            response.setResult(OK_RESULT_STRING);
+            response.setResult(SharedConstants.OK_RESULT_STRING);
         } catch (IOException e) {
             e.printStackTrace();
-            response.setResult(ERROR_RESULT_STRING);
+            response.setResult(SharedConstants.ERROR_RESULT_STRING);
         }
         return response;
     }
@@ -215,15 +209,15 @@ public class ProjectService {
             originalConfig.setReportsDir(updateConfigRequest.getReportsDir());
             if (!originalConfig.getLocation().equals(updateConfigRequest.getLocation())) {
                 if (!updateProjectLocation(originalConfig.getLocation(), updateConfigRequest.getLocation())) {
-                    throw new IOException("Cannot rename project");
+                    throw new IOException(SharedConstants.CANNOT_RENAME_PROJECT);
                 }
                 originalConfig.setLocation(updateConfigRequest.getLocation());
             }
             projectBuilder.writeConfigFile(originalConfig, getProjectDirectoryFile(updateConfigRequest.getLocation()));
-            response.setResult(OK_RESULT_STRING);
+            response.setResult(SharedConstants.OK_RESULT_STRING);
         } catch (Exception e) {
             e.printStackTrace();
-            response.setResult(ERROR_RESULT_STRING);
+            response.setResult(SharedConstants.ERROR_RESULT_STRING);
         }
         return response;
     }
@@ -235,7 +229,7 @@ public class ProjectService {
 
     public ProjectConfig getProjectConfig(String projectLocation) throws IOException {
         File projectDirectoryFile = getProjectDirectoryFile(normalizeProjectName(projectLocation));
-        File configFile = new File(projectDirectoryFile, JsonStafProjectConfig.DEFAULT_PROJECT_CONFIG_NAME);
+        File configFile = new File(projectDirectoryFile, JsonStafProjectConfig.DEFAULT_PROJECT_CONFIG_FILE);
         return configReader.readConfigFile(configFile);
     }
 

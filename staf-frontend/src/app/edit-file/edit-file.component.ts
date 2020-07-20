@@ -32,7 +32,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
 
   pathSplitted = [];
 
-  testSuites: ITestSuite[];
+  
   editorInstance;
 
   hoverProvider: monaco.IDisposable;
@@ -125,10 +125,18 @@ export class EditFileComponent implements OnInit, OnDestroy {
     };
   }
 
+  getTestSuiteName() {
+
+  }
+
   saveFile() {
     this.fileEditorService.saveFile(this.file, () => {
-      this.projectService.compileProject(this.project.location).subscribe((compiledTestSuites: CompiledTestSuite[]) => {
-        this.project.compiledFiles = compiledTestSuites;
+      this.projectService.compileFile(this.file.path).subscribe((compiledFileResponse: any) => {
+        const projectCompiledFiles = this.project.compiledFiles;
+        Object.keys(compiledFileResponse.fileMap).forEach(filePath => {
+          projectCompiledFiles.fileMap[filePath] = compiledFileResponse.fileMap[filePath];
+        });
+        this.project.compiledFiles = projectCompiledFiles;
       });
     });
   }
@@ -186,13 +194,7 @@ export class EditFileComponent implements OnInit, OnDestroy {
     this.builtinKeywordsCompletionProvider = monaco.languages.registerCompletionItemProvider('staf', {
       triggerCharacters: ['$'],
       provideCompletionItems: (model, position) => {
-          // find out if we are completing a property in the 'dependencies' object.
           // const textUntilPosition = model.getValueInRange({startLineNumber: 1, startColumn: 1, endLineNumber: position.lineNumber, endColumn: position.column});
-          // const keywordOrTestCaseSectionMatch = textUntilPosition.match(/(?<=keywords[\s]*|test cases[\s]*|end\s*|return.*).*/gim);
-          // if (keywordOrTestCaseSectionMatch) {
-          //   console.log('section')
-          // }
-          // console.log('okokok')
           const word = model.getWordUntilPosition(position);
           if (word.word === '') { // variable
             console.log('varrr')
@@ -222,7 +224,6 @@ export class EditFileComponent implements OnInit, OnDestroy {
         const line = model.getLineContent(position.lineNumber);
 
         const keywordName = this.extractKeywordName(line, position.column.valueOf());
-
         if (keywordName) {
           const keywordDeclaration = this.getKeywordDelarationFile(
             keywordName
@@ -274,10 +275,10 @@ export class EditFileComponent implements OnInit, OnDestroy {
     if (this.project.compiledFiles) {
       for (const filePath in this.project.compiledFiles.fileMap) {
         const file = this.project.compiledFiles.fileMap[filePath];
-        if (file.keywordDeclarationMap) {
-          for (const keywordKey in file.keywordDeclarationMap) {
-            if (keywordKey.toLowerCase() == lowerCaseKeywordName) {
-              return {filePath: file.filePath, lineNumber: file.keywordDeclarationMap[keywordKey].lineNumber};
+        if (file.keywordDeclarations) {
+          for (const keywordDeclaration of file.keywordDeclarations) {
+            if (keywordDeclaration.keywordName == lowerCaseKeywordName) {
+              return {filePath: file.filePath, lineNumber: keywordDeclaration.tokenPosition.line};
             }
           }
         }

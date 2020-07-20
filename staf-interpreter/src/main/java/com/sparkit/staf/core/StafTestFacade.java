@@ -8,6 +8,7 @@ import com.sparkit.staf.core.runtime.loader.TestSuiteRunner;
 import com.sparkit.staf.core.runtime.loader.exceptions.TestSuiteMainScriptNotFoundException;
 import com.sparkit.staf.core.runtime.reports.ITestReportWriter;
 import com.sparkit.staf.core.runtime.reports.TestSuiteReport;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.domain.ProjectConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,7 +44,7 @@ public class StafTestFacade {
             setWebDriverSystemProperties(runTestRequest);
         }
 
-        logger.info("Running project '{}'", projectDir);
+        logger.info(SharedConstants.RUNNING_PROJECT, projectDir);
 
         List<CompletableFuture<List<TestSuiteReport>>> futureList = new ArrayList<>();
         for (RunTestSuite testSuite : runTestRequest.getTestSuites()) {
@@ -71,13 +72,15 @@ public class StafTestFacade {
             } catch (SyntaxErrorException | TestSuiteMainScriptNotFoundException e) {
                 e.printStackTrace();
             }
-            jsonReportWriter.write(projectConfig, runTestSuiteRequest.getName(), testSuiteReport);
+            if (testSuiteReport != null && !testSuiteReport.isEmpty()) {
+                jsonReportWriter.write(projectConfig, runTestSuiteRequest.getName(), testSuiteReport);
+            }
             return testSuiteReport;
         });
     }
 
     private String getCurrentDateTime() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(SharedConstants.YYYY_MM_DD_HH_MM_SS);
         return dateTimeFormatter.format(LocalDateTime.now());
     }
 

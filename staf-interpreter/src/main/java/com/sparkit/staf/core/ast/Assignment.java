@@ -3,69 +3,63 @@ package com.sparkit.staf.core.ast;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.ast.types.StafVariable;
-import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
+import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 public class Assignment implements IStatement, IReportableBlock {
     @Getter
-    private final AbstractStafObject object;
-    private final AbstractStafObject value;
-    private List<StatementReport> reports;
+    private final AbstractStafObject leftHandSide;
+    @Getter
+    private final AbstractStafObject rightHandSide;
+    @Getter
+    @Setter
+    private List<StatementReport> statementReports;
 
-    public Assignment(AbstractStafObject object, AbstractStafObject value) {
-        this.object = object;
-        this.value = value;
-    }
-
-    @Override
-    public List<StatementReport> getStatementReports() {
-        return reports;
-    }
-
-    @Override
-    public void setStatementReports(List<StatementReport> reports) {
-        this.reports = reports;
+    public Assignment(AbstractStafObject leftHandSide, AbstractStafObject rightHandSide) {
+        this.leftHandSide = leftHandSide;
+        this.rightHandSide = rightHandSide;
     }
 
     @Override
     public String toString() {
-        return "Assignment : " + object + " = " + value;
+        return "Assignment : " + leftHandSide + " = " + rightHandSide;
     }
 
     @Override
-    public Object execute(SymbolsTable globalSymbolsTable, SymbolsTable localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
-        if (value instanceof KeywordCall) {
-            KeywordCall keywordCall = (KeywordCall) value;
-            Object returnObj = keywordCall.execute(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
-            this.reports = keywordCall.getStatementReports();
-            if (localSymbolsTable != null && localSymbolsTable.getSymbolsMap().containsKey(object.getValue().toString())) {
-                localSymbolsTable.getSymbolsMap().put(object.getValue().toString(), returnObj);
-            } else if (globalSymbolsTable.getSymbolsMap().containsKey(object.getValue().toString())) {
-                globalSymbolsTable.getSymbolsMap().put(object.getValue().toString(), returnObj);
-            } else if (localSymbolsTable != null) {
-                localSymbolsTable.getSymbolsMap().put(object.getValue().toString(), returnObj);
+    public Object execute(MemoryMap globalMemory, MemoryMap localMemory, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+        if (rightHandSide instanceof KeywordCall) {
+            KeywordCall keywordCall = (KeywordCall) rightHandSide;
+            Object returnObj = keywordCall.execute(globalMemory, localMemory, keywordLibrariesRepository);
+            this.statementReports = keywordCall.getStatementReports();
+            if (localMemory != null && localMemory.getVariablesMap().containsKey(leftHandSide.getValue().toString())) {
+                localMemory.getVariablesMap().put(leftHandSide.getValue().toString(), returnObj);
+            } else if (globalMemory.getVariablesMap().containsKey(leftHandSide.getValue().toString())) {
+                globalMemory.getVariablesMap().put(leftHandSide.getValue().toString(), returnObj);
+            } else if (localMemory != null) {
+                localMemory.getVariablesMap().put(leftHandSide.getValue().toString(), returnObj);
             }
             return returnObj;
         }
-        if (localSymbolsTable != null && localSymbolsTable.getSymbolsMap().containsKey(object.getValue().toString())) {
-            localSymbolsTable.getSymbolsMap().put(object.getValue().toString(),
-                    value.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository));
-        } else if (globalSymbolsTable.getSymbolsMap().containsKey(object.getValue().toString())) {
-            globalSymbolsTable.getSymbolsMap().put(object.getValue().toString(),
-                    value.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository));
-        } else if (localSymbolsTable != null) {
-            localSymbolsTable.getSymbolsMap().put(object.getValue().toString(),
-                    value.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository));
+        if (localMemory != null && localMemory.getVariablesMap().containsKey(leftHandSide.getValue().toString())) {
+            localMemory.getVariablesMap().put(leftHandSide.getValue().toString(),
+                    rightHandSide.evaluate(globalMemory, localMemory, keywordLibrariesRepository));
+        } else if (globalMemory.getVariablesMap().containsKey(leftHandSide.getValue().toString())) {
+            globalMemory.getVariablesMap().put(leftHandSide.getValue().toString(),
+                    rightHandSide.evaluate(globalMemory, localMemory, keywordLibrariesRepository));
+        } else if (localMemory != null) {
+            localMemory.getVariablesMap().put(leftHandSide.getValue().toString(),
+                    rightHandSide.evaluate(globalMemory, localMemory, keywordLibrariesRepository));
         }
 
-        if (value instanceof Expression || value instanceof StafVariable) {
-            return value.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
+        if (rightHandSide instanceof Expression || rightHandSide instanceof StafVariable) {
+            return rightHandSide.evaluate(globalMemory, localMemory, keywordLibrariesRepository);
         }
-        return (value);
+        return (rightHandSide);
     }
 }

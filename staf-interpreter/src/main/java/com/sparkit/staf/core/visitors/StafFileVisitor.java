@@ -3,6 +3,8 @@ package com.sparkit.staf.core.visitors;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.parser.StafBaseVisitor;
 import com.sparkit.staf.core.parser.StafParser;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class StafFileVisitor extends StafBaseVisitor<Object> {
@@ -14,15 +16,9 @@ public class StafFileVisitor extends StafBaseVisitor<Object> {
     private KeywordDeclarationsSectionVisitor keywordDeclarationsSectionVisitor;
     @Autowired
     private TestCaseDeclarationsSectionVisitor testCaseDeclarationsSectionVisitor;
+    @Getter
+    @Setter
     private String filePath;
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
 
     @Override
     public Object visitStaf_file(StafParser.Staf_fileContext ctx) {
@@ -41,7 +37,7 @@ public class StafFileVisitor extends StafBaseVisitor<Object> {
         }
         StafParser.Keywords_sectionContext keywordsSectionContext = ctx.keywords_section();
         if (keywordsSectionContext != null) {
-            stafFile.setKeywordDeclarationMap(keywordDeclarationsSectionVisitor.visitKeywords_section(keywordsSectionContext));
+            stafFile.setKeywordDeclarations(keywordDeclarationsSectionVisitor.visitKeywords_section(keywordsSectionContext));
         }
         StafParser.Test_cases_sectionContext testCasesSectionContext = ctx.test_cases_section();
         if (testCasesSectionContext != null) {

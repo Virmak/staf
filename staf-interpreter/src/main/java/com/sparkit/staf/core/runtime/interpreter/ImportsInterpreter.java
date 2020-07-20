@@ -5,6 +5,7 @@ import com.sparkit.staf.core.ast.ImportTypes;
 import com.sparkit.staf.core.runtime.libs.AbstractStafLibrary;
 import com.sparkit.staf.core.runtime.libs.BuiltInLibraryFactory;
 import com.sparkit.staf.core.runtime.loader.IStafScriptLoader;
+import com.sparkit.staf.core.utils.SharedConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class ImportsInterpreter implements IImportsInterpreter {
         for (ImportStatement statement : importStatements) {
             if (statement.getType() == ImportTypes.BUILT_IN_LIBRARY) {
                 String libClassName = statement.getPath().substring(0, 1).toUpperCase()
-                        + statement.getPath().toLowerCase().substring(1) + "Library";
+                        + statement.getPath().toLowerCase().substring(1) + SharedConstants.LIBRARY;
                 testSuite.getKeywordLibrariesRepository().registerLibrary(librariesClassesMap.get(libClassName));
             } else {
                 File directory = new File(currentDirectory);
@@ -38,8 +39,8 @@ public class ImportsInterpreter implements IImportsInterpreter {
                 try {
                     scriptBuilder.load(testSuite, importedFileAbsolutePath);
                 } catch (NoSuchFileException e) {
-                    logger.error("Cannot find imported file '{}' at file [{}] on line {}", statement.getPath(),
-                            statement.getTokenPosition().getFilePath().replace(testDirectory +"/", ""),
+                    logger.error(SharedConstants.CANNOT_FIND_IMPORTED_FILE, statement.getPath(),
+                            statement.getTokenPosition().getFilePath().replace(testDirectory + "/", ""),
                             statement.getTokenPosition().getLine());
                     throw e;
                 }

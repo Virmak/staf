@@ -1,4 +1,3 @@
-
     <form clrForm (submit)="saveWebDriverOptions()">
 
         <clr-toggle-container>
@@ -60,6 +59,14 @@
             </select>
         </clr-select-container>
 
+        <p *ngIf="remoteWebDriver">Web driver connection 
+            <clr-signpost>
+                <clr-signpost-content *clrIfOpen>
+                    <h3 style="margin-top: 0">Run web driver on your machine</h3>
+                    <p>Chrome driver example: <code class="clr-code">chromedriver --whitelisted-ips="{{serverIp}}"</code></p>
+                </clr-signpost-content>
+            </clr-signpost>
+        </p>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline" (click)="hideModal()">Cancel</button>
             <button type="submit" class="btn btn-primary">Ok</button>

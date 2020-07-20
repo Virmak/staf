@@ -1,6 +1,5 @@
 package com.sparkit.staf.core.runtime.interpreter.expression;
 
-import com.sparkit.staf.core.ast.Expression;
 import com.sparkit.staf.core.ast.ExpressionOperator;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.StafDouble;

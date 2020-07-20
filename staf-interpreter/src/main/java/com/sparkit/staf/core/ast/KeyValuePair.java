@@ -1,7 +1,9 @@
 package com.sparkit.staf.core.ast;
 
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
+import lombok.Data;
 
+@Data
 public class KeyValuePair {
     protected String key;
     protected AbstractStafObject value;
@@ -14,19 +16,4 @@ public class KeyValuePair {
         this.value = value;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public AbstractStafObject getValue() {
-        return value;
-    }
-
-    public void setValue(AbstractStafObject value) {
-        this.value = value;
-    }
 }

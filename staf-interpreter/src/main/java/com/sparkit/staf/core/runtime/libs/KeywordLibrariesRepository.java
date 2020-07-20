@@ -2,12 +2,12 @@ package com.sparkit.staf.core.runtime.libs;
 
 import com.sparkit.staf.core.ast.KeywordDeclaration;
 import com.sparkit.staf.core.ast.types.KeywordCall;
+import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
-import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
-import com.sparkit.staf.core.runtime.libs.builtin.selenium.SeleniumLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
+import com.sparkit.staf.core.utils.SharedConstants;
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public class KeywordLibrariesRepository {
         for (Method method : libClass.getMethods()) {
             if (method.isAnnotationPresent(Keyword.class)) {
                 Keyword keywordAnnotation = method.getAnnotation(Keyword.class);
-                String keywordString = normalizeKeywordName(keywordAnnotation.name());
+                String keywordString = keywordAnnotation.name();
                 if (builtinKeywordMap.containsKey(keywordString)) {
                     throw new KeywordAlreadyRegisteredException(keywordString);
                 } else {
@@ -53,21 +53,20 @@ public class KeywordLibrariesRepository {
         }
     }
 
-    public void clearUserDefinedKeywordsMap() {
-        userDefinedKeywords.clear();
-    }
-
-    public void addUserDefinedKeywords(Map<String, KeywordDeclaration> keywordDeclarationMap) {
-        for (Map.Entry<String, KeywordDeclaration> keywordDeclaration : keywordDeclarationMap.entrySet()) {
-            if (isKeywordDeclared(normalizeKeywordName(keywordDeclaration.getKey()))) {
-                throw new KeywordAlreadyRegisteredException(keywordDeclaration.getKey());
+    public void addUserDefinedKeywords(List<KeywordDeclaration> keywordDeclarations) {
+        for (KeywordDeclaration keywordDeclaration : keywordDeclarations) {
+            if (userDefinedKeywords.containsKey(keywordDeclaration.getKeywordName())) {
+                throw new KeywordAlreadyRegisteredException(userDefinedKeywords.get(keywordDeclaration.getKeywordName()), keywordDeclaration);
+            } else if (builtinKeywordMap.containsKey(keywordDeclaration.getKeywordName())) {
+                BuiltInLibraryKeywordWrapper keyword = builtinKeywordMap.get(keywordDeclaration.getKeywordName());
+                throw new KeywordAlreadyRegisteredException(keywordDeclaration.getKeywordName(), keyword.getLibInstance().libraryName);
             }
-            userDefinedKeywords.put(normalizeKeywordName(keywordDeclaration.getKey()), keywordDeclaration.getValue());
+            userDefinedKeywords.put(keywordDeclaration.getKeywordName(), keywordDeclaration);
         }
     }
 
-    public Object invokeKeyword(SymbolsTable globalSymbolsTable, KeywordCall keyword, Object[] params) throws Throwable {
-        String normalizedKeywordName = normalizeKeywordName(keyword.getKeywordName());
+    public Object invokeKeyword(MemoryMap globalSymbolsTable, KeywordCall keyword, Object[] params) throws Throwable {
+        String normalizedKeywordName = keyword.getKeywordName();
 
         logger.debug("Invoking Keyword : {}", keyword);
         if (builtinKeywordMap.containsKey(normalizedKeywordName)) {
@@ -79,7 +78,7 @@ public class KeywordLibrariesRepository {
                 ret = builtinKeywordMap.get(normalizedKeywordName).invoke(dependencies);
                 statementBlockExecutor.getCallStack().pop(globalSymbolsTable.getSessionId());
                 if (ret instanceof WebDriver) { // this is used by selenium library (open browser) keyword to save an instance of web driver in global sym table
-                    globalSymbolsTable.setSymbolValue(SeleniumLibrary.WEB_DRIVER_KEY, ret);
+                    globalSymbolsTable.setVariableValue(SharedConstants.WEB_DRIVER_MEMORY_KEY, ret);
                     return null;
                 }
                 return ret;
@@ -99,19 +98,14 @@ public class KeywordLibrariesRepository {
     }
 
     public boolean isKeywordDeclared(String keyword) {
-        String normalized = normalizeKeywordName(keyword);
-        return builtinKeywordMap.containsKey(normalized) || userDefinedKeywords.containsKey(normalized);
+        return builtinKeywordMap.containsKey(keyword) || userDefinedKeywords.containsKey(keyword);
     }
 
-    public String normalizeKeywordName(String keyword) {
-        return keyword.toLowerCase().replaceAll("\\s*", "");
-    }
-
-    private List<Object> injectKeywordDependencies(SymbolsTable symbolsTable, KeywordCall keywordCall, BuiltInLibraryKeywordWrapper keywordWrapper) { // Fetch variables requested using keyword method @Inject annotation from globalSymbolsTable
+    private List<Object> injectKeywordDependencies(MemoryMap symbolsTable, KeywordCall keywordCall, BuiltInLibraryKeywordWrapper keywordWrapper) { // Fetch variables requested using keyword method @Inject annotation from globalSymbolsTable
         List<Object> keywordDependencies = new ArrayList<>();
-        symbolsTable.setSymbolValue("__keyword__", keywordCall);
+        symbolsTable.setVariableValue(SharedConstants.CURRENT_KEYWORD_MEMORY_KEY, keywordCall);
         for (String dep : keywordWrapper.getInjectAnnotatedParams()) {
-            keywordDependencies.add(symbolsTable.getSymbolValue(dep));
+            keywordDependencies.add(symbolsTable.getVariableValue(dep));
         }
         return keywordDependencies;
     }

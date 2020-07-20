@@ -1,11 +1,10 @@
 package com.sparkit.staf.core.ast;
 
-import com.sparkit.staf.core.Main;
 import com.sparkit.staf.core.ast.types.AbstractStafObject;
 import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.runtime.interpreter.IStatementBlock;
+import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
-import com.sparkit.staf.core.runtime.interpreter.SymbolsTable;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.InvalidArgsNumberKeywordCallException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedKeywordException;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
@@ -20,35 +19,31 @@ import java.util.List;
 
 @Data
 public class KeywordDeclaration implements IStatementBlock {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final Logger logger = LoggerFactory.getLogger(KeywordDeclaration.class);
     private String keywordName;
     private List<String> argsList;
     private List<IStatement> statementList;
     private AbstractStafObject returnObject;
-    private String file;
-    private int lineNumber;
     private List<StatementReport> reports;
-
-    public KeywordDeclaration() {
-    }
-
-    public Object execute(StatementBlockExecutor statementBlockExecutor, SymbolsTable globalSymTable,
+    private TokenPosition tokenPosition;
+    
+    public Object execute(StatementBlockExecutor statementBlockExecutor, MemoryMap globalSymTable,
                           KeywordLibrariesRepository keywordLibrariesRepository,
                           Object[] params) throws Throwable {
         reports = new ArrayList<>();
-        SymbolsTable localSymTable = new SymbolsTable();
-        evaluateArgs(globalSymTable, localSymTable, keywordLibrariesRepository, params);
-        reports = statementBlockExecutor.execute(this, null, globalSymTable, localSymTable, keywordLibrariesRepository);
+        MemoryMap localMemory = new MemoryMap();
+        evaluateArgs(globalSymTable, localMemory, keywordLibrariesRepository, params);
+        reports = statementBlockExecutor.execute(this, null, globalSymTable, localMemory, keywordLibrariesRepository);
         KeywordCall keywordCall = statementBlockExecutor.getCallStack().pop(globalSymTable.getSessionId());
         keywordCall.setStatementReports(reports);
         if (returnObject != null) {
-            return returnObject.evaluate(globalSymTable, localSymTable, keywordLibrariesRepository);
+            return returnObject.evaluate(globalSymTable, localMemory, keywordLibrariesRepository);
         }
         return null;
     }
 
-    private void evaluateArgs(SymbolsTable globalSymbolsTable,
-                              SymbolsTable localSymTable,
+    private void evaluateArgs(MemoryMap globalSymbolsTable,
+                              MemoryMap localSymTable,
                               KeywordLibrariesRepository keywordLibrariesRepository,
                               Object[] params) throws Throwable {
 
@@ -56,7 +51,7 @@ public class KeywordDeclaration implements IStatementBlock {
             throw new InvalidArgsNumberKeywordCallException(argsList.size(), params.length, keywordName);
 
         for (int i = 0; i < params.length; i++) {
-            localSymTable.setSymbolValue(argsList.get(i), params[i]);
+            localSymTable.setVariableValue(argsList.get(i), params[i]);
             AbstractStafObject stafObject = (AbstractStafObject) params[i];
             StafTypes type;
             try {
@@ -65,21 +60,21 @@ public class KeywordDeclaration implements IStatementBlock {
                 throw new UndefinedVariableException((String) params[i]);
             }
             if (type == StafTypes.VAR_REF) {
-                AbstractStafObject valObj = (AbstractStafObject) globalSymbolsTable.getSymbolValue(stafObject.getValue().toString());
+                AbstractStafObject valObj = (AbstractStafObject) globalSymbolsTable.getVariableValue(stafObject.getValue().toString());
                 if (valObj == null) {
                     throw new UndefinedVariableException(stafObject.getValue().toString());
                 }
-                localSymTable.setSymbolValue(argsList.get(i), valObj);
+                localSymTable.setVariableValue(argsList.get(i), valObj);
             } else if (stafObject.getType() == StafTypes.KEYWORD_CALL) {
                 KeywordCall keywordCall = (KeywordCall) stafObject.getValue();
                 if (keywordLibrariesRepository.isKeywordDeclared(keywordCall.getKeywordName())) {
-                    localSymTable.setSymbolValue(argsList.get(i),
+                    localSymTable.setVariableValue(argsList.get(i),
                             keywordLibrariesRepository.invokeKeyword(globalSymbolsTable, keywordCall, keywordCall.getArgumentsList().toArray()));
                 } else {
                     throw new UndefinedKeywordException(keywordCall.getKeywordName());
                 }
             } else {
-                localSymTable.setSymbolValue(argsList.get(i), params[i]);
+                localSymTable.setVariableValue(argsList.get(i), params[i]);
             }
         }
     }

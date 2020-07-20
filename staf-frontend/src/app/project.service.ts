@@ -14,6 +14,7 @@ import { IFile, FileType } from './interfaces/ifile';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { IGenericResponse, GenericResponse } from './interfaces/igeneric-response';
 import { IGetImage64 } from './interfaces/i-getimage64';
+import { StafAPI } from './api-endpoints';
 
 const baseUrl = environment.resolveApi();
 
@@ -48,7 +49,7 @@ export class ProjectService {
 
   fetchAllProjects(errCallback = null) {
     this.toastr.info('Loading projects');
-    this.http.get(baseUrl + '/projects').subscribe((projects: any) => {
+    this.http.get(baseUrl + StafAPI.GET_PROJECTS).subscribe((projects: any) => {
       this.testDirectory = projects.path;
       this.projects = projects.content.map(this.createProject.bind(this))
         .filter(p => p != null);
@@ -59,7 +60,7 @@ export class ProjectService {
   }
 
   fetchProject(project: StafProject) {
-    this.http.get(baseUrl + '/projects/' + project.location)
+    this.http.get(baseUrl + StafAPI.GET_PROJECTS + '/' + project.location)
       .subscribe((projectDirectory: any) => {
         const project = this.createProject(projectDirectory);
         const projectIndex = this.projects.findIndex(p => p.name === project.name);
@@ -81,7 +82,7 @@ export class ProjectService {
     return this.projects;
   }
 
-  createFile(parent: IDirectory, project: StafProject, filename: string, type: FileType) {debugger;
+  createFile(parent: IDirectory, project: StafProject, filename: string, type: FileType) {
     const filePath = parent.path + '/' + filename;
     if (type == FileType.File) {
       let file: IFile = {
@@ -130,7 +131,7 @@ export class ProjectService {
   }
 
   createNewFile(file: IFile) {
-    return this.http.post(baseUrl + '/createFile', file);
+    return this.http.post(baseUrl + StafAPI.CREATE_FILE, file);
   }
 
   showDeleteFileDialog(file: IFile, parent) {
@@ -148,7 +149,7 @@ export class ProjectService {
 
   deleteFile(file, parent) {
     const errorToastr = () => this.toastr.error('Error deleting file', 'Error');
-    this.http.delete(baseUrl + '/deleteFile/' + file.path.replace(/\//g, '<sep>'))
+    this.http.delete(baseUrl + StafAPI.DELETE_FILE + '/' + file.path.replace(/\//g, '<sep>'))
       .subscribe((res: any) => {
         if (res.result == 'ok') {
           const fileKey = file.type === FileType.File ? file.path : file.name;
@@ -162,7 +163,7 @@ export class ProjectService {
 
   deleteTestSuite(testSuite: ITestSuite, project:StafProject) {
     const errorToastr = () => this.toastr.error('Error deleting test suite', 'Error');
-    this.http.delete(baseUrl + '/testSuite/' + project.getNormalizedProjectName() + '/' + testSuite.name)
+    this.http.delete(baseUrl + StafAPI.DELETE_TEST_SUITE + '/' + project.getNormalizedProjectName() + '/' + testSuite.name)
       .subscribe((res: any) => {
         if (res.result == 'ok') {
           const testSuiteIndex = project.testSuites.findIndex(ts => ts.id == testSuite.id);
@@ -218,11 +219,15 @@ export class ProjectService {
   }
 
   compileProject(projectLocation) {
-    return this.http.get(baseUrl + '/compileProject/' + projectLocation);
+    return this.http.get(baseUrl + StafAPI.COMPILE_PROJECT + '/' + projectLocation);
+  }
+
+  compileFile(filePath) {
+    return this.http.get(baseUrl + StafAPI.COMPILE_FILE + '?filePath=' + filePath);
   }
 
   addProject(project: IStafProject) {
-    this.http.post(baseUrl + '/projects', project)
+    this.http.post(baseUrl + StafAPI.CREATE_PROJECT, project)
       .subscribe((res: any) => {
         if (res.error) {
           this.toastr.error('Another project with the same name already exists', 'Error');
@@ -280,23 +285,23 @@ export class ProjectService {
       path: file.path,
       type: file.type
     }
-    return this.http.post(baseUrl + '/saveFile', payload);
+    return this.http.post(baseUrl + StafAPI.SAVE_FILE, payload);
   }
 
   getImage(screenShotPath: string): Observable<IGetImage64> {
-    return this.http.get<IGetImage64>(baseUrl + "/screenshot/" + screenShotPath.replace(/\//g, '<sep>'));
+    return this.http.get<IGetImage64>(baseUrl + StafAPI.GET_SCREENSHOT + '/' + screenShotPath.replace(/\//g, '<sep>'));
   }
 
   getReports(projectLocation: string) { // Get a flat list of all reports files
-    return this.http.get(baseUrl + "/projectReports/" + projectLocation);
+    return this.http.get(baseUrl + StafAPI.GET_PROJECT_REPORTS + '/' + projectLocation);
   }
 
   getTestReport(filePath: string) { // Get a specific test report file
-    return this.http.get(baseUrl + '/testReport/' + filePath.replace(/\//g, '<sep>'));
+    return this.http.get(baseUrl + StafAPI.GET_TEST_REPORT_FILE + '/' + filePath.replace(/\//g, '<sep>'));
   }
 
   getProjectReportsDirectory(projectLocaiton: string) {
-    return this.http.get(baseUrl + '/projects/reportsDir/' + projectLocaiton);
+    return this.http.get(baseUrl + StafAPI.GET_REPORTS_DIRECTORY + '/' + projectLocaiton);
   }
 
   searchFilesByExtension(project: StafProject, extension: string) {
@@ -327,7 +332,7 @@ export class ProjectService {
       oldTestSuiteName: testSuite.name,
       newTesSuiteName: newName
     }
-    return this.http.put(baseUrl + '/testSuite', payload)
+    return this.http.put(baseUrl + StafAPI.RENAME_TEST_SUITE, payload)
       .subscribe((response: IGenericResponse) => {
         if (response.result == GenericResponse.Ok) {
           this.toastr.success('Test suite renamed successfully');
@@ -344,7 +349,7 @@ export class ProjectService {
       newProjectName: newName,
       description
     }
-    this.http.put(baseUrl + '/projects', payload)
+    this.http.put(baseUrl + StafAPI.UPDATE_PROJECT, payload)
     .subscribe((response: IGenericResponse) => {
       if (response.result == GenericResponse.Ok) {
         this.toastr.success('Project updated successfully');
@@ -365,7 +370,7 @@ export class ProjectService {
       logDir: logDirectory,
       reportsDir: reportDirectory,
     };
-    this.http.put(baseUrl + '/projects/config/' + originalLocation, payload)
+    this.http.put(baseUrl + StafAPI.UPDATE_PROJECT_CONFIG + '/' + originalLocation, payload)
     .subscribe((response: IGenericResponse) => {
       if (response.result == GenericResponse.Ok) {
         this.toastr.success('Project config updated successfully');
@@ -393,7 +398,7 @@ export class ProjectService {
       filePath: file.path,
       newName
     };
-    this.http.put(baseUrl + '/renameFile', payload).subscribe((res: any) => {
+    this.http.put(baseUrl + StafAPI.RENAME_FILE, payload).subscribe((res: any) => {
       if (res.result == GenericResponse.Ok) {
         this.toastr.success('File renamed', 'Success');
         const originalName = file.name;
@@ -410,7 +415,7 @@ export class ProjectService {
   }
 
   fetchDirectory(directory: IDirectory, parent: IDirectory, originalName: string) {
-    this.http.get(baseUrl + '/directory?path=' + directory.path)
+    this.http.get(baseUrl + StafAPI.GET_DIRECTORY + '?path=' + directory.path)
       .subscribe((res: any) => {
         const newDirectoryContent = this.testSuiteService.readDirectory(res);
         directory.content = newDirectoryContent;
@@ -429,6 +434,6 @@ export class ProjectService {
   uploadProject(projectFile) {
     const data: FormData = new FormData();
     data.append('file', projectFile);
-    return this.http.post(baseUrl + '/projects/upload', data);
+    return this.http.post(baseUrl + StafAPI.UPLOAD_PROJECT, data);
   }
 }

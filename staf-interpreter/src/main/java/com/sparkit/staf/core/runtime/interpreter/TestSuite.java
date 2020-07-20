@@ -12,7 +12,7 @@ public class TestSuite {
     @Getter
     private final String testSuiteName;
     @Getter
-    private final SymbolsTable globalSharedSymbolsTable; // shared symbols table between test sessions (threads)
+    private final MemoryMap globalSharedMemory; // shared symbols table between test sessions (threads)
     @Getter
     private final KeywordLibrariesRepository keywordLibrariesRepository;
     @Getter
@@ -25,11 +25,11 @@ public class TestSuite {
     @Setter
     private Map<String, TestCaseDeclaration> testCaseDeclarationMap = new HashMap<>();
 
-    public TestSuite(String testSuiteName, String testDirectory, SymbolsTable symbolsTable,
+    public TestSuite(String testSuiteName, String testDirectory, MemoryMap globalSharedMemory,
                      KeywordLibrariesRepository keywordLibrariesRepository, Map<String, RunTestCase> selectedTestCaseMap) {
         this.testSuiteName = testSuiteName;
         this.testDirectory = testDirectory;
-        this.globalSharedSymbolsTable = symbolsTable;
+        this.globalSharedMemory = globalSharedMemory;
         this.keywordLibrariesRepository = keywordLibrariesRepository;
         this.selectedTestCaseMap = selectedTestCaseMap;
     }

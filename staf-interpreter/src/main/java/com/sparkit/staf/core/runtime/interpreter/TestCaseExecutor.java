@@ -2,9 +2,9 @@ package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.ast.TestCaseDeclaration;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.FatalErrorException;
-import com.sparkit.staf.core.runtime.loader.IStafProjectConfigReader;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestResult;
 import org.slf4j.Logger;
@@ -28,23 +28,23 @@ public class TestCaseExecutor {
     @Autowired
     private StatementBlockExecutor statementBlockExecutor;
 
-    @Value("${testDirectory}")
+    @Value(SharedConstants.TEST_DIRECTORY_PROPERTY_VALUE)
     private String testDirectory;
 
 
     public TestCaseReport executeTestCase(TestSuite testSuite, String testCaseName, TestCaseDeclaration testCaseDeclaration,
-                                          SymbolsTable globalSymTable, ProjectConfig projectConfig) {
+                                          MemoryMap globalSymTable, ProjectConfig projectConfig) {
         TestCaseReport testCaseReport = createTestCaseReport(testSuite.getTestSuiteName(), testCaseName);
         String lastErrorMessage = null;
-        logger.info("Started executing test case : [{}]", testCaseDeclaration.getName());
+        logger.info(SharedConstants.STARTED_EXECUTING_TEST_CASES, testCaseDeclaration.getName());
         OnStatementFailed statementFailed = takeScreenshot(testCaseReport, testSuite, globalSymTable, projectConfig, testCaseName);
         statementBlockExecutor.setStatementFailed(statementFailed);
         try {
-            SymbolsTable localSymTable = new SymbolsTable();
-            autowireCapableBeanFactory.autowireBean(localSymTable);
+            MemoryMap localMemory = new MemoryMap();
+            autowireCapableBeanFactory.autowireBean(localMemory);
             testCaseReport.setStatementReports(
                     statementBlockExecutor.execute(testCaseDeclaration, statementFailed, globalSymTable,
-                            localSymTable, testSuite.getKeywordLibrariesRepository()));
+                            localMemory, testSuite.getKeywordLibrariesRepository()));
             if (!testCasePass(testCaseReport)) {
                 testCaseReport.setResult(TestResult.Fail);
             }
@@ -54,13 +54,13 @@ public class TestCaseExecutor {
             }
             testCaseReport.setResult(TestResult.Fail);
             lastErrorMessage = e.getMessage();
-            logger.error("Executing statement failed at [{}] : {} | {}", testSuite, testCaseDeclaration.getName(), e.getMessage());
+            logger.error(SharedConstants.EXECUTING_STATEMENT_FAILED, testSuite, testCaseDeclaration.getName(), e.getMessage());
             e.printStackTrace();
         }
         testCaseReport.setEnd(LocalDateTime.now());
         testCaseReport.setErrorMessage(lastErrorMessage);
 
-        logger.info("Finished executing test case : [{}] {} ", testCaseDeclaration.getName(), testCaseReport.getResult());
+        logger.info(SharedConstants.FINISHED_EXECUTING_TEST_CASES, testCaseDeclaration.getName(), testCaseReport.getResult());
         return testCaseReport;
     }
 
@@ -85,7 +85,7 @@ public class TestCaseExecutor {
 
     @Bean()
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public OnStatementFailed takeScreenshot(TestCaseReport testCaseReport, TestSuite testSuite, SymbolsTable sessionSymbolsTable,
+    public OnStatementFailed takeScreenshot(TestCaseReport testCaseReport, TestSuite testSuite, MemoryMap sessionSymbolsTable,
                                             ProjectConfig projectConfig, String testCaseName) {
         return new StatementFailedScreenshot(testCaseReport, testSuite, projectConfig, statementBlockExecutor, sessionSymbolsTable, testDirectory, testCaseName);
     }

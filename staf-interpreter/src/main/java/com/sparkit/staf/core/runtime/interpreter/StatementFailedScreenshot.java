@@ -6,6 +6,7 @@ import com.sparkit.staf.core.ast.types.StafString;
 import com.sparkit.staf.core.runtime.libs.builtin.selenium.SeleniumLibrary;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
 import com.sparkit.staf.core.runtime.reports.TestCaseReport;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.TestResult;
 import org.slf4j.Logger;
@@ -24,18 +25,18 @@ public class StatementFailedScreenshot implements OnStatementFailed {
     private final TestSuite testSuite;
     private final ProjectConfig config;
     private final StatementBlockExecutor statementBlockExecutor;
-    private final SymbolsTable sessionGlobalSymbolsTable;
+    private final MemoryMap sessionGlobalMemory;
     private final String testDirectory;
     private final String testCaseName;
 
     public StatementFailedScreenshot(TestCaseReport testCaseReport, TestSuite testSuite, ProjectConfig config,
-                                     StatementBlockExecutor statementBlockExecutor, SymbolsTable sessionGlobalSymbolsTable,
+                                     StatementBlockExecutor statementBlockExecutor, MemoryMap sessionGlobalMemory,
                                      String testDirectory, String testCaseName) {
         this.testCaseReport = testCaseReport;
         this.testSuite = testSuite;
         this.config = config;
         this.statementBlockExecutor = statementBlockExecutor;
-        this.sessionGlobalSymbolsTable = sessionGlobalSymbolsTable;
+        this.sessionGlobalMemory = sessionGlobalMemory;
         this.testDirectory = testDirectory;
         this.testCaseName = testCaseName;
     }
@@ -43,17 +44,18 @@ public class StatementFailedScreenshot implements OnStatementFailed {
     @Override
     public void execute(StatementReport statementReport) {
         testCaseReport.setResult(TestResult.Fail);
-        if (!testSuite.getKeywordLibrariesRepository().hasLibrary(SeleniumLibrary.class) || !testSuite.getKeywordLibrariesRepository().isKeywordDeclared(CAPTURE_SCREENSHOT_KEYWORD_NAME)) {
+        if (!testSuite.getKeywordLibrariesRepository().hasLibrary(SeleniumLibrary.class)
+                || !testSuite.getKeywordLibrariesRepository().isKeywordDeclared(CAPTURE_SCREENSHOT_KEYWORD_NAME)) {
             return;
         }
         StafString screenShotPath = new StafString(getScreenshotPath());
         try {
             KeywordCall captureScreenshotKeyword = new KeywordCall(statementBlockExecutor,
                     CAPTURE_SCREENSHOT_KEYWORD_NAME, Arrays.asList(new AbstractStafObject[]{screenShotPath}));
-            captureScreenshotKeyword.execute(sessionGlobalSymbolsTable, null, testSuite.getKeywordLibrariesRepository());
+            captureScreenshotKeyword.execute(sessionGlobalMemory, null, testSuite.getKeywordLibrariesRepository());
         } catch (EmptyStackException e) {
-            logger.error("No browser open");
-            statementReport.setErrorMessage("No browser open");
+            logger.error(SharedConstants.NO_BROWSER_OPEN_ERROR);
+            statementReport.setErrorMessage(SharedConstants.NO_BROWSER_OPEN_ERROR);
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

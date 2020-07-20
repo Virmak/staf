@@ -1,9 +1,12 @@
 package com.sparkit.staf.core.runtime.interpreter.exceptions;
 
 import com.sparkit.staf.core.ast.IStatement;
+import lombok.Getter;
 
 public class StafRuntimeException extends Exception {
+    @Getter
     private String keywordName;
+    @Getter
     private IStatement statement;
 
     public StafRuntimeException() {
@@ -37,21 +40,5 @@ public class StafRuntimeException extends Exception {
     public StafRuntimeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, String keywordName) {
         super(message, cause, enableSuppression, writableStackTrace);
         this.keywordName = keywordName;
-    }
-
-    public String getKeywordName() {
-        return keywordName;
-    }
-
-    public void setKeywordName(String keywordName) {
-        this.keywordName = keywordName;
-    }
-
-    public IStatement getStatement() {
-        return statement;
-    }
-
-    public void setStatement(IStatement statement) {
-        this.statement = statement;
     }
 }
