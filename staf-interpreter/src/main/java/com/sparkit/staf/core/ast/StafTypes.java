@@ -8,9 +8,11 @@ public enum StafTypes {
     LIST,
     DICTIONARY,
     VAR_REF,
-    LIST_ITEM_REF,
+    BRACKETS_ITEM_ACCESS,
     DICT_ITEM_REF,
     KEYWORD_CALL,
     KEYWORD_REFERENCE,
     EXPRESSION,
+    DOT_ITEM_ACCESS,
+    ;
 }

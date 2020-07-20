@@ -1,5 +1,6 @@
 package com.sparkit.staf.application.service;
 
+import com.google.common.collect.ImmutableList;
 import com.sparkit.staf.application.IProjectBuilder;
 import com.sparkit.staf.application.exception.ProjectNameAlreadyExist;
 import com.sparkit.staf.application.exception.TestDirectoryNotFound;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
-    private final List<String> ACCEPTED_EXTENSIONS = Arrays.asList("staf", "step", "page", "steps", "txt", "json", "log", "csv");
+    private final ImmutableList<String> ACCEPTED_EXTENSIONS = ImmutableList.of("staf", "step", "page", "steps", "txt", "json", "log", "csv");
     private final IProjectBuilder projectBuilder;
     private final IStafProjectConfigReader configReader;
     @Value("${testDirectory}")

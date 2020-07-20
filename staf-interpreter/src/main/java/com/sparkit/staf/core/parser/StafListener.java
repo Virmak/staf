@@ -388,25 +388,25 @@ public interface StafListener extends ParseTreeListener {
 	 */
 	void exitVariable(StafParser.VariableContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link StafParser#list_item_access}.
+	 * Enter a parse tree produced by {@link StafParser#dot_item_access}.
 	 * @param ctx the parse tree
 	 */
-	void enterList_item_access(StafParser.List_item_accessContext ctx);
+	void enterDot_item_access(StafParser.Dot_item_accessContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link StafParser#list_item_access}.
+	 * Exit a parse tree produced by {@link StafParser#dot_item_access}.
 	 * @param ctx the parse tree
 	 */
-	void exitList_item_access(StafParser.List_item_accessContext ctx);
+	void exitDot_item_access(StafParser.Dot_item_accessContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link StafParser#dictionary_item_access}.
+	 * Enter a parse tree produced by {@link StafParser#brackets_item_access}.
 	 * @param ctx the parse tree
 	 */
-	void enterDictionary_item_access(StafParser.Dictionary_item_accessContext ctx);
+	void enterBrackets_item_access(StafParser.Brackets_item_accessContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link StafParser#dictionary_item_access}.
+	 * Exit a parse tree produced by {@link StafParser#brackets_item_access}.
 	 * @param ctx the parse tree
 	 */
-	void exitDictionary_item_access(StafParser.Dictionary_item_accessContext ctx);
+	void exitBrackets_item_access(StafParser.Brackets_item_accessContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link StafParser#expression}.
 	 * @param ctx the parse tree

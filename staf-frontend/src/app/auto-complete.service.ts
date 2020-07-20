@@ -139,9 +139,39 @@ export class AutoCompleteService {
         range: range,
       },
       {
+        label: "end",
+        kind: monaco.languages.CompletionItemKind.Keyword,
+        insertText: "end",
+        range: range,
+      },
+      {
+        label: "return",
+        kind: monaco.languages.CompletionItemKind.Keyword,
+        insertText: "return",
+        range: range,
+      },
+      {
         label: "import",
         kind: monaco.languages.CompletionItemKind.Keyword,
         insertText: "import ",
+        range: range,
+      },
+      {
+        label: "imports",
+        kind: monaco.languages.CompletionItemKind.Keyword,
+        insertText: "IMPORTS",
+        range: range,
+      },
+      {
+        label: "TEST CASES",
+        kind: monaco.languages.CompletionItemKind.Keyword,
+        insertText: "TEST CASES",
+        range: range,
+      },
+      {
+        label: "keywords",
+        kind: monaco.languages.CompletionItemKind.Keyword,
+        insertText: "KEYWORDS",
         range: range,
       },
       {

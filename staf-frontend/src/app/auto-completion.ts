@@ -92,6 +92,18 @@ export function createImportsDependencyProposals(range) {
             range: range
         },
         {
+            label: 'imports',
+            kind: monaco.languages.CompletionItemKind.Keyword,
+            insertText: 'IMPORTS',
+            range: range
+        },
+        {
+            label: 'tc',
+            kind: monaco.languages.CompletionItemKind.Keyword,
+            insertText: 'TEST CASES',
+            range: range
+        },
+        {
             label: 'selenium',
             kind: monaco.languages.CompletionItemKind.Constant,
             documentation: "Selenium browser automation library",

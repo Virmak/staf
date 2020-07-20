@@ -7,6 +7,7 @@ import com.sparkit.staf.core.runtime.libs.BuiltInLibraryFactory;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.KeywordArgument;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
+import com.sparkit.staf.core.utils.SharedConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,7 +73,7 @@ public class DocumentationService {
     }
 
     private String extractLibraryImportName(String libraryClass) {
-        return libraryClass.substring(libraryClass.lastIndexOf('.') + 1).replace("Library", "")
+        return libraryClass.substring(libraryClass.lastIndexOf('.') + 1).replace(SharedConstants.LIBRARY, "")
                 .toLowerCase();
     }
 

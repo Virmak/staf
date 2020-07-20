@@ -239,17 +239,17 @@ public interface StafVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariable(StafParser.VariableContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link StafParser#list_item_access}.
+	 * Visit a parse tree produced by {@link StafParser#dot_item_access}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitList_item_access(StafParser.List_item_accessContext ctx);
+	T visitDot_item_access(StafParser.Dot_item_accessContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link StafParser#dictionary_item_access}.
+	 * Visit a parse tree produced by {@link StafParser#brackets_item_access}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDictionary_item_access(StafParser.Dictionary_item_accessContext ctx);
+	T visitBrackets_item_access(StafParser.Brackets_item_accessContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link StafParser#expression}.
 	 * @param ctx the parse tree

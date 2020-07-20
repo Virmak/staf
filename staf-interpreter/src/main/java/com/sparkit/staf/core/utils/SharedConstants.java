@@ -46,6 +46,10 @@ public final class SharedConstants {
     public static final String INVALID_IMPORT_PATH = "Invalid import path";
     public static final String SYNTAX_ERROR_AT = "Syntax Error at {}";
     public static final String NO_BROWSER_OPEN_ERROR = "No opened browser";
+    public static final String NOT_AVAILABLE = "N/A";
+    public static final String DEFAULT_UI_TEST_SUITE_NAME = "UI test suite";
+    public static final String DEFAULT_API_TEST_SUITE_NAME = "API test suite";
+    public static final String PROJECT_CONFIG_TEMPLATE_CLASSPATH = "classpath:config_template.json";
 
     private SharedConstants() {
     }

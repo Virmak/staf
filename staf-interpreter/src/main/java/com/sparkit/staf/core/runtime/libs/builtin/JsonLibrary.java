@@ -19,14 +19,14 @@ import java.io.*;
 @StafLibrary(name = "Json Library", builtin = true)
 public class JsonLibrary extends AbstractStafLibrary {
     @Autowired
-    private JSONParser parser;
+    private JSONParser jsonParser;
 
     @Keyword(name = "read json")
     public AbstractStafObject loadJsonFile(@Inject(name = "__keyword__") KeywordCall keywordCall, @KeywordArgument(name = "filePath") StafString filePath) {
         File directory = new File(keywordCall.getPosition().getFilePath()).getParentFile();
         File fullPath = new File(directory, filePath.getValue().toString());
         try (Reader reader = new FileReader(fullPath.getCanonicalFile())) {
-            Object jsonObject = parser.parse(reader);
+            Object jsonObject = jsonParser.parse(reader);
             return AbstractStafObject.fromObject(jsonObject);
         } catch (IOException | ParseException e) {
             throw new JSONFileNotFoundException();
@@ -43,9 +43,14 @@ public class JsonLibrary extends AbstractStafLibrary {
         try (FileWriter fileWriter = new FileWriter(fullPath)) {
             jsonObject = (JSONAware) stafObject.toJSON();
             fileWriter.write(jsonObject.toJSONString());
-        } catch (IOException e) {
+        } catch (IOException ignored) {
 
         }
+    }
 
+    @Keyword(name = "parse json")
+    public AbstractStafObject parseJsonString(@KeywordArgument(name = "jsonString") StafString jsonString) throws ParseException {
+        Object jsonObject = jsonParser.parse(jsonString.getValue());
+        return AbstractStafObject.fromObject(jsonObject);
     }
 }

@@ -283,14 +283,14 @@ public class StafBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements S
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitList_item_access(StafParser.List_item_accessContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDot_item_access(StafParser.Dot_item_accessContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDictionary_item_access(StafParser.Dictionary_item_accessContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBrackets_item_access(StafParser.Brackets_item_accessContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
