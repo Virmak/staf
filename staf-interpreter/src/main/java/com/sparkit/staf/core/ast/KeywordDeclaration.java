@@ -33,7 +33,7 @@ public class KeywordDeclaration implements IStatementBlock {
         reports = new ArrayList<>();
         MemoryMap localMemory = new MemoryMap();
         evaluateArgs(globalSymTable, localMemory, keywordLibrariesRepository, params);
-        reports = statementBlockExecutor.execute(this, null, globalSymTable, localMemory, keywordLibrariesRepository);
+        reports = statementBlockExecutor.execute(this, globalSymTable, localMemory, keywordLibrariesRepository);
         KeywordCall keywordCall = statementBlockExecutor.getCallStack().pop(globalSymTable.getSessionId());
         keywordCall.setStatementReports(reports);
         if (returnObject != null) {

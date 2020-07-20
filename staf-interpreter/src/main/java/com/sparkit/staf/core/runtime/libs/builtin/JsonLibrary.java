@@ -21,10 +21,10 @@ public class JsonLibrary extends AbstractStafLibrary {
     @Autowired
     private JSONParser jsonParser;
 
-    @Keyword(name = "read json")
+    @Keyword(name = "read json file")
     public AbstractStafObject loadJsonFile(@Inject(name = "__keyword__") KeywordCall keywordCall, @KeywordArgument(name = "filePath") StafString filePath) {
         File directory = new File(keywordCall.getPosition().getFilePath()).getParentFile();
-        File fullPath = new File(directory, filePath.getValue().toString());
+        File fullPath = new File(directory, filePath.getValue());
         try (Reader reader = new FileReader(fullPath.getCanonicalFile())) {
             Object jsonObject = jsonParser.parse(reader);
             return AbstractStafObject.fromObject(jsonObject);
@@ -33,11 +33,11 @@ public class JsonLibrary extends AbstractStafLibrary {
         }
     }
 
-    @Keyword(name = "write json")
+    @Keyword(name = "write json file")
     public void writeJsonFile(@Inject(name = "__keyword__") KeywordCall keywordCall, @KeywordArgument(name = "object") AbstractStafObject stafObject,
                               @KeywordArgument(name = "filePath") StafString filePath) throws IOException {
         File directory = new File(keywordCall.getPosition().getFilePath()).getParentFile();
-        String fullPath = new File(directory, filePath.getValue().toString()).getCanonicalPath();
+        String fullPath = new File(directory, filePath.getValue()).getCanonicalPath();
         JSONAware jsonObject;
 
         try (FileWriter fileWriter = new FileWriter(fullPath)) {
@@ -48,9 +48,15 @@ public class JsonLibrary extends AbstractStafLibrary {
         }
     }
 
-    @Keyword(name = "parse json")
+    @Keyword(name = "convert json string to object", doc = "Convert a JSON string to an object(List, Dictionary)")
     public AbstractStafObject parseJsonString(@KeywordArgument(name = "jsonString") StafString jsonString) throws ParseException {
         Object jsonObject = jsonParser.parse(jsonString.getValue());
         return AbstractStafObject.fromObject(jsonObject);
+    }
+
+    @Keyword(name = "convert object to json string", doc = "Convert an object(List, Dictionary) to a JSON string")
+    public StafString stringifyJson(@KeywordArgument(name = "jsonString") AbstractStafObject stafObject) {
+        JSONAware jsonObject = (JSONAware) stafObject.toJSON();
+        return new StafString(jsonObject.toJSONString());
     }
 }

@@ -30,7 +30,7 @@
        ( 
            <span *ngFor="let param of keyword.parameters; let last = last"><ng-container *ngIf="param.optional">[</ng-container>${{param.name}} : <strong>{{param.type}}</strong><ng-container *ngIf="param.optional">]</ng-container> <ng-container *ngIf="!last">, </ng-container></span>
 
-       )
+       ) <strong *ngIf="keyword.returnType != 'void' && keyword.returnType != 'webdriver'">: {{keyword.returnType}}</strong>
 
        <div>
 

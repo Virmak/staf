@@ -3,6 +3,7 @@ package com.sparkit.staf.core.ast.types;
 import com.sparkit.staf.core.ast.StafTypes;
 import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.core.utils.SharedConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,7 @@ public class BracketsItemAccess extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(MemoryMap globalSymbolsTable, MemoryMap localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+    public AbstractStafObject evaluate(MemoryMap globalSymbolsTable, MemoryMap localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         AbstractStafObject objectReferenceValue = parentObjectReference;
         if (!(parentObjectReference instanceof StafList || parentObjectReference instanceof StafDictionary)) {
             objectReferenceValue = (AbstractStafObject) parentObjectReference.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
@@ -27,7 +28,7 @@ public class BracketsItemAccess extends AbstractStafObject {
             StafList stafList = (StafList) objectReferenceValue.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
             AbstractStafObject actualIndexObject = (AbstractStafObject) indexObject.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
             if ((Integer) actualIndexObject.getValue() >= stafList.getStafList().size()) {
-                logger.error("List index [{}] out of bounds", actualIndexObject);
+                logger.error(SharedConstants.LIST_INDEX_OUT_OD_BOUNDS, actualIndexObject);
                 throw new IndexOutOfBoundsException();
             }
             return stafList.getStafList().get((Integer) actualIndexObject.getValue());
@@ -36,7 +37,7 @@ public class BracketsItemAccess extends AbstractStafObject {
             AbstractStafObject actualKeyObject = (AbstractStafObject) indexObject.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
             AbstractStafObject evaluatedStafObject = stafDictionary.getObjectMap().get(actualKeyObject.getValue());
             if (evaluatedStafObject == null) {
-                logger.error("Dictionary doesn't contain key : {}", actualKeyObject);
+                logger.error(SharedConstants.DICTIONARY_DOESNT_CONTAIN_KEY, actualKeyObject);
             }
             return evaluatedStafObject;
         }

@@ -151,6 +151,18 @@ export class AutoCompleteService {
         range: range,
       },
       {
+        label: "exit loop",
+        kind: monaco.languages.CompletionItemKind.Keyword,
+        insertText: "exit loop",
+        range: range,
+      },
+      {
+        label: "exit loop if",
+        kind: monaco.languages.CompletionItemKind.Keyword,
+        insertText: "exit loop if (condition)",
+        range: range,
+      },
+      {
         label: "import",
         kind: monaco.languages.CompletionItemKind.Keyword,
         insertText: "import ",

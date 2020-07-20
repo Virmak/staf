@@ -43,7 +43,7 @@ public class TestCaseExecutor {
             MemoryMap localMemory = new MemoryMap();
             autowireCapableBeanFactory.autowireBean(localMemory);
             testCaseReport.setStatementReports(
-                    statementBlockExecutor.execute(testCaseDeclaration, statementFailed, globalSymTable,
+                    statementBlockExecutor.execute(testCaseDeclaration, globalSymTable,
                             localMemory, testSuite.getKeywordLibrariesRepository()));
             if (!testCasePass(testCaseReport)) {
                 testCaseReport.setResult(TestResult.Fail);

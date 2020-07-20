@@ -36,16 +36,12 @@ public class StafDictionary extends AbstractStafObject {
     }
 
     @Override
-    public Object evaluate(MemoryMap globalSymbolsTable, MemoryMap localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Exception {
-        return this;
-    }
-
-    public Map<String, Object> getEvaluatedObjectMap() {
-        Map<String, Object> map = new HashMap<>();
+    public Object evaluate(MemoryMap globalSymbolsTable, MemoryMap localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+        Map<String, AbstractStafObject> evaluatedMap = new HashMap<>();
         for (Map.Entry<String, AbstractStafObject> entry : objectMap.entrySet()) {
-            map.put(entry.getKey(), evaluateStafObject(entry.getValue()));
+            evaluatedMap.put(entry.getKey(), (AbstractStafObject) entry.getValue().evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository));
         }
-        return map;
+        return new StafDictionary(evaluatedMap);
     }
 
     public void putKeyValuePair(KeyValuePair keyValuePair) {
@@ -62,14 +58,5 @@ public class StafDictionary extends AbstractStafObject {
             jsonObject.put(entry.getKey(), entry.getValue().toJSON());
         }
         return jsonObject;
-    }
-
-    private Object evaluateStafObject(AbstractStafObject stafObject) {
-        if (stafObject instanceof StafDictionary) {
-            return ((StafDictionary) stafObject).getEvaluatedObjectMap();
-        } else if (stafObject instanceof StafList) {
-            return ((StafList) stafObject).getStafList();
-        }
-        return stafObject.getValue();
     }
 }

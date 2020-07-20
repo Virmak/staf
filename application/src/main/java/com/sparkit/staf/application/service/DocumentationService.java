@@ -51,6 +51,7 @@ public class DocumentationService {
                 KeywordDocumentation keywordDocumentation = new KeywordDocumentation();
                 keywordDocumentation.setName(keyword.name());
                 keywordDocumentation.setDescription(keyword.doc());
+                keywordDocumentation.setReturnType(convertType(method.getReturnType().getName()));
                 Parameter[] parameters = method.getParameters();
                 List<KeywordDocumentation.KeywordParameter> keywordParameters = Arrays.stream(parameters)
                         .filter(parameter -> parameter.isAnnotationPresent(KeywordArgument.class))

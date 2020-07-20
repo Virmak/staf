@@ -2,11 +2,9 @@ package com.sparkit.staf.core.runtime.interpreter;
 
 import com.sparkit.staf.core.ast.ExitLoopStatement;
 import com.sparkit.staf.core.ast.IStatement;
-import com.sparkit.staf.core.ast.types.AbstractStafObject;
-import com.sparkit.staf.core.ast.types.StafBoolean;
-import com.sparkit.staf.core.ast.types.StafInteger;
-import com.sparkit.staf.core.ast.types.StafList;
+import com.sparkit.staf.core.ast.types.*;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.FatalErrorException;
+import com.sparkit.staf.core.runtime.interpreter.exceptions.LoopExitedException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
 import com.sparkit.staf.core.runtime.reports.IReportableBlock;
 import com.sparkit.staf.core.runtime.reports.StatementReport;
@@ -22,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class StatementBlockExecutor {
@@ -45,7 +44,6 @@ public class StatementBlockExecutor {
 
     // Execute statement block like test case or user defined keyword
     public List<StatementReport> execute(IStatementBlock statementBlock,
-                                         OnStatementFailed statementFailed,
                                          MemoryMap globalMemory,
                                          MemoryMap localMemory, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         List<StatementReport> reports = new ArrayList<>();
@@ -82,67 +80,91 @@ public class StatementBlockExecutor {
 
     // Execute loop statements
     public StatementReport executeIterable(IStafLoop stafLoop,
-                                           MemoryMap globalSymbolsTable,
-                                           MemoryMap localSymbolsTable, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+                                           MemoryMap globalMemory,
+                                           MemoryMap localMemory, KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
         StatementReport loopReport = createStatementReport((IStatement) stafLoop, null);
         loopReport.setChildren(new ArrayList<>());
         AbstractStafObject tmp = null;  // used to save variable with the same name as the loop variable if it currently
         // exist in localSymTable so we can retrieve it later after for statement execution
-        if (localSymbolsTable == null) {
-            localSymbolsTable = new MemoryMap();
+        if (localMemory == null) {
+            localMemory = new MemoryMap();
         } else {
-            tmp = (AbstractStafObject) localSymbolsTable.getVariableValue(stafLoop.getLoopVariable().getValue().toString());
+            tmp = (AbstractStafObject) localMemory.getVariableValue(stafLoop.getLoopVariable().getValue().toString());
         }
-        AbstractStafObject actualIterator = (AbstractStafObject) stafLoop.getIterator().evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
+        AbstractStafObject actualIterator = (AbstractStafObject) stafLoop.getIterator().evaluate(globalMemory, localMemory, keywordLibrariesRepository);
+        int iteration = 0;
         if (actualIterator instanceof StafList) {
-            int iteration = 0;
             for (AbstractStafObject item : ((StafList) actualIterator).getStafList()) {
-                boolean loopExited = false;
-                localSymbolsTable.setVariableValue(SharedConstants.LOOP_INDEX_VAR_MEMORY_KEY, new StafInteger(iteration));
+                localMemory.setVariableValue(SharedConstants.LOOP_INDEX_VAR_MEMORY_KEY, new StafInteger(iteration));
                 loopReport.setErrorMessage("Iteration[" + (iteration++) + "] : " + item);
-                for (IStatement statement : stafLoop.getStatements()) {
-                    StatementReport statementReport = new StatementReport();
-                    localSymbolsTable.setVariableValue(stafLoop.getLoopVariable().getValue().toString(), item);
-                    try {
-                        statement.execute(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
-                        if (statement instanceof ExitLoopStatement) {
-                            ExitLoopStatement exitLoopStatement = (ExitLoopStatement) statement;
-                            if (exitLoopStatement.getCondition() != null) {
-                                StafBoolean conditionVal = (StafBoolean) (exitLoopStatement.getCondition()
-                                        .evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository));
-                                if ((boolean) conditionVal.getValue()) {
-                                    loopExited = true;
-                                    break;
-                                }
-                            } else {
-                                loopExited = true;
-                                break;
-                            }
-                        }
-                        if (statement instanceof IStatementBlock) {
-                            statementReport.setChildren(((IStatementBlock) statement).getStatementReports());
-                        }
-                        statementReport.setResult(statementListTestResult(statementReport.getChildren()));
-                    } catch (Exception e) {
-                        logger.error("At {}", statement);
-                        statementReport.setErrorMessage("At " + statement);
-                        statementReport.setResult(TestResult.Fail);
-                        if (this.statementFailed != null) {
-                            this.statementFailed.execute(statementReport);
-                        }
-                        e.printStackTrace();
-                    } finally {
-                        statementReport.setEnd(LocalDateTime.now());
-                    }
-                    loopReport.getChildren().add(statementReport);
-                }
-                if (loopExited) {
+                try {
+                    executeLoopBody(stafLoop, localMemory, globalMemory, keywordLibrariesRepository, item, loopReport);
+                } catch (LoopExitedException e) {
                     break;
                 }
             }
-
+        } else if (actualIterator instanceof StafDictionary) {
+            for (Map.Entry<String, AbstractStafObject> item : ((StafDictionary) actualIterator).getObjectMap().entrySet()) {
+                localMemory.setVariableValue(SharedConstants.LOOP_INDEX_VAR_MEMORY_KEY, new StafInteger(iteration));
+                loopReport.setErrorMessage("Iteration[" + (iteration++) + "] : " + item);
+                StafDictionary currentItem = new StafDictionary();
+                currentItem.getObjectMap().put("key", new StafString(item.getKey()));
+                currentItem.getObjectMap().put("value", item.getValue());
+                try {
+                    executeLoopBody(stafLoop, localMemory, globalMemory, keywordLibrariesRepository, currentItem, loopReport);
+                } catch (LoopExitedException e) {
+                    break;
+                }
+            }
+        }
+        if (tmp != null) {
+            localMemory.setVariableValue(stafLoop.getLoopVariable().getValue().toString(), tmp);
         }
         return loopReport;
+    }
+
+    private void executeLoopBody(IStafLoop stafLoop, MemoryMap localMemory, MemoryMap globalMemory,
+                                 KeywordLibrariesRepository keywordLibrariesRepository,
+                                 AbstractStafObject item, StatementReport loopReport) throws Throwable {
+        for (IStatement statement : stafLoop.getStatements()) {
+            StatementReport statementReport = new StatementReport();
+            localMemory.setVariableValue(stafLoop.getLoopVariable().getValue().toString(), item);
+            try {
+                executeStatement(statement, globalMemory, localMemory, keywordLibrariesRepository);
+                if (statement instanceof IStatementBlock) {
+                    statementReport.setChildren(((IStatementBlock) statement).getStatementReports());
+                }
+                statementReport.setResult(statementListTestResult(statementReport.getChildren()));
+            } catch (Exception e) {
+                logger.error("At {}", statement);
+                statementReport.setErrorMessage("At " + statement);
+                statementReport.setResult(TestResult.Fail);
+                if (this.statementFailed != null) {
+                    this.statementFailed.execute(statementReport);
+                }
+                e.printStackTrace();
+            } finally {
+                statementReport.setEnd(LocalDateTime.now());
+            }
+            loopReport.getChildren().add(statementReport);
+        }
+    }
+
+    private void executeStatement(IStatement statement, MemoryMap globalMemory, MemoryMap localMemory,
+                                  KeywordLibrariesRepository keywordLibrariesRepository) throws Throwable {
+        if (statement instanceof ExitLoopStatement) {
+            ExitLoopStatement exitLoopStatement = (ExitLoopStatement) statement;
+            if (exitLoopStatement.getCondition() != null) {
+                StafBoolean conditionVal = (StafBoolean) (exitLoopStatement.getCondition()
+                        .evaluate(globalMemory, localMemory, keywordLibrariesRepository));
+                if ((boolean) conditionVal.getValue()) {
+                    throw new LoopExitedException();
+                }
+            } else {
+                throw new LoopExitedException();
+            }
+        }
+        statement.execute(globalMemory, localMemory, keywordLibrariesRepository);
     }
 
     private StatementReport createStatementReport(IStatement statement, TestResult result) {
