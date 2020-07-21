@@ -53,6 +53,11 @@ public class ProjectController {
         return projectService.readDirectory(projectsDir);
     }
 
+    @DeleteMapping("/projects/{projectLocation}")
+    public GenericResponse deleteProject(@PathVariable("projectLocation") String projectLocation) {
+        return projectService.deleteProject(projectLocation);
+    }
+
     @GetMapping("/test-report/{reportFilePath}")
     public String getTestReport(@PathVariable(name = "reportFilePath") String reportFilePath) throws IOException {
         return projectService.readTestReport(reportFilePath.replace("<sep>", "/"));

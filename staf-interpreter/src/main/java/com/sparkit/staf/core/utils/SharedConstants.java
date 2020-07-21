@@ -53,8 +53,15 @@ public final class SharedConstants {
     public static final String MAYBE_YOU_ARE_MISSING_AN_IMPORT = "maybe you are missing an import";
     public static final String APPLICATION_JSON = "application/json";
     public static final String LOGGER_LIB_TEMPLATE = "[Logger Library] {}";
+
     public static final String LIST_INDEX_OUT_OD_BOUNDS = "List index [{}] out of bounds";
     public static final String DICTIONARY_DOESNT_CONTAIN_KEY = "Dictionary doesn't contain key : {}";
+    public static final String OBJECTS_TYPES_DOESNT_MATCH_AT_INDEX = "Objects types doesn't match at index [";
+    public static final String OBJECTS_VALUE_DOESNT_MATCH_AT_INDEX = "Objects value doesn't match at index [";
+    public static final String LISTS_SIZES_ARE_NOT_EQUAL = "Lists sizes are not equal";
+    public static final String DICTIONARIES_SIZES_ARE_NOT_EQUALS = "Dictionaries sizes are not equal";
+    public static final String UNDEFINED_VARIABLE = "Undefined variable {}";
+    public static final String INVOKING_KEYWORD = "Invoking Keyword : {}";
 
     private SharedConstants() {
     }

@@ -45,7 +45,7 @@
     </table>
 
     <app-statement-test-result
-      *ngFor="let childStat of statement?.statement?.statementReports"
+      *ngFor="let childStat of statement?.children"
       [statement]="childStat"
     ></app-statement-test-result>
   </div>

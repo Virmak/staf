@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-@StafLibrary(name = "HTTP Library", builtin = true)
+@StafLibrary(name = "HTTP Library")
 public class HttpLibrary extends AbstractStafLibrary {
 
     @Keyword(name = "http get", doc = "Send a HTTP GET request with $url and optional $headers dictionary, and returns a Dictionary with [body: string, headers: dictionary]")

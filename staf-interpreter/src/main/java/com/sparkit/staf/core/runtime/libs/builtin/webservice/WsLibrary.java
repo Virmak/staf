@@ -29,13 +29,13 @@ public class WsLibrary extends AbstractStafLibrary {
                            @KeywordArgument(name = "expected") AbstractStafObject expected,
                            @KeywordArgument(name = "statusCode") StafInteger statusCode) throws WebServiceTestFailedException {
         try {
-            get((String) path.getValue())
+            get(path.getValue())
                     .then()
                     .assertThat()
-                    .body(jsonPath.getValue().toString(), getMatcher(condition, expected))
+                    .body(jsonPath.getValue(), getMatcher(condition, expected))
                     .statusCode((Integer) statusCode.getValue());
         } catch (Exception e) {
-            throw new WebServiceTestFailedException(path.getValue().toString(), e.getMessage());
+            throw new WebServiceTestFailedException(path.getValue(), e.getMessage());
         }
         logger.info("WS GET test passed : {}", path.getValue());
     }
@@ -50,14 +50,14 @@ public class WsLibrary extends AbstractStafLibrary {
             given()
                     .contentType(ContentType.JSON)
                     .body(parametersDict.toJSON().toJSONString())
-                    .post(path.getValue().toString())
+                    .post(path.getValue())
                     .then()
                     .assertThat()
                     .statusCode((Integer) statusCode.getValue())
-                    .body(jsonPath.getValue().toString(), getMatcher(condition, expected));
+                    .body(jsonPath.getValue(), getMatcher(condition, expected));
             logger.info("WS POST passed : {}", path.getValue());
         } catch (Exception e) {
-            throw new WebServiceTestFailedException(path.getValue().toString(), e.getMessage());
+            throw new WebServiceTestFailedException(path.getValue(), e.getMessage());
         }
     }
 

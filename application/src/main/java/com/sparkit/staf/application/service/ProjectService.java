@@ -8,6 +8,7 @@ import com.sparkit.staf.application.models.request.CreateProjectRequest;
 import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
 import com.sparkit.staf.application.models.response.CreateTestSuiteResponse;
 import com.sparkit.staf.application.models.response.DeleteTestSuiteResponse;
+import com.sparkit.staf.application.models.response.GenericResponse;
 import com.sparkit.staf.application.models.response.project.GetProjectReportsResponse;
 import com.sparkit.staf.application.models.response.project.UpdateProjectConfigResponse;
 import com.sparkit.staf.core.runtime.config.JsonStafProjectConfig;
@@ -242,5 +243,18 @@ public class ProjectService {
 
     public void unpackProject(InputStream projectZipInputStream) {
         ZipUtil.unpack(projectZipInputStream, new File(testDir));
+    }
+
+    public GenericResponse deleteProject(String projectLocation) {
+        GenericResponse response = new GenericResponse();
+        File projectDirectoryFile = getProjectDirectoryFile(projectLocation);
+        try {
+            FileUtils.deleteDirectory(projectDirectoryFile);
+            response.setResult(SharedConstants.OK_RESULT_STRING);
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setResult(SharedConstants.ERROR_RESULT_STRING);
+        }
+        return response;
     }
 }

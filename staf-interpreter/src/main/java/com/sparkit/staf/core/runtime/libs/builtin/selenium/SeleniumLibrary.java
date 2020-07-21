@@ -28,7 +28,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@StafLibrary(name = "Selenium Library", builtin = true)
+@StafLibrary(name = "Selenium Library", builtin = false)
 public class SeleniumLibrary extends AbstractStafLibrary {
     public static final int DEFAULT_TIMEOUT = 5;
     private static final Logger logger = LoggerFactory.getLogger(SeleniumLibrary.class);

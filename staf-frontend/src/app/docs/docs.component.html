@@ -5,6 +5,9 @@
     <small><strong>Notes: </strong> arguments surrounded by [ ] are optional</small>
 </div>
 <div>
+    <small>Libraries with <strong>(builtin)</strong> are imported automatically</small>
+</div>
+<div>
     <small>Parameters of type <strong>object</strong> accept any type of variable</small>
 </div>
 <div>
@@ -12,11 +15,18 @@
 </div>
 
 <ul *ngFor="let lib of librariesDocs">
-    <h3>{{lib.libraryName}} 
+    <h3>{{lib.libraryName}} <strong *ngIf="lib.builtin">(Builtin)</strong>
         <clr-signpost>
             <clr-signpost-content *clrIfOpen>
                 <h3>{{lib.libraryName}}</h3>
-                <p>Usage : <code class="clr-code">import {{lib.importName}}</code> </p>
+                <p>
+                    <ng-container *ngIf="lib.builtin; else libImport">
+                        This library is available without import
+                    </ng-container>
+                    <ng-template #libImport>
+                        Usage : <code class="clr-code">import {{lib.importName}}</code> 
+                    </ng-template>
+                </p>
             </clr-signpost-content>
         </clr-signpost>
     </h3>

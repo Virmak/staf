@@ -43,6 +43,7 @@ public class DocumentationService {
         StafLibrary libraryClassAnnotation = libraryClass.getAnnotation(StafLibrary.class);
         libraryDocumentation.setLibraryName(libraryClassAnnotation.name());
         libraryDocumentation.setImportName(extractLibraryImportName(libraryClass.getName()));
+        libraryDocumentation.setBuiltin(libraryClassAnnotation.builtin());
         libraryDocumentation.setKeywords(new ArrayList<>());
 
         for (Method method : libraryClass.getMethods()) {

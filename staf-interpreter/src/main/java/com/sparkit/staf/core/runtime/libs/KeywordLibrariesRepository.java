@@ -5,6 +5,7 @@ import com.sparkit.staf.core.ast.types.KeywordCall;
 import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.interpreter.StatementBlockExecutor;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
+import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
 import com.sparkit.staf.core.runtime.libs.exceptions.KeywordAlreadyRegisteredException;
 import com.sparkit.staf.core.runtime.libs.exceptions.UndefinedBuiltinKeywordException;
 import com.sparkit.staf.core.utils.SharedConstants;
@@ -30,6 +31,21 @@ public class KeywordLibrariesRepository {
     public KeywordLibrariesRepository(BuiltInLibraryFactory libraryFactory, StatementBlockExecutor statementBlockExecutor) {
         this.builtInLibraryFactory = libraryFactory;
         this.statementBlockExecutor = statementBlockExecutor;
+        loadBuiltinLibraries();
+    }
+
+    private void loadBuiltinLibraries() {
+        Collection<Class<? extends AbstractStafLibrary>> values = builtInLibraryFactory.getBuiltinLibrariesClasses().values();
+        values.forEach(library -> {
+            StafLibrary libraryAnnotation = library.getAnnotation(StafLibrary.class);
+            if (libraryAnnotation.builtin()) {
+                try {
+                    registerLibrary(library);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void registerLibrary(Class<? extends AbstractStafLibrary> libClass)
@@ -68,7 +84,7 @@ public class KeywordLibrariesRepository {
     public Object invokeKeyword(MemoryMap globalSymbolsTable, KeywordCall keyword, Object[] params) throws Throwable {
         String normalizedKeywordName = keyword.getKeywordName();
 
-        logger.debug("Invoking Keyword : {}", keyword);
+        logger.debug(SharedConstants.INVOKING_KEYWORD, keyword);
         if (builtinKeywordMap.containsKey(normalizedKeywordName)) {
             try {
                 Object ret;
@@ -77,7 +93,7 @@ public class KeywordLibrariesRepository {
                 dependencies.addAll(Arrays.asList(params));
                 ret = builtinKeywordMap.get(normalizedKeywordName).invoke(dependencies);
                 statementBlockExecutor.getCallStack().pop(globalSymbolsTable.getSessionId());
-                if (ret instanceof WebDriver) { // this is used by selenium library (open browser) keyword to save an instance of web driver in global sym table
+                if (ret instanceof WebDriver) { // this is used by selenium library (open browser) keyword to save an instance of web driver in global memory
                     globalSymbolsTable.setVariableValue(SharedConstants.WEB_DRIVER_MEMORY_KEY, ret);
                     return null;
                 }
