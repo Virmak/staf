@@ -288,15 +288,9 @@ export class EditFileComponent implements OnInit, OnDestroy {
   }
 
   private extractFileRoute(fullFilePath: string) {
-    const splittedPath = fullFilePath.split("/");
+    const splittedPath = fullFilePath.split('/');
     const projectIndex = splittedPath.indexOf(this.project.location);
-    return (
-      splittedPath[projectIndex] +
-      "/" +
-      splittedPath[projectIndex] +
-      "/" +
-      splittedPath[splittedPath.length - 1]
-    );
+    return splittedPath.slice(projectIndex).join('/');
   }
 
   private extractKeywordName(line: string, column: number) {
