@@ -317,8 +317,9 @@ export class EditFileComponent implements OnInit, OnDestroy {
   }
 
   private openFileByFullPath(filePath) {
-    const splittedPath = filePath.split("/");
-    const projectIndex = splittedPath.indexOf(this.project.location);
+    const testDirectory = this.projectService.testDirectory;
+    const splittedPath = filePath.substring(filePath.indexOf(testDirectory) + testDirectory.length + 1).split("/");
+    const projectIndex = 0;
     const relativeFilePath = filePath.substr(
       filePath.indexOf(this.projectService.testDirectory)
     );

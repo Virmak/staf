@@ -49,10 +49,12 @@ public class StafWebApplication implements CommandLineRunner {
         if (!roleRepository.findByName(RoleName.ADMIN).isPresent()) {
             Role adminRole = new Role();
             adminRole.setName(RoleName.ADMIN);
+            roleRepository.save(adminRole);
         }
         if (!roleRepository.findByName(RoleName.USER).isPresent()) {
             Role userRole = new Role();
             userRole.setName(RoleName.USER);
+            roleRepository.save(userRole);
         }
         if (!userRepository.findByUsername("admin").isPresent()) {
             CreateUserRequest createUserRequest = new CreateUserRequest();
