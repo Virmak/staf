@@ -1,6 +1,6 @@
+import { AuthService } from './../auth.service';
 import { FileEditorService } from './../file-editor.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
   closingFile;
 
   constructor(
-    private router: Router,
+    private authService: AuthService,
     public fileEditor: FileEditorService) { }
 
   ngOnInit() {
@@ -54,5 +54,9 @@ export class HeaderComponent implements OnInit {
     (<Element>event.currentTarget).scrollLeft += event.deltaY;
     event.preventDefault();
   } 
+
+  logout() {
+    this.authService.logout();
+  }
 
 }

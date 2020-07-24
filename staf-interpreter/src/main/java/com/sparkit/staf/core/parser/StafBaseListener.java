@@ -472,25 +472,25 @@ public class StafBaseListener implements StafListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterList_item_access(StafParser.List_item_accessContext ctx) { }
+	@Override public void enterDot_item_access(StafParser.Dot_item_accessContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitList_item_access(StafParser.List_item_accessContext ctx) { }
+	@Override public void exitDot_item_access(StafParser.Dot_item_accessContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDictionary_item_access(StafParser.Dictionary_item_accessContext ctx) { }
+	@Override public void enterBrackets_item_access(StafParser.Brackets_item_accessContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDictionary_item_access(StafParser.Dictionary_item_accessContext ctx) { }
+	@Override public void exitBrackets_item_access(StafParser.Brackets_item_accessContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

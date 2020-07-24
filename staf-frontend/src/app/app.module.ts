@@ -2,7 +2,7 @@ import { monacoConfig } from './monaco.config';
 import { LogModule } from './log/log.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -41,6 +41,9 @@ import { ProjectConfigComponent } from './project-config/project-config.componen
 import { RenameFileModalComponent } from './rename-file-modal/rename-file-modal.component';
 import { DocsComponent } from './docs/docs.component';
 import { ProjectsComponent } from './projects/projects.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { JwtInterceptor } from './jwt.interceptor';
+import { ErrorInterceptor } from './error.interceptor';
 
 
 @NgModule({
@@ -74,6 +77,7 @@ import { ProjectsComponent } from './projects/projects.component';
     RenameFileModalComponent,
     DocsComponent,
     ProjectsComponent,
+    LoginPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -88,7 +92,10 @@ import { ProjectsComponent } from './projects/projects.component';
     HotTableModule,
     LogModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -12,7 +12,6 @@
     [clrDisplayval]="logService.currentProgress + '%'"
   ></clr-progress-bar>
 </div>
-<br />
 
 <h4>Test suite</h4>
 
@@ -43,7 +42,7 @@
 </div>
 
 <clr-datagrid [(clrDgSelected)]="selectedTestSuites" [clrDgRowSelection]="true">
-  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Test suite</clr-dg-column>
   <clr-dg-column>Test cases count</clr-dg-column>
 
   <clr-dg-row

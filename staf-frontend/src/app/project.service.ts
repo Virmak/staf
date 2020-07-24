@@ -163,7 +163,7 @@ export class ProjectService {
 
   deleteTestSuite(testSuite: ITestSuite, project:StafProject) {
     const errorToastr = () => this.toastr.error('Error deleting test suite', 'Error');
-    this.http.delete(baseUrl + StafAPI.DELETE_TEST_SUITE + '/' + project.getNormalizedProjectName() + '/' + testSuite.name)
+    this.http.delete(baseUrl + StafAPI.DELETE_TEST_SUITE + '/' + project.location + '/' + testSuite.name)
       .subscribe((res: any) => {
         if (res.result == 'ok') {
           const testSuiteIndex = project.testSuites.findIndex(ts => ts.id == testSuite.id);
@@ -173,6 +173,20 @@ export class ProjectService {
           errorToastr();
         }
       }, errorToastr);
+  }
+
+  deleteProject(project: StafProject) {
+    this.http.delete(baseUrl + StafAPI.DELETE_PROJECT + '/' + project.location)
+      .subscribe((res: any) => {
+        if (res.result === GenericResponse.Ok) {
+          const projectIndex = this.projects.indexOf(project);
+          this.projects.splice(projectIndex, 1);
+          this.next();
+          this.toastr.success('Project deleted');
+        } else {
+          this.toastr.error('Cannot delete project');
+        }
+      });
   }
 
   confirmDeleteFile() {

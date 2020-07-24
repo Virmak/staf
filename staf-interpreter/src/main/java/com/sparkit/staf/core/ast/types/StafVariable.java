@@ -4,8 +4,13 @@ import com.sparkit.staf.core.ast.StafTypes;
 import com.sparkit.staf.core.runtime.interpreter.MemoryMap;
 import com.sparkit.staf.core.runtime.interpreter.exceptions.UndefinedVariableException;
 import com.sparkit.staf.core.runtime.libs.KeywordLibrariesRepository;
+import com.sparkit.staf.core.utils.SharedConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class StafVariable extends AbstractStafObject {
+    private static final Logger logger = LoggerFactory.getLogger(StafVariable.class);
+
     public StafVariable(Object value) {
         super(value, StafTypes.VAR_REF);
     }
@@ -23,6 +28,7 @@ public class StafVariable extends AbstractStafObject {
             AbstractStafObject stafObject = (AbstractStafObject) obj;
             return stafObject.evaluate(globalSymbolsTable, localSymbolsTable, keywordLibrariesRepository);
         } else if (obj == null) {
+            logger.error(SharedConstants.UNDEFINED_VARIABLE, value.toString());
             throw new UndefinedVariableException(value.toString());
         }
         return obj;

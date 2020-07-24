@@ -150,8 +150,8 @@ scalar_object
     ;
 
 variable_reference
-    : variable_reference list_item_access
-    | variable_reference dictionary_item_access
+    : variable_reference brackets_item_access // list style item access i.e. list[x]
+    | variable_reference dot_item_access // dict style item access  i.e. dict.x
     | variable
     ;
 
@@ -165,12 +165,12 @@ variable
     : '$' IDENTIFIER
     ;
 
-list_item_access
-    : LBRACKET expression RBRACKET
+dot_item_access
+    :  DOT IDENTIFIER
     ;
 
-dictionary_item_access
-    :  DOT IDENTIFIER
+brackets_item_access
+    : LBRACKET expression RBRACKET
     ;
 
 expression

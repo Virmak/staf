@@ -6,6 +6,7 @@ import com.sparkit.staf.application.models.response.RenameTestSuiteResponse;
 import com.sparkit.staf.core.ast.StafFile;
 import com.sparkit.staf.core.ast.TestCaseDeclaration;
 import com.sparkit.staf.core.compiler.TestSuiteCompiler;
+import com.sparkit.staf.core.utils.SharedConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,7 @@ public class TestSuiteService {
                             new GetTestSuiteDetailsResponse.TestCase(testCaseDeclaration.getName(),
                                     testCaseDeclaration.getFilePath(),
                                     testCaseDeclaration.isIgnored(),
-                                    !testCaseDeclaration.isDefaultOrder() ? String.valueOf(testCaseDeclaration.getOrder()) : "N/A"));
+                                    !testCaseDeclaration.isDefaultOrder() ? String.valueOf(testCaseDeclaration.getOrder()) : SharedConstants.NOT_AVAILABLE));
                 }
             }
         }
@@ -62,9 +63,9 @@ public class TestSuiteService {
                 renameRequest.getOldTestSuiteName());
         boolean renameToResult = testSuiteDirectory.renameTo(testSuiteCompiler.getTestSuiteDirectory(normalizedProjectName, renameRequest.getNewTesSuiteName()));
         if (renameToResult) {
-            response.setResult("ok");
+            response.setResult(SharedConstants.OK_RESULT_STRING);
         } else {
-            response.setResult("error");
+            response.setResult(SharedConstants.ERROR_RESULT_STRING);
         }
         return response;
     }

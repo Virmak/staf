@@ -8,6 +8,7 @@ import com.sparkit.staf.application.models.request.CreateProjectRequest;
 import com.sparkit.staf.application.models.request.CreateTestSuiteRequest;
 import com.sparkit.staf.application.models.request.TestSuiteType;
 import com.sparkit.staf.core.runtime.config.JsonStafProjectConfig;
+import com.sparkit.staf.core.utils.SharedConstants;
 import com.sparkit.staf.domain.ProjectConfig;
 import com.sparkit.staf.domain.ProjectType;
 import com.sparkit.staf.domain.TestSuite;
@@ -24,10 +25,10 @@ import java.util.ArrayList;
 public class ProjectBuilder implements IProjectBuilder {
     private final ObjectMapper mapper;
 
-    @Value("${testDirectory}")
+    @Value(SharedConstants.TEST_DIRECTORY_PROPERTY_VALUE)
     private String testDir;
 
-    @Value("classpath:config_template.json")
+    @Value(SharedConstants.PROJECT_CONFIG_TEMPLATE_CLASSPATH)
     private Resource templateProjectConfig;
 
     @Autowired
@@ -52,9 +53,9 @@ public class ProjectBuilder implements IProjectBuilder {
             projectDir.mkdir();
             writeConfigFile(config, projectDir);
             if (createProjectRequest.getType() == ProjectType.UITest) {
-                createUITestSuite("UI test suite", config, projectDir);
+                createUITestSuite(SharedConstants.DEFAULT_UI_TEST_SUITE_NAME, config, projectDir);
             } else if (createProjectRequest.getType() == ProjectType.APITest) {
-                createAPITestSuite("API test suite", config, projectDir);
+                createAPITestSuite(SharedConstants.DEFAULT_API_TEST_SUITE_NAME, config, projectDir);
             }
         }
         return config;
@@ -84,7 +85,7 @@ public class ProjectBuilder implements IProjectBuilder {
         testSuiteDir.mkdir();
         File pagesDir = new File(testSuiteDir, "pages");
         File stepsDir = new File(testSuiteDir, "steps");
-        File mainFile = new File(testSuiteDir, "main.staf");
+        File mainFile = new File(testSuiteDir, SharedConstants.TEST_SUITE_MAIN_FILE);
         mainFile.createNewFile();
         pagesDir.mkdir();
         stepsDir.mkdir();
@@ -98,7 +99,7 @@ public class ProjectBuilder implements IProjectBuilder {
         testSuiteDir.mkdir();
         File requestsDir = new File(testSuiteDir, "requests");
         requestsDir.mkdir();
-        File mainFile = new File(testSuiteDir, "main.staf");
+        File mainFile = new File(testSuiteDir, SharedConstants.TEST_SUITE_MAIN_FILE);
         mainFile.createNewFile();
         if (config != null) {
             config.getTestSuites().add(testSuiteName);

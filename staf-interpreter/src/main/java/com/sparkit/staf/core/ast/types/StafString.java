@@ -16,6 +16,11 @@ public class StafString extends AbstractStafObject {
     }
 
     @Override
+    public String getValue() {
+        return (String) value;
+    }
+
+    @Override
     public String toString() {
         return "\"" + value + "\"";
     }

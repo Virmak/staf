@@ -19,6 +19,7 @@
             <div *ngIf="settingsMenuExpanded" class="dropdown-menu">
                 <h4 class="dropdown-header">Settings</h4>
                 <div class="dropdown-item" (click)="settingsModal = true; settingsMenuExpanded = false; ">Web driver settings</div>
+                <div class="dropdown-item" (click)="logout()">Logout</div>
                 <!--<div class="dropdown-divider"></div>-->
             </div>
         </div>

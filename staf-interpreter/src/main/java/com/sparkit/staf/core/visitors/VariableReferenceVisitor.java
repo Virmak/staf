@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class VariableReferenceVisitor extends StafBaseVisitor<AbstractStafObject> {
     @Autowired
-    private ListItemAccessVisitor listItemAccessVisitor;
+    private BracketsItemAccessVisitor listItemAccessVisitor;
     @Autowired
-    private DictionaryItemAccessVisitor dictionaryItemAccessVisitor;
+    private DotItemAccessVisitor dictionaryItemAccessVisitor;
 
     @Override
     public AbstractStafObject visitVariable_reference(StafParser.Variable_referenceContext ctx) {
@@ -23,13 +23,13 @@ public class VariableReferenceVisitor extends StafBaseVisitor<AbstractStafObject
         if (variableReferenceContext != null) {
             parentVarRefObject = visitVariable_reference(variableReferenceContext);
         }
-        StafParser.Dictionary_item_accessContext dictionaryItemAccessContext = ctx.dictionary_item_access();
-        if (dictionaryItemAccessContext != null) {
-            return dictionaryItemAccessVisitor.visitDictionary_item_access(parentVarRefObject, dictionaryItemAccessContext);
+        StafParser.Dot_item_accessContext dotItemAccessContext = ctx.dot_item_access();
+        if (dotItemAccessContext != null) {
+            return dictionaryItemAccessVisitor.visitDot_item_access(parentVarRefObject, dotItemAccessContext);
         }
-        StafParser.List_item_accessContext listItemAccessContext = ctx.list_item_access();
+        StafParser.Brackets_item_accessContext listItemAccessContext = ctx.brackets_item_access();
         if (listItemAccessContext != null) {
-            return listItemAccessVisitor.visitList_item_access(parentVarRefObject, listItemAccessContext);
+            return listItemAccessVisitor.visitBrackets_item_access(parentVarRefObject, listItemAccessContext);
         }
         return super.visitVariable_reference(ctx);
     }

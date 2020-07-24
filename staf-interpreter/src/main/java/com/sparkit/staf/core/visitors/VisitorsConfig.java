@@ -146,11 +146,12 @@ public class VisitorsConfig {
     }
 
     @Bean
-    public ListItemAccessVisitor listItemAccessVisitor() {
-        return new ListItemAccessVisitor();
+    public BracketsItemAccessVisitor listItemAccessVisitor() {
+        return new BracketsItemAccessVisitor();
     }
 
-    @Bean DictionaryItemAccessVisitor dictionaryItemAccessVisitor() {
-        return new DictionaryItemAccessVisitor();
+    @Bean
+    DotItemAccessVisitor dictionaryItemAccessVisitor() {
+        return new DotItemAccessVisitor();
     }
 }

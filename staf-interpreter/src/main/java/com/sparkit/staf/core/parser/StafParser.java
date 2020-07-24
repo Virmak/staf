@@ -37,7 +37,7 @@ public class StafParser extends Parser {
 		RULE_assignment = 26, RULE_for_stat = 27, RULE_for_stat_body = 28, RULE_listLiteral = 29, 
 		RULE_dictionaryLiteral = 30, RULE_keyValuePair = 31, RULE_object = 32, 
 		RULE_complex_object = 33, RULE_scalar_object = 34, RULE_variable_reference = 35, 
-		RULE_primitive = 36, RULE_variable = 37, RULE_list_item_access = 38, RULE_dictionary_item_access = 39, 
+		RULE_primitive = 36, RULE_variable = 37, RULE_dot_item_access = 38, RULE_brackets_item_access = 39, 
 		RULE_expression = 40, RULE_mulop = 41, RULE_addop = 42, RULE_binop = 43, 
 		RULE_number = 44, RULE_string = 45, RULE_bool = 46;
 	private static String[] makeRuleNames() {
@@ -50,8 +50,8 @@ public class StafParser extends Parser {
 			"keyword_call_arguments", "keyword_return_stat", "keyword_name", "reserved_keyword", 
 			"keyword_declaration_arguments", "assignment", "for_stat", "for_stat_body", 
 			"listLiteral", "dictionaryLiteral", "keyValuePair", "object", "complex_object", 
-			"scalar_object", "variable_reference", "primitive", "variable", "list_item_access", 
-			"dictionary_item_access", "expression", "mulop", "addop", "binop", "number", 
+			"scalar_object", "variable_reference", "primitive", "variable", "dot_item_access", 
+			"brackets_item_access", "expression", "mulop", "addop", "binop", "number", 
 			"string", "bool"
 		};
 	}
@@ -2664,11 +2664,11 @@ public class StafParser extends Parser {
 		public Variable_referenceContext variable_reference() {
 			return getRuleContext(Variable_referenceContext.class,0);
 		}
-		public List_item_accessContext list_item_access() {
-			return getRuleContext(List_item_accessContext.class,0);
+		public Brackets_item_accessContext brackets_item_access() {
+			return getRuleContext(Brackets_item_accessContext.class,0);
 		}
-		public Dictionary_item_accessContext dictionary_item_access() {
-			return getRuleContext(Dictionary_item_accessContext.class,0);
+		public Dot_item_accessContext dot_item_access() {
+			return getRuleContext(Dot_item_accessContext.class,0);
 		}
 		public Variable_referenceContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2727,7 +2727,7 @@ public class StafParser extends Parser {
 						setState(363);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
 						setState(364);
-						list_item_access();
+						brackets_item_access();
 						}
 						break;
 					case 2:
@@ -2737,7 +2737,7 @@ public class StafParser extends Parser {
 						setState(365);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 						setState(366);
-						dictionary_item_access();
+						dot_item_access();
 						}
 						break;
 					}
@@ -2880,43 +2880,38 @@ public class StafParser extends Parser {
 		return _localctx;
 	}
 
-	public static class List_item_accessContext extends ParserRuleContext {
-		public TerminalNode LBRACKET() { return getToken(StafParser.LBRACKET, 0); }
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
-		}
-		public TerminalNode RBRACKET() { return getToken(StafParser.RBRACKET, 0); }
-		public List_item_accessContext(ParserRuleContext parent, int invokingState) {
+	public static class Dot_item_accessContext extends ParserRuleContext {
+		public TerminalNode DOT() { return getToken(StafParser.DOT, 0); }
+		public TerminalNode IDENTIFIER() { return getToken(StafParser.IDENTIFIER, 0); }
+		public Dot_item_accessContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_list_item_access; }
+		@Override public int getRuleIndex() { return RULE_dot_item_access; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterList_item_access(this);
+			if ( listener instanceof StafListener ) ((StafListener)listener).enterDot_item_access(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitList_item_access(this);
+			if ( listener instanceof StafListener ) ((StafListener)listener).exitDot_item_access(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitList_item_access(this);
+			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitDot_item_access(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final List_item_accessContext list_item_access() throws RecognitionException {
-		List_item_accessContext _localctx = new List_item_accessContext(_ctx, getState());
-		enterRule(_localctx, 76, RULE_list_item_access);
+	public final Dot_item_accessContext dot_item_access() throws RecognitionException {
+		Dot_item_accessContext _localctx = new Dot_item_accessContext(_ctx, getState());
+		enterRule(_localctx, 76, RULE_dot_item_access);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(380);
-			match(LBRACKET);
+			match(DOT);
 			setState(381);
-			expression(0);
-			setState(382);
-			match(RBRACKET);
+			match(IDENTIFIER);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2930,38 +2925,43 @@ public class StafParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Dictionary_item_accessContext extends ParserRuleContext {
-		public TerminalNode DOT() { return getToken(StafParser.DOT, 0); }
-		public TerminalNode IDENTIFIER() { return getToken(StafParser.IDENTIFIER, 0); }
-		public Dictionary_item_accessContext(ParserRuleContext parent, int invokingState) {
+	public static class Brackets_item_accessContext extends ParserRuleContext {
+		public TerminalNode LBRACKET() { return getToken(StafParser.LBRACKET, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public TerminalNode RBRACKET() { return getToken(StafParser.RBRACKET, 0); }
+		public Brackets_item_accessContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_dictionary_item_access; }
+		@Override public int getRuleIndex() { return RULE_brackets_item_access; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).enterDictionary_item_access(this);
+			if ( listener instanceof StafListener ) ((StafListener)listener).enterBrackets_item_access(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof StafListener ) ((StafListener)listener).exitDictionary_item_access(this);
+			if ( listener instanceof StafListener ) ((StafListener)listener).exitBrackets_item_access(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitDictionary_item_access(this);
+			if ( visitor instanceof StafVisitor ) return ((StafVisitor<? extends T>)visitor).visitBrackets_item_access(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final Dictionary_item_accessContext dictionary_item_access() throws RecognitionException {
-		Dictionary_item_accessContext _localctx = new Dictionary_item_accessContext(_ctx, getState());
-		enterRule(_localctx, 78, RULE_dictionary_item_access);
+	public final Brackets_item_accessContext brackets_item_access() throws RecognitionException {
+		Brackets_item_accessContext _localctx = new Brackets_item_accessContext(_ctx, getState());
+		enterRule(_localctx, 78, RULE_brackets_item_access);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
+			setState(383);
+			match(LBRACKET);
 			setState(384);
-			match(DOT);
+			expression(0);
 			setState(385);
-			match(IDENTIFIER);
+			match(RBRACKET);
 			}
 		}
 		catch (RecognitionException re) {
@@ -3584,7 +3584,7 @@ public class StafParser extends Parser {
 		"\u014d\n \f \16 \u0150\13 \5 \u0152\n \3 \3 \3!\3!\5!\u0158\n!\3!\3!\3"+
 		"!\3\"\3\"\3\"\5\"\u0160\n\"\3#\3#\5#\u0164\n#\3$\3$\3$\5$\u0169\n$\3%"+
 		"\3%\3%\3%\3%\3%\3%\7%\u0172\n%\f%\16%\u0175\13%\3&\3&\3&\5&\u017a\n&\3"+
-		"\'\3\'\3\'\3(\3(\3(\3(\3)\3)\3)\3*\3*\3*\3*\3*\3*\3*\3*\5*\u018e\n*\3"+
+		"\'\3\'\3\'\3(\3(\3(\3)\3)\3)\3)\3*\3*\3*\3*\3*\3*\3*\3*\5*\u018e\n*\3"+
 		"*\3*\3*\3*\3*\3*\3*\3*\3*\3*\3*\3*\7*\u019c\n*\f*\16*\u019f\13*\3+\3+"+
 		"\3,\3,\3-\3-\3-\3-\3-\3-\3-\3-\3-\5-\u01ae\n-\3.\3.\3/\3/\3\60\3\60\3"+
 		"\60\3z\4HR\61\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64"+
@@ -3598,7 +3598,7 @@ public class StafParser extends Parser {
 		"\62\u0115\3\2\2\2\64\u0117\3\2\2\2\66\u0124\3\2\2\28\u012a\3\2\2\2:\u0138"+
 		"\3\2\2\2<\u013b\3\2\2\2>\u0148\3\2\2\2@\u0157\3\2\2\2B\u015f\3\2\2\2D"+
 		"\u0163\3\2\2\2F\u0168\3\2\2\2H\u016a\3\2\2\2J\u0179\3\2\2\2L\u017b\3\2"+
-		"\2\2N\u017e\3\2\2\2P\u0182\3\2\2\2R\u018d\3\2\2\2T\u01a0\3\2\2\2V\u01a2"+
+		"\2\2N\u017e\3\2\2\2P\u0181\3\2\2\2R\u018d\3\2\2\2T\u01a0\3\2\2\2V\u01a2"+
 		"\3\2\2\2X\u01ad\3\2\2\2Z\u01af\3\2\2\2\\\u01b1\3\2\2\2^\u01b3\3\2\2\2"+
 		"`b\5\4\3\2a`\3\2\2\2ab\3\2\2\2bd\3\2\2\2ce\5\b\5\2dc\3\2\2\2de\3\2\2\2"+
 		"eg\3\2\2\2fh\5\16\b\2gf\3\2\2\2gh\3\2\2\2hj\3\2\2\2ik\5\32\16\2ji\3\2"+
@@ -3683,13 +3683,13 @@ public class StafParser extends Parser {
 		"\u0169\5J&\2\u0166\u0169\5H%\2\u0167\u0169\5*\26\2\u0168\u0165\3\2\2\2"+
 		"\u0168\u0166\3\2\2\2\u0168\u0167\3\2\2\2\u0169G\3\2\2\2\u016a\u016b\b"+
 		"%\1\2\u016b\u016c\5L\'\2\u016c\u0173\3\2\2\2\u016d\u016e\f\5\2\2\u016e"+
-		"\u0172\5N(\2\u016f\u0170\f\4\2\2\u0170\u0172\5P)\2\u0171\u016d\3\2\2\2"+
+		"\u0172\5P)\2\u016f\u0170\f\4\2\2\u0170\u0172\5N(\2\u0171\u016d\3\2\2\2"+
 		"\u0171\u016f\3\2\2\2\u0172\u0175\3\2\2\2\u0173\u0171\3\2\2\2\u0173\u0174"+
 		"\3\2\2\2\u0174I\3\2\2\2\u0175\u0173\3\2\2\2\u0176\u017a\5\\/\2\u0177\u017a"+
 		"\5^\60\2\u0178\u017a\5Z.\2\u0179\u0176\3\2\2\2\u0179\u0177\3\2\2\2\u0179"+
 		"\u0178\3\2\2\2\u017aK\3\2\2\2\u017b\u017c\7\"\2\2\u017c\u017d\7<\2\2\u017d"+
-		"M\3\2\2\2\u017e\u017f\7\34\2\2\u017f\u0180\5R*\2\u0180\u0181\7\35\2\2"+
-		"\u0181O\3\2\2\2\u0182\u0183\7 \2\2\u0183\u0184\7<\2\2\u0184Q\3\2\2\2\u0185"+
+		"M\3\2\2\2\u017e\u017f\7 \2\2\u017f\u0180\7<\2\2\u0180O\3\2\2\2\u0181\u0182"+
+		"\7\34\2\2\u0182\u0183\5R*\2\u0183\u0184\7\35\2\2\u0184Q\3\2\2\2\u0185"+
 		"\u0186\b*\1\2\u0186\u0187\t\5\2\2\u0187\u018e\5R*\b\u0188\u0189\7\32\2"+
 		"\2\u0189\u018a\5R*\2\u018a\u018b\7\33\2\2\u018b\u018e\3\2\2\2\u018c\u018e"+
 		"\5F$\2\u018d\u0185\3\2\2\2\u018d\u0188\3\2\2\2\u018d\u018c\3\2\2\2\u018e"+

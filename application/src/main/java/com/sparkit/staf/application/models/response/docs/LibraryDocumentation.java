@@ -8,5 +8,6 @@ import java.util.List;
 public class LibraryDocumentation {
     private String libraryName;
     private String importName;
+    private boolean isBuiltin;
     private List<KeywordDocumentation> keywords;
 }

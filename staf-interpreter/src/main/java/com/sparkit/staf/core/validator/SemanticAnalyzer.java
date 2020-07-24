@@ -40,7 +40,9 @@ public class SemanticAnalyzer {
                 if (currentFile.getSemanticErrors() == null) {
                     currentFile.setSemanticErrors(new ArrayList<>());
                 }
-                currentFile.getSemanticErrors().add(new SemanticError(keywordCall.getPosition(), SharedConstants.CANNOT_FIND_KEYWORD + " '" + keywordCall.getKeywordName() + "'"));
+                currentFile.getSemanticErrors().add(new SemanticError(keywordCall.getPosition(),
+                        SharedConstants.CANNOT_FIND_KEYWORD + " '" + keywordCall.getKeywordName() + "' "
+                                + SharedConstants.MAYBE_YOU_ARE_MISSING_AN_IMPORT));
             }
         });
     }

@@ -10,6 +10,7 @@ public class KeywordDocumentation {
     private String name;
     private List<KeywordParameter> parameters;
     private String description;
+    private String returnType;
 
     @Data
     @AllArgsConstructor

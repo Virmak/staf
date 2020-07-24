@@ -26,9 +26,9 @@ public final class SharedConstants {
     public static final String TEARDOWN_TEST_CASE = "teardown";
 
     public static final String SESSION_ID_MEMORY_KEY = "$__session__";
+    public static final String LOOP_INDEX_VAR_MEMORY_KEY = "$__index__"; // current loop index
     public static final String CURRENT_KEYWORD_MEMORY_KEY = "__keyword__";
     public static final String WEB_DRIVER_MEMORY_KEY = "__web_driver__";
-    public static final String LOOP_INDEX_VAR_MEMORY_KEY = "$__index__";
 
     public static final String TEST_CASE_IGNORED = "Test case [{}] Ignored";
     public static final String TEST_EXECUTION_TERMINATED_BY_USER = "Test execution terminated by user";
@@ -46,6 +46,22 @@ public final class SharedConstants {
     public static final String INVALID_IMPORT_PATH = "Invalid import path";
     public static final String SYNTAX_ERROR_AT = "Syntax Error at {}";
     public static final String NO_BROWSER_OPEN_ERROR = "No opened browser";
+    public static final String NOT_AVAILABLE = "N/A";
+    public static final String DEFAULT_UI_TEST_SUITE_NAME = "UI test suite";
+    public static final String DEFAULT_API_TEST_SUITE_NAME = "API test suite";
+    public static final String PROJECT_CONFIG_TEMPLATE_CLASSPATH = "classpath:config_template.json";
+    public static final String MAYBE_YOU_ARE_MISSING_AN_IMPORT = "maybe you are missing an import";
+    public static final String APPLICATION_JSON = "application/json";
+    public static final String LOGGER_LIB_TEMPLATE = "[Logger Library] {}";
+
+    public static final String LIST_INDEX_OUT_OD_BOUNDS = "List index [{}] out of bounds";
+    public static final String DICTIONARY_DOESNT_CONTAIN_KEY = "Dictionary doesn't contain key : {}";
+    public static final String OBJECTS_TYPES_DOESNT_MATCH_AT_INDEX = "Objects types doesn't match at index [";
+    public static final String OBJECTS_VALUE_DOESNT_MATCH_AT_INDEX = "Objects value doesn't match at index [";
+    public static final String LISTS_SIZES_ARE_NOT_EQUAL = "Lists sizes are not equal";
+    public static final String DICTIONARIES_SIZES_ARE_NOT_EQUALS = "Dictionaries sizes are not equal";
+    public static final String UNDEFINED_VARIABLE = "Undefined variable {}";
+    public static final String INVOKING_KEYWORD = "Invoking Keyword : {}";
 
     private SharedConstants() {
     }

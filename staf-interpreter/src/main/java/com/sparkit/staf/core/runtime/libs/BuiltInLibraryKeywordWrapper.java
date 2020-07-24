@@ -39,8 +39,7 @@ public class BuiltInLibraryKeywordWrapper {
             return method.invoke(libInstance, methodParams);
         } catch (InvocationTargetException ex) {
             Throwable cause = ex.getCause();
-            logger.error(String.format("Invocation of %s failed because of: %s%n",
-                    method.getName(), cause.getMessage()));
+            logger.error(cause.getMessage());
             throw ex.getCause();
         }
     }

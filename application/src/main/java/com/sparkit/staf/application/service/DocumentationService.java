@@ -7,6 +7,7 @@ import com.sparkit.staf.core.runtime.libs.BuiltInLibraryFactory;
 import com.sparkit.staf.core.runtime.libs.annotations.Keyword;
 import com.sparkit.staf.core.runtime.libs.annotations.KeywordArgument;
 import com.sparkit.staf.core.runtime.libs.annotations.StafLibrary;
+import com.sparkit.staf.core.utils.SharedConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,7 @@ public class DocumentationService {
         StafLibrary libraryClassAnnotation = libraryClass.getAnnotation(StafLibrary.class);
         libraryDocumentation.setLibraryName(libraryClassAnnotation.name());
         libraryDocumentation.setImportName(extractLibraryImportName(libraryClass.getName()));
+        libraryDocumentation.setBuiltin(libraryClassAnnotation.builtin());
         libraryDocumentation.setKeywords(new ArrayList<>());
 
         for (Method method : libraryClass.getMethods()) {
@@ -50,6 +52,7 @@ public class DocumentationService {
                 KeywordDocumentation keywordDocumentation = new KeywordDocumentation();
                 keywordDocumentation.setName(keyword.name());
                 keywordDocumentation.setDescription(keyword.doc());
+                keywordDocumentation.setReturnType(convertType(method.getReturnType().getName()));
                 Parameter[] parameters = method.getParameters();
                 List<KeywordDocumentation.KeywordParameter> keywordParameters = Arrays.stream(parameters)
                         .filter(parameter -> parameter.isAnnotationPresent(KeywordArgument.class))
@@ -72,7 +75,7 @@ public class DocumentationService {
     }
 
     private String extractLibraryImportName(String libraryClass) {
-        return libraryClass.substring(libraryClass.lastIndexOf('.') + 1).replace("Library", "")
+        return libraryClass.substring(libraryClass.lastIndexOf('.') + 1).replace(SharedConstants.LIBRARY, "")
                 .toLowerCase();
     }
 

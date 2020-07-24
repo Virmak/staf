@@ -2,6 +2,7 @@ export enum StafAPI {
   GET_PROJECTS = '/projects',
   CREATE_PROJECT = '/projects',
   UPDATE_PROJECT = '/projects',
+  DELETE_PROJECT = "/projects",
   UPLOAD_PROJECT = '/projects/upload',
   UPDATE_PROJECT_CONFIG = '/projects/config',
   CREATE_FILE = '/create-file',
@@ -24,4 +25,5 @@ export enum StafAPI {
   TERMINATE_TEST = '/test/terminate',
   BUILTIN_KEYWORD_DOCS = '/docs/builtin',
   GET_HOST_ADDRESS = '/host-address',
+  LOGIN = "/auth/sign-in"
 }
