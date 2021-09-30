@@ -26,7 +26,7 @@
     "@clr/ui": "3.0.1",
     "@handsontable/angular": "^5.1.1",
     "@webcomponents/webcomponentsjs": "^2.4.4",
-    "handsontable": "^7.4.2",
+    "handsontable": "^10.0.0",
     "net": "^1.0.2",
     "ngx-contextmenu": "^5.4.0",
     "ngx-monaco-editor": "^9.0.0",
